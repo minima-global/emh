@@ -46,7 +46,7 @@ A server running 'nix and Apache/nginx.
 
 The database will be [MySQL](https://www.mysql.com/), fronted up by the headless CMS [directus](https://directus.io/).
 
-#### ID Design
+#### Database Design
 
 ![](./images/dbase.png)
 
