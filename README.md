@@ -1,2 +1,3 @@
-# emh
-Minima Enterprise Solution
+# Enterprise Management Hub
+
+Minima Enterprise Solution.
