@@ -14,6 +14,8 @@ The EMH should offer functionality in 4 broad areas:
 
 The EMH should be capable of _registering_ and _signing in_ users and performing all actions regarding those users, such as _token distribution_.
 
+Admins should be able to view users, and the actions that they've performed.
+
 2. Triggers
 
 The EMH should abstract away from explicit implementation through a process of _triggers_. For example, _gimme50_ might be a trigger that just gives the user 50 tokens. However, it could just as easily give the user 50 tokens **AND** notify some service 'somewhere' that a user has received 50 tokens.
