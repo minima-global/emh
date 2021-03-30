@@ -20,7 +20,7 @@ The EMH should abstract away from explicit implementation through a process of _
 
 ### Logging
 
-The EMH should log **everything** - _stats_, _stats_ and _MORE STATS_!
+The EMH should log **everything**.
 
 ## System Requirements
 
