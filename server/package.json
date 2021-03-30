@@ -1,0 +1,23 @@
+{
+  "name": "Incentivecash-Server",
+  "version": "0.1.0",
+  "description": "Incentivecash Server MiniDapp",
+  "main": "service.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/minima-global/incentivecash"
+  },
+  "scripts": {
+    "compile": "rm -rf ./build && mkdir -p ./build/images && cp ./images/* ./build/images && cp ./minidapp/config/minidapp.conf ./build && cp ./src/service.js ./build && cp ./src/index.html ./build && cd ./build && zip -r ../miniDapp/dist/ism.minidapp *"
+  },
+  "author": "Steve Huckle",
+  "license": "LGPL-3.0",
+  "dependencies": {
+  },
+  "devDependencies": {
+  },
+  "bugs": {
+    "url": "https://github.com/minima-global/incentivecash/issues"
+  },
+  "homepage": "https://github.com/minima-global/incentivecash#readme"
+}
