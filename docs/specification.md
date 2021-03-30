@@ -4,62 +4,38 @@ This document describes the requirements for the Enterprise Management Hub (EMH)
 
 ## Functional Requirements
 
-Below describes the basic functioning of the EMH.
+The EMH should perform two basic functions:
 
-### The EMH
+1. It should listen for calls at specified URL-based endpoints. Those calls should [trigger][#trigger] Minima transactions (and maybe calls to other URLs).
 
-The EMH should offer functionality in 4 broad areas:
+2. It should listen for Minima transactions at certain (configurable) addresses and should call URLs with data from those transactions.
 
-1. Users
+Additionally, the EMH should perform the actions of a basic wallet, such as `create`, `send` and `receive`.
 
-The EMH should be capable of _registering_ and _signing in_ users and performing all actions regarding those users, such as _token distribution_.
+### Triggers
 
-Admins should be able to view users, and the actions that they've performed.
+The EMH should abstract away from explicit implementation through a process of _triggers_. For example, a `gimme50` URL endpoint is _probably_ a trigger that gives the user 50 tokens. However, it could just as easily give the user 50 tokens **AND** notify some service 'somewhere' that a user has received 50 tokens.
 
-2. Triggers
-
-The EMH should abstract away from explicit implementation through a process of _triggers_. For example, _gimme50_ might be a trigger that just gives the user 50 tokens. However, it could just as easily give the user 50 tokens **AND** notify some service 'somewhere' that a user has received 50 tokens.
-
-3. Logging
+### Logging
 
 The EMH should log **everything** - _stats_, _stats_ and _MORE STATS_!
 
-4. Wallet
-
-This includes basic token functionality, such as _create_, _send_, _balance_, etc.
-
-### Roles
-
-**Users** should be able to register and login to a service, where they can download the Minima APK and a wallet-based MiniDapp.
-
-**Admins** (Enterprise staff) should be able to create tokens and send them to their users. They can browse all information, which could include, "How many users do we have?", "How many tokens have we distributed?", "How many times has this URL been called?" etc.
-
-**System Admins** should be able to manage all low-level database information.
-
-## EMH Requirements
+## System Requirements
 
 To meet the [functional requirements](#functional-requirements), above, the EMH should implement the following:
 
-### Server
+### MiniDapp
 
-A server running 'nix and Apache/nginx.
+So the EMH is deployable to both mobile environments and Servers, it must run as a MiniDapp.
 
 ### Database
 
-The database will be [MySQL](https://www.mysql.com/), fronted up by the headless CMS [directus](https://directus.io/).
+The EMH will make use of `Minima.sql`, therefore abstracting away from a specific database implementation
 
 #### Database Design
 
 ![](./images/dbase.png)
 
-### User Service
+### Admin App'
 
-A web-based front end service (allowing users to register and login to the service, download the Minima APK and wallet minidapp will be a javascript single-page application built on _React_ and the directus API.
-
-### Admin' Service
-
-A web-based front end service that allows EMH admins to create tokens and send them to their users. EMH admins should also be able to view logging information.
-
-### MiniDapp
-
-The MiniDapp is to be a version of the wallet.
+A web-based interface to the EMH will be a javascript single-page application that allows EMH admins to create, send and receive tokens, review logs, create endpoints and specify actions.
