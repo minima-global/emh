@@ -26,13 +26,17 @@ The EMH should log **everything**.
 
 To meet the [functional requirements](#functional-requirements), above, the EMH should implement the following:
 
+### Daemon
+
+The EMH should run as a single-user system daemon that interfaces with `minima.jar` and calls URL-based endpoints.
+
 ### MiniDapp
 
-The EMH must be deployable to both mobile and server environments, so it must run as a MiniDapp.
+The EMH must be deployable to both server and mobile environments, so it must be a MiniDapp.
 
 ### Database
 
-The EMH will make use of `Minima.sql`, therefore abstracting away from a specific database implementation.
+The EMH will make use of `Minima.sql` to `create` tables and `insert` rows in those tables, therefore abstracting away from a specific database implementation.
 
 #### Database Design
 
@@ -40,4 +44,4 @@ The EMH will make use of `Minima.sql`, therefore abstracting away from a specifi
 
 ### Admin App'
 
-A web-based interface to the EMH will be a javascript single-page application that allows EMH admins to create, send and receive tokens, review logs, create endpoints and specify actions.
+A web-based interface to the EMH will be a javascript single-page application that allows EMH admins to interface with the create, send and receive tokens, review logs, create endpoints and specify actions. In a server environment, this will run from a webserver. On a mobile, this will be a MiniDapp. However, both environments will use the same codebase.
