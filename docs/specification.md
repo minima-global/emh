@@ -30,7 +30,7 @@ The EMH should run as a single-user system daemon that interfaces with `minima.j
 
 ### Mobile MiniDapp
 
-However, the EMH must be deployable to both server and mobile environments, so it should _also_ be a MiniDapp that behaves similarly to the server daemon, described above.
+The EMH must be deployable to both server and mobile environments, so it should _also_ be a MiniDapp that behaves similarly to the server daemon, described above.
 
 ### Database
 
