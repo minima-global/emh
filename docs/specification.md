@@ -10,7 +10,7 @@ The EMH should perform three functions:
 
 2. Listen for Minima transactions at certain (configurable) addresses and subsequently, call URLs with data from those transactions.
 
-3. Include the functions of a basic _wallet_: `create`, `send` and `receive` tokens.
+3. Include the functions of an enterprise-grade _wallet_: token `create`, `send` and `receive`.
 
 ### Triggers
 
@@ -24,13 +24,9 @@ The EMH should log **everything**.
 
 To meet the [functional requirements](#functional-requirements), above, the EMH should implement the following:
 
-### Server Daemon
+### MiniDapp
 
-The EMH should run as a single-user system daemon that interfaces with `minima.jar` and calls URL-based endpoints.
-
-### Mobile MiniDapp
-
-The EMH must be deployable to both server and mobile environments, so it should _also_ be a MiniDapp that behaves similarly to the server daemon, described above.
+The EMH should run as a single-user system that interfaces with `minima.jar` and calls URL-based endpoints. It must be deployable to both server and mobile environments, so it should be a MiniDapp. That implies a user interface that allows the EMH user to interface with the token functionality described above (`create`, `send` and `receive`), review logs, create endpoints and specify actions. 
 
 ### Database
 
@@ -39,7 +35,3 @@ The EMH will make use of `Minima.sql` to `create` tables and `insert` rows into 
 #### Database Design
 
 ![](./images/dbase.png)
-
-### Admin App'
-
-A web-based interface to the EMH will be a javascript single-page application that allows EMH admins to interface with the create, send and receive tokens, review logs, create endpoints and specify actions. In a server environment, this will run from a webserver. On a mobile, this will be a MiniDapp. However, both environments will use the same codebase.
