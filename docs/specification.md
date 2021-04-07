@@ -26,7 +26,16 @@ To meet the [functional requirements](#functional-requirements), above, the EMH 
 
 ### MiniDapp
 
-The EMH should run as a single-user system that interfaces with `minima.jar` and calls URL-based endpoints. It must be deployable to both server and mobile environments, so it should be a MiniDapp. That implies a user interface that allows the EMH user to interface with the token functionality described above (`create`, `send` and `receive`), review logs, create endpoints and specify actions. 
+The EMH should run as a single-user system that interfaces with `minima.jar`. It performs the following functions:
+
+1. URL-based endpoint(s) that users can call in order to create transactions on the Minima network
+2. Actions to take (such as URLs to call) given defined transactions on the Minima network
+3. The token functionality described above (`create`, `send` and `receive`)
+4. Logging
+
+The EMH must be deployable to both server and mobile environments, so it should be a MiniDapp. That implies a user interface that allows an EMH admin' to interface with the the functionality described above; i.e. `create`, `send` and `receive` tokens, review logs, create endpoints and specify actions.
+
+![](./images/flow.png)
 
 ### Database
 
