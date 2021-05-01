@@ -1,5 +1,5 @@
 {
-  "name": "Incentivecash-Server",
+  "name": "incentivecash-server",
   "version": "0.1.0",
   "description": "Incentivecash Server MiniDapp",
   "main": "service.js",
