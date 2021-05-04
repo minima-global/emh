@@ -12,9 +12,12 @@
   },
   "author": "Steve Huckle",
   "license": "LGPL-3.0",
-  "dependencies": {
-  },
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.22.1",
+    "@typescript-eslint/parser": "^4.22.1",
+    "eslint": "^7.25.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-react": "^7.23.2"
   },
   "bugs": {
     "url": "https://github.com/minima-global/incentivecash/issues"

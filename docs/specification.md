@@ -6,7 +6,7 @@ This document describes the requirements for the Enterprise Management Hub (EMH)
 
 The EMH should perform three functions:
 
-1. Listen for calls at specified URL-based endpoints. Those calls should trigger Minima transactions (and maybe call other URLs, too. For more information on _triggers_, see below).
+1. Listen for calls at specified URL-based endpoints. Those calls should trigger Minima transactions (and maybe call other URLs, too). For more information on _triggers_, see below.
 
 2. Listen for Minima transactions at certain (configurable) addresses and subsequently, call URLs with data from those transactions.
 
@@ -33,9 +33,9 @@ The EMH should run as a single-user system that interfaces with `minima.jar`. It
 3. The token functionality described above (`create`, `send` and `receive`)
 4. Logging
 
-The EMH must be deployable to both server and mobile environments, so it should be a MiniDapp. That implies a user interface that allows an EMH admin' to interface with the the functionality described above; i.e. `create`, `send` and `receive` tokens, review logs, create endpoints and specify actions.
+The EMH must be deployable to both server and mobile environments, but it should be a MiniDapp. A user interface to the MiniDapp should allow an EMH admin' to execute the functionality described above; i.e. `create`, `send` and `receive` tokens, review logs, create endpoints and specify actions.
 
-![](./images/flow.png)
+![EMH Workflow](./images/flow.png)
 
 ### Database
 
@@ -43,4 +43,4 @@ The EMH will make use of `Minima.sql` to `create` tables and `insert` rows into 
 
 #### Database Design
 
-![](./images/dbase.png)
+![EMH Database Design](./images/dbase.png)
