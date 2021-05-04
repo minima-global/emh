@@ -96,7 +96,7 @@ function createAction() {
 
 /** @function createTriggers */
 function createTrigger() {
-  const tableName = tables.endpoint.name;
+  const tableName = tables.trigger.name;
   const createSQL = 'CREATE Table IF NOT EXISTS ' +
       tableName + ' (' +
       'name varchar(255) NOT NULL, ' +
@@ -105,7 +105,7 @@ function createTrigger() {
       'params varchar(255) NOT NULL, ' +
       'protocol varchar(255) NOT NULL, ' +
       'url varchar(255) NOT NULL, ' +
-      'PRIMARY KEY(address)' +
+      'PRIMARY KEY(name)' +
     ');';
 
   doCreate(createSQL, tableName);
@@ -120,8 +120,8 @@ function createLog() {
       'loggingTypeId varchar(255) NOT NULL, ' +
       'loggingType varchar(255) NOT NULL, ' +
       'date varchar(255) NOT NULL, ' +
-      'data varchar(1024) NOT NULL, ';
-  'PRIMARY KEY(id)' +
+      'data varchar(1024) NOT NULL, ' +
+      'PRIMARY KEY(id)' +
     ')';
 
   doCreate(createSQL, tableName);
