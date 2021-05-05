@@ -8,7 +8,7 @@
     "url": "git+https://github.com/minima-global/incentivecash"
   },
   "scripts": {
-    "compile": "rm -rf ./build && mkdir -p ./build/images && cp ./images/* ./build/images && cp ./miniDapp/config/minidapp.conf ./build && cp ./src/service.js ./build && cp ./src/index.html ./build && cd ./build && zip -r ../miniDapp/dist/ism.minidapp *"
+    "compile": "rm -rf ./build && mkdir -p ./build/images && cp ./images/* ./build/images && cp ./miniDapp/config/minidapp.conf ./build && cp ./src/service.js ./build && cp ./src/index.html ./build && cd ./build && zip -r ../miniDapp/dist/emh.minidapp *"
   },
   "author": "Steve Huckle",
   "license": "LGPL-3.0",

@@ -10,6 +10,9 @@ const tables = {
   log: {
     name: 'log',
   },
+  logType: {
+    name: 'logtype',
+  },
   trigger: {
     name: 'trigger',
   },
@@ -26,14 +29,16 @@ const logTypes = {
 };
 
 /**
- * @function doInsert
+ * @function doSQL
  * @param {string} sql
  * @param {string} tableName
 */
-function doInsert(sql, tableName) {
+function doSQL(sql, tableName) {
   Minima.sql(sql, function(resp) {
     if (!resp.status) {
-      Minima.log(app + 'Error with insert row ' + tableName + resp.message);
+      Minima.log(app + ' Error with SQL ' + tableName + resp.message);
+    } else {
+      Minima.log(app + ' SQL ' + tableName);
     }
   });
 }
@@ -51,22 +56,12 @@ function doLog(typeId, type, data) {
       tableName +
       ' (loggingTypeId, loggingType, date, data) ' +
       'VALUES (' +
-      typeId + ', ' + type + ', ' + date + ', ' + data +
+      '\'' + typeId + '\', ' +
+      '\'' + type + '\', ' +
+      '\'' + date + '\', ' +
+      '\'' + data + '\'' +
     ')';
-  doInsert(insertSQL, tableName);
-}
-
-/**
- * @function doCreate
- * @param {string} sql
- * @param {string} tableName
-*/
-function doCreate(sql, tableName) {
-  Minima.sql(sql, function(resp) {
-    if (!resp.status) {
-      Minima.log(app + 'Error with create table ' + tableName + resp.message);
-    }
-  });
+  doSQL(insertSQL, tableName);
 }
 
 /** @function createTxPow */
@@ -77,7 +72,7 @@ function createTxPow() {
       'id varchar(255) NOT NULL, ' +
       'PRIMARY KEY(id)' +
     ');';
-  doCreate(createSQL, tableName);
+  doSQL(createSQL, tableName);
 }
 
 /** @function createAction */
@@ -91,10 +86,10 @@ function createAction() {
       'PRIMARY KEY(address)' +
     ');';
 
-  doCreate(createSQL, tableName);
+  doSQL(createSQL, tableName);
 }
 
-/** @function createTriggers */
+/** @function createTrigger */
 function createTrigger() {
   const tableName = tables.trigger.name;
   const createSQL = 'CREATE Table IF NOT EXISTS ' +
@@ -108,7 +103,7 @@ function createTrigger() {
       'PRIMARY KEY(name)' +
     ');';
 
-  doCreate(createSQL, tableName);
+  doSQL(createSQL, tableName);
 }
 
 /** @function createLog */
@@ -122,9 +117,24 @@ function createLog() {
       'date varchar(255) NOT NULL, ' +
       'data varchar(1024) NOT NULL, ' +
       'PRIMARY KEY(id)' +
-    ')';
+      ')';
 
-  doCreate(createSQL, tableName);
+  doSQL(createSQL, tableName);
+}
+
+/** @function createURL */
+function createURL() {
+  const tableName = tables.url.name;
+  const createSQL = 'CREATE Table IF NOT EXISTS ' +
+      tableName + ' (' +
+      'name varchar(255) NOT NULL, ' +
+      'triggername varchar(255) NOT NULL, ' +
+      'PRIMARY KEY(name), ' +
+      'FOREIGN KEY (triggername) REFERENCES trigger(name)' +
+    ');' +
+    'CREATE INDEX IF NOT EXISTS arrange_index ON ' +
+    tableName + '(triggername)';
+  doSQL(createSQL, tableName);
 }
 
 /** @function initDbase */
@@ -132,6 +142,7 @@ function initDbase() {
   createTxPow();
   createAction();
   createTrigger();
+  createURL();
   createLog();
 }
 
@@ -149,11 +160,11 @@ function addTxPoW(txpow) {
       tableName +
       ' (id) ' +
       'VALUES (' +
-      id +
+      '\'' + id + '\'' +
     ')';
 
-    doInsert(insertSQL, tableName);
-    doLog(id, logTypes.TxPoW, 'insert ' + id);
+    doSQL(insertSQL, tableName);
+    doLog(id, logTypes.TXPOW, 'insert');
   }
 }
 
