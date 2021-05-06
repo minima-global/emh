@@ -1,9 +1,10 @@
 import {Action} from 'redux';
 import {ThunkDispatch} from 'redux-thunk';
 
-// Store stuff
+/**
+ * Store stuff
+*/
 export interface ApplicationState {
-  appData: AppDataProps
   logsData: LogsProps
   cmdData: CmdProps,
   tx: TxProps
@@ -20,47 +21,46 @@ export interface ActionProps extends Action {
 
 export type AppDispatch = ThunkDispatch<ApplicationState, any, ActionProps>
 
-// Stuff pertinent to make this app' work
-export const enum PageTypes {
-  AUTHENTICATED = 'signedIn',
-  SIGNIN = 'signin',
-  ABOUT = 'about',
-  HELP = 'help',
-  CONTACT = 'contact'
-}
-
-export interface AppData {
-  activePage: PageTypes
-}
-
-export interface AppDataProps extends PayloadProps {
-  data: AppData
-}
-
+/**
+ * Static info props
+ */
 export interface InfoProps {
   title: string
   data: string[]
 }
 
-// cmd stuff
+// Stuff pertinent to make this app' work
+export const enum PageTypes {
+  ABOUT = 'about',
+  HELP = 'help',
+  CONTACT = 'contact'
+}
+
+/**
+ * cmd stuff
+*/
 export interface CmdProps extends PayloadProps {
   data: Array<object>
 }
 
-// Logs
+/**
+ * Logs
+ */
 export interface Logs {
-  id: number
-  date: string
-  loggingtype: string
-  data: string
-  loggingtypeid: string
+  ID: number
+  DATE: string
+  LOGGINGTYPE: string
+  DATA: string
+  LOGGINGTYPEID: string
 }
 
 export interface LogsProps extends PayloadProps {
   data: Array<Logs>
 }
 
-// Tx stuff
+/**
+ * Tx stuff
+ */
 export interface TxData {
   code: string
   summary: string
@@ -76,14 +76,15 @@ export type SelectOptionType = {
   label: string
 }
 
-// Action types
+/**
+ * Action Types
+ */
 export const enum AppDataActionTypes {
   APPDATA_INIT = '@@AppDataActionTypes/APPDATA_INIT',
   APPDATA_SUCCESS = '@@AppDataActionTypes/APPDATA_SUCCESS',
   APPDATA_FAILURE = '@@AppDataActionTypes/APPDATA_FAILURE'
 }
 
-// put action types
 export const enum TxActionTypes {
   TX_INIT = '@@TxActionTypes/TX_INIT',
   TX_PENDING = '@@TxActionTypes/TX_PENDING',

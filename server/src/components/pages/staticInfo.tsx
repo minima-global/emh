@@ -1,12 +1,9 @@
 import React, {useEffect, useState, useRef} from 'react';
-import {connect} from 'react-redux';
 
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
 import {
-  ApplicationState,
-  AppDispatch,
   InfoProps,
   PageTypes,
 } from '../../store/types';
@@ -15,19 +12,13 @@ import {themeStyles} from '../../styles';
 
 import {About, Help, Contact} from '../../config/strings';
 
-import {setActivePage} from '../../store/app/appData/actions';
-
 interface StaticInfoProps {
   page: PageTypes
 }
 
-interface DispatchProps {
-  setActivePage: (page: PageTypes) => void
-}
+type Props = StaticInfoProps
 
-type Props = StaticInfoProps & DispatchProps
-
-const appInfo = (props: Props) => {
+export const Info = (props: Props) => {
   const [pageData, setPageData] = useState<InfoProps>({title: About.heading,
     data: About.info});
   const isFirstRun = useRef(true);
@@ -35,7 +26,6 @@ const appInfo = (props: Props) => {
 
   useEffect(() => {
     if ( isFirstRun.current ) {
-      props.setActivePage(PageTypes.AUTHENTICATED);
       isFirstRun.current = false;
 
       switch (props.page) {
@@ -56,7 +46,8 @@ const appInfo = (props: Props) => {
 
         default:
 
-          props.setActivePage(PageTypes.SIGNIN);
+          setPageData({title: About.heading, data: About.info});
+          break;
       }
     }
   }, [props.page]);
@@ -103,14 +94,3 @@ const appInfo = (props: Props) => {
     </Grid>
   );
 };
-
-const mapDispatchToProps = (dispatch: AppDispatch): DispatchProps => {
-  return {
-    setActivePage: (page: PageTypes) => dispatch(setActivePage(page)),
-  };
-};
-
-export const Info = connect<{}, DispatchProps, {}, ApplicationState>(
-    null,
-    mapDispatchToProps,
-)(appInfo);

@@ -29,6 +29,7 @@ const logTypes = {
 };
 
 /**
+ * Runs supplied Minima SQL on given table
  * @function doSQL
  * @param {string} sql
  * @param {string} tableName
@@ -44,6 +45,7 @@ function doSQL(sql, tableName) {
 }
 
 /**
+ * Creates log entries
  * @function doLog
  * @param {string} typeId
  * @param {string} type
@@ -64,7 +66,10 @@ function doLog(typeId, type, data) {
   doSQL(insertSQL, tableName);
 }
 
-/** @function createTxPow */
+/**
+ * Creates TxPow table
+ * @function createTxPow
+ */
 function createTxPow() {
   const tableName = tables.txpow.name;
   const createSQL = 'CREATE Table IF NOT EXISTS ' +
@@ -75,7 +80,10 @@ function createTxPow() {
   doSQL(createSQL, tableName);
 }
 
-/** @function createAction */
+/**
+ * Creates action table
+ * @function createAction
+ */
 function createAction() {
   const tableName = tables.action.name;
   const createSQL = 'CREATE Table IF NOT EXISTS ' +
@@ -89,7 +97,10 @@ function createAction() {
   doSQL(createSQL, tableName);
 }
 
-/** @function createTrigger */
+/**
+ * Creates trigger table
+ * @function createTrigger
+ */
 function createTrigger() {
   const tableName = tables.trigger.name;
   const createSQL = 'CREATE Table IF NOT EXISTS ' +
@@ -106,7 +117,10 @@ function createTrigger() {
   doSQL(createSQL, tableName);
 }
 
-/** @function createLog */
+/**
+ * Creates log table
+ * @function createLog
+ */
 function createLog() {
   const tableName = tables.log.name;
   const createSQL = 'CREATE Table IF NOT EXISTS ' +
@@ -122,7 +136,10 @@ function createLog() {
   doSQL(createSQL, tableName);
 }
 
-/** @function createURL */
+/**
+ * Creates URL table
+ * @function createURL
+ */
 function createURL() {
   const tableName = tables.url.name;
   const createSQL = 'CREATE Table IF NOT EXISTS ' +
@@ -147,6 +164,7 @@ function initDbase() {
 }
 
 /**
+ * Adds relevant txpows to TxPow table
  * @function addTxPoW
  * @param {object} txpow
 */
@@ -168,6 +186,7 @@ function addTxPoW(txpow) {
   }
 }
 
+/** Initialise the app */
 Minima.init( function(msg) {
   if (msg.event == 'connected') {
     initDbase();

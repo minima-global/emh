@@ -9,28 +9,12 @@ import Typography from '@material-ui/core/Typography';
 import {themeStyles} from '../../styles';
 
 import {
-  ApplicationState,
-  AppDispatch,
-  PageTypes,
-} from '../../store/types';
-
-import {setActivePage} from '../../store/app/appData/actions';
-import {initTx} from '../../store/app/server/actions';
-
-import {
   Log as LogConfig,
 } from '../../config';
 
 import {ListLogs} from '../listLogs';
 
-interface DispatchProps {
-  setActivePage: (page: PageTypes) => void
-  initTx: () => void
-}
-
-type Props = DispatchProps
-
-const display = (props: Props) => {
+export const Logs = () => {
   const theme = useTheme();
   const classes = themeStyles();
 
@@ -58,20 +42,6 @@ const display = (props: Props) => {
           </svg>
         </Grid>
 
-        <Grid item container xs={12}
-          style={{
-            paddingTop: theme.spacing(2),
-          }}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="2000"
-            height="4"
-          >
-            <line x2="2000" stroke="#317AFF" strokeWidth={4} />
-          </svg>
-        </Grid>
-
         { <ListLogs /> }
 
       </Grid>
@@ -79,15 +49,3 @@ const display = (props: Props) => {
     </Grid>
   );
 };
-
-const mapDispatchToProps = (dispatch: AppDispatch): DispatchProps => {
-  return {
-    setActivePage: (page: PageTypes) => dispatch(setActivePage(page)),
-    initTx: () => dispatch(initTx()),
-  };
-};
-
-export const Logs = connect<{}, DispatchProps, {}, ApplicationState>(
-    null,
-    mapDispatchToProps,
-)(display);

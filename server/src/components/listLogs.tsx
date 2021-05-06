@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect} from 'react';
 import {connect} from 'react-redux';
 
 import Grid from '@material-ui/core/Grid';
@@ -13,7 +13,7 @@ import {
   Logs as LogsType,
 } from '../store/types';
 
-import {getLogs} from '../store/app/server/actions';
+import {getLogs} from '../store/app/blockchain/actions';
 
 import {
   Log as LogConfig,
@@ -30,16 +30,11 @@ interface DispatchProps {
 type Props = StateProps & DispatchProps
 
 const list = (props: Props) => {
-  const isFirstRun = useRef(true);
-
   const classes = themeStyles();
 
   useEffect(() => {
-    if ( isFirstRun.current ) {
-      isFirstRun.current = false;
-      props.getLogs();
-    }
-  }, [props.logsData]);
+    props.getLogs();
+  }, []);
 
   return (
 
@@ -76,10 +71,11 @@ const list = (props: Props) => {
 
         <Grid item container className={classes.formSummary} xs={12}>
           { props.logsData.data.map( ( log: LogsType, index: number ) => {
-            const dateCreated = log.date;
-            const loggingType = log.loggingtype;
-            const thisData = log.data;
-            const loggingTypeId = log.loggingtypeid;
+            const thisDate = new Date(+log.DATE);
+            const dateCreated = thisDate.toString().replace(/ GMT.*$/g, '');
+            const loggingType = log.LOGGINGTYPE;
+            const thisData = log.DATA;
+            const loggingTypeId = log.LOGGINGTYPEID;
 
             const rowclass = index % 2 ? classes.evenRow : classes.oddRow;
 

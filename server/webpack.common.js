@@ -1,8 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const HtmlWebpackInlineSourcePlugin =
-require('html-webpack-inline-source-plugin');
+const InlineChunkHtmlPlugin = require('react-dev-utils/InlineChunkHtmlPlugin');
 
 const config = {
   entry: {
@@ -24,7 +23,7 @@ const config = {
       template: './src/index.html',
       inject: 'body',
     }),
-    new HtmlWebpackInlineSourcePlugin(HtmlWebpackPlugin),
+    new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [/\.(js|css)$/]),
   ],
   module: {
     rules: [

@@ -14,12 +14,10 @@ import {themeStyles} from '../../styles';
 import {
   ApplicationState,
   AppDispatch,
-  PageTypes,
   CmdProps,
 } from '../../store/types';
 
-import {setActivePage} from '../../store/app/appData/actions';
-import {command} from '../../store/app/server/actions';
+import {command} from '../../store/app/blockchain/actions';
 
 import {
   GeneralError,
@@ -36,7 +34,6 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  setActivePage: (page: PageTypes) => void
   command: (cmd: string) => void
 }
 
@@ -173,7 +170,6 @@ const mapStateToProps = (state: ApplicationState): StateProps => {
 
 const mapDispatchToProps = (dispatch: AppDispatch): DispatchProps => {
   return {
-    setActivePage: (page: PageTypes) => dispatch(setActivePage(page)),
     command: (cmd: string) => dispatch(command(cmd)),
   };
 };
