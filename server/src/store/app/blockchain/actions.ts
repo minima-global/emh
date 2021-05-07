@@ -4,7 +4,6 @@ import {
   AppDispatch,
   LogsActionTypes,
   LogsProps,
-  Logs,
   CmdActionTypes,
   TxActionTypes,
   TxData,
@@ -42,38 +41,42 @@ export const initTx = () => {
 
 export const command = (cmd: string) => {
   return async (dispatch: AppDispatch) => {
-    const data = {
-      cmd: cmd,
-    };
-
-    fetch(Remote.cmdURL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    })
-        .then((response) => {
-          // console.log(response)
-
-          if (!response.ok) {
-            dispatch(write({data: []})(CmdActionTypes.CMD_FAILURE));
-          }
-          return response.json();
-        })
-        .then((data) => {
-          dispatch(write({data: data})(CmdActionTypes.CMD_SUCCESS));
-        })
-        .catch((error) => {
-          dispatch(write({data: []})(CmdActionTypes.CMD_FAILURE));
-        });
+    Minima.net.POST(Remote.cmdURL, cmd, function(msg: any) {
+      const cmdObject = JSON.parse(msg.result);
+      if ( cmdObject.status ) {
+        dispatch(write({data: cmdObject.response})(CmdActionTypes.CMD_SUCCESS));
+      } else {
+        dispatch(write({data: []})(CmdActionTypes.CMD_FAILURE));
+      }
+    });
+    /*
+    try {
+      console.log('trying');
+      const response = await axios({
+        method: 'POST',
+        url: Remote.cmdURL,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        data: cmd,
+      });
+      console.log('trying', response);
+      dispatch(write({data: response.data})(CmdActionTypes.CMD_SUCCESS));
+    } catch (error) {
+      console.log('oops', error);
+      dispatch(write({data: []})(CmdActionTypes.CMD_FAILURE));
+      return {};
+    }
+    */
   };
 };
 
+/*
 const sortLogs = (logsData: LogsProps): Logs[] => {
   return logsData.data.sort((a: Logs, b: Logs) =>
-    b.date.localeCompare(a.date));
+    b.DATE.localeCompare(a.DATE));
 };
+*/
 
 export const getLogs = () => {
   return async (dispatch: AppDispatch) => {
