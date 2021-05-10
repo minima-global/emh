@@ -3,7 +3,7 @@ class App {
   static readonly title = 'Minima'
   static readonly subTitle = 'The evolution will not be centralised'
   static readonly appName = 'Enterprise Minima'
-  static readonly catchLine = `Powered by ${App.title}`
+  static readonly catchLine = `${App.title} Powered`
   static readonly tagline = ''
   static readonly website = 'http://www.minima.global'
   static readonly copyright = '© Copyright 2021 Minima GmbH'

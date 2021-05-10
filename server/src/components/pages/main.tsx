@@ -56,22 +56,19 @@ export const Main = () => {
                 container
                 alignItems="center"
                 justify="flex-start"
-                xs={4}
+                xs={6}
               >
-
                 <Typography variant="caption">
-                  {App.catchLine}<br />
-                  {App.copyright}
+                  {App.catchLine}
                 </Typography>
-
               </Grid>
 
               <Grid
                 item
                 container
                 alignItems="center"
-                justify="center"
-                xs={4}
+                justify="flex-end"
+                xs={6}
               >
 
                 <Typography variant="h1">
@@ -80,23 +77,9 @@ export const Main = () => {
 
               </Grid>
 
-              <Grid
-                item
-                container
-                alignItems="center"
-                justify="flex-end"
-                xs={4}
-              >
-
-                <Typography variant="caption">
-            &nbsp;
-                </Typography>
-
-              </Grid>
-
             </Grid>
 
-            <Grid item container xs={12}>
+            <Grid className={classes.content} item container xs={12}>
               <Content/>
             </Grid>
 
@@ -147,50 +130,6 @@ export const Main = () => {
                   container
                   alignItems="center"
                   justify="center"
-                  xs={2}>
-                  <Typography variant="h1">
-                      &nbsp;
-                  </Typography>
-                </Grid>
-
-                <Grid
-                  item
-                  container
-                  alignItems="center"
-                  justify="center"
-                  xs={2}>
-                  <Typography variant="h1">
-                      &nbsp;
-                  </Typography>
-                </Grid>
-
-                <Grid
-                  item
-                  container
-                  alignItems="center"
-                  justify="center"
-                  xs={2}>
-                  <Typography variant="h1">
-                      &nbsp;
-                  </Typography>
-                </Grid>
-
-                <Grid
-                  item
-                  container
-                  alignItems="center"
-                  justify="center"
-                  xs={2}>
-                  <Typography variant="h1">
-                      &nbsp;
-                  </Typography>
-                </Grid>
-
-                <Grid
-                  item
-                  container
-                  alignItems="center"
-                  justify="center"
                   xs={2}
                 >
 
@@ -212,6 +151,50 @@ export const Main = () => {
 
                 </Grid>
 
+                <Grid
+                  item
+                  container
+                  alignItems="center"
+                  justify="center"
+                  xs={2}>
+                  <Typography variant="h1">
+                      &nbsp;
+                  </Typography>
+                </Grid>
+
+                <Grid
+                  item
+                  container
+                  alignItems="center"
+                  justify="center"
+                  xs={2}>
+                  <Typography variant="h1">
+                      &nbsp;
+                  </Typography>
+                </Grid>
+
+                <Grid
+                  item
+                  container
+                  alignItems="center"
+                  justify="center"
+                  xs={2}>
+                  <Typography variant="h1">
+                      &nbsp;
+                  </Typography>
+                </Grid>
+
+                <Grid
+                  item
+                  container
+                  alignItems="center"
+                  justify="center"
+                  xs={2}>
+                  <Typography variant="h1">
+                      &nbsp;
+                  </Typography>
+                </Grid>
+
               </Grid>
 
               <Grid
@@ -222,7 +205,20 @@ export const Main = () => {
                 xs={2}
               >
 
-                <img className={classes.appIcon} src={minimaIcon} />
+                <img className={classes.footerIcon} src={minimaIcon} />
+
+              </Grid>
+
+              <Grid
+                item
+                container
+                alignItems="center"
+                justify="center"
+                xs={12}
+              >
+                <Typography variant="caption">
+                  {App.copyright}
+                </Typography>
 
               </Grid>
 

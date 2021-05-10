@@ -20,7 +20,7 @@ export const Logs = () => {
 
   return (
 
-    <Grid className={classes.loggedInContent} item container xs={12}>
+    <Grid item container alignItems='flex-start' xs={12}>
 
       <Grid item container xs={12}>
 
