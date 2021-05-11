@@ -10,20 +10,20 @@ import {
   ApplicationState,
   AppDispatch,
   ActionTypes,
-  LogsProps,
-  Logs as LogsType,
-  LogsActionTypes,
+  CallsProps,
+  Calls as CallsType,
+  CallActionTypes,
 } from '../store/types';
 
 import {getDbaseEntries} from '../store/app/blockchain/actions';
 
 import {
   Dbase,
-  Log as LogVars,
+  Calls as CallVars,
 } from '../config';
 
 interface StateProps {
-  logsData: LogsProps
+  callsData: CallsProps
 }
 
 interface DispatchProps {
@@ -41,9 +41,9 @@ const list = (props: Props) => {
 
   useEffect(() => {
     props.getDbaseEntries(
-        Dbase.tables.log.name,
-        LogsActionTypes.LOGS_SUCCESS,
-        LogsActionTypes.LOGS_FAILURE,
+        Dbase.tables.call.name,
+        CallActionTypes.CALL_SUCCESS,
+        CallActionTypes.CALL_FAILURE,
     );
   }, []);
 
@@ -54,39 +54,23 @@ const list = (props: Props) => {
 
         <Grid item container xs={12}>
 
-          <Grid item container justify="flex-start" xs={3}>
+          <Grid item container justify="flex-start" xs={6}>
             <Typography variant="h5">
-              {LogVars.dateCreated}
+              {CallVars.address}
             </Typography>
           </Grid>
-          <Grid item container justify="flex-start" xs={3}>
+          <Grid item container justify="flex-start" xs={6}>
             <Typography variant="h5">
-              {LogVars.loggingType}
-            </Typography>
-          </Grid>
-          <Grid item container justify="flex-start" xs={3}>
-            <Typography variant="h5">
-              {LogVars.data}
-            </Typography>
-          </Grid>
-          <Grid item container justify="flex-start" xs={3}>
-            <Typography
-              variant="h5"
-              noWrap={true}
-            >
-              {LogVars.loggingTypeId}
+              {CallVars.url}
             </Typography>
           </Grid>
 
         </Grid>
 
         <Grid item container className={classes.formSummary} xs={12}>
-          { props.logsData.data.map( ( log: LogsType, index: number ) => {
-            const thisDate = new Date(+log.DATE);
-            const dateCreated = thisDate.toString().replace(/ GMT.*$/g, '');
-            const loggingType = log.LOGGINGTYPE;
-            const thisData = log.DATA;
-            const loggingTypeId = log.LOGGINGTYPEID;
+          { props.callsData.data.map( ( call: CallsType, index: number ) => {
+            const address = call.ADDRESS;
+            const url = call.URL;
 
             const rowclass = index % 2 ? classes.evenRow : classes.oddRow;
 
@@ -95,30 +79,14 @@ const list = (props: Props) => {
 
                 <Grid className={rowclass} item container xs={12}>
 
-                  <Grid item container justify="flex-start" xs={3}>
+                  <Grid item container justify="flex-start" xs={6}>
                     <Typography variant="body1">
-                      {dateCreated}
+                      {address}
                     </Typography>
                   </Grid>
-                  <Grid item container justify="flex-start" xs={3}>
+                  <Grid item container justify="flex-start" xs={6}>
                     <Typography variant="body1">
-                      {loggingType}
-                    </Typography>
-                  </Grid>
-                  <Grid item container justify="flex-start" xs={3}>
-                    <Typography
-                      variant="body1"
-                      noWrap={true}
-                    >
-                      {thisData}
-                    </Typography>
-                  </Grid>
-                  <Grid item container justify="flex-start" xs={3}>
-                    <Typography
-                      variant="body1"
-                      noWrap={true}
-                    >
-                      {loggingTypeId}
+                      {url}
                     </Typography>
                   </Grid>
 
@@ -135,7 +103,7 @@ const list = (props: Props) => {
 
 const mapStateToProps = (state: ApplicationState): StateProps => {
   return {
-    logsData: state.logsData as LogsProps,
+    callsData: state.callsData as CallsProps,
   };
 };
 
@@ -149,9 +117,9 @@ const mapDispatchToProps = (dispatch: AppDispatch): DispatchProps => {
   };
 };
 
-const ListLogs = connect<StateProps, DispatchProps, {}, ApplicationState>(
+const ListCalls = connect<StateProps, DispatchProps, {}, ApplicationState>(
     mapStateToProps,
     mapDispatchToProps,
 )(list);
 
-export {ListLogs};
+export {ListCalls};

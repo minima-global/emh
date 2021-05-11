@@ -4,12 +4,12 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
 import {
-  Log as LogVars,
+  Calls as CallVars,
 } from '../../config';
 
-import {ListLogs} from '../listLogs';
+import {ListCalls} from '../listCalls';
 
-export const Logs = () => {
+export const Calls = () => {
   return (
 
     <Grid item container alignItems='flex-start' xs={12}>
@@ -19,7 +19,7 @@ export const Logs = () => {
         <Grid item container justify="flex-start" xs={12}>
 
           <Typography variant="h2">
-            {LogVars.heading}
+            {CallVars.heading}
           </Typography>
 
         </Grid>
@@ -34,7 +34,7 @@ export const Logs = () => {
           </svg>
         </Grid>
 
-        { <ListLogs /> }
+        { <ListCalls /> }
 
       </Grid>
 

@@ -7,6 +7,7 @@ import {
   Logs,
   Cmd,
   Info,
+  Calls,
 } from '../components/pages';
 
 import {Local} from '../config';
@@ -30,8 +31,8 @@ export const Content = () => {
       />
 
       <Route
-        exact path={Local.logs}
-        render= {() => <Logs />}
+        exact path={Local.calls}
+        render= {() => <Calls />}
       />
       <Route
         exact path={Local.cmd}

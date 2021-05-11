@@ -6,6 +6,7 @@ import {ThunkDispatch} from 'redux-thunk';
 */
 export interface ApplicationState {
   logsData: LogsProps
+  callsData: CallsProps,
   cmdData: CmdProps,
   tx: TxProps
 }
@@ -27,13 +28,6 @@ export type AppDispatch = ThunkDispatch<ApplicationState, any, ActionProps>
 export interface InfoProps {
   title: string
   data: string[]
-}
-
-// Stuff pertinent to make this app' work
-export const enum PageTypes {
-  ABOUT = 'about',
-  HELP = 'help',
-  CONTACT = 'contact'
 }
 
 /**
@@ -59,6 +53,18 @@ export interface LogsProps extends PayloadProps {
 }
 
 /**
+ * Calls
+ */
+export interface Calls {
+  ADDRESS: string
+  URL: string
+}
+
+export interface CallsProps extends PayloadProps {
+  data: Array<Calls>
+}
+
+/**
  * Tx stuff
  */
 export interface TxData {
@@ -74,6 +80,16 @@ export interface TxProps extends PayloadProps {
 export type SelectOptionType = {
   value: string
   label: string
+}
+
+/**
+ *  Enums that make this app' work
+ */
+
+export const enum PageTypes {
+  ABOUT = 'about',
+  HELP = 'help',
+  CONTACT = 'contact'
 }
 
 /**
@@ -93,6 +109,7 @@ export const enum TxActionTypes {
 }
 
 export const enum CmdActionTypes {
+  CMD_INIT = '@@LogsActionTypes/CMD_INIT',
   CMD_SUCCESS = '@@CmdActionTypes/CMD_SUCCESS',
   CMD_FAILURE = '@@CmdActionTypes/CMD_FAILURE'
 }
@@ -102,3 +119,16 @@ export const enum LogsActionTypes {
   LOGS_SUCCESS = '@@LogsActionTypes/LOGS_SUCCESS',
   LOGS_FAILURE = '@@LogsActionTypes/LOGS_FAILURE'
 }
+
+export const enum CallActionTypes {
+  CALL_INIT = '@@ActionActionTypes/CALL_INIT',
+  CALL_SUCCESS = '@@ActionActionTypes/CALL_SUCCESS',
+  CALL_FAILURE = '@@ActionActionTypes/CALL_FAILURE'
+}
+
+export type ActionTypes =
+  AppDataActionTypes |
+  TxActionTypes |
+  CmdActionTypes |
+  LogsActionTypes |
+  CallActionTypes;

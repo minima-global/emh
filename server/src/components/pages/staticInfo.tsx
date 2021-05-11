@@ -10,7 +10,7 @@ import {
 
 import {themeStyles} from '../../styles';
 
-import {About, Help, Contact} from '../../config/strings';
+import {About, Help, Contact} from '../../config/vars';
 
 interface StaticInfoProps {
   page: PageTypes

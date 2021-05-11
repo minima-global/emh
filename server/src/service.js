@@ -1,8 +1,8 @@
 const app = 'EMH';
 
 const tables = {
-  action: {
-    name: 'action',
+  call: {
+    name: 'call',
   },
   txpow: {
     name: 'txpow',
@@ -22,7 +22,7 @@ const tables = {
 };
 
 const logTypes = {
-  ACTION: 'Action',
+  CALL: 'Call',
   TXPOW: 'TxPoW',
   TRIGGER: 'Trigger',
   URL: 'URL',
@@ -81,15 +81,14 @@ function createTxPow() {
 }
 
 /**
- * Creates action table
- * @function createAction
+ * Creates call table
+ * @function createCall
  */
-function createAction() {
-  const tableName = tables.action.name;
+function createCall() {
+  const tableName = tables.call.name;
   const createSQL = 'CREATE Table IF NOT EXISTS ' +
       tableName + ' (' +
       'address varchar(255) NOT NULL, ' +
-      'params varchar(255) NOT NULL, ' +
       'url varchar(255) NOT NULL, ' +
       'PRIMARY KEY(address)' +
     ');';
@@ -157,7 +156,7 @@ function createURL() {
 /** @function initDbase */
 function initDbase() {
   createTxPow();
-  createAction();
+  createCall();
   createTrigger();
   createURL();
   createLog();

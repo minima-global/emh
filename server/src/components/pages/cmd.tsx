@@ -84,11 +84,12 @@ const display = (props: Props) => {
               className={classes.formLabel}
               justify="flex-start"
               alignItems="center"
-              xs={2}
+              xs={4}
+              lg={2}
             >
               <label htmlFor="amount">{CmdConfig.cmd}</label>
             </Grid>
-            <Grid item container xs={10}>
+            <Grid item container xs={8} lg={10}>
               <TextField
                 fullWidth
                 size="small"
@@ -109,7 +110,7 @@ const display = (props: Props) => {
 
           <Grid item container xs={12}>
 
-            <Grid item container xs={2}>
+            <Grid item container xs={4} lg={2}>
               <Typography variant="h2">
                 &nbsp;
               </Typography>

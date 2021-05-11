@@ -2,10 +2,10 @@ import {Minima} from 'minima';
 
 import {
   AppDispatch,
-  LogsActionTypes,
-  LogsProps,
-  CmdActionTypes,
+  ActionTypes,
   TxActionTypes,
+  CmdActionTypes,
+  LogsActionTypes,
   TxData,
 } from '../../types';
 
@@ -17,17 +17,17 @@ import {
 
 import {write} from '../../actions';
 
-const txInit: TxData = {
-  code: '',
-  summary: '',
-  time: '',
-};
-
 export const init = () => {
   return async (dispatch: AppDispatch) => {
+    const initAction: ActionTypes = TxActionTypes.TX_INIT;
+    const txInit: TxData = {
+      code: '',
+      summary: '',
+      time: '',
+    };
     Minima.init( function(msg: any) {
       if (msg.event == 'connected') {
-        dispatch(write({data: txInit})(TxActionTypes.TX_INIT));
+        dispatch(write({data: txInit})(initAction));
       }
     });
   };
@@ -35,18 +35,26 @@ export const init = () => {
 
 export const initTx = () => {
   return async (dispatch: AppDispatch) => {
-    dispatch(write({data: txInit})(TxActionTypes.TX_INIT));
+    const initAction: ActionTypes = TxActionTypes.TX_INIT;
+    const txInit: TxData = {
+      code: '',
+      summary: '',
+      time: '',
+    };
+    dispatch(write({data: txInit})(initAction));
   };
 };
 
 export const command = (cmd: string) => {
   return async (dispatch: AppDispatch) => {
+    const successAction: ActionTypes = CmdActionTypes.CMD_SUCCESS;
+    const failureAction: ActionTypes = CmdActionTypes.CMD_FAILURE;
     Minima.net.POST(Remote.cmdURL, cmd, function(msg: any) {
       const cmdObject = JSON.parse(msg.result);
       if ( cmdObject.status ) {
-        dispatch(write({data: cmdObject.response})(CmdActionTypes.CMD_SUCCESS));
+        dispatch(write({data: cmdObject.response})(successAction));
       } else {
-        dispatch(write({data: []})(CmdActionTypes.CMD_FAILURE));
+        dispatch(write({data: []})(failureAction));
       }
     });
     /*
@@ -80,6 +88,10 @@ const sortLogs = (logsData: LogsProps): Logs[] => {
 
 export const getLogs = () => {
   return async (dispatch: AppDispatch) => {
+    const successAction: ActionTypes = LogsActionTypes.LOGS_SUCCESS;
+    // const failureAction: ActionTypes = LogsActionTypes.LOGS_FAILURE;
+    const txSuccessAction: ActionTypes = TxActionTypes.TX_SUCCESS;
+    const txFailureAction: ActionTypes = TxActionTypes.TX_FAILURE;
     const d = new Date(Date.now());
     const dateText = d.toString();
     let txData = {
@@ -101,15 +113,55 @@ export const getLogs = () => {
           summary: Post.getFailure,
           time: dateText,
         };
-        dispatch(write({data: txData})(TxActionTypes.TX_FAILURE));
+        dispatch(write({data: txData})(txFailureAction));
       } else {
-        const theseLogs: LogsProps = result.response.rows.slice();
-        dispatch(write({data: theseLogs})(LogsActionTypes.LOGS_SUCCESS));
-        dispatch(write({data: txData})(TxActionTypes.TX_SUCCESS));
+        const theseLogs = result.response.rows.slice();
+        dispatch(write({data: theseLogs})(successAction));
+        dispatch(write({data: txData})(txSuccessAction));
       }
     });
   };
 };
+
+export const getDbaseEntries =
+  (tableName: string,
+      successAction: ActionTypes,
+      failAction: ActionTypes,
+  ) => {
+    return async (dispatch: AppDispatch) => {
+      const txSuccessAction: ActionTypes = TxActionTypes.TX_SUCCESS;
+      const txFailureAction: ActionTypes = TxActionTypes.TX_FAILURE;
+      const d = new Date(Date.now());
+      const dateText = d.toString();
+      let txData = {
+        code: '200',
+        summary: Post.getSuccess,
+        time: dateText,
+      };
+
+      const selectSQL = 'Select * from ' +
+      tableName +
+      ' ORDER BY DATE DESC';
+
+      Minima.sql(selectSQL, function(result: any) {
+      // console.log(result);
+        if ( !result.status ) {
+          txData = {
+            code: '503',
+            summary: Post.getFailure,
+            time: dateText,
+          };
+          dispatch(write({data: []})(txFailureAction));
+          dispatch(write({data: txData})(txFailureAction));
+        } else {
+          const data = result.response.rows.slice();
+          dispatch(write({data: data})(successAction));
+          dispatch(write({data: txData})(txSuccessAction));
+        }
+      });
+    };
+  };
+
 
 const get = (url: string, actionType: string) => {
   return async (dispatch: AppDispatch) => {

@@ -12,8 +12,8 @@ class Smtp {
 /** @class Dbase */
 class Dbase {
   static readonly tables = {
-    action: {
-      name: 'action',
+    call: {
+      name: 'call',
     },
     txpow: {
       name: 'txpow',

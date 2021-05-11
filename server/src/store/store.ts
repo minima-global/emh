@@ -10,12 +10,14 @@ import ReduxThunk from 'redux-thunk';
 import {ApplicationState, ActionProps} from './types';
 
 import {reducer as logsReducer} from './app/reducers/logs/reducer';
+import {reducer as callsReducer} from './app/reducers/calls/reducer';
 import {reducer as cmdReducer} from './app/reducers/cmd/reducer';
 import {reducer as txReducer} from './app/reducers/tx/reducer';
 
 export const rootReducer: Reducer<ApplicationState, ActionProps> =
 combineReducers<ApplicationState, ActionProps>({
   logsData: logsReducer,
+  callsData: callsReducer,
   cmdData: cmdReducer,
   tx: txReducer,
 });

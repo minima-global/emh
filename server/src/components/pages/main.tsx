@@ -11,7 +11,7 @@ import minimaIcon from '../../images/minimaIcon.svg';
 
 import {Content} from '../content';
 
-import {App} from '../../config/strings';
+import {App} from '../../config/vars';
 
 import {themeStyles} from '../../styles';
 

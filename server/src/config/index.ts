@@ -1,3 +1,3 @@
 export * from './paths';
-export * from './strings';
+export * from './vars';
 export * from './app';

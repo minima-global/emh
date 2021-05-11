@@ -24,7 +24,8 @@ class Paths {
   static readonly welcome = 'Welcome'
 
   static readonly logs = 'Logs'
-  static readonly cmd = 'console'
+  static readonly calls = 'Calls'
+  static readonly cmd = 'Console'
 }
 
 /** @class GeneralError */
@@ -91,10 +92,22 @@ class Cmd {
   static readonly heading = 'Console'
 
   static readonly cmd = 'Command'
-  static readonly cmdButton = 'Run Command'
+  static readonly cmdButton = 'Run'
 }
 
-/** @class Cmd */
+/** @class Calls */
+class Calls {
+  static readonly heading = 'Calls'
+
+  static readonly address = 'Minima Address'
+  static readonly url = 'URL'
+
+  static readonly actionsButton = 'Submit'
+  static readonly urlError = 'Please input a valid URL'
+
+}
+
+/** @class Log */
 class Log {
   static readonly heading = 'Logs'
 
@@ -125,5 +138,6 @@ export {App,
   Contact,
   Cmd,
   Log,
+  Calls,
   Post,
 };
