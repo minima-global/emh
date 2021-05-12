@@ -158,7 +158,8 @@ class Post {
   static readonly getFailure = 'Get Failure'
 }
 
-export {App,
+export {
+  App,
   Paths,
   GeneralError,
   Home,

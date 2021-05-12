@@ -60,6 +60,14 @@ const list = (props: Props) => {
             </Typography>
           </Grid>
           <Grid item container justify="flex-start" xs={3}>
+            <Typography
+              variant="h5"
+              noWrap={true}
+            >
+              {LogVars.loggingTypeId}
+            </Typography>
+          </Grid>
+          <Grid item container justify="flex-start" xs={3}>
             <Typography variant="h5">
               {LogVars.loggingType}
             </Typography>
@@ -67,14 +75,6 @@ const list = (props: Props) => {
           <Grid item container justify="flex-start" xs={3}>
             <Typography variant="h5">
               {LogVars.data}
-            </Typography>
-          </Grid>
-          <Grid item container justify="flex-start" xs={3}>
-            <Typography
-              variant="h5"
-              noWrap={true}
-            >
-              {LogVars.loggingTypeId}
             </Typography>
           </Grid>
 
@@ -101,6 +101,14 @@ const list = (props: Props) => {
                     </Typography>
                   </Grid>
                   <Grid item container justify="flex-start" xs={3}>
+                    <Typography
+                      variant="body1"
+                      noWrap={true}
+                    >
+                      {loggingTypeId}
+                    </Typography>
+                  </Grid>
+                  <Grid item container justify="flex-start" xs={3}>
                     <Typography variant="body1">
                       {loggingType}
                     </Typography>
@@ -111,14 +119,6 @@ const list = (props: Props) => {
                       noWrap={true}
                     >
                       {thisData}
-                    </Typography>
-                  </Grid>
-                  <Grid item container justify="flex-start" xs={3}>
-                    <Typography
-                      variant="body1"
-                      noWrap={true}
-                    >
-                      {loggingTypeId}
                     </Typography>
                   </Grid>
 

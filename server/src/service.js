@@ -25,6 +25,7 @@ const tables = {
 };
 
 const logTypes = {
+  COMMAND: 'Command',
   CALL: 'Call',
   TOKEN: 'Token',
   TXPOW: 'TxPoW',

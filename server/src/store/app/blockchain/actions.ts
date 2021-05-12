@@ -9,9 +9,10 @@ import {
 } from '../../types';
 
 import {
+  App,
   Remote,
+  Dbase,
   SQL,
-  Post,
 } from '../../../config';
 
 import {write} from '../../actions';
@@ -44,6 +45,32 @@ export const initTx = () => {
   };
 };
 
+export const doLog = (typeId: string, type: string, data: string) => {
+  return async (dispatch: AppDispatch) => {
+    const table = Dbase.tables.log.name;
+    const date = Date.now();
+    const insertSQL = 'INSERT INTO ' +
+        table +
+        ' (loggingTypeId, loggingType, date, data) ' +
+        'VALUES (' +
+        '\'' + typeId + '\', ' +
+        '\'' + type + '\', ' +
+        '\'' + date + '\', ' +
+        '\'' + data + '\'' +
+      ')';
+    Minima.sql(insertSQL, function(result: any) {
+      if ( !result.status ) {
+        Minima.log(App.appName +
+          ' Error logging ' +
+          typeId + ' ' +
+          type + ' ' +
+          data,
+        );
+      }
+    });
+  };
+};
+
 export const command = (cmd: string) => {
   return async (dispatch: AppDispatch) => {
     const successAction: ActionTypes = CmdActionTypes.CMD_SUCCESS;
@@ -51,6 +78,13 @@ export const command = (cmd: string) => {
     Minima.net.POST(Remote.cmdURL, cmd, function(msg: any) {
       const cmdObject = JSON.parse(msg.result);
       if ( cmdObject.status ) {
+        let command = cmd.substr(0, cmd.indexOf(' '));
+        let params = cmd.substr(cmd.indexOf(' ') + 1);
+        if ( command === '' ) {
+          command = params;
+          params = '';
+        }
+        dispatch(doLog(command, Dbase.logTypes.COMMAND, params));
         dispatch(write({data: cmdObject.response})(successAction));
       } else {
         dispatch(write({data: []})(failureAction));
@@ -80,7 +114,6 @@ export const addCall = (table: string, address: string, url: string) => {
     ')';
 
     Minima.sql(insertSQL, function(result: any) {
-      // console.log(result);
       if ( !result.status ) {
         txData = {
           code: '503',
@@ -89,6 +122,7 @@ export const addCall = (table: string, address: string, url: string) => {
         };
         dispatch(write({data: txData})(txFailAction));
       } else {
+        dispatch(doLog(address, Dbase.logTypes.CALL, 'insert'));
         dispatch(write({data: txData})(txSuccessAction));
       }
     });
@@ -97,7 +131,7 @@ export const addCall = (table: string, address: string, url: string) => {
 
 export const addToken = (table: string, id: string, url: string) => {
   return async (dispatch: AppDispatch) => {
-    console.log(table, id, url);
+    // console.log(table, id, url);
     const txSuccessAction: ActionTypes = TxActionTypes.TX_SUCCESS;
     const txFailAction: ActionTypes = TxActionTypes.TX_FAILURE;
     const d = new Date(Date.now());
@@ -116,9 +150,9 @@ export const addToken = (table: string, id: string, url: string) => {
       '\'' + url + '\'' +
     ')';
 
-    console.log(insertSQL);
+    // console.log(insertSQL);
     Minima.sql(insertSQL, function(result: any) {
-      console.log(result);
+      // console.log(result);
       if ( !result.status ) {
         txData = {
           code: '503',
@@ -127,6 +161,7 @@ export const addToken = (table: string, id: string, url: string) => {
         };
         dispatch(write({data: txData})(txFailAction));
       } else {
+        dispatch(doLog(id, Dbase.logTypes.TOKEN, 'insert'));
         dispatch(write({data: txData})(txSuccessAction));
       }
     });
@@ -166,7 +201,6 @@ export const getDbaseEntries =
       */
 
       Minima.sql(selectSQL, function(result: any) {
-        console.log('Got result', result);
         if ( !result.status ) {
           txData = {
             code: '503',
@@ -184,6 +218,7 @@ export const getDbaseEntries =
     };
   };
 
+/**
 
 const get = (url: string, actionType: string) => {
   return async (dispatch: AppDispatch) => {
@@ -267,3 +302,4 @@ const post = (url: string, data: object) => {
         });
   };
 };
+*/
