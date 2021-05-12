@@ -25,6 +25,9 @@ class Paths {
 
   static readonly logs = 'Logs'
   static readonly calls = 'Calls'
+  static readonly tokens = 'Tokens'
+  static readonly triggers = 'Triggers'
+  static readonly urls = 'URLs'
   static readonly cmd = 'Console'
 }
 
@@ -102,9 +105,23 @@ class Calls {
   static readonly address = 'Minima Address'
   static readonly url = 'URL'
 
-  static readonly actionsButton = 'Submit'
-  static readonly urlError = 'Please input a valid URL'
+  static readonly callButton = 'Submit'
 
+  static readonly addressError = 'Please input a valid Minima address'
+  static readonly urlError = 'Please input a valid URL'
+}
+
+/** @class Tokens */
+class Tokens {
+  static readonly heading = 'Tokens'
+
+  static readonly id = 'Token ID'
+  static readonly url = 'URL'
+
+  static readonly tokenButton = 'Submit'
+
+  static readonly idError = 'Please input a valid Token ID'
+  static readonly urlError = 'Please input a valid URL'
 }
 
 /** @class Log */
@@ -119,10 +136,23 @@ class Log {
   static readonly loggingTypeId = 'Logging Type ID'
 }
 
+/** @class SQL */
+class SQL {
+
+  static readonly insertSuccess = 'Insert Success'
+  static readonly insertFailure = 'Insert Failure'
+
+  static readonly selectSuccess = 'Select Success'
+  static readonly selectFailure = 'Select Failure'
+}
+
 /** @class Post */
 class Post {
   static readonly postSuccess = 'Post Success'
   static readonly postFailure = 'Post Failure'
+
+  static readonly insertSuccess = 'Post Success'
+  static readonly insertFailure = 'Post Failure'
 
   static readonly getSuccess = 'Get Success'
   static readonly getFailure = 'Get Failure'
@@ -139,5 +169,7 @@ export {App,
   Cmd,
   Log,
   Calls,
+  Tokens,
+  SQL,
   Post,
 };

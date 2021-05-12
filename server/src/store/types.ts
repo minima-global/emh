@@ -7,6 +7,7 @@ import {ThunkDispatch} from 'redux-thunk';
 export interface ApplicationState {
   logsData: LogsProps
   callsData: CallsProps,
+  tokensData: TokensProps,
   cmdData: CmdProps,
   tx: TxProps
 }
@@ -65,6 +66,18 @@ export interface CallsProps extends PayloadProps {
 }
 
 /**
+ * Tokens
+ */
+export interface Tokens {
+  ID: string
+  URL: string
+}
+
+export interface TokensProps extends PayloadProps {
+  data: Array<Tokens>
+}
+
+/**
  * Tx stuff
  */
 export interface TxData {
@@ -109,7 +122,7 @@ export const enum TxActionTypes {
 }
 
 export const enum CmdActionTypes {
-  CMD_INIT = '@@LogsActionTypes/CMD_INIT',
+  CMD_INIT = '@@CmdActionTypes/CMD_INIT',
   CMD_SUCCESS = '@@CmdActionTypes/CMD_SUCCESS',
   CMD_FAILURE = '@@CmdActionTypes/CMD_FAILURE'
 }
@@ -121,9 +134,15 @@ export const enum LogsActionTypes {
 }
 
 export const enum CallActionTypes {
-  CALL_INIT = '@@ActionActionTypes/CALL_INIT',
-  CALL_SUCCESS = '@@ActionActionTypes/CALL_SUCCESS',
-  CALL_FAILURE = '@@ActionActionTypes/CALL_FAILURE'
+  CALL_INIT = '@@CallActionTypes/CALL_INIT',
+  CALL_SUCCESS = '@@CallActionTypes/CALL_SUCCESS',
+  CALL_FAILURE = '@@CallActionTypes/CALL_FAILURE'
+}
+
+export const enum TokenActionTypes {
+  TOKEN_INIT = '@@TokenActionTypes/TOKEN_INIT',
+  TOKEN_SUCCESS = '@@TokenActionTypes/TOKEN_SUCCESS',
+  TOKEN_FAILURE = '@@TokenActionTypes/TOKEN_FAILURE'
 }
 
 export type ActionTypes =
@@ -131,4 +150,5 @@ export type ActionTypes =
   TxActionTypes |
   CmdActionTypes |
   LogsActionTypes |
-  CallActionTypes;
+  CallActionTypes |
+  TokenActionTypes;

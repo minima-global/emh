@@ -13,32 +13,32 @@ import {themeStyles} from '../../styles';
 
 import {
   Dbase,
-  Calls as CallVars,
+  Tokens as TokenVars,
 } from '../../config';
 
-import {addCall} from '../../store/app/blockchain/actions';
+import {addToken} from '../../store/app/blockchain/actions';
 
-import {ListCalls} from '../listCalls';
+import {ListTokens} from '../listTokens';
 
 import {
   ApplicationState,
   AppDispatch,
-  CallsProps,
+  TokensProps,
 } from '../../store/types';
 
-const callSchema = Yup.object().shape({
-  address: Yup.string()
-      .required(`${CallVars.addressError}`),
+const tokenSchema = Yup.object().shape({
+  id: Yup.string()
+      .required(`${TokenVars.idError}`),
   url: Yup.string()
-      .required(`${CallVars.urlError}`),
+      .required(`${TokenVars.urlError}`),
 });
 
 interface StateProps {
-  calls: CallsProps
+  tokens: TokensProps
 }
 
 interface DispatchProps {
-  addCall: (table: string, address: string, url: string) => void
+  addToken: (table: string, id: string, url: string) => void
 }
 
 type Props = StateProps & DispatchProps
@@ -47,13 +47,13 @@ const display = (props: Props) => {
   const classes = themeStyles();
   const formik = useFormik({
     initialValues: {
-      address: '',
+      id: '',
       url: '',
     },
     enableReinitialize: true,
-    validationSchema: callSchema,
+    validationSchema: tokenSchema,
     onSubmit: (values: any) => {
-      props.addCall(Dbase.tables.call.name, values.address, values.url);
+      props.addToken(Dbase.tables.token.name, values.id, values.url);
     },
   });
 
@@ -66,7 +66,7 @@ const display = (props: Props) => {
         <Grid item container justify="flex-start" xs={12}>
 
           <Typography variant="h2">
-            {CallVars.heading}
+            {TokenVars.heading}
           </Typography>
 
         </Grid>
@@ -93,20 +93,20 @@ const display = (props: Props) => {
               xs={4}
               lg={2}
             >
-              <label htmlFor="address">{CallVars.address}</label>
+              <label htmlFor="id">{TokenVars.id}</label>
             </Grid>
             <Grid item container xs={8} lg={10}>
               <TextField
                 fullWidth
                 size="small"
-                name="address"
+                name="id"
                 type="text"
-                value={formik.values.address}
+                value={formik.values.id}
                 onChange={formik.handleChange}
                 InputProps={{disableUnderline: true}}
               />
             </Grid>
-            {formik.errors.address && formik.touched.address ? (
+            {formik.errors.id && formik.touched.id ? (
               <>
                 <Grid item container xs={4} lg={2}>
                   <Typography variant="body1">
@@ -119,7 +119,7 @@ const display = (props: Props) => {
                   xs={8}
                   lg={10}
                 >
-                  {formik.errors.address}
+                  {formik.errors.id}
                 </Grid>
               </>
               ) : null
@@ -137,7 +137,7 @@ const display = (props: Props) => {
               xs={4}
               lg={2}
             >
-              <label htmlFor="url">{CallVars.url}</label>
+              <label htmlFor="url">{TokenVars.url}</label>
             </Grid>
             <Grid item container xs={8} lg={10}>
               <TextField
@@ -185,7 +185,7 @@ const display = (props: Props) => {
                 size='medium'
                 variant="contained"
               >
-                {CallVars.callButton}
+                {TokenVars.tokenButton}
               </Button>
             </Grid>
 
@@ -203,7 +203,7 @@ const display = (props: Props) => {
           </svg>
         </Grid>
 
-        { <ListCalls /> }
+        { <ListTokens /> }
 
       </Grid>
 
@@ -213,21 +213,21 @@ const display = (props: Props) => {
 
 const mapStateToProps = (state: ApplicationState): StateProps => {
   return {
-    calls: state.callsData as CallsProps,
+    tokens: state.tokensData as TokensProps,
   };
 };
 
 const mapDispatchToProps = (dispatch: AppDispatch): DispatchProps => {
   return {
-    addCall: (
+    addToken: (
         table: string,
-        address: string,
+        id: string,
         url: string,
-    ) => dispatch(addCall(table, address, url)),
+    ) => dispatch(addToken(table, id, url)),
   };
 };
 
-export const Calls = connect<StateProps, DispatchProps, {}, ApplicationState>(
+export const Tokens = connect<StateProps, DispatchProps, {}, ApplicationState>(
     mapStateToProps,
     mapDispatchToProps,
 )(display);

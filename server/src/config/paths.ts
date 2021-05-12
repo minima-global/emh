@@ -6,6 +6,9 @@ class Local {
   static readonly contact = '/contact'
   static readonly logs = '/logs'
   static readonly calls = '/calls'
+  static readonly tokens = '/tokens'
+  static readonly triggers = '/triggers'
+  static readonly urls = '/urls'
   static readonly cmd = '/cmd'
 }
 

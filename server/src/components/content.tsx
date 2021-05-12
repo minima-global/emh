@@ -8,6 +8,7 @@ import {
   Cmd,
   Info,
   Calls,
+  Tokens,
 } from '../components/pages';
 
 import {Local} from '../config';
@@ -32,6 +33,18 @@ export const Content = () => {
 
       <Route
         exact path={Local.calls}
+        render= {() => <Calls />}
+      />
+      <Route
+        exact path={Local.tokens}
+        render= {() => <Tokens />}
+      />
+      <Route
+        exact path={Local.triggers}
+        render= {() => <Calls />}
+      />
+      <Route
+        exact path={Local.urls}
         render= {() => <Calls />}
       />
       <Route

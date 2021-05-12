@@ -5,14 +5,13 @@ import {
   ActionTypes,
   TxActionTypes,
   CmdActionTypes,
-  LogsActionTypes,
   TxData,
 } from '../../types';
 
 import {
   Remote,
+  SQL,
   Post,
-  Dbase,
 } from '../../../config';
 
 import {write} from '../../actions';
@@ -57,25 +56,80 @@ export const command = (cmd: string) => {
         dispatch(write({data: []})(failureAction));
       }
     });
-    /*
-    try {
-      console.log('trying');
-      const response = await axios({
-        method: 'POST',
-        url: Remote.cmdURL,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        data: cmd,
-      });
-      console.log('trying', response);
-      dispatch(write({data: response.data})(CmdActionTypes.CMD_SUCCESS));
-    } catch (error) {
-      console.log('oops', error);
-      dispatch(write({data: []})(CmdActionTypes.CMD_FAILURE));
-      return {};
-    }
-    */
+  };
+};
+
+export const addCall = (table: string, address: string, url: string) => {
+  return async (dispatch: AppDispatch) => {
+    const txSuccessAction: ActionTypes = TxActionTypes.TX_SUCCESS;
+    const txFailAction: ActionTypes = TxActionTypes.TX_FAILURE;
+    const d = new Date(Date.now());
+    const dateText = d.toString();
+    let txData = {
+      code: '200',
+      summary: SQL.insertSuccess,
+      time: dateText,
+    };
+
+    const insertSQL = 'INSERT INTO ' +
+      table +
+      ' (address, url) ' +
+      'VALUES (' +
+      '\'' + address + '\', ' +
+      '\'' + url + '\'' +
+    ')';
+
+    Minima.sql(insertSQL, function(result: any) {
+      // console.log(result);
+      if ( !result.status ) {
+        txData = {
+          code: '503',
+          summary: SQL.insertFailure,
+          time: dateText,
+        };
+        dispatch(write({data: txData})(txFailAction));
+      } else {
+        dispatch(write({data: txData})(txSuccessAction));
+      }
+    });
+  };
+};
+
+export const addToken = (table: string, id: string, url: string) => {
+  return async (dispatch: AppDispatch) => {
+    console.log(table, id, url);
+    const txSuccessAction: ActionTypes = TxActionTypes.TX_SUCCESS;
+    const txFailAction: ActionTypes = TxActionTypes.TX_FAILURE;
+    const d = new Date(Date.now());
+    const dateText = d.toString();
+    let txData = {
+      code: '200',
+      summary: SQL.insertSuccess,
+      time: dateText,
+    };
+
+    const insertSQL = 'INSERT INTO ' +
+      table +
+      ' (id, url) ' +
+      'VALUES (' +
+      '\'' + id + '\', ' +
+      '\'' + url + '\'' +
+    ')';
+
+    console.log(insertSQL);
+    Minima.sql(insertSQL, function(result: any) {
+      console.log(result);
+      if ( !result.status ) {
+        txData = {
+          code: '503',
+          summary: SQL.insertFailure,
+          time: dateText,
+        };
+        dispatch(write({data: txData})(txFailAction));
+      } else {
+        dispatch(write({data: txData})(txSuccessAction));
+      }
+    });
   };
 };
 
@@ -86,73 +140,41 @@ const sortLogs = (logsData: LogsProps): Logs[] => {
 };
 */
 
-export const getLogs = () => {
-  return async (dispatch: AppDispatch) => {
-    const successAction: ActionTypes = LogsActionTypes.LOGS_SUCCESS;
-    // const failureAction: ActionTypes = LogsActionTypes.LOGS_FAILURE;
-    const txSuccessAction: ActionTypes = TxActionTypes.TX_SUCCESS;
-    const txFailureAction: ActionTypes = TxActionTypes.TX_FAILURE;
-    const d = new Date(Date.now());
-    const dateText = d.toString();
-    let txData = {
-      code: '200',
-      summary: Post.getSuccess,
-      time: dateText,
-    };
-
-    const tableName = Dbase.tables.log.name;
-    const selectSQL = 'Select * from ' +
-      tableName +
-      ' ORDER BY DATE DESC';
-
-    Minima.sql(selectSQL, function(result: any) {
-      // console.log(result);
-      if ( !result.status ) {
-        txData = {
-          code: '503',
-          summary: Post.getFailure,
-          time: dateText,
-        };
-        dispatch(write({data: txData})(txFailureAction));
-      } else {
-        const theseLogs = result.response.rows.slice();
-        dispatch(write({data: theseLogs})(successAction));
-        dispatch(write({data: txData})(txSuccessAction));
-      }
-    });
-  };
-};
-
 export const getDbaseEntries =
-  (tableName: string,
+  (
+      table: string,
       successAction: ActionTypes,
       failAction: ActionTypes,
   ) => {
     return async (dispatch: AppDispatch) => {
       const txSuccessAction: ActionTypes = TxActionTypes.TX_SUCCESS;
-      const txFailureAction: ActionTypes = TxActionTypes.TX_FAILURE;
+      const txFailAction: ActionTypes = TxActionTypes.TX_FAILURE;
       const d = new Date(Date.now());
       const dateText = d.toString();
       let txData = {
         code: '200',
-        summary: Post.getSuccess,
+        summary: SQL.selectSuccess,
         time: dateText,
       };
 
+      const selectSQL = 'Select * from ' + table;
+
+      /**
       const selectSQL = 'Select * from ' +
-      tableName +
+      table +
       ' ORDER BY DATE DESC';
+      */
 
       Minima.sql(selectSQL, function(result: any) {
-      // console.log(result);
+        console.log('Got result', result);
         if ( !result.status ) {
           txData = {
             code: '503',
-            summary: Post.getFailure,
+            summary: SQL.selectFailure,
             time: dateText,
           };
-          dispatch(write({data: []})(txFailureAction));
-          dispatch(write({data: txData})(txFailureAction));
+          dispatch(write({data: []})(failAction));
+          dispatch(write({data: txData})(txFailAction));
         } else {
           const data = result.response.rows.slice();
           dispatch(write({data: data})(successAction));

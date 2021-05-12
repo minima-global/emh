@@ -15,6 +15,9 @@ class Dbase {
     call: {
       name: 'call',
     },
+    token: {
+      name: 'token',
+    },
     txpow: {
       name: 'txpow',
     },
@@ -33,7 +36,8 @@ class Dbase {
   };
 
   static readonly logTypes = {
-    ACTION: 'Action',
+    CALL: 'Call',
+    TOKEN: 'Token',
     TXPOW: 'TxPoW',
     TRIGGER: 'Trigger',
     URL: 'URL',
