@@ -104,7 +104,7 @@ function createCall() {
  * Creates token table
  * @function createToken
  */
- function createToken() {
+function createToken() {
   const tableName = tables.token.name;
   const createSQL = 'CREATE Table IF NOT EXISTS ' +
       tableName + ' (' +
