@@ -4,6 +4,9 @@ const tables = {
   call: {
     name: 'call',
   },
+  token: {
+    name: 'token',
+  },
   txpow: {
     name: 'txpow',
   },
@@ -23,6 +26,7 @@ const tables = {
 
 const logTypes = {
   CALL: 'Call',
+  TOKEN: 'Token',
   TXPOW: 'TxPoW',
   TRIGGER: 'Trigger',
   URL: 'URL',
@@ -89,8 +93,24 @@ function createCall() {
   const createSQL = 'CREATE Table IF NOT EXISTS ' +
       tableName + ' (' +
       'address varchar(255) NOT NULL, ' +
-      'url varchar(255) NOT NULL, ' +
+      'url varchar(255), ' +
       'PRIMARY KEY(address)' +
+    ');';
+
+  doSQL(createSQL, tableName);
+}
+
+/**
+ * Creates token table
+ * @function createToken
+ */
+ function createToken() {
+  const tableName = tables.token.name;
+  const createSQL = 'CREATE Table IF NOT EXISTS ' +
+      tableName + ' (' +
+      'id varchar(255) NOT NULL, ' +
+      'url varchar(255), ' +
+      'PRIMARY KEY(id)' +
     ');';
 
   doSQL(createSQL, tableName);
@@ -106,8 +126,8 @@ function createTrigger() {
       tableName + ' (' +
       'name varchar(255) NOT NULL, ' +
       'command varchar(255) NOT NULL, ' +
-      'setParams varchar(255) NOT NULL, ' +
-      'params varchar(255) NOT NULL, ' +
+      'setParams varchar(255), ' +
+      'params varchar(255), ' +
       'protocol varchar(255) NOT NULL, ' +
       'url varchar(255) NOT NULL, ' +
       'PRIMARY KEY(name)' +
@@ -128,7 +148,7 @@ function createLog() {
       'loggingTypeId varchar(255) NOT NULL, ' +
       'loggingType varchar(255) NOT NULL, ' +
       'date varchar(255) NOT NULL, ' +
-      'data varchar(1024) NOT NULL, ' +
+      'data varchar(1024), ' +
       'PRIMARY KEY(id)' +
       ')';
 
@@ -157,6 +177,7 @@ function createURL() {
 function initDbase() {
   createTxPow();
   createCall();
+  createToken();
   createTrigger();
   createURL();
   createLog();

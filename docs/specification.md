@@ -29,7 +29,7 @@ To meet the [functional requirements](#functional-requirements), above, the EMH 
 The EMH should run as a single-user system that interfaces with `minima.jar`. It performs the following functions:
 
 1. URL-based endpoint(s) that users can call in order to create transactions on the Minima network
-2. Actions to take (such as URLs to call) given defined transactions on the Minima network
+2. Calls to make to URLs given Minima transaction sent to a given address or given token
 3. The token functionality described above (`create`, `send` and `receive`)
 4. Logging
 
