@@ -100,6 +100,10 @@ class Calls {
   static readonly address = 'Minima Address'
   static readonly url = 'URL'
 
+  static readonly mxLengthError =
+    'Minima addresses should be 34 characters, of the form Mx...'
+  static readonly mxFormatError = 'Not a Minima address'
+
   static readonly callButton = 'Submit'
 
   static readonly addressError = 'Please input a valid Minima address'
@@ -112,6 +116,10 @@ class Tokens {
 
   static readonly id = 'Token ID'
   static readonly url = 'URL'
+
+  static readonly tokenLengthError =
+    'Tokens should be 4 or 130 characters, of the form 0x...'
+  static readonly tokenFormatError = 'Not a Minima token'
 
   static readonly tokenButton = 'Submit'
 

@@ -104,7 +104,10 @@ const list = (props: Props) => {
                 <Grid className={rowclass} item container xs={12}>
 
                   <Grid item container justify="flex-start" xs={6}>
-                    <Typography variant="body1">
+                    <Typography
+                      variant="body1"
+                      noWrap={true}
+                    >
                       {id}
                     </Typography>
                   </Grid>

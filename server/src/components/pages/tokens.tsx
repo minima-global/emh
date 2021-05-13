@@ -30,10 +30,11 @@ import {
 const tokenSchema = Yup.object().shape({
   id: Yup.string()
       .required(GeneralError.required)
-      .max(255, GeneralError.lengthError255),
+      .min(4, TokenVars.tokenLengthError)
+      .max(130, TokenVars.tokenLengthError),
   url: Yup.string()
       .url(TokenVars.urlError)
-      .max(255, GeneralError.lengthError255),
+      .length(255, GeneralError.lengthError255),
 });
 
 interface StateProps {

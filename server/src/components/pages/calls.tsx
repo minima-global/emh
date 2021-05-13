@@ -30,7 +30,8 @@ import {
 const callSchema = Yup.object().shape({
   address: Yup.string()
       .required(GeneralError.required)
-      .max(255, GeneralError.lengthError255),
+      .length(34, CallVars.mxLengthError)
+      .matches(/^Mx[a-zA-Z0-9]+$/, CallVars.mxFormatError),
   url: Yup.string()
       .url(CallVars.urlError)
       .max(255, GeneralError.lengthError255),
