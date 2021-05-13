@@ -187,15 +187,16 @@ export const Main = () => {
                   xs={2}
                 >
 
-                  <NavLink to={Local.urls} className={classes.iconLink}>
+                  <NavLink to={Local.cmd} className={classes.iconLink}>
                     <IconButton
-                      aria-label="URLs"
+                      aria-label="Cmd"
                     >
-                      <img className={classes.footerIcon} src={link}/>
+                      <img className={classes.footerIcon} src={terminal}/>
                     </IconButton>
                   </NavLink>
 
                 </Grid>
+
 
                 <Grid
                   item
@@ -205,13 +206,9 @@ export const Main = () => {
                   xs={2}
                 >
 
-                  <NavLink to={Local.cmd} className={classes.iconLink}>
-                    <IconButton
-                      aria-label="Cmd"
-                    >
-                      <img className={classes.footerIcon} src={terminal}/>
-                    </IconButton>
-                  </NavLink>
+                  <Typography variant="caption">
+                  &nbsp;
+                  </Typography>
 
                 </Grid>
 

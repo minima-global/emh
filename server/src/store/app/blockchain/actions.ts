@@ -168,6 +168,50 @@ export const addToken = (table: string, id: string, url: string) => {
   };
 };
 
+export const addTrigger = (
+    table: string,
+    endpoint: string,
+    command: string,
+    setParams: string,
+    params: string,
+) => {
+  return async (dispatch: AppDispatch) => {
+    const txSuccessAction: ActionTypes = TxActionTypes.TX_SUCCESS;
+    const txFailAction: ActionTypes = TxActionTypes.TX_FAILURE;
+    const d = new Date(Date.now());
+    const dateText = d.toString();
+    let txData = {
+      code: '200',
+      summary: SQL.insertSuccess,
+      time: dateText,
+    };
+
+    const insertSQL = 'INSERT INTO ' +
+      table +
+      ' (endpoint, command, setParams, params) ' +
+      'VALUES (' +
+      '\'' + endpoint + '\', ' +
+      '\'' + command + '\', ' +
+      '\'' + setParams + '\', ' +
+      '\'' + params + '\'' +
+    ')';
+
+    Minima.sql(insertSQL, function(result: any) {
+      if ( !result.status ) {
+        txData = {
+          code: '503',
+          summary: SQL.insertFailure,
+          time: dateText,
+        };
+        dispatch(write({data: txData})(txFailAction));
+      } else {
+        dispatch(doLog(endpoint, Dbase.logTypes.TRIGGER, 'insert'));
+        dispatch(write({data: txData})(txSuccessAction));
+      }
+    });
+  };
+};
+
 /*
 const sortLogs = (logsData: LogsProps): Logs[] => {
   return logsData.data.sort((a: Logs, b: Logs) =>

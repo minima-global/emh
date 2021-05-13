@@ -124,6 +124,18 @@ class Tokens {
   static readonly urlError = 'Please input a valid URL'
 }
 
+/** @class Triggers */
+class Triggers {
+  static readonly heading = 'Triggers'
+
+  static readonly endpoint = 'Endpoint'
+  static readonly command = 'Command'
+  static readonly setParams = 'Set Params'
+  static readonly params = 'Params'
+
+  static readonly triggerButton = 'Submit'
+}
+
 /** @class Log */
 class Log {
   static readonly heading = 'Logs'
@@ -138,7 +150,6 @@ class Log {
 
 /** @class SQL */
 class SQL {
-
   static readonly insertSuccess = 'Insert Success'
   static readonly insertFailure = 'Insert Failure'
 
@@ -171,6 +182,7 @@ export {
   Log,
   Calls,
   Tokens,
+  Triggers,
   SQL,
   Post,
 };

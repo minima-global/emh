@@ -43,8 +43,6 @@ function doSQL(sql, tableName) {
   Minima.sql(sql, function(resp) {
     if (!resp.status) {
       Minima.log(app + ' Error with SQL ' + tableName + resp.message);
-    } else {
-      Minima.log(app + ' SQL ' + tableName);
     }
   });
 }
@@ -125,13 +123,11 @@ function createTrigger() {
   const tableName = tables.trigger.name;
   const createSQL = 'CREATE Table IF NOT EXISTS ' +
       tableName + ' (' +
-      'name varchar(255) NOT NULL, ' +
+      'endpoint varchar(255) NOT NULL, ' +
       'command varchar(255) NOT NULL, ' +
       'setParams varchar(255), ' +
       'params varchar(255), ' +
-      'protocol varchar(255) NOT NULL, ' +
-      'url varchar(255) NOT NULL, ' +
-      'PRIMARY KEY(name)' +
+      'PRIMARY KEY(endpoint)' +
     ');';
 
   doSQL(createSQL, tableName);
@@ -156,31 +152,12 @@ function createLog() {
   doSQL(createSQL, tableName);
 }
 
-/**
- * Creates URL table
- * @function createURL
- */
-function createURL() {
-  const tableName = tables.url.name;
-  const createSQL = 'CREATE Table IF NOT EXISTS ' +
-      tableName + ' (' +
-      'name varchar(255) NOT NULL, ' +
-      'triggername varchar(255) NOT NULL, ' +
-      'PRIMARY KEY(name), ' +
-      'FOREIGN KEY (triggername) REFERENCES trigger(name)' +
-    ');' +
-    'CREATE INDEX IF NOT EXISTS arrange_index ON ' +
-    tableName + '(triggername)';
-  doSQL(createSQL, tableName);
-}
-
 /** @function initDbase */
 function initDbase() {
   createTxPow();
   createCall();
   createToken();
   createTrigger();
-  createURL();
   createLog();
 }
 

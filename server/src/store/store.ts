@@ -12,6 +12,7 @@ import {ApplicationState, ActionProps} from './types';
 import {reducer as logsReducer} from './app/reducers/logs/reducer';
 import {reducer as callsReducer} from './app/reducers/calls/reducer';
 import {reducer as tokensReducer} from './app/reducers/tokens/reducer';
+import {reducer as triggersReducer} from './app/reducers/triggers/reducer';
 import {reducer as cmdReducer} from './app/reducers/cmd/reducer';
 import {reducer as txReducer} from './app/reducers/tx/reducer';
 
@@ -20,6 +21,7 @@ combineReducers<ApplicationState, ActionProps>({
   logsData: logsReducer,
   callsData: callsReducer,
   tokensData: tokensReducer,
+  triggersData: triggersReducer,
   cmdData: cmdReducer,
   tx: txReducer,
 });

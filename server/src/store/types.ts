@@ -8,6 +8,7 @@ export interface ApplicationState {
   logsData: LogsProps
   callsData: CallsProps,
   tokensData: TokensProps,
+  triggersData: TriggersProps,
   cmdData: CmdProps,
   tx: TxProps
 }
@@ -78,6 +79,20 @@ export interface TokensProps extends PayloadProps {
 }
 
 /**
+ * Triggers
+ */
+export interface Triggers {
+  ENDPOINT: string
+  COMMAND: string
+  SETPARAMS: string
+  PARAMS: string
+}
+
+export interface TriggersProps extends PayloadProps {
+  data: Array<Triggers>
+}
+
+/**
  * Tx stuff
  */
 export interface TxData {
@@ -145,10 +160,17 @@ export const enum TokenActionTypes {
   TOKEN_FAILURE = '@@TokenActionTypes/TOKEN_FAILURE'
 }
 
+export const enum TriggerActionTypes {
+  TRIGGER_INIT = '@@TriggerActionTypes/TRIGGER_INIT',
+  TRIGGER_SUCCESS = '@@TriggerActionTypes/TRIGGER_SUCCESS',
+  TRIGGER_FAILURE = '@@TriggerActionTypes/TRIGGER_FAILURE'
+}
+
 export type ActionTypes =
   AppDataActionTypes |
   TxActionTypes |
   CmdActionTypes |
   LogsActionTypes |
   CallActionTypes |
-  TokenActionTypes;
+  TokenActionTypes |
+  TriggerActionTypes;

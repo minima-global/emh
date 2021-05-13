@@ -9,6 +9,7 @@ import {
   Info,
   Calls,
   Tokens,
+  Triggers,
 } from '../components/pages';
 
 import {Local} from '../config';
@@ -41,11 +42,7 @@ export const Content = () => {
       />
       <Route
         exact path={Local.triggers}
-        render= {() => <Calls />}
-      />
-      <Route
-        exact path={Local.urls}
-        render= {() => <Calls />}
+        render= {() => <Triggers />}
       />
       <Route
         exact path={Local.cmd}
