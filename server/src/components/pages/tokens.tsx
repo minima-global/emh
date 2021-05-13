@@ -13,6 +13,7 @@ import {themeStyles} from '../../styles';
 
 import {
   Dbase,
+  GeneralError,
   Tokens as TokenVars,
 } from '../../config';
 
@@ -28,9 +29,11 @@ import {
 
 const tokenSchema = Yup.object().shape({
   id: Yup.string()
-      .required(`${TokenVars.idError}`),
+      .required(GeneralError.required)
+      .length(255, GeneralError.lengthError255),
   url: Yup.string()
-      .required(`${TokenVars.urlError}`),
+      .url(TokenVars.urlError)
+      .length(255, GeneralError.lengthError255),
 });
 
 interface StateProps {

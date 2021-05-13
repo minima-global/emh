@@ -34,6 +34,8 @@ class Paths {
 /** @class GeneralError */
 class GeneralError {
   static readonly required = 'Required'
+  static lengthError255 = 'Cannot be longer than 255 characters'
+  static lengthError1024 = 'Cannot be longer than 1024 characters'
 }
 
 /** @class Home */
@@ -68,14 +70,6 @@ class Help {
   static readonly contactTip = 'Contact'
   static readonly aboutTip = 'About'
   static readonly sortTip = 'Sort'
-  static readonly loginTip = 'Sign In'
-  static readonly logoutTip = 'Sign Out'
-  static readonly registerTip = 'Register'
-  static readonly userTip = 'Profile'
-  static readonly rewardTip = 'Rewards'
-  static readonly referralTip = 'Referrals'
-  static readonly downloadTip = 'Download'
-  static readonly referralCopyTip = 'Copy'
 }
 
 /** @class Contact */

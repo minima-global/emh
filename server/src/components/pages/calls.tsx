@@ -13,6 +13,7 @@ import {themeStyles} from '../../styles';
 
 import {
   Dbase,
+  GeneralError,
   Calls as CallVars,
 } from '../../config';
 
@@ -28,9 +29,11 @@ import {
 
 const callSchema = Yup.object().shape({
   address: Yup.string()
-      .required(`${CallVars.addressError}`),
+      .required(GeneralError.required)
+      .length(255, GeneralError.lengthError255),
   url: Yup.string()
-      .required(`${CallVars.urlError}`),
+      .url(CallVars.urlError)
+      .length(255, GeneralError.lengthError255),
 });
 
 interface StateProps {

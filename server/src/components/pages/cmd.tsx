@@ -26,7 +26,7 @@ import {
 
 const cmdSchema = Yup.object().shape({
   cmd: Yup.string()
-      .required(`${GeneralError.required}`),
+      .required(GeneralError.required),
 });
 
 interface StateProps {
