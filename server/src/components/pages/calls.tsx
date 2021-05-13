@@ -30,10 +30,10 @@ import {
 const callSchema = Yup.object().shape({
   address: Yup.string()
       .required(GeneralError.required)
-      .length(255, GeneralError.lengthError255),
+      .max(255, GeneralError.lengthError255),
   url: Yup.string()
       .url(CallVars.urlError)
-      .length(255, GeneralError.lengthError255),
+      .max(255, GeneralError.lengthError255),
 });
 
 interface StateProps {

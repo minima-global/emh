@@ -221,6 +221,25 @@ const themeStyles = makeStyles({
       paddingRight: theme.spacing(2),
     },
   },
+  select: {
+    'border': '2px solid #C8C8D4',
+    'borderRadius': '5px',
+    'background': 'linear-gradient(#FFFFFF, #FFFFFF)',
+    'color': '#001C32',
+    'fontWeight': 400,
+    'fontFamily': '"Manrope", "Roboto", "Arial", "sans-serif"',
+    '&:hover': {
+      border: '2px solid #001C32',
+    },
+    [breakpoints.up('xs')]: {
+      lineHeight: '1.6',
+      fontSize: '1.4em',
+    },
+    [breakpoints.up('lg')]: {
+      lineHeight: '1.5',
+      fontSize: '1em',
+    },
+  },
   helpIcon: {
     [breakpoints.up('xs')]: {
       display: 'flex',
@@ -271,10 +290,10 @@ const themeStyles = makeStyles({
     },
   },
   oddRow: {
-    backgroundColor: '#F5F3F2'
+    backgroundColor: '#F5F3F2',
   },
   evenRow: {
-    backgroundColor: '#FAFAFF'
+    backgroundColor: '#FAFAFF',
   },
   formSubmit: {
     paddingTop: theme.spacing(2),

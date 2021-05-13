@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {connect} from 'react-redux';
 
 import Grid from '@material-ui/core/Grid';
@@ -8,49 +8,118 @@ import * as Yup from 'yup';
 import {useFormik} from 'formik';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import Select from 'react-select';
 
 import {themeStyles} from '../../styles';
 
 import {
   ApplicationState,
   AppDispatch,
+  ActionTypes,
   CmdProps,
+  TriggersProps,
+  TriggerActionTypes,
 } from '../../store/types';
 
-import {command} from '../../store/app/blockchain/actions';
+import {command, getDbaseEntries} from '../../store/app/blockchain/actions';
 
 import {
+  Dbase,
   GeneralError,
-  Cmd as CmdConfig,
+  Cmd as CmdVars,
 } from '../../config';
 
 const cmdSchema = Yup.object().shape({
-  cmd: Yup.string()
+  trigger: Yup.object()
       .required(GeneralError.required),
+  params: Yup.string()
+      .max(255, GeneralError.lengthError255),
 });
 
 interface StateProps {
+  triggersData: TriggersProps
   cmd: CmdProps
 }
 
 interface DispatchProps {
   command: (cmd: string) => void
+  getDbaseEntries: (
+      dbase: string,
+      succcessAction: ActionTypes,
+      failAction: ActionTypes,
+  ) => void,
 }
 
 type Props = StateProps & DispatchProps
 
+type SelectOptionType = {
+  value: number
+  label: string
+}
+
 const display = (props: Props) => {
+  const isFirstRun = useRef(true);
+  const [triggers, setTriggers] = useState([] as SelectOptionType[]);
+  const [thisTrigger, setThisTrigger] = useState({} as SelectOptionType);
+  const [paramsDisabled, setParamsDisabled] = useState(false);
+  const [params, setParams] = useState('');
+
   const classes = themeStyles();
   const formik = useFormik({
     initialValues: {
-      cmd: '',
+      trigger: thisTrigger,
+      params: params,
     },
     enableReinitialize: true,
     validationSchema: cmdSchema,
     onSubmit: (values: any) => {
-      props.command(values.cmd);
+      let command = props.triggersData.data[values.trigger.value].COMMAND;
+      if ( props.triggersData.data[values.trigger.value].SETPARAMS ) {
+        command =
+          command + ' ' +
+          props.triggersData.data[values.trigger.value].SETPARAMS + ' ' +
+          values.params;
+      } else {
+        command =
+          command + ' ' +
+          values.params;
+      }
+      // console.log(command);
+      props.command(command.trim());
     },
   });
+
+  useEffect(() => {
+    if ( isFirstRun.current ) {
+      isFirstRun.current = false;
+      props.getDbaseEntries(
+          Dbase.tables.trigger.name,
+          TriggerActionTypes.TRIGGER_SUCCESS,
+          TriggerActionTypes.TRIGGER_FAILURE,
+      );
+    } else {
+      props.triggersData.data.forEach((trigger, index) => {
+        const thisTrigger: SelectOptionType = {
+          value: index,
+          label: trigger.ENDPOINT,
+        };
+        triggers.push(thisTrigger);
+      });
+    }
+  }, [props.triggersData]);
+
+  const doSetTrigger = (trigger: SelectOptionType | null | undefined) => {
+    if ( trigger ) {
+      setThisTrigger(trigger);
+      if ( props.triggersData.data[trigger.value].PARAMS ) {
+        setParams(props.triggersData.data[trigger.value].PARAMS);
+        setParamsDisabled(false);
+      } else {
+        setParams('');
+        setParamsDisabled(true);
+      }
+    }
+  };
 
   return (
     <Grid item container alignItems='flex-start' xs={12}>
@@ -60,7 +129,7 @@ const display = (props: Props) => {
         <Grid item container justify="flex-start" xs={12}>
 
           <Typography variant="h2">
-            {CmdConfig.heading}
+            {CmdVars.heading}
           </Typography>
 
         </Grid>
@@ -87,25 +156,85 @@ const display = (props: Props) => {
               xs={4}
               lg={2}
             >
-              <label htmlFor="amount">{CmdConfig.cmd}</label>
+              <label htmlFor="trigger">{CmdVars.trigger}</label>
+            </Grid>
+            <Grid item container xs={8} lg={10}>
+              <div style={{width: '100%'}}>
+                <Select
+                  className={classes.select}
+                  size="small"
+                  value={thisTrigger}
+                  onChange={(selectedOption) => {
+                    doSetTrigger(selectedOption);
+                    const thisValue = selectedOption ? selectedOption : {};
+                    formik.setFieldValue('trigger', thisValue);
+                  }}
+                  options={triggers}
+                  name='trigger'
+                />
+              </div>
+            </Grid>
+            {formik.errors.trigger && formik.touched.trigger ? (
+              <>
+                <Grid item container xs={2}>
+                  <Typography variant="body1">
+                    &nbsp;
+                  </Typography>
+                </Grid>
+                <Grid
+                  className={classes.formError}
+                  item container
+                  xs={10}
+                >
+                  {formik.errors.trigger}
+                </Grid>
+              </>
+                ) : null
+            }
+          </Grid>
+
+          <Grid item container xs={12}>
+
+            <Grid
+              item
+              container
+              className={classes.formLabel}
+              justify="flex-start"
+              alignItems="center"
+              xs={4}
+              lg={2}
+            >
+              <label htmlFor="params">{CmdVars.params}</label>
             </Grid>
             <Grid item container xs={8} lg={10}>
               <TextField
                 fullWidth
+                disabled={paramsDisabled}
                 size="small"
-                name="cmd"
+                name="params"
                 type="text"
-                value={formik.values.cmd}
+                value={formik.values.params}
                 onChange={formik.handleChange}
                 InputProps={{disableUnderline: true}}
               />
             </Grid>
-            <Grid item container className={classes.formError} xs={12}>
-              {formik.errors.cmd && formik.touched.cmd ? (
-                <div>{formik.errors.cmd}</div>
-              ) : null}
-            </Grid>
-
+            {formik.errors.params && formik.touched.params ? (
+              <>
+                <Grid item container xs={2}>
+                  <Typography variant="body1">
+                    &nbsp;
+                  </Typography>
+                </Grid>
+                <Grid
+                  className={classes.formError}
+                  item container
+                  xs={10}
+                >
+                  {formik.errors.params}
+                </Grid>
+              </>
+                ) : null
+            }
           </Grid>
 
           <Grid item container xs={12}>
@@ -123,7 +252,7 @@ const display = (props: Props) => {
                 size='medium'
                 variant="contained"
               >
-                {CmdConfig.cmdButton}
+                {CmdVars.cmdButton}
               </Button>
             </Grid>
 
@@ -165,6 +294,7 @@ const display = (props: Props) => {
 
 const mapStateToProps = (state: ApplicationState): StateProps => {
   return {
+    triggersData: state.triggersData as TriggersProps,
     cmd: state.cmdData as CmdProps,
   };
 };
@@ -172,6 +302,11 @@ const mapStateToProps = (state: ApplicationState): StateProps => {
 const mapDispatchToProps = (dispatch: AppDispatch): DispatchProps => {
   return {
     command: (cmd: string) => dispatch(command(cmd)),
+    getDbaseEntries: (
+        dbase: string,
+        succcessAction: ActionTypes,
+        failAction: ActionTypes,
+    ) => dispatch(getDbaseEntries(dbase, succcessAction, failAction)),
   };
 };
 

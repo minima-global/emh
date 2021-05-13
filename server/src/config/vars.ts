@@ -86,9 +86,10 @@ class Contact {
 
 /** @class Cmd */
 class Cmd {
-  static readonly heading = 'Console'
+  static readonly heading = 'Run Trigger'
 
-  static readonly cmd = 'Command'
+  static readonly trigger = 'Trigger'
+  static readonly params = 'Params'
   static readonly cmdButton = 'Run'
 }
 

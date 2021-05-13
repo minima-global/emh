@@ -10,7 +10,6 @@ import {
 
 import {
   App,
-  Remote,
   Dbase,
   SQL,
 } from '../../../config';
@@ -73,22 +72,17 @@ export const doLog = (typeId: string, type: string, data: string) => {
 
 export const command = (cmd: string) => {
   return async (dispatch: AppDispatch) => {
+    // console.log('Got command', cmd);
     const successAction: ActionTypes = CmdActionTypes.CMD_SUCCESS;
-    const failureAction: ActionTypes = CmdActionTypes.CMD_FAILURE;
-    Minima.net.POST(Remote.cmdURL, cmd, function(msg: any) {
-      const cmdObject = JSON.parse(msg.result);
-      if ( cmdObject.status ) {
-        let command = cmd.substr(0, cmd.indexOf(' '));
-        let params = cmd.substr(cmd.indexOf(' ') + 1);
-        if ( command === '' ) {
-          command = params;
-          params = '';
-        }
-        dispatch(doLog(command, Dbase.logTypes.COMMAND, params));
-        dispatch(write({data: cmdObject.response})(successAction));
-      } else {
-        dispatch(write({data: []})(failureAction));
+    Minima.cmd(cmd, function(msg: any) {
+      let command = cmd.substr(0, cmd.indexOf(' '));
+      let params = cmd.substr(cmd.indexOf(' ') + 1);
+      if ( command === '' ) {
+        command = params;
+        params = '';
       }
+      dispatch(doLog(command, Dbase.logTypes.COMMAND, params));
+      dispatch(write({data: msg.response})(successAction));
     });
   };
 };

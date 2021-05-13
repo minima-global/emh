@@ -30,15 +30,14 @@ import {
 const triggerSchema = Yup.object().shape({
   endpoint: Yup.string()
       .required(GeneralError.required)
-      .length(255, GeneralError.lengthError255),
+      .max(255, GeneralError.lengthError255),
   command: Yup.string()
       .required(GeneralError.required)
-      .length(255, GeneralError.lengthError255),
+      .max(255, GeneralError.lengthError255),
   setParams: Yup.string()
-      .length(255, GeneralError.lengthError255),
+      .max(255, GeneralError.lengthError255),
   params: Yup.string()
-      .required(GeneralError.required)
-      .length(255, GeneralError.lengthError255),
+      .max(255, GeneralError.lengthError255),
 });
 
 interface StateProps {
