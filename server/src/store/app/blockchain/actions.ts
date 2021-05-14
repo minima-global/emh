@@ -87,8 +87,9 @@ export const command = (cmd: string) => {
   };
 };
 
-export const addCall = (table: string, address: string, url: string) => {
+export const addCall = (address: string, url: string) => {
   return async (dispatch: AppDispatch) => {
+    const table = Dbase.tables.call.name;
     const txSuccessAction: ActionTypes = TxActionTypes.TX_SUCCESS;
     const txFailAction: ActionTypes = TxActionTypes.TX_FAILURE;
     const d = new Date(Date.now());
@@ -212,6 +213,45 @@ const sortLogs = (logsData: LogsProps): Logs[] => {
     b.DATE.localeCompare(a.DATE));
 };
 */
+
+export const deleteRow = (
+    table: string,
+    column: string,
+    value: string,
+) => {
+  return async (dispatch: AppDispatch) => {
+    // const table = Dbase.tables.call.name;
+    const txSuccessAction: ActionTypes = TxActionTypes.TX_SUCCESS;
+    const txFailAction: ActionTypes = TxActionTypes.TX_FAILURE;
+    const d = new Date(Date.now());
+    const dateText = d.toString();
+    let txData = {
+      code: '200',
+      summary: SQL.deleteSuccess,
+      time: dateText,
+    };
+
+    const deleteSQL = 'DELETE FROM ' +
+      table +
+      ' WHERE ' +
+      column + ' = ' +
+      '\'' + value + '\'';
+
+    Minima.sql(deleteSQL, function(result: any) {
+      if ( !result.status ) {
+        txData = {
+          code: '503',
+          summary: SQL.deleteFailure,
+          time: dateText,
+        };
+        dispatch(write({data: txData})(txFailAction));
+      } else {
+        dispatch(doLog(value, table, 'delete'));
+        dispatch(write({data: txData})(txSuccessAction));
+      }
+    });
+  };
+};
 
 export const getDbaseEntries =
   (

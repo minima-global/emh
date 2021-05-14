@@ -78,14 +78,19 @@ const list = (props: Props) => {
 
         <Grid item container xs={12}>
 
-          <Grid item container justify="flex-start" xs={6}>
+          <Grid item container justify="flex-start" xs={5}>
             <Typography variant="h5">
               {TokenVars.id}
             </Typography>
           </Grid>
-          <Grid item container justify="flex-start" xs={6}>
+          <Grid item container justify="flex-start" xs={5}>
             <Typography variant="h5">
               {TokenVars.url}
+            </Typography>
+          </Grid>
+          <Grid item container justify="flex-end" xs={2}>
+            <Typography variant="h5">
+              &nbsp;
             </Typography>
           </Grid>
 

@@ -78,12 +78,12 @@ const list = (props: Props) => {
 
         <Grid item container xs={12}>
 
-          <Grid item container justify="flex-start" xs={3}>
+          <Grid item container justify="flex-start" xs={2}>
             <Typography variant="h5">
               {TriggerVars.endpoint}
             </Typography>
           </Grid>
-          <Grid item container justify="flex-start" xs={3}>
+          <Grid item container justify="flex-start" xs={2}>
             <Typography variant="h5">
               {TriggerVars.command}
             </Typography>
@@ -96,6 +96,11 @@ const list = (props: Props) => {
           <Grid item container justify="flex-start" xs={3}>
             <Typography variant="h5">
               {TriggerVars.params}
+            </Typography>
+          </Grid>
+          <Grid item container justify="flex-end" xs={2}>
+            <Typography variant="h5">
+              &nbsp;
             </Typography>
           </Grid>
 
@@ -116,12 +121,12 @@ const list = (props: Props) => {
 
                     <Grid className={rowclass} item container xs={12}>
 
-                      <Grid item container justify="flex-start" xs={3}>
+                      <Grid item container justify="flex-start" xs={2}>
                         <Typography variant="body1">
                           {endpoint}
                         </Typography>
                       </Grid>
-                      <Grid item container justify="flex-start" xs={3}>
+                      <Grid item container justify="flex-start" xs={2}>
                         <Typography variant="body1">
                           {command}
                         </Typography>

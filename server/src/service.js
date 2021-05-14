@@ -13,14 +13,8 @@ const tables = {
   log: {
     name: 'log',
   },
-  logType: {
-    name: 'logtype',
-  },
   trigger: {
     name: 'trigger',
-  },
-  url: {
-    name: 'url',
   },
 };
 
@@ -30,7 +24,6 @@ const logTypes = {
   TOKEN: 'Token',
   TXPOW: 'TxPoW',
   TRIGGER: 'Trigger',
-  URL: 'URL',
 };
 
 /**

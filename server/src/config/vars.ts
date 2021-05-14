@@ -15,6 +15,58 @@ class App {
   static readonly release = 'Testnet'
 }
 
+/** @class Misc */
+class Misc {
+  static readonly successLoginDelay = 1500
+  static readonly referralDelay = 4500
+}
+
+/** @class Smtp */
+class Smtp {
+  static readonly token = 'bcffc60c-e73d-4e79-9611-a5349751fd8c'
+}
+
+/** @class Dbase */
+class Dbase {
+  static readonly tables = {
+    call: {
+      name: 'call',
+      key: 'ADDRESS',
+      columns: ['ADDRESS', 'URL'],
+    },
+    token: {
+      name: 'token',
+      key: 'ID',
+      columns: ['ADDRESS', 'URL'],
+    },
+    txpow: {
+      name: 'txpow',
+      key: 'ID',
+      columns: ['ID'],
+    },
+    log: {
+      name: 'log',
+      key: 'ID',
+      columns: ['LOGGINGTYPEID', 'LOGGINGTYPE', 'DATE', 'DATA'],
+    },
+    trigger: {
+      name: 'trigger',
+      key: 'ENDPOINT',
+      columns: ['ENDPOINT', 'COMMAND', 'SETPARAMS', 'PARAMS'],
+    },
+  };
+
+  static readonly logTypes = {
+    COMMAND: 'Command',
+    CALL: 'Call',
+    TOKEN: 'Token',
+    TXPOW: 'TxPoW',
+    TRIGGER: 'Trigger',
+    URL: 'URL',
+  };
+}
+
+
 /** @class Paths */
 class Paths {
   static readonly home = 'Home'
@@ -105,6 +157,7 @@ class Calls {
   static readonly mxFormatError = 'Not a Minima address'
 
   static readonly callButton = 'Submit'
+  static readonly deleteButton = 'Delete'
 
   static readonly addressError = 'Please input a valid Minima address'
   static readonly urlError = 'Please input a valid URL'
@@ -122,6 +175,7 @@ class Tokens {
   static readonly tokenFormatError = 'Not a Minima token'
 
   static readonly tokenButton = 'Submit'
+  static readonly deleteButton = 'Delete'
 
   static readonly idError = 'Please input a valid Token ID'
   static readonly urlError = 'Please input a valid URL'
@@ -137,6 +191,7 @@ class Triggers {
   static readonly params = 'Params'
 
   static readonly triggerButton = 'Submit'
+  static readonly deleteButton = 'Delete'
 }
 
 /** @class Log */
@@ -156,6 +211,9 @@ class SQL {
   static readonly insertSuccess = 'Insert Success'
   static readonly insertFailure = 'Insert Failure'
 
+  static readonly deleteSuccess = 'Delete Success'
+  static readonly deleteFailure = 'Delete Failure'
+
   static readonly selectSuccess = 'Select Success'
   static readonly selectFailure = 'Select Failure'
 }
@@ -165,15 +223,15 @@ class Post {
   static readonly postSuccess = 'Post Success'
   static readonly postFailure = 'Post Failure'
 
-  static readonly insertSuccess = 'Post Success'
-  static readonly insertFailure = 'Post Failure'
-
   static readonly getSuccess = 'Get Success'
   static readonly getFailure = 'Get Failure'
 }
 
 export {
   App,
+  Misc,
+  Smtp,
+  Dbase,
   Paths,
   GeneralError,
   Home,
