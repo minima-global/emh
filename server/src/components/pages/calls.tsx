@@ -12,7 +12,6 @@ import {useFormik} from 'formik';
 import {themeStyles} from '../../styles';
 
 import {
-  Dbase,
   GeneralError,
   Calls as CallVars,
 } from '../../config';
@@ -42,7 +41,7 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  addCall: (table: string, address: string, url: string) => void
+  addCall: (address: string, url: string) => void
 }
 
 type Props = StateProps & DispatchProps
@@ -57,7 +56,7 @@ const display = (props: Props) => {
     enableReinitialize: true,
     validationSchema: callSchema,
     onSubmit: (values: any) => {
-      props.addCall(Dbase.tables.call.name, values.address, values.url);
+      props.addCall(values.address, values.url);
     },
   });
 
@@ -224,10 +223,9 @@ const mapStateToProps = (state: ApplicationState): StateProps => {
 const mapDispatchToProps = (dispatch: AppDispatch): DispatchProps => {
   return {
     addCall: (
-        table: string,
         address: string,
         url: string,
-    ) => dispatch(addCall(table, address, url)),
+    ) => dispatch(addCall(address, url)),
   };
 };
 
