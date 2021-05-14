@@ -214,6 +214,73 @@ const sortLogs = (logsData: LogsProps): Logs[] => {
 };
 */
 
+const stringifyColumns = (columns: Array<string>): string => {
+  let thisColumn = ' (';
+  const columnLength = columns.length;
+
+  for (let i = 0; i < columnLength; i ++ ) {
+    if ( i == columnLength - 1) {
+      thisColumn += columns[i] + ') ';
+    } else {
+      thisColumn += columns[i] + ', ';
+    }
+  }
+  return thisColumn;
+};
+
+const stringifyValues = (values: Array<string>): string => {
+  let thisValue = 'VALUES (';
+  const valuesLength = values.length;
+
+  for (let i = 0; i < valuesLength; i ++ ) {
+    if ( i == valuesLength - 1) {
+      thisValue += '\'' + values[i] + '\')';
+    } else {
+      thisValue += '\'' + values[i] + '\', ';
+    }
+  }
+  return thisValue;
+};
+
+export const addRow = (
+    table: string,
+    columns: Array<string>,
+    key: string,
+    values: Array<string>,
+) => {
+  return async (dispatch: AppDispatch) => {
+    const txSuccessAction: ActionTypes = TxActionTypes.TX_SUCCESS;
+    const txFailAction: ActionTypes = TxActionTypes.TX_FAILURE;
+    const d = new Date(Date.now());
+    const dateText = d.toString();
+    let txData = {
+      code: '200',
+      summary: SQL.insertSuccess,
+      time: dateText,
+    };
+
+    const thisColumns = stringifyColumns(columns);
+    const thisValues = stringifyValues(values);
+    const insertSQL = 'INSERT INTO ' + table + thisColumns + thisValues;
+
+    // console.log('insert!', insertSQL);
+
+    Minima.sql(insertSQL, function(result: any) {
+      if ( !result.status ) {
+        txData = {
+          code: '503',
+          summary: SQL.insertFailure,
+          time: dateText,
+        };
+        dispatch(write({data: txData})(txFailAction));
+      } else {
+        dispatch(doLog(key, table, 'insert'));
+        dispatch(write({data: txData})(txSuccessAction));
+      }
+    });
+  };
+};
+
 export const deleteRow = (
     table: string,
     column: string,

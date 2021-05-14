@@ -14,9 +14,10 @@ import {themeStyles} from '../../styles';
 import {
   GeneralError,
   Calls as CallVars,
+  Dbase,
 } from '../../config';
 
-import {addCall} from '../../store/app/blockchain/actions';
+import {addRow} from '../../store/app/blockchain/actions';
 
 import {ListCalls} from '../listCalls';
 
@@ -41,7 +42,12 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  addCall: (address: string, url: string) => void
+  addRow: (
+    table: string,
+    columns: Array<string>,
+    key: string,
+    values: Array<string>,
+  ) => void
 }
 
 type Props = StateProps & DispatchProps
@@ -56,7 +62,12 @@ const display = (props: Props) => {
     enableReinitialize: true,
     validationSchema: callSchema,
     onSubmit: (values: any) => {
-      props.addCall(values.address, values.url);
+      props.addRow(
+          Dbase.tables.call.name,
+          Dbase.tables.call.columns,
+          values.address,
+          [values.address, values.url],
+      );
     },
   });
 
@@ -222,10 +233,12 @@ const mapStateToProps = (state: ApplicationState): StateProps => {
 
 const mapDispatchToProps = (dispatch: AppDispatch): DispatchProps => {
   return {
-    addCall: (
-        address: string,
-        url: string,
-    ) => dispatch(addCall(address, url)),
+    addRow: (
+        table: string,
+        columns: Array<string>,
+        key: string,
+        values: Array<string>,
+    ) => dispatch(addRow(table, columns, key, values)),
   };
 };
 
