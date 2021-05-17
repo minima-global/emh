@@ -117,7 +117,7 @@ let theme = createMuiTheme({
       background: 'linear-gradient(#317AFF, #317AFF)',
       margin: 0,
       padding: 0,
-      lineHeight: '1.5',
+      lineHeight: '1',
       textTransform: 'none',
       fontSize: '1em',
       fontWeight: 400,
@@ -291,9 +291,11 @@ const themeStyles = makeStyles({
   },
   oddRow: {
     backgroundColor: '#F5F3F2',
+    paddingBottom: theme.spacing(0.5),
   },
   evenRow: {
     backgroundColor: '#FAFAFF',
+    paddingBottom: theme.spacing(0.5),
   },
   formSubmit: {
     paddingTop: theme.spacing(2),

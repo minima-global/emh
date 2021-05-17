@@ -3,8 +3,9 @@ import {connect} from 'react-redux';
 
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
 
-import {themeStyles} from '../styles';
+import {theme, themeStyles} from '../styles';
 
 import {
   ApplicationState,
@@ -16,7 +17,11 @@ import {
   TxData,
 } from '../store/types';
 
-import {initTx, getDbaseEntries} from '../store/app/blockchain/actions';
+import {
+  initTx,
+  deleteRow,
+  getDbaseEntries,
+} from '../store/app/blockchain/actions';
 
 import {
   Dbase,
@@ -31,6 +36,10 @@ interface StateProps {
 
 interface DispatchProps {
   initTx: () => void
+  deleteRow: (
+    table: string,
+    column: string,
+    value: string) => void
   getDbaseEntries: (
       dbase: string,
       succcessAction: ActionTypes,
@@ -44,6 +53,7 @@ type Props = StateProps & DispatchProps
 const list = (props: Props) => {
   const [summary, setSummary] = useState('');
   const isFirstRun = useRef(true);
+  const [isDisabled, setIsDisabled] = useState([] as boolean[]);
 
   const classes = themeStyles();
 
@@ -57,10 +67,18 @@ const list = (props: Props) => {
           TokenActionTypes.TOKEN_FAILURE,
       );
     } else {
+      if ( props.tokensData.data.length != isDisabled.length ) {
+        for (let i = 0; i < props.tokensData.data.length; i++ ) {
+          isDisabled[i] = false;
+        }
+      }
+
       const txSummary: string = props.tx.summary;
       if ( txSummary != summary ) {
         setSummary(txSummary);
-        if ( txSummary === SQL.insertSuccess ) {
+
+        if ( (txSummary === SQL.insertSuccess ) ||
+             (txSummary === SQL.deleteSuccess ) ) {
           props.getDbaseEntries(
               Dbase.tables.token.name,
               TokenActionTypes.TOKEN_SUCCESS,
@@ -70,6 +88,16 @@ const list = (props: Props) => {
       }
     }
   }, [props.tokensData, props.tx]);
+
+  const deleteToken = (token: TokensType, index: number) => {
+    isDisabled[index] = true;
+    props.initTx();
+    props.deleteRow(
+        Dbase.tables.token.name,
+        Dbase.tables.token.key,
+        token.ID,
+    );
+  };
 
   return (
 
@@ -108,7 +136,13 @@ const list = (props: Props) => {
 
                 <Grid className={rowclass} item container xs={12}>
 
-                  <Grid item container justify="flex-start" xs={5}>
+                  <Grid
+                    item
+                    container
+                    alignItems='center'
+                    justify="flex-start"
+                    xs={5}
+                  >
                     <Typography
                       variant="body1"
                       noWrap={true}
@@ -116,17 +150,29 @@ const list = (props: Props) => {
                       {id}
                     </Typography>
                   </Grid>
-                  <Grid item container justify="flex-start" xs={5}>
+                  <Grid
+                    item
+                    container
+                    alignItems='center'
+                    justify="flex-start"
+                    xs={5}
+                  >
                     <Typography variant="body1">
                       {url}
                     </Typography>
                   </Grid>
                   <Grid item container justify="flex-end" xs={2}>
-                    <Typography variant="h5">
-                      &nbsp;
-                    </Typography>
+                    <Button
+                      onClick={() => deleteToken(token, index)}
+                      disabled={isDisabled[index]}
+                      style={{
+                        marginTop: theme.spacing(0.5),
+                        background: 'linear-gradient(#FF0000, #FF0000)',
+                      }}
+                    >
+                      {TokenVars.deleteButton}
+                    </Button>
                   </Grid>
-
                 </Grid>
 
               </React.Fragment>
@@ -148,6 +194,10 @@ const mapStateToProps = (state: ApplicationState): StateProps => {
 const mapDispatchToProps = (dispatch: AppDispatch): DispatchProps => {
   return {
     initTx: () => dispatch(initTx()),
+    deleteRow: (
+        table: string,
+        column: string,
+        value: string) => dispatch(deleteRow(table, column, value)),
     getDbaseEntries: (
         dbase: string,
         succcessAction: ActionTypes,

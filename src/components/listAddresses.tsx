@@ -5,7 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
-import {themeStyles} from '../styles';
+import {theme, themeStyles} from '../styles';
 
 import {
   ApplicationState,
@@ -135,12 +135,24 @@ const list = (props: Props) => {
 
                     <Grid className={rowclass} item container xs={12}>
 
-                      <Grid item container justify="flex-start" xs={5}>
+                      <Grid
+                        item
+                        container
+                        alignItems='center'
+                        justify="flex-start"
+                        xs={5}
+                      >
                         <Typography variant="body1">
                           {address}
                         </Typography>
                       </Grid>
-                      <Grid item container justify="flex-start" xs={5}>
+                      <Grid
+                        item
+                        container
+                        alignItems='center'
+                        justify="flex-start"
+                        xs={5}
+                      >
                         <Typography variant="body1">
                           {url}
                         </Typography>
@@ -150,6 +162,7 @@ const list = (props: Props) => {
                           onClick={() => deleteAddress(call, index)}
                           disabled={isDisabled[index]}
                           style={{
+                            marginTop: theme.spacing(0.5),
                             background: 'linear-gradient(#FF0000, #FF0000)',
                           }}
                         >
