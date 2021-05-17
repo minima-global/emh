@@ -10,10 +10,8 @@ import {theme, themeStyles} from '../styles';
 import {
   ApplicationState,
   AppDispatch,
-  ActionTypes,
   TriggersProps,
   Triggers as TriggersType,
-  TriggerActionTypes,
   TxData,
 } from '../store/types';
 
@@ -38,13 +36,9 @@ interface DispatchProps {
   initTx: () => void
   deleteRow: (
     table: string,
-    column: string,
-    value: string) => void
-  getDbaseEntries: (
-      dbase: string,
-      succcessAction: ActionTypes,
-      failAction: ActionTypes
-  ) => void
+    columns: Array<string>,
+    values: Array<string>) => void
+  getDbaseEntries: (dbase: string) => void
 }
 
 type Props = StateProps & DispatchProps
@@ -61,11 +55,7 @@ const list = (props: Props) => {
     if ( isFirstRun.current ) {
       isFirstRun.current = false;
       props.initTx();
-      props.getDbaseEntries(
-          Dbase.tables.trigger.name,
-          TriggerActionTypes.TRIGGER_SUCCESS,
-          TriggerActionTypes.TRIGGER_FAILURE,
-      );
+      props.getDbaseEntries(Dbase.tables.trigger.name);
     } else {
       if ( props.triggersData.data.length != isDisabled.length ) {
         for (let i = 0; i < props.triggersData.data.length; i++ ) {
@@ -77,11 +67,7 @@ const list = (props: Props) => {
         setSummary(txSummary);
         if ( (txSummary === SQL.insertSuccess ) ||
              (txSummary === SQL.deleteSuccess ) ) {
-          props.getDbaseEntries(
-              Dbase.tables.trigger.name,
-              TriggerActionTypes.TRIGGER_SUCCESS,
-              TriggerActionTypes.TRIGGER_FAILURE,
-          );
+          props.getDbaseEntries(Dbase.tables.trigger.name);
         }
       }
     }
@@ -92,8 +78,8 @@ const list = (props: Props) => {
     props.initTx();
     props.deleteRow(
         Dbase.tables.trigger.name,
-        Dbase.tables.trigger.key,
-        trigger.ENDPOINT,
+        Dbase.tables.trigger.key.name,
+        [trigger.ENDPOINT],
     );
   };
 
@@ -232,13 +218,9 @@ const mapDispatchToProps = (dispatch: AppDispatch): DispatchProps => {
     initTx: () => dispatch(initTx()),
     deleteRow: (
         table: string,
-        column: string,
-        value: string) => dispatch(deleteRow(table, column, value)),
-    getDbaseEntries: (
-        dbase: string,
-        succcessAction: ActionTypes,
-        failAction: ActionTypes,
-    ) => dispatch(getDbaseEntries(dbase, succcessAction, failAction)),
+        columns: Array<string>,
+        values: Array<string>) => dispatch(deleteRow(table, columns, values)),
+    getDbaseEntries: (dbase: string) => dispatch(getDbaseEntries(dbase)),
   };
 };
 

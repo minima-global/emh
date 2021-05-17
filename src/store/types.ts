@@ -70,7 +70,7 @@ export interface AddressProps extends PayloadProps {
  * Tokens
  */
 export interface Tokens {
-  ID: string
+  TOKENID: string
   URL: string
 }
 
@@ -136,6 +136,12 @@ export const enum TxActionTypes {
   TX_FAILURE = '@@TxActionTypes/TX_FAILURE'
 }
 
+export const enum TxPoWActionTypes {
+  TXPOW_INIT = '@@TxActionTypes/TXPOW_INIT',
+  TXPOW_SUCCESS = '@@TxActionTypes/TXPOW_SUCCESS',
+  TXPOW_FAILURE = '@@TxActionTypes/TXPOW_FAILURE'
+}
+
 export const enum CmdActionTypes {
   CMD_INIT = '@@CmdActionTypes/CMD_INIT',
   CMD_SUCCESS = '@@CmdActionTypes/CMD_SUCCESS',
@@ -169,8 +175,14 @@ export const enum TriggerActionTypes {
 export type ActionTypes =
   AppDataActionTypes |
   TxActionTypes |
+  TxPoWActionTypes |
   CmdActionTypes |
   LogsActionTypes |
   AddressActionTypes |
   TokenActionTypes |
   TriggerActionTypes;
+
+export type SuccessAndFailType = {
+  success: ActionTypes,
+  fail: ActionTypes,
+}

@@ -29,29 +29,44 @@ class Smtp {
 /** @class Dbase */
 class Dbase {
   static readonly tables = {
-    call: {
-      name: 'CALL',
-      key: 'ADDRESS',
+    address: {
+      name: 'ADDRESS',
+      key: {
+        name: ['ADDRESS', 'URL'],
+        isAuto: false,
+      },
       columns: ['ADDRESS', 'URL'],
     },
     token: {
       name: 'TOKEN',
-      key: 'ID',
-      columns: ['ID', 'URL'],
+      key: {
+        name: ['TOKENID', 'URL'],
+        isAuto: false,
+      },
+      columns: ['TOKENID', 'URL'],
     },
     txpow: {
       name: 'TXPOW',
-      key: 'ID',
-      columns: ['ID'],
+      key: {
+        name: ['TXID'],
+        isAuto: false,
+      },
+      columns: ['TXID'],
     },
     log: {
       name: 'LOG',
-      key: 'ID',
-      columns: ['LOGGINGTYPEID', 'LOGGINGTYPE', 'DATE', 'DATA'],
+      key: {
+        name: ['ID'],
+        isAuto: true,
+      },
+      columns: ['ID', 'LOGGINGTYPEID', 'LOGGINGTYPE', 'DATE', 'DATA'],
     },
     trigger: {
       name: 'TRIGGER',
-      key: 'ENDPOINT',
+      key: {
+        name: ['ENDPOINT'],
+        isAuto: false,
+      },
       columns: ['ENDPOINT', 'COMMAND', 'SETPARAMS', 'PARAMS'],
     },
   };
@@ -163,7 +178,7 @@ class Addresses {
 class Tokens {
   static readonly heading = 'Tokens to URLs'
 
-  static readonly id = 'Token ID'
+  static readonly tokenId = 'Token ID'
   static readonly url = 'URL'
 
   static readonly tokenLengthError =

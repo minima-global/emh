@@ -10,10 +10,8 @@ import {theme, themeStyles} from '../styles';
 import {
   ApplicationState,
   AppDispatch,
-  ActionTypes,
   TokensProps,
   Tokens as TokensType,
-  TokenActionTypes,
   TxData,
 } from '../store/types';
 
@@ -38,13 +36,9 @@ interface DispatchProps {
   initTx: () => void
   deleteRow: (
     table: string,
-    column: string,
-    value: string) => void
-  getDbaseEntries: (
-      dbase: string,
-      succcessAction: ActionTypes,
-      failAction: ActionTypes
-  ) => void
+    columns: Array<string>,
+    key: Array<string>) => void
+    getDbaseEntries: (dbase: string) => void
 }
 
 type Props = StateProps & DispatchProps
@@ -61,11 +55,7 @@ const list = (props: Props) => {
     if ( isFirstRun.current ) {
       isFirstRun.current = false;
       props.initTx();
-      props.getDbaseEntries(
-          Dbase.tables.token.name,
-          TokenActionTypes.TOKEN_SUCCESS,
-          TokenActionTypes.TOKEN_FAILURE,
-      );
+      props.getDbaseEntries(Dbase.tables.token.name);
     } else {
       if ( props.tokensData.data.length != isDisabled.length ) {
         for (let i = 0; i < props.tokensData.data.length; i++ ) {
@@ -79,11 +69,7 @@ const list = (props: Props) => {
 
         if ( (txSummary === SQL.insertSuccess ) ||
              (txSummary === SQL.deleteSuccess ) ) {
-          props.getDbaseEntries(
-              Dbase.tables.token.name,
-              TokenActionTypes.TOKEN_SUCCESS,
-              TokenActionTypes.TOKEN_FAILURE,
-          );
+          props.getDbaseEntries(Dbase.tables.token.name);
         }
       }
     }
@@ -94,8 +80,8 @@ const list = (props: Props) => {
     props.initTx();
     props.deleteRow(
         Dbase.tables.token.name,
-        Dbase.tables.token.key,
-        token.ID,
+        Dbase.tables.token.key.name,
+        [token.TOKENID, token.URL],
     );
   };
 
@@ -108,7 +94,7 @@ const list = (props: Props) => {
 
           <Grid item container justify="flex-start" xs={5}>
             <Typography variant="h5">
-              {TokenVars.id}
+              {TokenVars.tokenId}
             </Typography>
           </Grid>
           <Grid item container justify="flex-start" xs={5}>
@@ -126,7 +112,7 @@ const list = (props: Props) => {
 
         <Grid item container className={classes.formSummary} xs={12}>
           { props.tokensData.data.map( ( token: TokensType, index: number ) => {
-            const id = token.ID;
+            const id = token.TOKENID;
             const url = token.URL;
 
             const rowclass = index % 2 ? classes.evenRow : classes.oddRow;
@@ -196,13 +182,9 @@ const mapDispatchToProps = (dispatch: AppDispatch): DispatchProps => {
     initTx: () => dispatch(initTx()),
     deleteRow: (
         table: string,
-        column: string,
-        value: string) => dispatch(deleteRow(table, column, value)),
-    getDbaseEntries: (
-        dbase: string,
-        succcessAction: ActionTypes,
-        failAction: ActionTypes,
-    ) => dispatch(getDbaseEntries(dbase, succcessAction, failAction)),
+        columns: Array<string>,
+        key: Array<string>) => dispatch(deleteRow(table, columns, key)),
+    getDbaseEntries: (dbase: string) => dispatch(getDbaseEntries(dbase)),
   };
 };
 

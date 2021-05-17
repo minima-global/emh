@@ -45,7 +45,7 @@ interface DispatchProps {
   addRow: (
     table: string,
     columns: Array<string>,
-    key: string,
+    key: Array<string>,
     values: Array<string>,
   ) => void
 }
@@ -63,9 +63,9 @@ const display = (props: Props) => {
     validationSchema: callSchema,
     onSubmit: (values: any) => {
       props.addRow(
-          Dbase.tables.call.name,
-          Dbase.tables.call.columns,
-          values.address,
+          Dbase.tables.address.name,
+          Dbase.tables.address.columns,
+          [values.address, values.url],
           [values.address, values.url],
       );
     },
@@ -236,7 +236,7 @@ const mapDispatchToProps = (dispatch: AppDispatch): DispatchProps => {
     addRow: (
         table: string,
         columns: Array<string>,
-        key: string,
+        key: Array<string>,
         values: Array<string>,
     ) => dispatch(addRow(table, columns, key, values)),
   };

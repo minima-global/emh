@@ -28,7 +28,7 @@ import {
 } from '../../store/types';
 
 const tokenSchema = Yup.object().shape({
-  id: Yup.string()
+  tokenId: Yup.string()
       .required(GeneralError.required)
       .min(4, TokenVars.tokenLengthError)
       .max(130, TokenVars.tokenLengthError),
@@ -45,7 +45,7 @@ interface DispatchProps {
   addRow: (
     table: string,
     columns: Array<string>,
-    key: string,
+    key: Array<string>,
     values: Array<string>,
   ) => void
 }
@@ -56,7 +56,7 @@ const display = (props: Props) => {
   const classes = themeStyles();
   const formik = useFormik({
     initialValues: {
-      id: '',
+      tokenId: '',
       url: '',
     },
     enableReinitialize: true,
@@ -65,8 +65,8 @@ const display = (props: Props) => {
       props.addRow(
           Dbase.tables.token.name,
           Dbase.tables.token.columns,
-          values.id,
-          [values.id, values.url],
+          [values.tokenId, values.url],
+          [values.tokenId, values.url],
       );
     },
   });
@@ -107,20 +107,20 @@ const display = (props: Props) => {
               xs={4}
               lg={2}
             >
-              <label htmlFor="id">{TokenVars.id}</label>
+              <label htmlFor="tokenId">{TokenVars.tokenId}</label>
             </Grid>
             <Grid item container xs={8} lg={10}>
               <TextField
                 fullWidth
                 size="small"
-                name="id"
+                name="tokenId"
                 type="text"
-                value={formik.values.id}
+                value={formik.values.tokenId}
                 onChange={formik.handleChange}
                 InputProps={{disableUnderline: true}}
               />
             </Grid>
-            {formik.errors.id && formik.touched.id ? (
+            {formik.errors.tokenId && formik.touched.tokenId ? (
               <>
                 <Grid item container xs={4} lg={2}>
                   <Typography variant="body1">
@@ -133,7 +133,7 @@ const display = (props: Props) => {
                   xs={8}
                   lg={10}
                 >
-                  {formik.errors.id}
+                  {formik.errors.tokenId}
                 </Grid>
               </>
               ) : null
@@ -236,7 +236,7 @@ const mapDispatchToProps = (dispatch: AppDispatch): DispatchProps => {
     addRow: (
         table: string,
         columns: Array<string>,
-        key: string,
+        key: Array<string>,
         values: Array<string>,
     ) => dispatch(addRow(table, columns, key, values)),
   };

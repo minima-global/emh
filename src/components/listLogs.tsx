@@ -27,11 +27,7 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  getDbaseEntries: (
-      dbase: string,
-      succcessAction: ActionTypes,
-      failAction: ActionTypes
-  ) => void
+  getDbaseEntries: (dbase: string) => void
 }
 
 type Props = StateProps & DispatchProps
@@ -40,11 +36,7 @@ const list = (props: Props) => {
   const classes = themeStyles();
 
   useEffect(() => {
-    props.getDbaseEntries(
-        Dbase.tables.log.name,
-        LogsActionTypes.LOGS_SUCCESS,
-        LogsActionTypes.LOGS_FAILURE,
-    );
+    props.getDbaseEntries(Dbase.tables.log.name);
   }, []);
 
   return (
@@ -141,11 +133,7 @@ const mapStateToProps = (state: ApplicationState): StateProps => {
 
 const mapDispatchToProps = (dispatch: AppDispatch): DispatchProps => {
   return {
-    getDbaseEntries: (
-        dbase: string,
-        succcessAction: ActionTypes,
-        failAction: ActionTypes,
-    ) => dispatch(getDbaseEntries(dbase, succcessAction, failAction)),
+    getDbaseEntries: (dbase: string) => dispatch(getDbaseEntries(dbase)),
   };
 };
 

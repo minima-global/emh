@@ -10,10 +10,8 @@ import {theme, themeStyles} from '../styles';
 import {
   ApplicationState,
   AppDispatch,
-  ActionTypes,
   AddressProps,
   Address as AddressType,
-  AddressActionTypes,
   TxData,
 } from '../store/types';
 
@@ -38,13 +36,9 @@ interface DispatchProps {
   initTx: () => void
   deleteRow: (
     table: string,
-    column: string,
-    value: string) => void
-  getDbaseEntries: (
-      dbase: string,
-      succcessAction: ActionTypes,
-      failAction: ActionTypes
-  ) => void
+    columns: Array<string>,
+    key: Array<string>) => void
+  getDbaseEntries: (dbase: string) => void
 }
 
 type Props = StateProps & DispatchProps
@@ -60,11 +54,7 @@ const list = (props: Props) => {
     if ( isFirstRun.current ) {
       isFirstRun.current = false;
       props.initTx();
-      props.getDbaseEntries(
-          Dbase.tables.call.name,
-          AddressActionTypes.ADDRESS_SUCCESS,
-          AddressActionTypes.ADDRESS_FAILURE,
-      );
+      props.getDbaseEntries(Dbase.tables.address.name);
     } else {
       if ( props.addressData.data.length != isDisabled.length ) {
         for (let i = 0; i < props.addressData.data.length; i++ ) {
@@ -77,23 +67,19 @@ const list = (props: Props) => {
         setSummary(txSummary);
         if ( (txSummary === SQL.insertSuccess ) ||
              (txSummary === SQL.deleteSuccess ) ) {
-          props.getDbaseEntries(
-              Dbase.tables.call.name,
-              AddressActionTypes.ADDRESS_SUCCESS,
-              AddressActionTypes.ADDRESS_FAILURE,
-          );
+          props.getDbaseEntries(Dbase.tables.address.name);
         }
       }
     }
   }, [props.addressData, props.tx]);
 
-  const deleteAddress = (call: AddressType, index: number) => {
+  const deleteAddress = (address: AddressType, index: number) => {
     isDisabled[index] = true;
     props.initTx();
     props.deleteRow(
-        Dbase.tables.call.name,
-        Dbase.tables.call.key,
-        call.ADDRESS,
+        Dbase.tables.address.name,
+        Dbase.tables.address.key.name,
+        [address.ADDRESS, address.URL],
     );
   };
 
@@ -193,13 +179,9 @@ const mapDispatchToProps = (dispatch: AppDispatch): DispatchProps => {
     initTx: () => dispatch(initTx()),
     deleteRow: (
         table: string,
-        column: string,
-        value: string) => dispatch(deleteRow(table, column, value)),
-    getDbaseEntries: (
-        dbase: string,
-        succcessAction: ActionTypes,
-        failAction: ActionTypes,
-    ) => dispatch(getDbaseEntries(dbase, succcessAction, failAction)),
+        columns: Array<string>,
+        key: Array<string>) => dispatch(deleteRow(table, columns, key)),
+    getDbaseEntries: (dbase: string) => dispatch(getDbaseEntries(dbase)),
   };
 };
 

@@ -1,33 +1,47 @@
 const app = 'EMH';
 
 const tables = {
-  call: {
-    name: 'CALL',
-    key: 'ADDRESS',
+  address: {
+    name: 'ADDRESS',
+    key: {
+      name: ['ADDRESS', 'URL'],
+      isAuto: false,
+    },
     columns: ['ADDRESS', 'URL'],
   },
   token: {
     name: 'TOKEN',
-    key: 'ID',
-    columns: ['ID', 'URL'],
+    key: {
+      name: ['TOKENID', 'URL'],
+      isAuto: false,
+    },
+    columns: ['TOKENID', 'URL'],
   },
   txpow: {
     name: 'TXPOW',
-    key: 'ID',
-    columns: ['ID'],
+    key: {
+      name: ['TXID'],
+      isAuto: false,
+    },
+    columns: ['TXID'],
   },
   log: {
     name: 'LOG',
-    key: 'ID',
-    columns: ['LOGGINGTYPEID', 'LOGGINGTYPE', 'DATE', 'DATA'],
+    key: {
+      name: ['ID'],
+      isAuto: true,
+    },
+    columns: ['ID', 'LOGGINGTYPEID', 'LOGGINGTYPE', 'DATE', 'DATA'],
   },
   trigger: {
     name: 'TRIGGER',
-    key: 'ENDPOINT',
+    key: {
+      name: ['ENDPOINT'],
+      isAuto: false,
+    },
     columns: ['ENDPOINT', 'COMMAND', 'SETPARAMS', 'PARAMS'],
   },
 };
-
 
 const extraLogTypes = {
   COMMAND: 'COMMAND',
@@ -42,6 +56,7 @@ const extraLogTypes = {
 */
 function doSQL(sql, tableName) {
   Minima.sql(sql, function(resp) {
+    Minima.log(app + ' response ' + JSON.stringify(resp));
     if (!resp.status) {
       Minima.log(app + ' Error with SQL ' + tableName + resp.message);
     }
@@ -60,7 +75,7 @@ function doLog(typeId, type, data) {
   const date = Date.now();
   const insertSQL = 'INSERT INTO ' +
       tableName +
-      ' (loggingTypeId, loggingType, date, data) ' +
+      ' (LOGGINGTYPEID, LOGGINGTYPE, DATE, DATA) ' +
       'VALUES (' +
       '\'' + typeId + '\', ' +
       '\'' + type + '\', ' +
@@ -78,8 +93,8 @@ function createTxPow() {
   const tableName = tables.txpow.name;
   const createSQL = 'CREATE Table IF NOT EXISTS ' +
       tableName + ' (' +
-      'id varchar(255) NOT NULL, ' +
-      'PRIMARY KEY(id)' +
+      'TXID VARCHAR(255) NOT NULL, ' +
+      'PRIMARY KEY(TXID)' +
     ');';
   doSQL(createSQL, tableName);
 }
@@ -88,13 +103,13 @@ function createTxPow() {
  * Creates call table
  * @function createCall
  */
-function createCall() {
-  const tableName = tables.call.name;
+function createAddress() {
+  const tableName = tables.address.name;
   const createSQL = 'CREATE Table IF NOT EXISTS ' +
       tableName + ' (' +
-      'address varchar(255) NOT NULL, ' +
-      'url varchar(255), ' +
-      'PRIMARY KEY(address)' +
+      'ADDRESS VARCHAR(255) NOT NULL, ' +
+      'URL VARCHAR(255), ' +
+      'PRIMARY KEY(ADDRESS, URL)' +
     ');';
 
   doSQL(createSQL, tableName);
@@ -108,9 +123,9 @@ function createToken() {
   const tableName = tables.token.name;
   const createSQL = 'CREATE Table IF NOT EXISTS ' +
       tableName + ' (' +
-      'id varchar(255) NOT NULL, ' +
-      'url varchar(255), ' +
-      'PRIMARY KEY(id)' +
+      'TOKENID VARCHAR(255) NOT NULL, ' +
+      'URL VARCHAR(255), ' +
+      'PRIMARY KEY(TOKENID, URL)' +
     ');';
 
   doSQL(createSQL, tableName);
@@ -124,11 +139,11 @@ function createTrigger() {
   const tableName = tables.trigger.name;
   const createSQL = 'CREATE Table IF NOT EXISTS ' +
       tableName + ' (' +
-      'endpoint varchar(255) NOT NULL, ' +
-      'command varchar(255) NOT NULL, ' +
-      'setParams varchar(255), ' +
-      'params varchar(255), ' +
-      'PRIMARY KEY(endpoint)' +
+      'ENDPOINT VARCHAR(255) NOT NULL, ' +
+      'COMMAND VARCHAR(255) NOT NULL, ' +
+      'SETPARAMS VARCHAR(255), ' +
+      'PARAMS VARCHAR(255), ' +
+      'PRIMARY KEY(ENDPOINT)' +
     ');';
 
   doSQL(createSQL, tableName);
@@ -142,12 +157,12 @@ function createLog() {
   const tableName = tables.log.name;
   const createSQL = 'CREATE Table IF NOT EXISTS ' +
       tableName + ' (' +
-      'id INT PRIMARY KEY AUTO_INCREMENT, ' +
-      'loggingTypeId varchar(255) NOT NULL, ' +
-      'loggingType varchar(255) NOT NULL, ' +
-      'date varchar(255) NOT NULL, ' +
-      'data varchar(1024), ' +
-      'PRIMARY KEY(id)' +
+      'ID INT PRIMARY KEY AUTO_INCREMENT, ' +
+      'LOGGINGTYPEID VARCHAR(512) NOT NULL, ' +
+      'LOGGINGTYPE VARCHAR(255) NOT NULL, ' +
+      'DATE VARCHAR(255) NOT NULL, ' +
+      'DATA VARCHAR(1024), ' +
+      'PRIMARY KEY(ID)' +
       ')';
 
   doSQL(createSQL, tableName);
@@ -156,7 +171,7 @@ function createLog() {
 /** @function initDbase */
 function initDbase() {
   createTxPow();
-  createCall();
+  createAddress();
   createToken();
   createTrigger();
   createLog();
@@ -175,7 +190,7 @@ function addTxPoW(txpow) {
     const tableName = tables.txpow.name;
     const insertSQL = 'INSERT INTO ' +
       tableName +
-      ' (id) ' +
+      ' (TXID) ' +
       'VALUES (' +
       '\'' + id + '\'' +
     ')';
