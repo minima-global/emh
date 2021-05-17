@@ -11,7 +11,7 @@ class App {
   static readonly enquiries = 'Minima Community Team'
   static readonly email = 'community@minima.global'
   static readonly bugEmail = 'minima-global@fire.fundersclub.com'
-  static readonly version = '0.2.0'
+  static readonly version = '0.2.3'
   static readonly release = 'Testnet'
 }
 
@@ -51,7 +51,7 @@ class Dbase {
         name: ['TXID'],
         isAuto: false,
       },
-      columns: ['TXID'],
+      columns: ['TXID', 'DATA'],
     },
     log: {
       name: 'LOG',

@@ -23,7 +23,7 @@ const tables = {
       name: ['TXID'],
       isAuto: false,
     },
-    columns: ['TXID'],
+    columns: ['TXID', 'DATA'],
   },
   log: {
     name: 'LOG',
@@ -56,7 +56,6 @@ const extraLogTypes = {
 */
 function doSQL(sql, tableName) {
   Minima.sql(sql, function(resp) {
-    Minima.log(app + ' response ' + JSON.stringify(resp));
     if (!resp.status) {
       Minima.log(app + ' Error with SQL ' + tableName + resp.message);
     }
@@ -94,6 +93,7 @@ function createTxPow() {
   const createSQL = 'CREATE Table IF NOT EXISTS ' +
       tableName + ' (' +
       'TXID VARCHAR(255) NOT NULL, ' +
+      'DATA VARCHAR(1024), ' +
       'PRIMARY KEY(TXID)' +
     ');';
   doSQL(createSQL, tableName);
@@ -163,7 +163,7 @@ function createLog() {
       'DATE VARCHAR(255) NOT NULL, ' +
       'DATA VARCHAR(1024), ' +
       'PRIMARY KEY(ID)' +
-      ')';
+    ');';
 
   doSQL(createSQL, tableName);
 }
@@ -178,26 +178,64 @@ function initDbase() {
 }
 
 /**
- * Adds relevant txpows to TxPow table
- * @function addTxPoW
- * @param {object} txpow
+ * Adds relevant tokenid to log table and calls any defined url
+ * @function processToken
+ * @param {string} txId
+ * @param {string} tokenId
 */
-function addTxPoW(txpow) {
-  const txOutputs = txpow.body.txn.outputs;
-  if ( ( Array.isArray(txOutputs) ) &&
-        ( txOutputs.length ) ) {
-    const id = txpow.txpowid;
-    const tableName = tables.txpow.name;
-    const insertSQL = 'INSERT INTO ' +
-      tableName +
-      ' (TXID) ' +
-      'VALUES (' +
-      '\'' + id + '\'' +
-    ')';
+function processToken(txId, tokenId) {
+  const selectSQL = 'Select URL from ' +
+    tables.token.name +
+    ' WHERE TOKENID = \'' +
+    tokenId +
+    '\'';
 
-    doSQL(insertSQL, tableName);
-    doLog(id, tables.txpow.name, 'insert');
-  }
+  Minima.sql(selectSQL, function(results) {
+    if (results.response.count) {
+      Minima.log(app + ' your token response ' + JSON.stringify(results));
+      tableName = tables.txpow.name;
+      const insertSQL = 'INSERT INTO ' +
+          tables.txpow.name +
+          ' (TXID, DATA) ' +
+          'VALUES (' +
+          '\'' + txId + '\', ' +
+          '\'' + tokenId + '\'' +
+        ')';
+
+      doSQL(insertSQL, tables.txpow.name);
+      doLog(txId, tables.txpow.name, 'insert');
+    }
+  });
+}
+
+/**
+ * Adds relevant address to log table and calls any defined url
+ * @function processAddress
+ * @param {string} txId
+ * @param {string} address
+*/
+function processAddress(txId, address) {
+  const selectSQL = 'Select URL from ' +
+  tables.address.name +
+    ' WHERE ADDRESS = \'' +
+    address +
+    '\'';
+
+  Minima.sql(selectSQL, function(results) {
+    if (results.response.count) {
+      Minima.log(app + ' my address response ' + JSON.stringify(results));
+      const insertSQL = 'INSERT INTO ' +
+          tables.txpow.name +
+          ' (TXID, DATA) ' +
+          'VALUES (' +
+          '\'' + txId + '\', ' +
+          '\'' + address + '\'' +
+        ')';
+
+      doSQL(insertSQL, tables.txpow.name);
+      doLog(txId, tables.txpow.name, 'insert');
+    }
+  });
 }
 
 /** Initialise the app */
@@ -205,6 +243,13 @@ Minima.init( function(msg) {
   if (msg.event == 'connected') {
     initDbase();
   } else if (msg.event == 'newtxpow') {
-    addTxPoW(msg.info.txpow);
+    const txPoW = msg.info.txpow;
+    const txOutputs = txPoW.body.txn.outputs;
+    // txOutputs[0].address
+    if ( ( Array.isArray(txOutputs) ) &&
+        ( txOutputs.length ) ) {
+      processToken(txPoW.txpowid, txOutputs[0].tokenid);
+      processAddress(txPoW.txpowid, txOutputs[0].mxaddress);
+    }
   }
 });
