@@ -17,7 +17,7 @@ import {
   Triggers as TriggerVars,
 } from '../../config';
 
-import {addTrigger} from '../../store/app/blockchain/actions';
+import {addRow} from '../../store/app/blockchain/actions';
 
 import {ListTriggers} from '../listTriggers';
 
@@ -45,12 +45,11 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  addTrigger: (
-      table: string,
-      endpoint: string,
-      command: string,
-      setParams: string,
-      params: string,
+  addRow: (
+    table: string,
+    columns: Array<string>,
+    key: string,
+    values: Array<string>,
   ) => void
 }
 
@@ -68,13 +67,11 @@ const display = (props: Props) => {
     enableReinitialize: true,
     validationSchema: triggerSchema,
     onSubmit: (values: any) => {
-      props.addTrigger(
-          Dbase.tables.
-              trigger.name,
+      props.addRow(
+          Dbase.tables.trigger.name,
+          Dbase.tables.trigger.columns,
           values.endpoint,
-          values.command,
-          values.setParams,
-          values.params,
+          [values.endpoint, values.command, values.setParams, values.params],
       );
     },
   });
@@ -329,13 +326,12 @@ const mapStateToProps = (state: ApplicationState): StateProps => {
 
 const mapDispatchToProps = (dispatch: AppDispatch): DispatchProps => {
   return {
-    addTrigger: (
+    addRow: (
         table: string,
-        endpoint: string,
-        command: string,
-        setParams: string,
-        params: string,
-    ) => dispatch(addTrigger(table, endpoint, command, setParams, params)),
+        columns: Array<string>,
+        key: string,
+        values: Array<string>,
+    ) => dispatch(addRow(table, columns, key, values)),
   };
 };
 

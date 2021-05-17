@@ -17,7 +17,7 @@ import {
   Tokens as TokenVars,
 } from '../../config';
 
-import {addToken} from '../../store/app/blockchain/actions';
+import {addRow} from '../../store/app/blockchain/actions';
 
 import {ListTokens} from '../listTokens';
 
@@ -34,7 +34,7 @@ const tokenSchema = Yup.object().shape({
       .max(130, TokenVars.tokenLengthError),
   url: Yup.string()
       .url(TokenVars.urlError)
-      .length(255, GeneralError.lengthError255),
+      .max(255, GeneralError.lengthError255),
 });
 
 interface StateProps {
@@ -42,7 +42,12 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  addToken: (table: string, id: string, url: string) => void
+  addRow: (
+    table: string,
+    columns: Array<string>,
+    key: string,
+    values: Array<string>,
+  ) => void
 }
 
 type Props = StateProps & DispatchProps
@@ -57,7 +62,12 @@ const display = (props: Props) => {
     enableReinitialize: true,
     validationSchema: tokenSchema,
     onSubmit: (values: any) => {
-      props.addToken(Dbase.tables.token.name, values.id, values.url);
+      props.addRow(
+          Dbase.tables.token.name,
+          Dbase.tables.token.columns,
+          values.id,
+          [values.id, values.url],
+      );
     },
   });
 
@@ -223,11 +233,12 @@ const mapStateToProps = (state: ApplicationState): StateProps => {
 
 const mapDispatchToProps = (dispatch: AppDispatch): DispatchProps => {
   return {
-    addToken: (
+    addRow: (
         table: string,
-        id: string,
-        url: string,
-    ) => dispatch(addToken(table, id, url)),
+        columns: Array<string>,
+        key: string,
+        values: Array<string>,
+    ) => dispatch(addRow(table, columns, key, values)),
   };
 };
 

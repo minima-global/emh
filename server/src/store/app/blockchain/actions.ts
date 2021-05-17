@@ -16,6 +16,10 @@ import {
 
 import {write} from '../../actions';
 
+/**
+ * Initialises the app
+ * @return {function}
+ */
 export const init = () => {
   return async (dispatch: AppDispatch) => {
     const initAction: ActionTypes = TxActionTypes.TX_INIT;
@@ -32,6 +36,10 @@ export const init = () => {
   };
 };
 
+/**
+ * Initialises the Redux Tx store
+ * @return {function}
+ */
 export const initTx = () => {
   return async (dispatch: AppDispatch) => {
     const initAction: ActionTypes = TxActionTypes.TX_INIT;
@@ -44,6 +52,13 @@ export const initTx = () => {
   };
 };
 
+/**
+ * Logs stuff going into the database
+ * @param {string} typeId - the key of the type
+ * @param {string} type - the type of the log entry
+ * @param {string} data - relevant data for the log entry
+ * @return {function}
+ */
 export const doLog = (typeId: string, type: string, data: string) => {
   return async (dispatch: AppDispatch) => {
     const table = Dbase.tables.log.name;
@@ -70,6 +85,11 @@ export const doLog = (typeId: string, type: string, data: string) => {
   };
 };
 
+/**
+ * Runs a Minima command
+ * @param {string} cmd - the command to run
+ * @return {function}
+ */
 export const command = (cmd: string) => {
   return async (dispatch: AppDispatch) => {
     // console.log('Got command', cmd);
@@ -81,128 +101,8 @@ export const command = (cmd: string) => {
         command = params;
         params = '';
       }
-      dispatch(doLog(command, Dbase.logTypes.COMMAND, params));
+      dispatch(doLog(command, 'COMMAND', params));
       dispatch(write({data: msg.response})(successAction));
-    });
-  };
-};
-
-export const addCall = (address: string, url: string) => {
-  return async (dispatch: AppDispatch) => {
-    const table = Dbase.tables.call.name;
-    const txSuccessAction: ActionTypes = TxActionTypes.TX_SUCCESS;
-    const txFailAction: ActionTypes = TxActionTypes.TX_FAILURE;
-    const d = new Date(Date.now());
-    const dateText = d.toString();
-    let txData = {
-      code: '200',
-      summary: SQL.insertSuccess,
-      time: dateText,
-    };
-
-    const insertSQL = 'INSERT INTO ' +
-      table +
-      ' (address, url) ' +
-      'VALUES (' +
-      '\'' + address + '\', ' +
-      '\'' + url + '\'' +
-    ')';
-
-    Minima.sql(insertSQL, function(result: any) {
-      if ( !result.status ) {
-        txData = {
-          code: '503',
-          summary: SQL.insertFailure,
-          time: dateText,
-        };
-        dispatch(write({data: txData})(txFailAction));
-      } else {
-        dispatch(doLog(address, Dbase.logTypes.CALL, 'insert'));
-        dispatch(write({data: txData})(txSuccessAction));
-      }
-    });
-  };
-};
-
-export const addToken = (table: string, id: string, url: string) => {
-  return async (dispatch: AppDispatch) => {
-    // console.log(table, id, url);
-    const txSuccessAction: ActionTypes = TxActionTypes.TX_SUCCESS;
-    const txFailAction: ActionTypes = TxActionTypes.TX_FAILURE;
-    const d = new Date(Date.now());
-    const dateText = d.toString();
-    let txData = {
-      code: '200',
-      summary: SQL.insertSuccess,
-      time: dateText,
-    };
-
-    const insertSQL = 'INSERT INTO ' +
-      table +
-      ' (id, url) ' +
-      'VALUES (' +
-      '\'' + id + '\', ' +
-      '\'' + url + '\'' +
-    ')';
-
-    // console.log(insertSQL);
-    Minima.sql(insertSQL, function(result: any) {
-      // console.log(result);
-      if ( !result.status ) {
-        txData = {
-          code: '503',
-          summary: SQL.insertFailure,
-          time: dateText,
-        };
-        dispatch(write({data: txData})(txFailAction));
-      } else {
-        dispatch(doLog(id, Dbase.logTypes.TOKEN, 'insert'));
-        dispatch(write({data: txData})(txSuccessAction));
-      }
-    });
-  };
-};
-
-export const addTrigger = (
-    table: string,
-    endpoint: string,
-    command: string,
-    setParams: string,
-    params: string,
-) => {
-  return async (dispatch: AppDispatch) => {
-    const txSuccessAction: ActionTypes = TxActionTypes.TX_SUCCESS;
-    const txFailAction: ActionTypes = TxActionTypes.TX_FAILURE;
-    const d = new Date(Date.now());
-    const dateText = d.toString();
-    let txData = {
-      code: '200',
-      summary: SQL.insertSuccess,
-      time: dateText,
-    };
-
-    const insertSQL = 'INSERT INTO ' +
-      table +
-      ' (endpoint, command, setParams, params) ' +
-      'VALUES (' +
-      '\'' + endpoint + '\', ' +
-      '\'' + command + '\', ' +
-      '\'' + setParams + '\', ' +
-      '\'' + params + '\'' +
-    ')';
-
-    Minima.sql(insertSQL, function(result: any) {
-      if ( !result.status ) {
-        txData = {
-          code: '503',
-          summary: SQL.insertFailure,
-          time: dateText,
-        };
-        dispatch(write({data: txData})(txFailAction));
-      } else {
-        dispatch(doLog(endpoint, Dbase.logTypes.TRIGGER, 'insert'));
-        dispatch(write({data: txData})(txSuccessAction));
-      }
     });
   };
 };
@@ -214,6 +114,12 @@ const sortLogs = (logsData: LogsProps): Logs[] => {
 };
 */
 
+/**
+ * Turns table columns into a string that can be used in an INSERT
+ * @function stringifyColumns
+ * @param {Array} columns - the columns to stringify to run
+ * @return {string}
+ */
 const stringifyColumns = (columns: Array<string>): string => {
   let thisColumn = ' (';
   const columnLength = columns.length;
@@ -228,6 +134,13 @@ const stringifyColumns = (columns: Array<string>): string => {
   return thisColumn;
 };
 
+
+/**
+ * Turns table values into a string that can be used in an INSERT
+ * @function stringifyValues
+ * @param {Array} values - the values to stringify to run
+ * @return {string}
+ */
 const stringifyValues = (values: Array<string>): string => {
   let thisValue = 'VALUES (';
   const valuesLength = values.length;
@@ -242,6 +155,14 @@ const stringifyValues = (values: Array<string>): string => {
   return thisValue;
 };
 
+/**
+ * Adds a row to the database
+ * @param {string} table - the table to which to add
+ * @param {Array} columns - the table columns
+ * @param {string} key - the table primary key
+ * @param {Array} values - the table values
+ * @return {function}
+ */
 export const addRow = (
     table: string,
     columns: Array<string>,
@@ -281,6 +202,13 @@ export const addRow = (
   };
 };
 
+/**
+ * Deletes a row from the database
+ * @param {string} table - the table to which to add
+ * @param {string} column - the table primary key column
+ * @param {string} value - the table primary key value
+ * @return {function}
+ */
 export const deleteRow = (
     table: string,
     column: string,
@@ -319,6 +247,15 @@ export const deleteRow = (
     });
   };
 };
+
+
+/**
+ * Gets rows from the database
+ * @param {string} table - the table to which to add
+ * @param {string} successAction - the Redux action type that indicates success
+ * @param {string} failAction - the Redux action type that indicates failure
+ * @return {function}
+ */
 
 export const getDbaseEntries =
   (

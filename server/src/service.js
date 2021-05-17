@@ -2,28 +2,36 @@ const app = 'EMH';
 
 const tables = {
   call: {
-    name: 'call',
+    name: 'CALL',
+    key: 'ADDRESS',
+    columns: ['ADDRESS', 'URL'],
   },
   token: {
-    name: 'token',
+    name: 'TOKEN',
+    key: 'ID',
+    columns: ['ID', 'URL'],
   },
   txpow: {
-    name: 'txpow',
+    name: 'TXPOW',
+    key: 'ID',
+    columns: ['ID'],
   },
   log: {
-    name: 'log',
+    name: 'LOG',
+    key: 'ID',
+    columns: ['LOGGINGTYPEID', 'LOGGINGTYPE', 'DATE', 'DATA'],
   },
   trigger: {
-    name: 'trigger',
+    name: 'TRIGGER',
+    key: 'ENDPOINT',
+    columns: ['ENDPOINT', 'COMMAND', 'SETPARAMS', 'PARAMS'],
   },
 };
 
-const logTypes = {
-  COMMAND: 'Command',
-  CALL: 'Call',
-  TOKEN: 'Token',
-  TXPOW: 'TxPoW',
-  TRIGGER: 'Trigger',
+
+const extraLogTypes = {
+  COMMAND: 'COMMAND',
+  URL: 'URL',
 };
 
 /**
@@ -173,7 +181,7 @@ function addTxPoW(txpow) {
     ')';
 
     doSQL(insertSQL, tableName);
-    doLog(id, logTypes.TXPOW, 'insert');
+    doLog(id, tables.txpow.name, 'insert');
   }
 }
 

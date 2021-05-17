@@ -37,7 +37,7 @@ class Dbase {
     token: {
       name: 'TOKEN',
       key: 'ID',
-      columns: ['ADDRESS', 'URL'],
+      columns: ['ID', 'URL'],
     },
     txpow: {
       name: 'TXPOW',
@@ -56,12 +56,8 @@ class Dbase {
     },
   };
 
-  static readonly logTypes = {
-    COMMAND: 'Command',
-    CALL: 'Call',
-    TOKEN: 'Token',
-    TXPOW: 'TxPoW',
-    TRIGGER: 'Trigger',
+  static readonly extraLogTypes = {
+    COMMAND: 'COMMAND',
     URL: 'URL',
   };
 }
