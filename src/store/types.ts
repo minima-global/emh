@@ -6,7 +6,7 @@ import {ThunkDispatch} from 'redux-thunk';
 */
 export interface ApplicationState {
   logsData: LogsProps
-  callsData: CallsProps,
+  addressData: AddressProps,
   tokensData: TokensProps,
   triggersData: TriggersProps,
   cmdData: CmdProps,
@@ -55,15 +55,15 @@ export interface LogsProps extends PayloadProps {
 }
 
 /**
- * Calls
+ * Address
  */
-export interface Calls {
+export interface Address {
   ADDRESS: string
   URL: string
 }
 
-export interface CallsProps extends PayloadProps {
-  data: Array<Calls>
+export interface AddressProps extends PayloadProps {
+  data: Array<Address>
 }
 
 /**
@@ -148,10 +148,10 @@ export const enum LogsActionTypes {
   LOGS_FAILURE = '@@LogsActionTypes/LOGS_FAILURE'
 }
 
-export const enum CallActionTypes {
-  CALL_INIT = '@@CallActionTypes/CALL_INIT',
-  CALL_SUCCESS = '@@CallActionTypes/CALL_SUCCESS',
-  CALL_FAILURE = '@@CallActionTypes/CALL_FAILURE'
+export const enum AddressActionTypes {
+  ADDRESS_INIT = '@@AddressActionTypes/ADDRESS_INIT',
+  ADDRESS_SUCCESS = '@@AddressActionTypes/ADDRESS_SUCCESS',
+  ADDRESS_FAILURE = '@@AddressActionTypes/ADDRESS_FAILURE'
 }
 
 export const enum TokenActionTypes {
@@ -171,6 +171,6 @@ export type ActionTypes =
   TxActionTypes |
   CmdActionTypes |
   LogsActionTypes |
-  CallActionTypes |
+  AddressActionTypes |
   TokenActionTypes |
   TriggerActionTypes;

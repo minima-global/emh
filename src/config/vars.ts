@@ -72,7 +72,7 @@ class Paths {
   static readonly welcome = 'Welcome'
 
   static readonly logs = 'Logs'
-  static readonly calls = 'Calls'
+  static readonly addresses = 'Addresses'
   static readonly tokens = 'Tokens'
   static readonly triggers = 'Triggers'
   static readonly urls = 'URLs'
@@ -141,9 +141,9 @@ class Cmd {
   static readonly cmdButton = 'Run'
 }
 
-/** @class Calls */
-class Calls {
-  static readonly heading = 'Calls'
+/** @class Addresses */
+class Addresses {
+  static readonly heading = 'Addresses to URLs'
 
   static readonly address = 'Minima Address'
   static readonly url = 'URL'
@@ -161,7 +161,7 @@ class Calls {
 
 /** @class Tokens */
 class Tokens {
-  static readonly heading = 'Tokens'
+  static readonly heading = 'Tokens to URLs'
 
   static readonly id = 'Token ID'
   static readonly url = 'URL'
@@ -237,7 +237,7 @@ export {
   Contact,
   Cmd,
   Log,
-  Calls,
+  Addresses,
   Tokens,
   Triggers,
   SQL,

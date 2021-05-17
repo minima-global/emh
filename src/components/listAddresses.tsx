@@ -11,9 +11,9 @@ import {
   ApplicationState,
   AppDispatch,
   ActionTypes,
-  CallsProps,
-  Calls as CallsType,
-  CallActionTypes,
+  AddressProps,
+  Address as AddressType,
+  AddressActionTypes,
   TxData,
 } from '../store/types';
 
@@ -26,12 +26,12 @@ import {
 import {
   Dbase,
   SQL,
-  Calls as CallVars,
+  Addresses as AddressVars,
 } from '../config';
 
 interface StateProps {
   tx: TxData
-  callsData: CallsProps
+  addressData: AddressProps
 }
 
 interface DispatchProps {
@@ -62,12 +62,12 @@ const list = (props: Props) => {
       props.initTx();
       props.getDbaseEntries(
           Dbase.tables.call.name,
-          CallActionTypes.CALL_SUCCESS,
-          CallActionTypes.CALL_FAILURE,
+          AddressActionTypes.ADDRESS_SUCCESS,
+          AddressActionTypes.ADDRESS_FAILURE,
       );
     } else {
-      if ( props.callsData.data.length != isDisabled.length ) {
-        for (let i = 0; i < props.callsData.data.length; i++ ) {
+      if ( props.addressData.data.length != isDisabled.length ) {
+        for (let i = 0; i < props.addressData.data.length; i++ ) {
           isDisabled[i] = false;
         }
       }
@@ -79,15 +79,15 @@ const list = (props: Props) => {
              (txSummary === SQL.deleteSuccess ) ) {
           props.getDbaseEntries(
               Dbase.tables.call.name,
-              CallActionTypes.CALL_SUCCESS,
-              CallActionTypes.CALL_FAILURE,
+              AddressActionTypes.ADDRESS_SUCCESS,
+              AddressActionTypes.ADDRESS_FAILURE,
           );
         }
       }
     }
-  }, [props.callsData, props.tx]);
+  }, [props.addressData, props.tx]);
 
-  const deleteCall = (call: CallsType, index: number) => {
+  const deleteAddress = (call: AddressType, index: number) => {
     isDisabled[index] = true;
     props.initTx();
     props.deleteRow(
@@ -106,12 +106,12 @@ const list = (props: Props) => {
 
           <Grid item container justify="flex-start" xs={5}>
             <Typography variant="h5">
-              {CallVars.address}
+              {AddressVars.address}
             </Typography>
           </Grid>
           <Grid item container justify="flex-start" xs={5}>
             <Typography variant="h5">
-              {CallVars.url}
+              {AddressVars.url}
             </Typography>
           </Grid>
           <Grid item container justify="flex-end" xs={2}>
@@ -123,44 +123,45 @@ const list = (props: Props) => {
         </Grid>
 
         <Grid item container className={classes.formSummary} xs={12}>
-          { props.callsData.data.map( ( call: CallsType, index: number ) => {
-            const address = call.ADDRESS;
-            const url = call.URL;
+          { props.addressData.data.map(
+              ( call: AddressType, index: number ) => {
+                const address = call.ADDRESS;
+                const url = call.URL;
 
-            const rowclass = index % 2 ? classes.evenRow : classes.oddRow;
+                const rowclass = index % 2 ? classes.evenRow : classes.oddRow;
 
-            return (
-              <React.Fragment key={index}>
+                return (
+                  <React.Fragment key={index}>
 
-                <Grid className={rowclass} item container xs={12}>
+                    <Grid className={rowclass} item container xs={12}>
 
-                  <Grid item container justify="flex-start" xs={5}>
-                    <Typography variant="body1">
-                      {address}
-                    </Typography>
-                  </Grid>
-                  <Grid item container justify="flex-start" xs={5}>
-                    <Typography variant="body1">
-                      {url}
-                    </Typography>
-                  </Grid>
-                  <Grid item container justify="flex-end" xs={2}>
-                    <Button
-                      onClick={() => deleteCall(call, index)}
-                      disabled={isDisabled[index]}
-                      style={{
-                        background: 'linear-gradient(#FF0000, #FF0000)',
-                      }}
-                    >
-                      {CallVars.deleteButton}
-                    </Button>
-                  </Grid>
+                      <Grid item container justify="flex-start" xs={5}>
+                        <Typography variant="body1">
+                          {address}
+                        </Typography>
+                      </Grid>
+                      <Grid item container justify="flex-start" xs={5}>
+                        <Typography variant="body1">
+                          {url}
+                        </Typography>
+                      </Grid>
+                      <Grid item container justify="flex-end" xs={2}>
+                        <Button
+                          onClick={() => deleteAddress(call, index)}
+                          disabled={isDisabled[index]}
+                          style={{
+                            background: 'linear-gradient(#FF0000, #FF0000)',
+                          }}
+                        >
+                          {AddressVars.deleteButton}
+                        </Button>
+                      </Grid>
 
-                </Grid>
+                    </Grid>
 
-              </React.Fragment>
-            );
-          })}
+                  </React.Fragment>
+                );
+              })}
         </Grid>
       </Grid>
     </>
@@ -170,7 +171,7 @@ const list = (props: Props) => {
 const mapStateToProps = (state: ApplicationState): StateProps => {
   return {
     tx: state.tx.data as TxData,
-    callsData: state.callsData as CallsProps,
+    addressData: state.addressData as AddressProps,
   };
 };
 
@@ -189,9 +190,9 @@ const mapDispatchToProps = (dispatch: AppDispatch): DispatchProps => {
   };
 };
 
-const ListCalls = connect<StateProps, DispatchProps, {}, ApplicationState>(
+const ListAddresses = connect<StateProps, DispatchProps, {}, ApplicationState>(
     mapStateToProps,
     mapDispatchToProps,
 )(list);
 
-export {ListCalls};
+export {ListAddresses};

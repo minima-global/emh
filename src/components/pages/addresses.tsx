@@ -13,32 +13,32 @@ import {themeStyles} from '../../styles';
 
 import {
   GeneralError,
-  Calls as CallVars,
+  Addresses as AddressVars,
   Dbase,
 } from '../../config';
 
 import {addRow} from '../../store/app/blockchain/actions';
 
-import {ListCalls} from '../listCalls';
+import {ListAddresses} from '../listAddresses';
 
 import {
   ApplicationState,
   AppDispatch,
-  CallsProps,
+  AddressProps,
 } from '../../store/types';
 
 const callSchema = Yup.object().shape({
   address: Yup.string()
       .required(GeneralError.required)
-      .length(34, CallVars.mxLengthError)
-      .matches(/^Mx[a-zA-Z0-9]+$/, CallVars.mxFormatError),
+      .length(34, AddressVars.mxLengthError)
+      .matches(/^Mx[a-zA-Z0-9]+$/, AddressVars.mxFormatError),
   url: Yup.string()
-      .url(CallVars.urlError)
+      .url(AddressVars.urlError)
       .max(255, GeneralError.lengthError255),
 });
 
 interface StateProps {
-  calls: CallsProps
+  address: AddressProps
 }
 
 interface DispatchProps {
@@ -80,7 +80,7 @@ const display = (props: Props) => {
         <Grid item container justify="flex-start" xs={12}>
 
           <Typography variant="h2">
-            {CallVars.heading}
+            {AddressVars.heading}
           </Typography>
 
         </Grid>
@@ -107,7 +107,7 @@ const display = (props: Props) => {
               xs={4}
               lg={2}
             >
-              <label htmlFor="address">{CallVars.address}</label>
+              <label htmlFor="address">{AddressVars.address}</label>
             </Grid>
             <Grid item container xs={8} lg={10}>
               <TextField
@@ -151,7 +151,7 @@ const display = (props: Props) => {
               xs={4}
               lg={2}
             >
-              <label htmlFor="url">{CallVars.url}</label>
+              <label htmlFor="url">{AddressVars.url}</label>
             </Grid>
             <Grid item container xs={8} lg={10}>
               <TextField
@@ -199,7 +199,7 @@ const display = (props: Props) => {
                 size='medium'
                 variant="contained"
               >
-                {CallVars.callButton}
+                {AddressVars.callButton}
               </Button>
             </Grid>
 
@@ -217,7 +217,7 @@ const display = (props: Props) => {
           </svg>
         </Grid>
 
-        { <ListCalls /> }
+        { <ListAddresses /> }
 
       </Grid>
 
@@ -227,7 +227,7 @@ const display = (props: Props) => {
 
 const mapStateToProps = (state: ApplicationState): StateProps => {
   return {
-    calls: state.callsData as CallsProps,
+    address: state.addressData as AddressProps,
   };
 };
 
@@ -242,7 +242,8 @@ const mapDispatchToProps = (dispatch: AppDispatch): DispatchProps => {
   };
 };
 
-export const Calls = connect<StateProps, DispatchProps, {}, ApplicationState>(
+export const Addresses =
+connect<StateProps, DispatchProps, {}, ApplicationState>(
     mapStateToProps,
     mapDispatchToProps,
 )(display);

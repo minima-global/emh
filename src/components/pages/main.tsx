@@ -9,10 +9,9 @@ import IconButton from '@material-ui/core/IconButton';
 
 import minimaIcon from '../../images/minimaIcon.svg';
 import terminal from '../../images/terminal.png';
-import link from '../../images/link.png';
 import token from '../../images/token.png';
 import trigger from '../../images/trigger.png';
-import call from '../../images/calls.png';
+import address from '../../images/address.png';
 import info from '../../images/info.png';
 
 import {Content} from '../content';
@@ -133,11 +132,11 @@ export const Main = () => {
                   xs={2}
                 >
 
-                  <NavLink to={Local.calls} className={classes.iconLink}>
+                  <NavLink to={Local.addresses} className={classes.iconLink}>
                     <IconButton
                       aria-label="Calls"
                     >
-                      <img className={classes.footerIcon} src={call}/>
+                      <img className={classes.footerIcon} src={address}/>
                     </IconButton>
                   </NavLink>
 

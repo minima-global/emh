@@ -7,7 +7,7 @@ import {
   Logs,
   Cmd,
   Info,
-  Calls,
+  Addresses,
   Tokens,
   Triggers,
 } from '../components/pages';
@@ -33,8 +33,8 @@ export const Content = () => {
       />
 
       <Route
-        exact path={Local.calls}
-        render= {() => <Calls />}
+        exact path={Local.addresses}
+        render= {() => <Addresses />}
       />
       <Route
         exact path={Local.tokens}
