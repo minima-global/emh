@@ -51,7 +51,7 @@ class Dbase {
         name: ['TXID'],
         isAuto: false,
       },
-      columns: ['TXID', 'DATA'],
+      columns: ['TXID', 'URL', 'ADDRESS', 'TOKENID', 'DATE'],
     },
     log: {
       name: 'LOG',

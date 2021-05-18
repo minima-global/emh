@@ -23,7 +23,7 @@ const tables = {
       name: ['TXID'],
       isAuto: false,
     },
-    columns: ['TXID', 'DATA'],
+    columns: ['TXID', 'URL', 'ADDRESS', 'TOKENID', 'DATE'],
   },
   log: {
     name: 'LOG',
@@ -48,6 +48,9 @@ const extraLogTypes = {
   URL: 'URL',
 };
 
+const oneDay = 1000 * 3600 * 24;
+const blockConfirmedDepth = 3;
+
 /**
  * Runs supplied Minima SQL on given table
  * @function doSQL
@@ -70,10 +73,9 @@ function doSQL(sql, tableName) {
  * @param {string} data
 */
 function doLog(typeId, type, data) {
-  const tableName = tables.log.name;
   const date = Date.now();
   const insertSQL = 'INSERT INTO ' +
-      tableName +
+      tables.log.name +
       ' (LOGGINGTYPEID, LOGGINGTYPE, DATE, DATA) ' +
       'VALUES (' +
       '\'' + typeId + '\', ' +
@@ -81,7 +83,7 @@ function doLog(typeId, type, data) {
       '\'' + date + '\', ' +
       '\'' + data + '\'' +
     ')';
-  doSQL(insertSQL, tableName);
+  doSQL(insertSQL, tables.log.name);
 }
 
 /**
@@ -89,14 +91,16 @@ function doLog(typeId, type, data) {
  * @function createTxPow
  */
 function createTxPow() {
-  const tableName = tables.txpow.name;
   const createSQL = 'CREATE Table IF NOT EXISTS ' +
-      tableName + ' (' +
+      tables.txpow.name + ' (' +
       'TXID VARCHAR(255) NOT NULL, ' +
-      'DATA VARCHAR(1024), ' +
-      'PRIMARY KEY(TXID)' +
+      'URL VARCHAR(255), ' +
+      'ADDRESS VARCHAR(255) NOT NULL, ' +
+      'TOKENID VARCHAR(255) NOT NULL, ' +
+      'DATE VARCHAR(255) NOT NULL, ' +
+      'PRIMARY KEY(TXID, URL)' +
     ');';
-  doSQL(createSQL, tableName);
+  doSQL(createSQL, tables.txpow.name);
 }
 
 /**
@@ -104,15 +108,14 @@ function createTxPow() {
  * @function createCall
  */
 function createAddress() {
-  const tableName = tables.address.name;
   const createSQL = 'CREATE Table IF NOT EXISTS ' +
-      tableName + ' (' +
+      tables.address.name + ' (' +
       'ADDRESS VARCHAR(255) NOT NULL, ' +
       'URL VARCHAR(255), ' +
       'PRIMARY KEY(ADDRESS, URL)' +
     ');';
 
-  doSQL(createSQL, tableName);
+  doSQL(createSQL, tables.address.name);
 }
 
 /**
@@ -120,15 +123,14 @@ function createAddress() {
  * @function createToken
  */
 function createToken() {
-  const tableName = tables.token.name;
   const createSQL = 'CREATE Table IF NOT EXISTS ' +
-      tableName + ' (' +
+      tables.token.name + ' (' +
       'TOKENID VARCHAR(255) NOT NULL, ' +
       'URL VARCHAR(255), ' +
       'PRIMARY KEY(TOKENID, URL)' +
     ');';
 
-  doSQL(createSQL, tableName);
+  doSQL(createSQL, tables.token.name);
 }
 
 /**
@@ -136,9 +138,8 @@ function createToken() {
  * @function createTrigger
  */
 function createTrigger() {
-  const tableName = tables.trigger.name;
   const createSQL = 'CREATE Table IF NOT EXISTS ' +
-      tableName + ' (' +
+      tables.trigger.name + ' (' +
       'ENDPOINT VARCHAR(255) NOT NULL, ' +
       'COMMAND VARCHAR(255) NOT NULL, ' +
       'SETPARAMS VARCHAR(255), ' +
@@ -146,7 +147,7 @@ function createTrigger() {
       'PRIMARY KEY(ENDPOINT)' +
     ');';
 
-  doSQL(createSQL, tableName);
+  doSQL(createSQL, tables.trigger.name);
 }
 
 /**
@@ -154,9 +155,8 @@ function createTrigger() {
  * @function createLog
  */
 function createLog() {
-  const tableName = tables.log.name;
   const createSQL = 'CREATE Table IF NOT EXISTS ' +
-      tableName + ' (' +
+      tables.log.name + ' (' +
       'ID INT PRIMARY KEY AUTO_INCREMENT, ' +
       'LOGGINGTYPEID VARCHAR(512) NOT NULL, ' +
       'LOGGINGTYPE VARCHAR(255) NOT NULL, ' +
@@ -165,7 +165,7 @@ function createLog() {
       'PRIMARY KEY(ID)' +
     ');';
 
-  doSQL(createSQL, tableName);
+  doSQL(createSQL, tables.log.name);
 }
 
 /** @function initDbase */
@@ -178,62 +178,132 @@ function initDbase() {
 }
 
 /**
- * Adds relevant tokenid to log table and calls any defined url
- * @function processToken
- * @param {string} txId
+ * Calls external URL
+ * @function processURL
+ * @param {string} uRL
+ * @param {string} address
  * @param {string} tokenId
+ * @param {string} state
 */
-function processToken(txId, tokenId) {
-  const selectSQL = 'Select URL from ' +
-    tables.token.name +
-    ' WHERE TOKENID = \'' +
-    tokenId +
-    '\'';
+function processURL(uRL, address, tokenId, state) {
+  Minima.log(app + ' URL Call ' + uRL + ' ' + address + ' ' + tokenId);
+  const postData = {
+    address: address,
+    tokenId: tokenId,
+    state: state,
+  };
+  Minima.net.POST(uRL, JSON.stringify(postData), function(postResults) {
+    Minima.log(app + ' POST results ' + postResults);
+  });
+}
 
-  Minima.sql(selectSQL, function(results) {
-    if (results.response.count) {
-      Minima.log(app + ' your token response ' + JSON.stringify(results));
-      tableName = tables.txpow.name;
-      const insertSQL = 'INSERT INTO ' +
-          tables.txpow.name +
-          ' (TXID, DATA) ' +
-          'VALUES (' +
-          '\'' + txId + '\', ' +
-          '\'' + tokenId + '\'' +
-        ')';
+/**
+ * Spins through entries in the TxPoW table, and calls URLs for any valid TX
+ * that are at least 3 blocks deep. Also cleans up any old TxPow entries
+ * @function processTxPow
+ * @param {number} blockTime
+*/
+function processTxPow(blockTime) {
+  const now = +new Date();
+  const txPowSelectSQL = 'SELECT TXID, URL, ADDRESS, TOKENID, DATE FROM ' +
+      tables.txpow.name;
+  Minima.sql(txPowSelectSQL, function(txPowResults) {
+    // Minima.log(app + ' txpow response ' + JSON.stringify(txPowResults));
+    for (var i = 0; i < txPowResults.response.count; i++ ) {
+      const txPow = txPowResults.response.rows[i];
+      Minima.log(app + ' txpow response ' + JSON.stringify(txPow));
+      const deleteSQL = 'DELETE FROM ' +
+            tables.txpow.name +
+            ' WHERE TXID = ' +
+            txPow.TXID;
 
-      doSQL(insertSQL, tables.txpow.name);
-      doLog(txId, tables.txpow.name, 'insert');
+      if ((now - txPow.DATE) > oneDay) {
+        doSQL(deleteSQL, tables.txpow.name);
+        doLog(txPow.TXID, tables.txpow.name, 'delete');
+      } else {
+        const txPowInfo = 'txpowinfo ' + txPow.TXID;
+        Minima.cmd(txPowInfo, function(infoResults) {
+          // Minima.log(app + ' pow ' + JSON.stringify(infoResults));
+          const infoResponse = infoResults.response;
+          if ( infoResponse.isinblock &&
+               blockTime - infoResponse.inblock >= blockConfirmedDepth ) {
+            Minima.log(app + ' block URL ' + txPow.URL + ' ' + txPow.ADDRESS + ' ' + txPow.TOKENID);
+            processURL(txPow.URL, txPow.ADDRESS, txPow.TOKENID, '');
+          }
+        });
+      }
     }
   });
 }
 
 /**
- * Adds relevant address to log table and calls any defined url
- * @function processAddress
+ * Adds relevant tx to txpow table, including either
+ * the relevant tokenid or Minima Address
+ * @function processTx
  * @param {string} txId
- * @param {string} address
+ * @param {string} tokenId
+ * @param {string} mxAddress
 */
-function processAddress(txId, address) {
-  const selectSQL = 'Select URL from ' +
-  tables.address.name +
-    ' WHERE ADDRESS = \'' +
-    address +
+function processTx(txId, tokenId, mxAddress) {
+  // try the token, first
+  const tokenSelectSQL = 'SELECT URL FROM ' +
+    tables.token.name +
+    ' WHERE TOKENID = \'' +
+    tokenId +
     '\'';
 
-  Minima.sql(selectSQL, function(results) {
-    if (results.response.count) {
-      Minima.log(app + ' my address response ' + JSON.stringify(results));
-      const insertSQL = 'INSERT INTO ' +
+  Minima.sql(tokenSelectSQL, function(tokenResults) {
+    if (tokenResults.response.count) {
+      for (var i = 0; i < tokenResults.response.count; i++ ) {
+        // Minima.log(app + ' token response ' + JSON.stringify(tokenResults));
+        const date = Date.now();
+        const insertSQL = 'INSERT INTO ' +
           tables.txpow.name +
-          ' (TXID, DATA) ' +
+          ' (TXID, URL, ADDRESS, TOKENID, DATE) ' +
           'VALUES (' +
           '\'' + txId + '\', ' +
-          '\'' + address + '\'' +
+          '\'' + tokenResults.response.rows[i].URL + '\', ' +
+          '\'\', ' +
+          '\'' + tokenId + '\', ' +
+          '\'' + date + '\'' +
         ')';
 
-      doSQL(insertSQL, tables.txpow.name);
-      doLog(txId, tables.txpow.name, 'insert');
+        doSQL(insertSQL, tables.txpow.name);
+        doLog(txId, tables.txpow.name, 'insert ' +
+            tokenId + ' ' +
+            tokenResults.response.rows[i].URL);
+      }
+    } else {
+      // try the address
+      const addressSelectSQL = 'SELECT URL FROM ' +
+      tables.address.name +
+        ' WHERE ADDRESS = \'' +
+        mxAddress +
+        '\'';
+
+      Minima.sql(addressSelectSQL, function(mxResults) {
+        if (mxResults.response.count) {
+          for (var i = 0; i < mxResults.response.count; i++ ) {
+            const date = Date.now();
+            // Minima.log(app + ' response ' + JSON.stringify(mxResults));
+            const insertSQL = 'INSERT INTO ' +
+              tables.txpow.name +
+              ' (TXID, URL, ADDRESS, TOKENID, DATE) ' +
+              'VALUES (' +
+              '\'' + txId + '\', ' +
+              '\'' + mxResults.response.rows[i].URL + '\', ' +
+              '\'' + mxAddress + '\', ' +
+              '\'\', ' +
+              '\'' + date + '\'' +
+            ')';
+
+            doSQL(insertSQL, tables.txpow.name);
+            doLog(txId, tables.txpow.name, 'insert ' +
+                mxAddress + ' ' +
+                mxResults.response.rows[i].URL);
+          }
+        }
+      });
     }
   });
 }
@@ -248,8 +318,11 @@ Minima.init( function(msg) {
     // txOutputs[0].address
     if ( ( Array.isArray(txOutputs) ) &&
         ( txOutputs.length ) ) {
-      processToken(txPoW.txpowid, txOutputs[0].tokenid);
-      processAddress(txPoW.txpowid, txOutputs[0].mxaddress);
+      processTx(txPoW.txpowid, txOutputs[0].tokenid, txOutputs[0].mxaddress);
     }
+  } else if (msg.event == 'newblock') {
+    // Minima.log(app + ' msg ' + JSON.stringify(msg));
+    const blockTime = parseInt(msg.info.txpow.header.block, 10);
+    processTxPow(blockTime);
   }
 });

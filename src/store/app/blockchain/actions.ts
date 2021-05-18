@@ -175,7 +175,7 @@ const getActionTypes = (table: string): SuccessAndFailType => {
  * @param {Array} columns - the columns to stringify
  * @return {string}
  */
- const stringifyColumns = (columns: Array<string>): string => {
+const stringifyColumns = (columns: Array<string>): string => {
   let thisColumn = '(';
   const columnsLength = columns.length;
 
