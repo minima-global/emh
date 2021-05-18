@@ -190,14 +190,14 @@ function initDbase() {
  * @param {string} state
 */
 function processURL(txId, uRL, address, tokenId, state) {
-  // Minima.log(app + ' URL Call ' + uRL + ' ' + address + ' ' + tokenId);
+  Minima.log(app + ' URL Call ' + uRL + ' ' + address + ' ' + tokenId + ' ' + state);
   const postData = {
     address: address,
     tokenId: tokenId,
     state: state,
   };
   Minima.net.POST(uRL, JSON.stringify(postData), function(postResults) {
-    Minima.log(app + ' POST results ' + JSON.stringify(postResults));
+    // Minima.log(app + ' POST results ' + JSON.stringify(postResults));
     if ( postResults.result == 'OK' ) {
       doLog(uRL, extraLogTypes.URL, 'OK');
       const deleteSQL = 'DELETE FROM ' +
@@ -245,8 +245,20 @@ function processTxPow(blockTime) {
           const infoResponse = infoResults.response;
           if ( infoResponse.isinblock &&
                blockTime - infoResponse.inblock >= blockConfirmedDepth ) {
-            // Minima.log(app + ' calling ' + txPow.URL);
-            processURL(txPow.TXID, txPow.URL, txPow.ADDRESS, txPow.TOKENID, '');
+            var thisState = infoResponse.txpow.body.txn.state;
+            var state = [];
+            if ( thisState.length ) {
+              for ( var j = 0; j < thisState.length; j++ ) {
+                state.push(thisState[j].data);
+              }
+            }
+            // Minima.log(app + ' pow ' + JSON.stringify(state));
+            processURL(
+                txPow.TXID,
+                txPow.URL,
+                txPow.ADDRESS,
+                txPow.TOKENID,
+                JSON.stringify(state));
           }
         });
       }
