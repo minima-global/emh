@@ -1,3 +1,5 @@
+/* eslint-disable new-cap */
+/* eslint-disable no-var */
 const app = 'EMH';
 
 const tables = {
@@ -48,7 +50,8 @@ const extraLogTypes = {
   URL: 'URL',
 };
 
-const oneDay = 1000 * 3600 * 24;
+// const deleteAfter = 1000 * 3600 * 24;
+const deleteAfter = 300000;
 const blockConfirmedDepth = 3;
 
 /**
@@ -180,20 +183,33 @@ function initDbase() {
 /**
  * Calls external URL
  * @function processURL
+ * @param {string} txId
  * @param {string} uRL
  * @param {string} address
  * @param {string} tokenId
  * @param {string} state
 */
-function processURL(uRL, address, tokenId, state) {
-  Minima.log(app + ' URL Call ' + uRL + ' ' + address + ' ' + tokenId);
+function processURL(txId, uRL, address, tokenId, state) {
+  // Minima.log(app + ' URL Call ' + uRL + ' ' + address + ' ' + tokenId);
   const postData = {
     address: address,
     tokenId: tokenId,
     state: state,
   };
   Minima.net.POST(uRL, JSON.stringify(postData), function(postResults) {
-    Minima.log(app + ' POST results ' + postResults);
+    Minima.log(app + ' POST results ' + JSON.stringify(postResults));
+    if ( postResults.result == 'OK' ) {
+      doLog(uRL, extraLogTypes.URL, 'OK');
+      const deleteSQL = 'DELETE FROM ' +
+            tables.txpow.name +
+            ' WHERE (TXID, URL) = ' +
+            '(\'' + txId + '\', ' +
+            '\'' + uRL + '\')';
+      doSQL(deleteSQL, tables.txpow.name);
+      doLog(txId, tables.txpow.name, 'delete');
+    } else {
+      doLog(uRL, extraLogTypes.URL, 'FAIL');
+    }
   });
 }
 
@@ -204,20 +220,22 @@ function processURL(uRL, address, tokenId, state) {
  * @param {number} blockTime
 */
 function processTxPow(blockTime) {
+  // Minima.log(app + ' here! ' + blockTime);
   const now = +new Date();
   const txPowSelectSQL = 'SELECT TXID, URL, ADDRESS, TOKENID, DATE FROM ' +
       tables.txpow.name;
   Minima.sql(txPowSelectSQL, function(txPowResults) {
     // Minima.log(app + ' txpow response ' + JSON.stringify(txPowResults));
     for (var i = 0; i < txPowResults.response.count; i++ ) {
-      const txPow = txPowResults.response.rows[i];
-      Minima.log(app + ' txpow response ' + JSON.stringify(txPow));
-      const deleteSQL = 'DELETE FROM ' +
+      var txPow = txPowResults.response.rows[i];
+      // Minima.log(app + ' txpow response ' + JSON.stringify(txPow));
+      var deleteSQL = 'DELETE FROM ' +
             tables.txpow.name +
-            ' WHERE TXID = ' +
-            txPow.TXID;
+            ' WHERE (TXID, URL) = ' +
+            '(\'' + txPow.TXID + '\', ' +
+            '\'' + txPow.URL + '\')';
 
-      if ((now - txPow.DATE) > oneDay) {
+      if ((now - txPow.DATE) > deleteAfter) {
         doSQL(deleteSQL, tables.txpow.name);
         doLog(txPow.TXID, tables.txpow.name, 'delete');
       } else {
@@ -227,8 +245,8 @@ function processTxPow(blockTime) {
           const infoResponse = infoResults.response;
           if ( infoResponse.isinblock &&
                blockTime - infoResponse.inblock >= blockConfirmedDepth ) {
-            Minima.log(app + ' block URL ' + txPow.URL + ' ' + txPow.ADDRESS + ' ' + txPow.TOKENID);
-            processURL(txPow.URL, txPow.ADDRESS, txPow.TOKENID, '');
+            // Minima.log(app + ' calling ' + txPow.URL);
+            processURL(txPow.TXID, txPow.URL, txPow.ADDRESS, txPow.TOKENID, '');
           }
         });
       }
