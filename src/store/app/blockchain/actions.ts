@@ -327,7 +327,7 @@ export const getDbaseEntries = (
     sortField: string = '',
     sortOrder: string = 'DESC',
     limitLow: number = 0,
-    limitHigh: number = Dbase.maxLimit) => {
+    offset: number = Dbase.maxLimit) => {
   return async (dispatch: AppDispatch) => {
     const successFailType = getActionTypes(table);
     const successAction = successFailType.success;
@@ -350,7 +350,7 @@ export const getDbaseEntries = (
     }
     selectSQL += ' LIMIT ' +
         limitLow + ', ' +
-        limitHigh;
+        offset;
 
     console.log(selectSQL);
 

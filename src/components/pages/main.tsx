@@ -134,7 +134,7 @@ export const Main = () => {
 
                   <NavLink to={Local.addresses} className={classes.iconLink}>
                     <IconButton
-                      aria-label="Calls"
+                      aria-label="Address"
                     >
                       <img className={classes.footerIcon} src={address}/>
                     </IconButton>

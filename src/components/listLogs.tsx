@@ -31,7 +31,7 @@ interface DispatchProps {
     sortField: string,
     sortOrder: string,
     limitLow: number,
-    limitHigh: number
+    offset: number
 ) => void
 }
 
@@ -39,7 +39,7 @@ type Props = StateProps & DispatchProps
 
 const list = (props: Props) => {
   const [limitLow, setLimitLow] = useState(0);
-  const [limitHigh, setLimitHigh] = useState(Dbase.pageLimit - 1);
+  const [numRecords, setNumRecords] = useState(Dbase.pageLimit);
   const [nextDisabled, setNextDisabled] = useState(true);
   const [backDisabled, setBackDisabled] = useState(true);
   const isFirstRun = useRef(true);
@@ -53,7 +53,7 @@ const list = (props: Props) => {
           'DATE',
           'DESC',
           limitLow,
-          limitHigh);
+          Dbase.pageLimit);
     } else {
       if ( props.logsData.data.length < Dbase.pageLimit - 1 ) {
         setNextDisabled(true);
@@ -72,15 +72,15 @@ const list = (props: Props) => {
     }
   }, [props.logsData]);
 
-  const getRecords = (lowLimit: number, highLimit: number) => {
+  const getRecords = (lowLimit: number) => {
     setLimitLow(lowLimit);
-    setLimitHigh(highLimit);
+    setNumRecords(lowLimit + Dbase.pageLimit);
     props.getDbaseEntries(
         Dbase.tables.log.name,
         'DATE',
         'DESC',
         lowLimit,
-        highLimit);
+        Dbase.pageLimit);
   };
 
   return (
@@ -89,15 +89,13 @@ const list = (props: Props) => {
       <Grid item container alignItems="flex-start" xs={12}>
         <Grid item container justify="flex-start" xs={3}>
           <Typography variant="h5">
-            {LogVars.records}: {(limitHigh + 1) / Dbase.pageLimit}
+            {LogVars.records}: {numRecords / Dbase.pageLimit}
           </Typography>
         </Grid>
 
         <Grid item container justify="flex-start" xs={1}>
           <Button
-            onClick={() => getRecords(
-                limitLow + Dbase.pageLimit,
-                limitHigh + Dbase.pageLimit)}
+            onClick={() => getRecords(limitLow + Dbase.pageLimit)}
             disabled={nextDisabled}
           >
             {LogVars.nextButton}
@@ -105,9 +103,7 @@ const list = (props: Props) => {
         </Grid>
         <Grid item container justify="flex-start" xs={1}>
           <Button
-            onClick={() => getRecords(
-                limitLow - Dbase.pageLimit,
-                limitHigh - Dbase.pageLimit)}
+            onClick={() => getRecords(limitLow - Dbase.pageLimit)}
             disabled={backDisabled}
           >
             {LogVars.backButton}
@@ -211,13 +207,13 @@ const mapDispatchToProps = (dispatch: AppDispatch): DispatchProps => {
         sortField: string,
         sortOrder: string,
         limitLow: number,
-        limitHigh: number,
+        offset: number,
     ) => dispatch(getDbaseEntries(
         dbase,
         sortField,
         sortOrder,
         limitLow,
-        limitHigh),
+        offset),
     ),
   };
 };
