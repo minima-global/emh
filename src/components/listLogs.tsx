@@ -89,7 +89,7 @@ const list = (props: Props) => {
       <Grid item container alignItems="flex-start" xs={12}>
         <Grid item container justify="flex-start" xs={3}>
           <Typography variant="h5">
-            {LogVars.records}: {limitLow} - {limitHigh}
+            {LogVars.records}: {(limitHigh + 1) / Dbase.pageLimit}
           </Typography>
         </Grid>
 
