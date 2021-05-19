@@ -92,22 +92,23 @@ const list = (props: Props) => {
             {LogVars.records}: {numRecords / Dbase.pageLimit}
           </Typography>
         </Grid>
-
-        <Grid item container justify="flex-start" xs={1}>
-          <Button
-            onClick={() => getRecords(limitLow + Dbase.pageLimit)}
-            disabled={nextDisabled}
-          >
-            {LogVars.nextButton}
-          </Button>
-        </Grid>
-        <Grid item container justify="flex-start" xs={1}>
-          <Button
-            onClick={() => getRecords(limitLow - Dbase.pageLimit)}
-            disabled={backDisabled}
-          >
-            {LogVars.backButton}
-          </Button>
+        <Grid item container justify="flex-end" xs={9}>
+          <Grid item container justify="flex-end" xs={1}>
+            <Button
+              onClick={() => getRecords(limitLow + Dbase.pageLimit)}
+              disabled={nextDisabled}
+            >
+              {LogVars.nextButton}
+            </Button>
+          </Grid>
+          <Grid item container justify="flex-end" xs={1}>
+            <Button
+              onClick={() => getRecords(limitLow - Dbase.pageLimit)}
+              disabled={backDisabled}
+            >
+              {LogVars.backButton}
+            </Button>
+          </Grid>
         </Grid>
       </Grid>
 
