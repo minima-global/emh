@@ -245,20 +245,12 @@ function processTxPow(blockTime) {
           const infoResponse = infoResults.response;
           if ( infoResponse.isinblock &&
                blockTime - infoResponse.inblock >= blockConfirmedDepth ) {
-            var thisState = infoResponse.txpow.body.txn.state;
-            var state = [];
-            if ( thisState.length ) {
-              for ( var j = 0; j < thisState.length; j++ ) {
-                state.push(thisState[j].data);
-              }
-            }
-            // Minima.log(app + ' pow ' + JSON.stringify(state));
             processURL(
                 txPow.TXID,
                 txPow.URL,
                 txPow.ADDRESS,
                 txPow.TOKENID,
-                JSON.stringify(state));
+                JSON.stringify(infoResponse.txpow.body.txn.state));
           }
         });
       }
