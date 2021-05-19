@@ -75,6 +75,9 @@ class Dbase {
     COMMAND: 'COMMAND',
     URL: 'URL',
   };
+
+  static readonly maxLimit = 2147483647
+  static readonly pageLimit = 100
 }
 
 
@@ -215,6 +218,10 @@ class Log {
   static readonly loggingType = 'Logging Type'
   static readonly data = 'Data'
   static readonly loggingTypeId = 'Logging Type ID'
+  static readonly records = 'Records'
+
+  static readonly nextButton = 'Next'
+  static readonly backButton = 'Back'
 }
 
 /** @class SQL */

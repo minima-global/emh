@@ -1,8 +1,9 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {connect} from 'react-redux';
 
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
 
 import {themeStyles} from '../styles';
 
@@ -28,22 +29,92 @@ interface DispatchProps {
   getDbaseEntries: (
     dbase: string,
     sortField: string,
-    sortOrder: string
+    sortOrder: string,
+    limitLow: number,
+    limitHigh: number
 ) => void
 }
 
 type Props = StateProps & DispatchProps
 
 const list = (props: Props) => {
+  const [limitLow, setLimitLow] = useState(0);
+  const [limitHigh, setLimitHigh] = useState(Dbase.pageLimit - 1);
+  const [nextDisabled, setNextDisabled] = useState(true);
+  const [backDisabled, setBackDisabled] = useState(true);
+  const isFirstRun = useRef(true);
   const classes = themeStyles();
 
   useEffect(() => {
-    props.getDbaseEntries(Dbase.tables.log.name, 'DATE', 'DESC');
-  }, []);
+    if ( isFirstRun.current ) {
+      isFirstRun.current = false;
+      props.getDbaseEntries(
+          Dbase.tables.log.name,
+          'DATE',
+          'DESC',
+          limitLow,
+          limitHigh);
+    } else {
+      if ( props.logsData.data.length < Dbase.pageLimit - 1 ) {
+        setNextDisabled(true);
+        if ( limitLow === 0 ) {
+          setBackDisabled(true);
+        } else {
+          setBackDisabled(false);
+        }
+      } else if ( limitLow === 0 ) {
+        setNextDisabled(false);
+        setBackDisabled(true);
+      } else {
+        setNextDisabled(false);
+        setBackDisabled(false);
+      }
+    }
+  }, [props.logsData]);
+
+  const getRecords = (lowLimit: number, highLimit: number) => {
+    setLimitLow(lowLimit);
+    setLimitHigh(highLimit);
+    props.getDbaseEntries(
+        Dbase.tables.log.name,
+        'DATE',
+        'DESC',
+        lowLimit,
+        highLimit);
+  };
 
   return (
 
     <>
+      <Grid item container alignItems="flex-start" xs={12}>
+        <Grid item container justify="flex-start" xs={3}>
+          <Typography variant="h5">
+            {LogVars.records}: {limitLow} - {limitHigh}
+          </Typography>
+        </Grid>
+
+        <Grid item container justify="flex-start" xs={1}>
+          <Button
+            onClick={() => getRecords(
+                limitLow + Dbase.pageLimit,
+                limitHigh + Dbase.pageLimit)}
+            disabled={nextDisabled}
+          >
+            {LogVars.nextButton}
+          </Button>
+        </Grid>
+        <Grid item container justify="flex-start" xs={1}>
+          <Button
+            onClick={() => getRecords(
+                limitLow - Dbase.pageLimit,
+                limitHigh - Dbase.pageLimit)}
+            disabled={backDisabled}
+          >
+            {LogVars.backButton}
+          </Button>
+        </Grid>
+      </Grid>
+
       <Grid item container alignItems="flex-start" xs={12}>
 
         <Grid item container xs={12}>
@@ -139,7 +210,15 @@ const mapDispatchToProps = (dispatch: AppDispatch): DispatchProps => {
         dbase: string,
         sortField: string,
         sortOrder: string,
-    ) => dispatch(getDbaseEntries(dbase, sortField, sortOrder)),
+        limitLow: number,
+        limitHigh: number,
+    ) => dispatch(getDbaseEntries(
+        dbase,
+        sortField,
+        sortOrder,
+        limitLow,
+        limitHigh),
+    ),
   };
 };
 

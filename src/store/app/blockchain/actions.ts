@@ -326,7 +326,8 @@ export const getDbaseEntries = (
     table: string,
     sortField: string = '',
     sortOrder: string = 'DESC',
-) => {
+    limitLow: number = 0,
+    limitHigh: number = Dbase.maxLimit) => {
   return async (dispatch: AppDispatch) => {
     const successFailType = getActionTypes(table);
     const successAction = successFailType.success;
@@ -347,6 +348,11 @@ export const getDbaseEntries = (
           sortField + ' ' +
           sortOrder;
     }
+    selectSQL += ' LIMIT ' +
+        limitLow + ', ' +
+        limitHigh;
+
+    console.log(selectSQL);
 
     Minima.sql(selectSQL, function(result: any) {
       if ( !result.status ) {
