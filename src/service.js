@@ -190,7 +190,7 @@ function initDbase() {
  * @param {string} state
 */
 function processURL(txId, uRL, address, tokenId, state) {
-  Minima.log(app + ' URL Call ' + uRL + ' ' + address + ' ' + tokenId + ' ' + state);
+  // Minima.log(app + ' URL Call ' + uRL + ' ' + address + ' ' + tokenId + ' ' + state);
   const postData = {
     address: address,
     tokenId: tokenId,

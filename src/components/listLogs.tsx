@@ -9,10 +9,8 @@ import {themeStyles} from '../styles';
 import {
   ApplicationState,
   AppDispatch,
-  ActionTypes,
   LogsProps,
   Logs as LogsType,
-  LogsActionTypes,
 } from '../store/types';
 
 import {getDbaseEntries} from '../store/app/blockchain/actions';
@@ -27,7 +25,11 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  getDbaseEntries: (dbase: string) => void
+  getDbaseEntries: (
+    dbase: string,
+    sortField: string,
+    sortOrder: string
+) => void
 }
 
 type Props = StateProps & DispatchProps
@@ -36,7 +38,7 @@ const list = (props: Props) => {
   const classes = themeStyles();
 
   useEffect(() => {
-    props.getDbaseEntries(Dbase.tables.log.name);
+    props.getDbaseEntries(Dbase.tables.log.name, 'DATE', 'DESC');
   }, []);
 
   return (
@@ -133,7 +135,11 @@ const mapStateToProps = (state: ApplicationState): StateProps => {
 
 const mapDispatchToProps = (dispatch: AppDispatch): DispatchProps => {
   return {
-    getDbaseEntries: (dbase: string) => dispatch(getDbaseEntries(dbase)),
+    getDbaseEntries: (
+        dbase: string,
+        sortField: string,
+        sortOrder: string,
+    ) => dispatch(getDbaseEntries(dbase, sortField, sortOrder)),
   };
 };
 

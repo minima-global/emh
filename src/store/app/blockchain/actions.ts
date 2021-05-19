@@ -71,7 +71,7 @@ export const doLog = (typeId: string, type: string, data: string) => {
     const date = Date.now();
     const insertSQL = 'INSERT INTO ' +
         table +
-        ' (loggingTypeId, loggingType, date, data) ' +
+        ' (LOGGINGTYPEID, LOGGINGTYPE, DATE, DATA) ' +
         'VALUES (' +
         '\'' + typeId + '\', ' +
         '\'' + type + '\', ' +
@@ -107,7 +107,7 @@ export const command = (cmd: string) => {
         command = params;
         params = '';
       }
-      dispatch(doLog(command, 'COMMAND', params));
+      dispatch(doLog(command, Dbase.extraLogTypes.COMMAND, params));
       dispatch(write({data: msg.response})(successAction));
     });
   };
@@ -322,7 +322,11 @@ export const deleteRow = (
  * @return {function}
  */
 
-export const getDbaseEntries = (table: string) => {
+export const getDbaseEntries = (
+    table: string,
+    sortField: string = '',
+    sortOrder: string = 'DESC',
+) => {
   return async (dispatch: AppDispatch) => {
     const successFailType = getActionTypes(table);
     const successAction = successFailType.success;
@@ -337,13 +341,12 @@ export const getDbaseEntries = (table: string) => {
       time: dateText,
     };
 
-    const selectSQL = 'Select * from ' + table;
-
-    /**
-      const selectSQL = 'Select * from ' +
-      table +
-      ' ORDER BY DATE DESC';
-      */
+    let selectSQL = 'SELECT * FROM ' + table;
+    if ( sortField ) {
+      selectSQL += ' ORDER BY ' +
+          sortField + ' ' +
+          sortOrder;
+    }
 
     Minima.sql(selectSQL, function(result: any) {
       if ( !result.status ) {

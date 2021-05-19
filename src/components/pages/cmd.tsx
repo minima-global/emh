@@ -15,10 +15,8 @@ import {themeStyles} from '../../styles';
 import {
   ApplicationState,
   AppDispatch,
-  ActionTypes,
   CmdProps,
   TriggersProps,
-  TriggerActionTypes,
 } from '../../store/types';
 
 import {command, getDbaseEntries} from '../../store/app/blockchain/actions';
@@ -43,11 +41,7 @@ interface StateProps {
 
 interface DispatchProps {
   command: (cmd: string) => void
-  getDbaseEntries: (
-      dbase: string,
-      succcessAction: ActionTypes,
-      failAction: ActionTypes,
-  ) => void,
+  getDbaseEntries: (dbase: string) => void,
 }
 
 type Props = StateProps & DispatchProps
@@ -92,11 +86,7 @@ const display = (props: Props) => {
   useEffect(() => {
     if ( isFirstRun.current ) {
       isFirstRun.current = false;
-      props.getDbaseEntries(
-          Dbase.tables.trigger.name,
-          TriggerActionTypes.TRIGGER_SUCCESS,
-          TriggerActionTypes.TRIGGER_FAILURE,
-      );
+      props.getDbaseEntries(Dbase.tables.trigger.name);
     } else {
       props.triggersData.data.forEach((trigger, index) => {
         const thisTrigger: SelectOptionType = {
@@ -302,11 +292,7 @@ const mapStateToProps = (state: ApplicationState): StateProps => {
 const mapDispatchToProps = (dispatch: AppDispatch): DispatchProps => {
   return {
     command: (cmd: string) => dispatch(command(cmd)),
-    getDbaseEntries: (
-        dbase: string,
-        succcessAction: ActionTypes,
-        failAction: ActionTypes,
-    ) => dispatch(getDbaseEntries(dbase, succcessAction, failAction)),
+    getDbaseEntries: (dbase: string) => dispatch(getDbaseEntries(dbase)),
   };
 };
 
