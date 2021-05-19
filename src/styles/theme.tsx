@@ -114,15 +114,15 @@ let theme = createMuiTheme({
       color: '#F0F0FA',
     },
     button: {
-      background: 'linear-gradient(#317AFF, #317AFF)',
+      background: 'linear-gradient(#91919D, #91919D)',
       margin: 0,
       padding: 0,
       lineHeight: '1',
       textTransform: 'none',
       fontSize: '1em',
-      fontWeight: 400,
+      fontWeight: 500,
       fontFamily: '"Manrope", "Roboto", "Arial", "sans-serif"',
-      color: 'white',
+      color: '#001C32',
     },
   },
   palette: {
