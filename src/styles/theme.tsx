@@ -298,7 +298,7 @@ const themeStyles = makeStyles({
     paddingBottom: theme.spacing(0.5),
   },
   formSubmit: {
-    paddingTop: theme.spacing(2),
+    paddingTop: theme.spacing(0.5),
     width: '100%',
   },
   formLabel: {

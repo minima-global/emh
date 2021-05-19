@@ -66,10 +66,9 @@ export const Info = (props: Props) => {
         <Grid item container justify="flex-start" xs={12}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="2000"
-            height="4"
+            viewBox="0 0 4000 20"
           >
-            <line x2="2000" stroke="#317AFF" strokeWidth={4} />
+            <line x2="4000" stroke="#001C32" width="100%" height="100%"/>
           </svg>
         </Grid>
 
