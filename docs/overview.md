@@ -1,6 +1,6 @@
 # Overview of the Enterprise Management Hub
 
-The Enterprise Management Hub (EMH) acts as a gateway between Minima and the World Wide Web (via the `HTTP` protocol). Although the idea is simple, the application has much potential because it unlocks a bridge between two powerful concepts - the web and the blockchain.
+The Enterprise Management Hub (EMH) acts as a gateway between Minima and the World Wide Web (via the `HTTP` protocol). Although the idea is simple, the system has much potential because it unlocks a bridge between two powerful concepts - the web and the blockchain.
 
 At its core, the EMH performs three functions (shown in Figure 1, below):
 
@@ -8,21 +8,25 @@ At its core, the EMH performs three functions (shown in Figure 1, below):
 2. Listens for Minima transactions at specified addresses and calls URLs with data within those transactions.
 3. Listens for Minima transactions involving specified tokens and calls URLs with data within those transactions.
 
-![EMH Basic Workflow](images/basicWorkflow.png)
+![Figure 1: EMH Basic Workflow](images/basicWorkflow.png)
 
-_Figure 1: EMH Basic Workflow_
+## The EMH Admin Application
 
-Additionally, the EMH is a Minima MiniDapp that comes with a pre-built app' - an early prototype is shown in Figure 2, below. The app' performs some basic administrator functionality that allows users to:
+The EMH features a pre-built admin’ app’ - Figure 2 below shows an early prototype. The app' performs some basic administrator functionality that allows users to:
 
 1. View a log of all actions taken by the EMH
-2. Specify Minima addresses and tokens for which the EMH should listen for transactions; it then calls the URL associated with those transactions
+2. Specify Minima addresses and tokens for which the EMH should listen for transactions and to which URL it should call in turn
 3. Add triggers to URL endpoints
 4. Run triggers
 
-![Admin Prototype](images/adminPrototype.png)
+![Figure 2: EMH Admin Prototype](images/adminPrototype.png)
 
-_Figure 1: EMH Admin Prototype_
+The EMH admin’ app’ is itself a Minima distributed application (MiniDapp). Thus, as well as performing all the EMH administration functions, it also demonstrates the power of Minima MiniDapps.
 
-Finally, an overview of the EMH workflow is shown in Figure 3, below.
+## EMH System Overview
 
-_Figure 3: EMH Workflow_
+Finally, Figure 3 below shows an overview of the constituent parts that make up the EMH system.
+
+![Figure 3: EMH System](images/flow.png)
+
+Minima’s creation of the software at the centre of Figure 3 means that exciting times lay ahead because there are endless possibilities for the client applications and the uses they might unlock for external systems.
