@@ -77,7 +77,7 @@ class Dbase {
   };
 
   static readonly maxLimit = 2147483647
-  static readonly pageLimit = 100
+  static readonly pageLimit = 25
 }
 
 
