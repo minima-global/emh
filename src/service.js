@@ -189,7 +189,9 @@ function initDbase() {
  * @param {string} state
 */
 function processURL(txId, uRL, address, tokenId, state) {
-  // Minima.log(app + ' URL Call ' + uRL + ' ' + address + ' ' + tokenId + ' ' + state);
+  // Minima.log(
+  //  app + ' URL Call ' + uRL + ' ' + address + ' ' + tokenId + ' ' + state
+  // );
   const postData = {
     address: address,
     tokenId: tokenId,
@@ -329,10 +331,73 @@ function processTx(txId, tokenId, mxAddress) {
   });
 }
 
+/**
+ * Processes any API call
+ * @function apiCall
+ * @param {string} qParams
+*/
+function processApiCall(qParams) {
+  const qParamsJSON = JSON.parse(decodeURIComponent(qParams));
+  // Minima.log(qParamsJSON.command);
+  const endpoint = qParamsJSON.command;
+  if ( endpoint ) {
+    const commandSelectSQL = 'SELECT CMD, SETPARAMS, PARAMS FROM ' +
+      tables.trigger.name +
+        ' WHERE ENDPOINT = \'' +
+        endpoint +
+        '\'';
+    // Minima.log(commandSelectSQL);
+    Minima.sql(commandSelectSQL, function(endpointResults) {
+      // Minima.log(JSON.stringify(endpointResults));
+      if (endpointResults.response.count) {
+        const command = endpointResults.response.rows[0].CMD;
+        var cmdParams = '';
+        if ( endpointResults.response.rows[0].SETPARAMS ) {
+          cmdParams += endpointResults.response.rows[0].SETPARAMS;
+        }
+        var paramsTemp = endpointResults.response.rows[0].PARAMS.split(' ');
+        for (var i = 0; i < paramsTemp.length; i++ ) {
+          var thisParam = paramsTemp[i];
+          cmdParams += ' ' + qParamsJSON[thisParam];
+        }
+
+        const thisCommand = command + ' ' + cmdParams;
+        // Minima.log(app + ' command ' + thisCommand);
+        Minima.cmd(thisCommand, function(msg) {
+          if ( msg.status ) {
+            doLog(command, extraLogTypes.COMMAND, cmdParams);
+          } else {
+            Minima.log(app + ' Error running command ' + thisCommand);
+          }
+        });
+      }
+    });
+  }
+
+
+  // DO SOMETHING..
+  // ..
+  // var ret = 'function was '+obj.function+' stats was '+obj.stats;
+
+  // Return something
+  // return ret;
+}
+
+// 127.0.0.1:9004/api/EMH/?command=gimme50&address=MxC52CMZJ56TQPJMJUIB62K55ER6QTXJ5D&tokenid=0x00
+
+
 /** Initialise the app */
 Minima.init( function(msg) {
   if (msg.event == 'connected') {
     initDbase();
+    // Listen in for messages posted to this service
+    Minima.minidapps.listen(function(msg) {
+      // Run the API call
+      processApiCall(msg.message);
+      // Minima.log(JSON.stringify(msg));
+      // Return the reply..
+      Minima.minidapps.reply(msg.replyid, 'OK');
+    });
   } else if (msg.event == 'newtxpow') {
     const txPoW = msg.info.txpow;
     const txOutputs = txPoW.body.txn.outputs;
