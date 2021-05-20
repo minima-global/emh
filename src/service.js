@@ -332,13 +332,12 @@ function processTx(txId, tokenId, mxAddress) {
 }
 
 /**
- * Processes any API call
- * @function apiCall
+ * Processes any URL call call
+ * @function processApiCall
  * @param {string} qParams
 */
 function processApiCall(qParams) {
   const qParamsJSON = JSON.parse(decodeURIComponent(qParams));
-  // Minima.log(qParamsJSON.command);
   const endpoint = qParamsJSON.command;
   if ( endpoint ) {
     const commandSelectSQL = 'SELECT CMD, SETPARAMS, PARAMS FROM ' +
@@ -373,14 +372,6 @@ function processApiCall(qParams) {
       }
     });
   }
-
-
-  // DO SOMETHING..
-  // ..
-  // var ret = 'function was '+obj.function+' stats was '+obj.stats;
-
-  // Return something
-  // return ret;
 }
 
 // 127.0.0.1:9004/api/EMH/?command=gimme50&address=MxC52CMZJ56TQPJMJUIB62K55ER6QTXJ5D&tokenid=0x00
@@ -390,18 +381,17 @@ function processApiCall(qParams) {
 Minima.init( function(msg) {
   if (msg.event == 'connected') {
     initDbase();
-    // Listen in for messages posted to this service
+
+    // Listen for messages posted to this service
     Minima.minidapps.listen(function(msg) {
-      // Run the API call
+      // process the call
       processApiCall(msg.message);
-      // Minima.log(JSON.stringify(msg));
-      // Return the reply..
+      // Reply..
       Minima.minidapps.reply(msg.replyid, 'OK');
     });
   } else if (msg.event == 'newtxpow') {
     const txPoW = msg.info.txpow;
     const txOutputs = txPoW.body.txn.outputs;
-    // txOutputs[0].address
     if ( ( Array.isArray(txOutputs) ) &&
         ( txOutputs.length ) ) {
       processTx(txPoW.txpowid, txOutputs[0].tokenid, txOutputs[0].mxaddress);
