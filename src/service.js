@@ -28,7 +28,7 @@ const tables = {
     columns: ['TXID', 'URL', 'ADDRESS', 'TOKENID', 'DATE'],
   },
   log: {
-    name: 'LOG',
+    name: 'CONSOLE',
     key: {
       name: ['ID'],
       isAuto: true,
@@ -36,12 +36,12 @@ const tables = {
     columns: ['ID', 'LOGGINGTYPEID', 'LOGGINGTYPE', 'DATE', 'DATA'],
   },
   trigger: {
-    name: 'TRIGGER',
+    name: 'COMMAND',
     key: {
       name: ['ENDPOINT'],
       isAuto: false,
     },
-    columns: ['ENDPOINT', 'COMMAND', 'SETPARAMS', 'PARAMS'],
+    columns: ['ENDPOINT', 'CMD', 'SETPARAMS', 'PARAMS'],
   },
 };
 
@@ -144,7 +144,7 @@ function createTrigger() {
   const createSQL = 'CREATE Table IF NOT EXISTS ' +
       tables.trigger.name + ' (' +
       'ENDPOINT VARCHAR(255) NOT NULL, ' +
-      'COMMAND VARCHAR(255) NOT NULL, ' +
+      'CMD VARCHAR(255) NOT NULL, ' +
       'SETPARAMS VARCHAR(255), ' +
       'PARAMS VARCHAR(255), ' +
       'PRIMARY KEY(ENDPOINT)' +
@@ -164,8 +164,7 @@ function createLog() {
       'LOGGINGTYPEID VARCHAR(512) NOT NULL, ' +
       'LOGGINGTYPE VARCHAR(255) NOT NULL, ' +
       'DATE VARCHAR(255) NOT NULL, ' +
-      'DATA VARCHAR(1024), ' +
-      'PRIMARY KEY(ID)' +
+      'DATA VARCHAR(1024)' +
     ');';
 
   doSQL(createSQL, tables.log.name);

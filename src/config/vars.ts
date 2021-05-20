@@ -54,7 +54,7 @@ class Dbase {
       columns: ['TXID', 'URL', 'ADDRESS', 'TOKENID', 'DATE'],
     },
     log: {
-      name: 'LOG',
+      name: 'CONSOLE',
       key: {
         name: ['ID'],
         isAuto: true,
@@ -62,12 +62,12 @@ class Dbase {
       columns: ['ID', 'LOGGINGTYPEID', 'LOGGINGTYPE', 'DATE', 'DATA'],
     },
     trigger: {
-      name: 'TRIGGER',
+      name: 'COMMAND',
       key: {
         name: ['ENDPOINT'],
         isAuto: false,
       },
-      columns: ['ENDPOINT', 'COMMAND', 'SETPARAMS', 'PARAMS'],
+      columns: ['ENDPOINT', 'CMD', 'SETPARAMS', 'PARAMS'],
     },
   };
 
