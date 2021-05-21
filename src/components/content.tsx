@@ -4,6 +4,7 @@ import {Switch, Route} from 'react-router-dom';
 import {PageTypes} from '../store/types';
 
 import {
+  Home,
   Logs,
   Cmd,
   Info,
@@ -33,6 +34,10 @@ export const Content = () => {
       />
 
       <Route
+        path={Local.logs}
+        render= {() => <Logs />}
+      />
+      <Route
         exact path={Local.addresses}
         render= {() => <Addresses />}
       />
@@ -51,7 +56,7 @@ export const Content = () => {
 
       <Route
         path={Local.home}
-        render= {() => <Logs />}
+        render= {() => <Home />}
       />
 
     </Switch>

@@ -90,27 +90,56 @@ const list = (props: Props) => {
 
         <Grid item container xs={12}>
 
-          <Grid item container justify="flex-start" xs={2}>
+          <Grid
+            item
+            container
+            justify="flex-start"
+            xs={3}
+            lg={2}
+          >
             <Typography variant="h5">
               {TriggerVars.endpoint}
             </Typography>
           </Grid>
-          <Grid item container justify="flex-start" xs={2}>
+          <Grid
+            item
+            container
+            justify="flex-start"
+            xs={2}
+          >
             <Typography variant="h5">
               {TriggerVars.command}
             </Typography>
           </Grid>
-          <Grid item container justify="flex-start" xs={3}>
+          <Grid
+            item
+            container
+            justify="flex-start"
+            xs={2}
+            lg={3}
+          >
             <Typography variant="h5">
               {TriggerVars.setParams}
             </Typography>
           </Grid>
-          <Grid item container justify="flex-start" xs={3}>
+          <Grid
+            item
+            container
+            justify="flex-start"
+            xs={4}
+            lg={3}
+          >
             <Typography variant="h5">
               {TriggerVars.params}
             </Typography>
           </Grid>
-          <Grid item container justify="flex-end" xs={2}>
+          <Grid
+            item
+            container
+            justify="flex-end"
+            xs={1}
+            lg={2}
+          >
             <Typography variant="h5">
               &nbsp;
             </Typography>
@@ -138,7 +167,8 @@ const list = (props: Props) => {
                         container
                         alignItems='center'
                         justify="flex-start"
-                        xs={2}
+                        xs={3}
+                        lg={2}
                       >
                         <Typography variant="body1">
                           {endpoint}
@@ -160,7 +190,8 @@ const list = (props: Props) => {
                         container
                         alignItems='center'
                         justify="flex-start"
-                        xs={3}
+                        xs={2}
+                        lg={3}
                       >
                         <Typography variant="body1">
                           {setParams}
@@ -171,7 +202,8 @@ const list = (props: Props) => {
                         container
                         alignItems='center'
                         justify="flex-start"
-                        xs={3}
+                        xs={4}
+                        lg={3}
                       >
                         <Typography variant="body1">
                           {params}
@@ -181,7 +213,8 @@ const list = (props: Props) => {
                         item
                         container
                         justify="flex-end"
-                        xs={2}
+                        xs={1}
+                        lg={2}
                       >
                         <Button
                           onClick={() => deleteTrigger(trigger, index)}

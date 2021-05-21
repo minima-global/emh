@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 
 import minimaIcon from '../../images/minimaIcon.svg';
+import homeIcon from '../../images/home.png';
 import terminal from '../../images/terminal.png';
 import token from '../../images/token.png';
 import trigger from '../../images/trigger.png';
@@ -77,7 +78,7 @@ export const Main = () => {
               >
 
                 <Typography variant="h1">
-                  {Home.heading}
+                  {App.appName}
                 </Typography>
 
               </Grid>
@@ -105,6 +106,24 @@ export const Main = () => {
             <Grid className={classes.footer} item container xs={12}>
 
               <Grid item container xs={12}>
+
+                <Grid
+                  item
+                  container
+                  alignItems="center"
+                  justify="center"
+                  xs={2}
+                >
+
+                  <NavLink to={Local.home} className={classes.iconLink}>
+                    <IconButton
+                      aria-label="Home"
+                    >
+                      <img className={classes.footerIcon} src={homeIcon}/>
+                    </IconButton>
+                  </NavLink>
+
+                </Grid>
 
                 <Grid
                   item
@@ -193,21 +212,6 @@ export const Main = () => {
                       <img className={classes.footerIcon} src={terminal}/>
                     </IconButton>
                   </NavLink>
-
-                </Grid>
-
-
-                <Grid
-                  item
-                  container
-                  alignItems="center"
-                  justify="center"
-                  xs={2}
-                >
-
-                  <Typography variant="caption">
-                  &nbsp;
-                  </Typography>
 
                 </Grid>
 

@@ -128,7 +128,10 @@ const list = (props: Props) => {
                         justify="flex-start"
                         xs={5}
                       >
-                        <Typography variant="body1">
+                        <Typography
+                          variant="body1"
+                          noWrap={true}
+                        >
                           {address}
                         </Typography>
                       </Grid>
@@ -139,7 +142,10 @@ const list = (props: Props) => {
                         justify="flex-start"
                         xs={5}
                       >
-                        <Typography variant="body1">
+                        <Typography
+                          variant="body1"
+                          noWrap={true}
+                        >
                           {url}
                         </Typography>
                       </Grid>

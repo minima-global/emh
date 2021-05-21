@@ -107,8 +107,8 @@ let theme = createMuiTheme({
       color: '#91919D',
     },
     caption: {
-      lineHeight: '1.5',
-      fontSize: '1em',
+      lineHeight: '1',
+      fontSize: '0.8em',
       fontWeight: 600,
       fontFamily: '"Manrope", "Roboto", "Arial", "sans-serif"',
       color: '#F0F0FA',

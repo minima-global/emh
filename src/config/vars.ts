@@ -107,7 +107,7 @@ class GeneralError {
 
 /** @class Home */
 class Home {
-  static readonly heading = `${App.appName}`
+  static readonly heading = `Dashboard`
 }
 
 /** @class Welcome */
@@ -164,7 +164,7 @@ class Cmd {
 class Addresses {
   static readonly heading = 'Addresses to URLs'
 
-  static readonly address = 'Minima Address'
+  static readonly address = 'Mx Address'
   static readonly url = 'URL'
 
   static readonly mxLengthError =
@@ -200,9 +200,9 @@ class Tokens {
 class Triggers {
   static readonly heading = 'Triggers'
 
-  static readonly endpoint = 'Endpoint'
-  static readonly command = 'Command'
-  static readonly setParams = 'Set Params'
+  static readonly endpoint = 'API'
+  static readonly command = 'Cmd'
+  static readonly setParams = 'Set'
   static readonly params = 'Params'
 
   static readonly triggerButton = 'Submit'
