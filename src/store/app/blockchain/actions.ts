@@ -93,21 +93,16 @@ export const doLog = (typeId: string, type: string, data: string) => {
 
 /**
  * Runs a Minima command
+ * @param {string} endpoint - the endpoint called
  * @param {string} cmd - the command to run
  * @return {function}
  */
-export const command = (cmd: string) => {
+export const command = (endpoint: string, cmd: string) => {
   return async (dispatch: AppDispatch) => {
     // console.log('Got command', cmd);
     const successAction: ActionTypes = CmdActionTypes.CMD_SUCCESS;
     Minima.cmd(cmd, function(msg: any) {
-      let command = cmd.substr(0, cmd.indexOf(' '));
-      let params = cmd.substr(cmd.indexOf(' ') + 1);
-      if ( command === '' ) {
-        command = params;
-        params = '';
-      }
-      dispatch(doLog(command, Dbase.extraLogTypes.COMMAND, params));
+      dispatch(doLog(endpoint, Dbase.extraLogTypes.COMMAND, cmd));
       dispatch(write({data: msg.response})(successAction));
     });
   };
@@ -317,11 +312,12 @@ export const deleteRow = (
 /**
  * Gets rows from the database
  * @param {string} table - the table to which to add
- * @param {string} successAction - the Redux action type that indicates success
- * @param {string} failAction - the Redux action type that indicates failure
+ * @param {string} sortField - e.g ID
+ * @param {string} sortOrder - e.g DESC
+ * @param {string} limitLow - first row to return
+ * @param {string} offset - row offset
  * @return {function}
  */
-
 export const getDbaseEntries = (
     table: string,
     sortField: string = '',
@@ -371,89 +367,3 @@ export const getDbaseEntries = (
     });
   };
 };
-
-/**
-
-const get = (url: string, actionType: string) => {
-  return async (dispatch: AppDispatch) => {
-    try {
-      const d = new Date(Date.now());
-      const dateText = d.toString();
-
-      const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (!response.ok) {
-        const statusText = response.statusText;
-        return response.json()
-            .then((data) => {
-              throw new Error(`${Post.getFailure}: ${statusText}`);
-            });
-      } else {
-        const result = await response.json();
-        dispatch(write({data: result})(actionType));
-        const txData = {
-          code: '200',
-          summary: `${Post.getSuccess}`,
-          time: `${dateText}`,
-        };
-        dispatch(write({data: txData})(TxActionTypes.TX_SUCCESS));
-      }
-    } catch ( error ) {
-      console.error( error.message );
-    }
-  };
-};
-
-const post = (url: string, data: object) => {
-  return async (dispatch: AppDispatch) => {
-    // console.log("Post: ", url, data)
-    const d = new Date(Date.now());
-    const dateText = d.toString();
-    let txData: TxData = {
-      code: '404',
-      summary: Post.postFailure,
-      time: `${dateText}`,
-    };
-
-    fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    })
-        .then((response) => {
-          if (!response.ok) {
-            const status = response.status;
-            const statusText = response.statusText;
-            return response.json()
-                .then((data) => {
-                  txData = {
-                    code: status.toString(),
-                    summary: `${Post.postFailure}: ${statusText}`,
-                    time: `${dateText}`,
-                  };
-                  throw new Error();
-                });
-          }
-          return response.json();
-        })
-        .then((data) => {
-          txData = {
-            code: '200',
-            summary: `${Post.postSuccess}`,
-            time: `${dateText}`,
-          };
-          dispatch(write({data: txData})(TxActionTypes.TX_SUCCESS));
-        })
-        .catch((error) => {
-          dispatch(write({data: txData})(TxActionTypes.TX_FAILURE));
-        });
-  };
-};
-*/

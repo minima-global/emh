@@ -47,6 +47,7 @@ const tables = {
 
 const extraLogTypes = {
   COMMAND: 'COMMAND',
+  API: 'API',
   URL: 'URL',
 };
 
@@ -365,9 +366,9 @@ function processApiCall(qParams) {
         // Minima.log(app + ' command ' + thisCommand);
         Minima.cmd(thisCommand, function(msg) {
           if ( msg.status ) {
-            doLog(command, extraLogTypes.COMMAND, cmdParams);
+            doLog(endpoint, extraLogTypes.API, thisCommand);
           } else {
-            Minima.log(app + ' Error running command ' + thisCommand);
+            Minima.log(app + ' Error with API Call ' + endpoint);
           }
         });
       }
@@ -378,7 +379,7 @@ function processApiCall(qParams) {
 // 127.0.0.1:9004/api/EMH/?command=gimme50&address=MxC52CMZJ56TQPJMJUIB62K55ER6QTXJ5D&tokenid=0x00
 // 127.0.0.1:9004/api/EMH/?command=gimme50&address=MxXR4E5ZIRUKFDPUQQHTKGLCVLYMNYG2OL&tokenid=0x00
 // 127.0.0.1:9004/api/EMH/?command=gimme50&address=MxCSDCZVNU2AB3KHB4B37V7OZLJGMQBE45&tokenid=0x00
-
+// 127.0.0.1:9004/api/EMH/?command=gimme50&address=MxQ37CGQPS6R7XI4JHCLNNVGWSZ66NVJ5E&tokenid=0x00
 
 /** Initialise the app */
 Minima.init( function(msg) {

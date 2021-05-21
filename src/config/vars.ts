@@ -73,6 +73,7 @@ class Dbase {
 
   static readonly extraLogTypes = {
     COMMAND: 'COMMAND',
+    API: 'API',
     URL: 'URL',
   };
 

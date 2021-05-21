@@ -40,7 +40,7 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  command: (cmd: string) => void
+  command: (endpoint: string, cmd: string) => void
   getDbaseEntries: (dbase: string) => void,
 }
 
@@ -67,6 +67,7 @@ const display = (props: Props) => {
     enableReinitialize: true,
     validationSchema: cmdSchema,
     onSubmit: (values: any) => {
+      const endpoint = props.triggersData.data[values.trigger.value].ENDPOINT;
       let command = props.triggersData.data[values.trigger.value].CMD;
       if ( props.triggersData.data[values.trigger.value].SETPARAMS ) {
         command =
@@ -79,7 +80,7 @@ const display = (props: Props) => {
           values.params;
       }
       // console.log(command);
-      props.command(command.trim());
+      props.command(endpoint, command.trim());
     },
   });
 
@@ -289,7 +290,9 @@ const mapStateToProps = (state: ApplicationState): StateProps => {
 
 const mapDispatchToProps = (dispatch: AppDispatch): DispatchProps => {
   return {
-    command: (cmd: string) => dispatch(command(cmd)),
+    command: (
+        endpoint: string,
+        cmd: string) => dispatch(command(endpoint, cmd)),
     getDbaseEntries: (dbase: string) => dispatch(getDbaseEntries(dbase)),
   };
 };
