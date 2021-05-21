@@ -122,7 +122,7 @@ const list = (props: Props) => {
           { props.triggersData.data.map(
               ( trigger: TriggersType, index: number ) => {
                 const endpoint = trigger.ENDPOINT;
-                const command = trigger.COMMAND;
+                const command = trigger.CMD;
                 const setParams = trigger.SETPARAMS;
                 const params = trigger.PARAMS;
 

@@ -67,7 +67,7 @@ const display = (props: Props) => {
     enableReinitialize: true,
     validationSchema: cmdSchema,
     onSubmit: (values: any) => {
-      let command = props.triggersData.data[values.trigger.value].COMMAND;
+      let command = props.triggersData.data[values.trigger.value].CMD;
       if ( props.triggersData.data[values.trigger.value].SETPARAMS ) {
         command =
           command + ' ' +

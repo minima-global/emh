@@ -193,6 +193,7 @@ function processURL(txId, uRL, address, tokenId, state) {
   //  app + ' URL Call ' + uRL + ' ' + address + ' ' + tokenId + ' ' + state
   // );
   const postData = {
+    txId: txId,
     address: address,
     tokenId: tokenId,
     state: state,
@@ -200,7 +201,7 @@ function processURL(txId, uRL, address, tokenId, state) {
   Minima.net.POST(uRL, JSON.stringify(postData), function(postResults) {
     // Minima.log(app + ' POST results ' + JSON.stringify(postResults));
     if ( postResults.result == 'OK' ) {
-      doLog(uRL, extraLogTypes.URL, 'OK');
+      doLog(uRL, extraLogTypes.URL, txId);
       const deleteSQL = 'DELETE FROM ' +
             tables.txpow.name +
             ' WHERE (TXID, URL) = ' +
@@ -375,6 +376,8 @@ function processApiCall(qParams) {
 }
 
 // 127.0.0.1:9004/api/EMH/?command=gimme50&address=MxC52CMZJ56TQPJMJUIB62K55ER6QTXJ5D&tokenid=0x00
+// 127.0.0.1:9004/api/EMH/?command=gimme50&address=MxXR4E5ZIRUKFDPUQQHTKGLCVLYMNYG2OL&tokenid=0x00
+// 127.0.0.1:9004/api/EMH/?command=gimme50&address=MxCSDCZVNU2AB3KHB4B37V7OZLJGMQBE45&tokenid=0x00
 
 
 /** Initialise the app */

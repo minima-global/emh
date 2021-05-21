@@ -83,7 +83,7 @@ export interface TokensProps extends PayloadProps {
  */
 export interface Triggers {
   ENDPOINT: string
-  COMMAND: string
+  CMD: string
   SETPARAMS: string
   PARAMS: string
 }
