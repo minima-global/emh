@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 import {theme, themeStyles} from '../styles';
 
@@ -47,9 +48,11 @@ type Props = StateProps & DispatchProps
 const list = (props: Props) => {
   const [summary, setSummary] = useState('');
   const isFirstRun = useRef(true);
+  // eslint-disable-next-line no-unused-vars
   const [isDisabled, setIsDisabled] = useState([] as boolean[]);
 
   const classes = themeStyles();
+  const largeScreen = useMediaQuery(theme.breakpoints.up('lg'));
 
   useEffect(() => {
     if ( isFirstRun.current ) {
@@ -143,7 +146,7 @@ const list = (props: Props) => {
                     justify="flex-start"
                     xs={5}
                   >
-                    <Typography 
+                    <Typography
                       variant="body1"
                       noWrap={true}
                     >
@@ -159,7 +162,10 @@ const list = (props: Props) => {
                         background: 'linear-gradient(#FF0000, #FF0000)',
                       }}
                     >
-                      {TokenVars.deleteButton}
+                      { largeScreen ?
+                        TokenVars.deleteButton:
+                        TokenVars.smallDeleteButton
+                      }
                     </Button>
                   </Grid>
                 </Grid>

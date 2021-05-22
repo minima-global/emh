@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 import {theme, themeStyles} from '../styles';
 
@@ -47,9 +48,11 @@ type Props = StateProps & DispatchProps
 const list = (props: Props) => {
   const [summary, setSummary] = useState('');
   const isFirstRun = useRef(true);
+  // eslint-disable-next-line no-unused-vars
   const [isDisabled, setIsDisabled] = useState([] as boolean[]);
 
   const classes = themeStyles();
+  const largeScreen = useMediaQuery(theme.breakpoints.up('lg'));
 
   useEffect(() => {
     if ( isFirstRun.current ) {
@@ -108,7 +111,10 @@ const list = (props: Props) => {
             xs={2}
           >
             <Typography variant="h5">
-              {TriggerVars.command}
+              { largeScreen ?
+                TriggerVars.command:
+                TriggerVars.smallCommand
+              }
             </Typography>
           </Grid>
           <Grid
@@ -119,7 +125,10 @@ const list = (props: Props) => {
             lg={3}
           >
             <Typography variant="h5">
-              {TriggerVars.setParams}
+              { largeScreen ?
+                TriggerVars.setParams:
+                TriggerVars.smallSetParams
+              }
             </Typography>
           </Grid>
           <Grid
@@ -130,7 +139,10 @@ const list = (props: Props) => {
             lg={3}
           >
             <Typography variant="h5">
-              {TriggerVars.params}
+              { largeScreen ?
+                TriggerVars.params:
+                TriggerVars.smallParams
+              }
             </Typography>
           </Grid>
           <Grid
@@ -170,7 +182,10 @@ const list = (props: Props) => {
                         xs={3}
                         lg={2}
                       >
-                        <Typography variant="body1">
+                        <Typography
+                          variant="body1"
+                          noWrap={true}
+                        >
                           {endpoint}
                         </Typography>
                       </Grid>
@@ -181,7 +196,10 @@ const list = (props: Props) => {
                         justify="flex-start"
                         xs={2}
                       >
-                        <Typography variant="body1">
+                        <Typography
+                          variant="body1"
+                          noWrap={true}
+                        >
                           {command}
                         </Typography>
                       </Grid>
@@ -193,7 +211,10 @@ const list = (props: Props) => {
                         xs={2}
                         lg={3}
                       >
-                        <Typography variant="body1">
+                        <Typography
+                          variant="body1"
+                          noWrap={true}
+                        >
                           {setParams}
                         </Typography>
                       </Grid>
@@ -205,7 +226,10 @@ const list = (props: Props) => {
                         xs={4}
                         lg={3}
                       >
-                        <Typography variant="body1">
+                        <Typography
+                          variant="body1"
+                          noWrap={true}
+                        >
                           {params}
                         </Typography>
                       </Grid>
@@ -224,7 +248,10 @@ const list = (props: Props) => {
                             background: 'linear-gradient(#FF0000, #FF0000)',
                           }}
                         >
-                          {TriggerVars.deleteButton}
+                          { largeScreen ?
+                            TriggerVars.deleteButton:
+                            TriggerVars.smallDeleteButton
+                          }
                         </Button>
                       </Grid>
 

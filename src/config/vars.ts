@@ -178,6 +178,7 @@ class Addresses {
 
   static readonly callButton = 'Submit'
   static readonly deleteButton = 'Delete'
+  static readonly smallDeleteButton = 'Del'
 
   static readonly addressError = 'Please input a valid Minima address'
   static readonly urlError = 'Please input a valid URL'
@@ -196,6 +197,7 @@ class Tokens {
 
   static readonly tokenButton = 'Submit'
   static readonly deleteButton = 'Delete'
+  static readonly smallDeleteButton = 'Del'
 
   static readonly idError = 'Please input a valid Token ID'
   static readonly urlError = 'Please input a valid URL'
@@ -205,13 +207,19 @@ class Tokens {
 class Triggers {
   static readonly heading = 'Triggers'
 
-  static readonly endpoint = 'API'
-  static readonly command = 'Cmd'
-  static readonly setParams = 'Set'
+  static readonly endpoint = 'URL'
+  static readonly command = 'Command'
+  static readonly setParams = 'Set Params'
   static readonly params = 'Params'
+
+  static readonly smallCommand = 'Cmd'
+  static readonly smallSetParams = 'Set'
+  static readonly smallParams = 'Params'
 
   static readonly triggerButton = 'Submit'
   static readonly deleteButton = 'Delete'
+  static readonly smallDeleteButton = 'Del'
+
 }
 
 /** @class Balances */

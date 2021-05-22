@@ -27,28 +27,72 @@ const display = (props: Props) => {
     <>
       <Grid item container alignItems="flex-start" xs={12}>
 
-        <Grid item container justify="flex-start" xs={2}>
-          <Typography variant="h5">
+        <Grid
+          item
+          container
+          justify="flex-start"
+          xs={2}
+        >
+          <Typography
+            variant="h5"
+            noWrap={true}
+          >
             &nbsp;
           </Typography>
         </Grid>
-        <Grid item container justify="flex-end" xs={3}>
-          <Typography variant="h5">
+
+        <Grid
+          item
+          container
+          justify="flex-end"
+          xs={3}
+        >
+          <Typography
+            variant="h5"
+            noWrap={true}
+          >
             {BalanceVars.sendable}
           </Typography>
         </Grid>
-        <Grid item container justify="flex-end" xs={3}>
-          <Typography variant="h5">
+
+        <Grid
+          item
+          container
+          justify="flex-end"
+          xs={3}
+        >
+          <Typography
+            variant="h5"
+            noWrap={true}
+          >
             {BalanceVars.amount}
           </Typography>
         </Grid>
-        <Grid item container justify="flex-end" xs={2}>
-          <Typography variant="h5">
+
+        <Grid
+          item
+          container
+          justify="flex-end"
+          xs={2}
+        >
+          <Typography
+            variant="h5"
+            noWrap={true}
+          >
             {BalanceVars.unconfirmed}
           </Typography>
         </Grid>
-        <Grid item container justify="flex-end" xs={2}>
-          <Typography variant="h5">
+
+        <Grid
+          item
+          container
+          justify="flex-end"
+          xs={2}
+        >
+          <Typography
+            variant="h5"
+            noWrap={true}
+          >
             {BalanceVars.mempool}
           </Typography>
         </Grid>
@@ -75,27 +119,42 @@ const display = (props: Props) => {
                   <Grid className={rowclass} item container xs={12}>
 
                     <Grid item container justify="flex-start" xs={2}>
-                      <Typography variant="body1">
+                      <Typography
+                        variant="body1"
+                        noWrap={true}
+                      >
                         {balance.token}
                       </Typography>
                     </Grid>
                     <Grid item container justify="flex-end" xs={3}>
-                      <Typography variant="body2">
+                      <Typography
+                        variant="body1"
+                        noWrap={true}
+                      >
                         {thisSendable}
                       </Typography>
                     </Grid>
                     <Grid item container justify="flex-end" xs={3}>
-                      <Typography variant="body2">
+                      <Typography
+                        variant="body1"
+                        noWrap={true}
+                      >
                         {thisAmount}
                       </Typography>
                     </Grid>
                     <Grid item container justify="flex-end" xs={2}>
-                      <Typography variant="body2">
+                      <Typography
+                        variant="body1"
+                        noWrap={true}
+                      >
                         {thisUnconfirmed}
                       </Typography>
                     </Grid>
                     <Grid item container justify="flex-end" xs={2}>
-                      <Typography variant="body2">
+                      <Typography
+                        variant="body1"
+                        noWrap={true}
+                      >
                         {thisMempool}
                       </Typography>
                     </Grid>

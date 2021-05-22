@@ -5,7 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
-import {themeStyles} from '../styles';
+import {theme, themeStyles} from '../styles';
 
 import {
   ApplicationState,
@@ -97,6 +97,9 @@ const list = (props: Props) => {
             <Button
               onClick={() => getRecords(limitLow + Dbase.pageLimit)}
               disabled={nextDisabled}
+              style={{
+                marginRight: theme.spacing(0.5),
+              }}
             >
               {LogVars.nextButton}
             </Button>

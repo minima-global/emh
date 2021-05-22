@@ -118,6 +118,7 @@ let theme = createMuiTheme({
       margin: 0,
       padding: 0,
       lineHeight: '1',
+      minWidth: '100%',
       textTransform: 'none',
       fontSize: '1em',
       fontWeight: 500,
@@ -165,6 +166,9 @@ const themeStyles = makeStyles({
     '& .MuiInputBase-input:focus': {
       border: '2px solid #317AFF',
       borderRadius: '10px',
+    },
+    '& .MuiButton-root': {
+      minWidth: '100%',
     },
   },
   header: {
@@ -232,8 +236,8 @@ const themeStyles = makeStyles({
       border: '2px solid #001C32',
     },
     [breakpoints.up('xs')]: {
-      lineHeight: '1.6',
-      fontSize: '1.4em',
+      lineHeight: '1.5',
+      fontSize: '1em',
     },
     [breakpoints.up('lg')]: {
       lineHeight: '1.5',
