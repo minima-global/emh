@@ -213,12 +213,12 @@ class Triggers {
 class Log {
   static readonly heading = 'Logs'
 
-  static readonly dateCreated = 'Date Created'
+  static readonly dateCreated = 'Created'
   static readonly filter = 'Filter for User'
   static readonly user = 'User'
-  static readonly loggingType = 'Logging Type'
+  static readonly loggingType = 'Type'
   static readonly data = 'Data'
-  static readonly loggingTypeId = 'Logging Type ID'
+  static readonly loggingTypeId = 'ID'
   static readonly records = 'Page'
 
   static readonly nextButton = 'Next'

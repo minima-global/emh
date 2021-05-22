@@ -116,12 +116,26 @@ const list = (props: Props) => {
 
         <Grid item container xs={12}>
 
-          <Grid item container justify="flex-start" xs={3}>
+
+          <Grid
+            item
+            container
+            justify="flex-start"
+            xs={3}
+            lg={2}
+          >
             <Typography variant="h5">
               {LogVars.dateCreated}
             </Typography>
           </Grid>
-          <Grid item container justify="flex-start" xs={3}>
+
+          <Grid
+            item
+            container
+            justify="flex-start"
+            xs={3}
+            lg={5}
+          >
             <Typography
               variant="h5"
               noWrap={true}
@@ -129,12 +143,26 @@ const list = (props: Props) => {
               {LogVars.loggingTypeId}
             </Typography>
           </Grid>
-          <Grid item container justify="flex-start" xs={3}>
+
+          <Grid
+            item
+            container
+            justify="flex-start"
+            xs={3}
+            lg={1}
+          >
             <Typography variant="h5">
               {LogVars.loggingType}
             </Typography>
           </Grid>
-          <Grid item container justify="flex-start" xs={3}>
+
+          <Grid
+            item
+            container
+            justify="flex-start"
+            xs={3}
+            lg={4}
+          >
             <Typography variant="h5">
               {LogVars.data}
             </Typography>
@@ -156,13 +184,25 @@ const list = (props: Props) => {
               <React.Fragment key={index}>
 
                 <Grid className={rowclass} item container xs={12}>
-
-                  <Grid item container justify="flex-start" xs={3}>
+                  <Grid
+                    item
+                    container
+                    justify="flex-start"
+                    xs={3}
+                    lg={2}
+                  >
                     <Typography variant="body1">
                       {dateCreated}
                     </Typography>
                   </Grid>
-                  <Grid item container justify="flex-start" xs={3}>
+
+                  <Grid
+                    item
+                    container
+                    justify="flex-start"
+                    xs={3}
+                    lg={5}
+                  >
                     <Typography
                       variant="body1"
                       noWrap={true}
@@ -170,12 +210,26 @@ const list = (props: Props) => {
                       {loggingTypeId}
                     </Typography>
                   </Grid>
-                  <Grid item container justify="flex-start" xs={3}>
+
+                  <Grid
+                    item
+                    container
+                    justify="flex-start"
+                    xs={3}
+                    lg={1}
+                  >
                     <Typography variant="body1">
                       {loggingType}
                     </Typography>
                   </Grid>
-                  <Grid item container justify="flex-start" xs={3}>
+
+                  <Grid
+                    item
+                    container
+                    justify="flex-start"
+                    xs={3}
+                    lg={4}
+                  >
                     <Typography
                       variant="body1"
                       noWrap={true}
