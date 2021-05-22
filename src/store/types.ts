@@ -5,6 +5,7 @@ import {ThunkDispatch} from 'redux-thunk';
  * Store stuff
 */
 export interface ApplicationState {
+  balanceData: BalanceProps,
   logsData: LogsProps
   addressData: AddressProps,
   tokensData: TokensProps,
@@ -93,6 +94,21 @@ export interface TriggersProps extends PayloadProps {
 }
 
 /**
+ * Token blaances
+ */
+export interface Balance {
+  token: string
+  sendable: string
+  confirmed: string
+  unconfirmed: string
+  mempool: string
+}
+
+export interface BalanceProps extends PayloadProps {
+  data: Array<Balance>
+}
+
+/**
  * Tx stuff
  */
 export interface TxData {
@@ -172,6 +188,12 @@ export const enum TriggerActionTypes {
   TRIGGER_FAILURE = '@@TriggerActionTypes/TRIGGER_FAILURE'
 }
 
+export const enum BalanceActionTypes {
+  BALANCE_INIT = '@@BalanceActionTypes/BALANCE_INIT',
+  BALANCE_SUCCESS = '@@BalanceActionTypes/BALANCE_SUCCESS',
+  BALANCE_FAILURE = '@@BalanceActionTypes/BALANCE_FAILURE'
+}
+
 export type ActionTypes =
   AppDataActionTypes |
   TxActionTypes |
@@ -180,7 +202,8 @@ export type ActionTypes =
   LogsActionTypes |
   AddressActionTypes |
   TokenActionTypes |
-  TriggerActionTypes;
+  TriggerActionTypes |
+  BalanceActionTypes;
 
 export type SuccessAndFailType = {
   success: ActionTypes,

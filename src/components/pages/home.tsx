@@ -5,7 +5,10 @@ import Typography from '@material-ui/core/Typography';
 
 import {
   Home as HomeVars,
+  Balances as BalanceVars,
 } from '../../config';
+
+import {ListBalances} from '../listBalances';
 
 export const Home = () => {
   return (
@@ -21,6 +24,23 @@ export const Home = () => {
           </Typography>
 
         </Grid>
+
+        <Grid item container justify="flex-start" xs={12}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 4000 20"
+          >
+            <line x2="4000" stroke="#001C32" width="100%" height="100%"/>
+          </svg>
+        </Grid>
+
+        <Grid item container justify="flex-start" xs={12}>
+          <Typography variant="h3">
+            {BalanceVars.heading}
+          </Typography>
+        </Grid>
+
+        { <ListBalances /> }
 
         <Grid item container justify="flex-start" xs={12}>
           <svg

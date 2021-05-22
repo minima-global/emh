@@ -17,8 +17,13 @@ class App {
 
 /** @class Misc */
 class Misc {
-  static readonly successLoginDelay = 1500
-  static readonly referralDelay = 4500
+  static readonly totalDecimals = 4
+  static readonly amountDecimals = 4
+  static readonly priceDecimals = 4
+  static readonly mempoolDecimals = 2
+  static readonly unconfirmedDecimals = 2
+  static readonly confirmedDecimals = 4
+  static readonly sendableDecimals = 4
 }
 
 /** @class Smtp */
@@ -209,6 +214,17 @@ class Triggers {
   static readonly deleteButton = 'Delete'
 }
 
+/** @class Balances */
+class Balances {
+  static readonly heading = 'Balances'
+
+  static readonly token = 'Token'
+  static readonly sendable = 'Sendable'
+  static readonly amount = 'Confirmed'
+  static readonly unconfirmed = 'Transient'
+  static readonly mempool = 'Mempool'
+}
+
 /** @class Log */
 class Log {
   static readonly heading = 'Logs'
@@ -263,6 +279,7 @@ export {
   Addresses,
   Tokens,
   Triggers,
+  Balances,
   SQL,
   Post,
 };

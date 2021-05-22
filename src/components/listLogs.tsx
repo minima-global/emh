@@ -32,7 +32,7 @@ interface DispatchProps {
     sortOrder: string,
     limitLow: number,
     offset: number
-) => void
+  ) => void
 }
 
 type Props = StateProps & DispatchProps

@@ -11,6 +11,9 @@ import {
   LogsActionTypes,
   TxActionTypes,
   CmdActionTypes,
+  BalanceProps,
+  Balance,
+  BalanceActionTypes,
   TxData,
 } from '../../types';
 
@@ -37,6 +40,9 @@ export const init = () => {
     Minima.init( function(msg: any) {
       if (msg.event == 'connected') {
         dispatch(write({data: txInit})(initAction));
+        dispatch(getBalance());
+      } else if ( msg.event == 'newbalance' ) {
+        dispatch(getBalance());
       }
     });
   };
@@ -105,6 +111,29 @@ export const command = (endpoint: string, cmd: string) => {
       dispatch(doLog(endpoint, Dbase.extraLogTypes.COMMAND, cmd));
       dispatch(write({data: msg.response})(successAction));
     });
+  };
+};
+
+const getBalance = () => {
+  return async (dispatch: AppDispatch) => {
+    const balanceData: BalanceProps = {
+      data: [],
+    };
+
+    for ( let i = 0; i < Minima.balance.length; i++ ) {
+      const thisBalance: Balance = {
+        token: Minima.balance[i].token,
+        sendable: Minima.balance[i].sendable,
+        confirmed: Minima.balance[i].confirmed,
+        unconfirmed: Minima.balance[i].unconfirmed,
+        mempool: Minima.balance[i].mempool,
+      };
+
+      balanceData.data.push(thisBalance);
+    }
+
+    dispatch(
+        write({data: balanceData.data})(BalanceActionTypes.BALANCE_SUCCESS));
   };
 };
 

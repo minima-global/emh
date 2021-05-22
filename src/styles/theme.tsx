@@ -53,9 +53,9 @@ let theme = createMuiTheme({
     h3: {
       lineHeight: '1.5',
       fontSize: '1.5em',
-      fontWeight: 700,
+      fontWeight: 400,
       fontFamily: '"Manrope", "Roboto", "Arial", "sans-serif"',
-      color: '#317AFF',
+      color: '91919D',
     },
     h4: {
       lineHeight: '1.5',
