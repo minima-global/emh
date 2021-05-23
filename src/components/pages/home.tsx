@@ -6,9 +6,11 @@ import Typography from '@material-ui/core/Typography';
 import {
   Home as HomeVars,
   Balances as BalanceVars,
+  Tokens as TokenVars,
 } from '../../config';
 
 import {ListBalances} from '../listBalances';
+import {ChartTokens} from '../chartTokens';
 
 export const Home = () => {
   return (
@@ -50,6 +52,16 @@ export const Home = () => {
             <line x2="4000" stroke="#001C32" width="100%" height="100%"/>
           </svg>
         </Grid>
+
+        <Grid item container justify="flex-start" xs={12}>
+
+          <Typography variant="h3">
+            {TokenVars.chartHeading}
+          </Typography>
+
+        </Grid>
+
+        { <ChartTokens /> }
 
       </Grid>
 
