@@ -4,9 +4,9 @@ import {connect} from 'react-redux';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
-import {Misc} from '../config';
+import {Misc, Balances as BalanceVars} from '../config';
 
-import {themeStyles} from '../styles';
+import {theme, themeStyles} from '../styles';
 
 import {
   ApplicationState,
@@ -25,7 +25,21 @@ const display = (props: Props) => {
 
   return (
     <>
-      <Grid item container alignItems="flex-start" xs={12}>
+
+      <Grid
+        item
+        container
+        alignItems="flex-start"
+        style={{
+          marginRight: theme.spacing(2),
+        }}
+        xs={12}
+      >
+
+
+        <Typography variant="h3">
+          {BalanceVars.heading}
+        </Typography>
 
         <Grid item container className={classes.formSummary} xs={12}>
           {

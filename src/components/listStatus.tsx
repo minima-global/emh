@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 
 import {Status as StatusVars} from '../config';
 
-import {themeStyles} from '../styles';
+import {theme, themeStyles} from '../styles';
 
 import {
   ApplicationState,
@@ -25,7 +25,19 @@ const display = (props: Props) => {
 
   return (
     <>
-      <Grid item container alignItems="flex-start" xs={12}>
+      <Grid
+        item
+        container
+        alignItems="flex-start"
+        style={{
+          marginLeft: theme.spacing(2),
+        }}
+        xs={12}
+      >
+
+        <Typography variant="h3">
+          {StatusVars.heading}
+        </Typography>
 
         <Grid item container className={classes.formSummary} xs={12}>
           {
@@ -37,7 +49,11 @@ const display = (props: Props) => {
               return (
                 <React.Fragment key={index}>
 
-                  <Grid item container xs={12}>
+                  <Grid
+                    item
+                    container
+                    xs={12}
+                  >
                     <Grid item container justify="flex-start" xs={12}>
                       <Typography
                         variant="body1"
