@@ -168,6 +168,7 @@ class Cmd {
 /** @class Addresses */
 class Addresses {
   static readonly heading = 'Addresses to URLs'
+  static readonly chartHeading = 'Address Transactions'
 
   static readonly address = 'Mx Address'
   static readonly url = 'URL'
@@ -187,7 +188,7 @@ class Addresses {
 /** @class Tokens */
 class Tokens {
   static readonly heading = 'Tokens to URLs'
-  static readonly chartHeading = 'Total Transactions'
+  static readonly chartHeading = 'Token Transactions'
 
   static readonly tokenId = 'Token ID'
   static readonly url = 'URL'

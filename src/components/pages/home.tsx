@@ -5,12 +5,12 @@ import Typography from '@material-ui/core/Typography';
 
 import {
   Home as HomeVars,
-  Tokens as TokenVars,
 } from '../../config';
 
 import {ListBalances} from '../listBalances';
 import {ListStatus} from '../listStatus';
 import {ChartTokens} from '../chartTokens';
+import {ChartAddresses} from '../chartAddresses';
 
 export const Home = () => {
   return (
@@ -53,15 +53,13 @@ export const Home = () => {
           </svg>
         </Grid>
 
-        <Grid item container justify="flex-start" xs={12}>
-
-          <Typography variant="h3">
-            {TokenVars.chartHeading}
-          </Typography>
-
+        <Grid item container justify="flex-start" xs={6}>
+          { <ChartTokens /> }
         </Grid>
 
-        { <ChartTokens /> }
+        <Grid item container justify="flex-start" xs={6}>
+          { <ChartAddresses /> }
+        </Grid>
 
       </Grid>
 
