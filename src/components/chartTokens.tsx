@@ -75,9 +75,7 @@ const chart = (props: Props) => {
           'DATE',
           'DESC');
     } else {
-      console.log(props.logsData.data);
-      console.log(props.tokensData.data);
-      if ( props.logsData.data.length && props.tokensData.data.length ) {
+      if ( props.logsData?.data.length && props.tokensData?.data.length ) {
         props.logsData.data.map( ( log: LogsType, index: number ) => {
         // const thisDate = new Date(+log.DATE);
           const thisData = log.DATA;
@@ -88,14 +86,14 @@ const chart = (props: Props) => {
             const thisTokenId = '0x' + thisData.slice(
                 tokenInsertString.length,
                 thisData.indexOf(' ', tokenInsertString.length));
-            console.log('token id', thisTokenId);
+            // console.log('token id', thisTokenId);
             let tokenName = 'Minima';
             props.tokensData.data.forEach((token: Token) => {
-              if ( token.tokenId == thisTokenId ) {
-                tokenName = token.tokenName;
+              if ( token.tokenid == thisTokenId ) {
+                tokenName = token.token;
               }
             });
-            console.log('token name', tokenName);
+            // console.log('token name', tokenName);
             const tokenDetails = tokens[tokenName];
             if (!tokenDetails) {
               tokens[tokenName] = 1;

@@ -11,6 +11,9 @@ import {
   BalanceProps,
   Balance,
   BalanceActionTypes,
+  StatusProps,
+  Status,
+  StatusActionTypes,
   TxData,
 } from '../../types';
 
@@ -29,9 +32,11 @@ export const init = () => {
       if (msg.event == 'connected') {
         dispatch(getBalance());
         dispatch(getTokens());
+        dispatch(getStatus());
       } else if ( msg.event == 'newbalance' ) {
         dispatch(getBalance());
         dispatch(getTokens());
+        dispatch(getStatus());
       }
     });
   };
@@ -80,44 +85,17 @@ export const getTokens = () => {
           data: [],
         };
         const tokens = respJSON[0].response.tokens;
-
-        // since Minima is first, we ignore that
-        for ( let i=1; i < tokens.length; i++ ) {
-          // console.log("this token: ", tokens[i])
-
-          const thisToken: Token = {
-            tokenId: tokens[i].tokenid,
-            tokenName: tokens[i].token,
-            scale: tokens[i].scale,
-            total: tokens[i].total,
-          };
-
+        for ( let i=0; i < tokens.length; i++ ) {
+          const thisToken: Token = tokens[i];
           tokenData.data.push(thisToken);
         }
-
         dispatch(write({data: tokenData.data})(TokenActionTypes.TOKEN_SUCCESS));
-
-        // console.log("tokens: ", tokenData)
       } else {
         Minima.log('tokens failed');
       }
     });
   };
 };
-
-/*
-const getBlock = () => {
-  return async (dispatch: AppDispatch) => {
-    const chainInfo: ChainInfoProps = {
-      data: {
-        block: Minima.block,
-      },
-    };
-
-    dispatch(write({data: chainInfo.data})(ChainInfoActionTypes.ADD_BLOCK));
-  };
-};
-*/
 
 const getBalance = () => {
   return async (dispatch: AppDispatch) => {
@@ -126,18 +104,29 @@ const getBalance = () => {
     };
 
     for ( let i = 0; i < Minima.balance.length; i++ ) {
-      const thisBalance: Balance = {
-        token: Minima.balance[i].token,
-        sendable: Minima.balance[i].sendable,
-        confirmed: Minima.balance[i].confirmed,
-        unconfirmed: Minima.balance[i].unconfirmed,
-        mempool: Minima.balance[i].mempool,
-      };
-
+      const thisBalance: Balance = Minima.balance[i];
       balanceData.data.push(thisBalance);
     }
 
     dispatch(
         write({data: balanceData.data})(BalanceActionTypes.BALANCE_SUCCESS));
+  };
+};
+
+export const getStatus = () => {
+  return async (dispatch: AppDispatch) => {
+    Minima.cmd('status;', function(respJSON: any) {
+      if ( Minima.util.checkAllResponses(respJSON) ) {
+        const statusData: StatusProps = {
+          data: [],
+        };
+        const status: Status = respJSON[0].response;
+        statusData.data.push(status);
+        dispatch(write(
+            {data: statusData.data})(StatusActionTypes.STATUS_SUCCESS));
+      } else {
+        Minima.log('status failed');
+      }
+    });
   };
 };

@@ -174,7 +174,7 @@ const list = (props: Props) => {
         </Grid>
 
         <Grid item container className={classes.formSummary} xs={12}>
-          { props.logsData.data.map( ( log: LogsType, index: number ) => {
+          { props.logsData?.data.map( ( log: LogsType, index: number ) => {
             const thisDate = new Date(+log.DATE);
             const dateCreated = thisDate.toString().replace(/ GMT.*$/g, '');
             const loggingType = log.LOGGINGTYPE;

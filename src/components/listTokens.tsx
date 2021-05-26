@@ -111,65 +111,66 @@ const list = (props: Props) => {
         </Grid>
 
         <Grid item container className={classes.formSummary} xs={12}>
-          { props.tokensData.data.map( ( token: TokensType, index: number ) => {
-            const id = token.TOKENID;
-            const url = token.URL;
+          { props.tokensData?.data.map(
+              ( token: TokensType, index: number ) => {
+                const id = token.TOKENID;
+                const url = token.URL;
 
-            const rowclass = index % 2 ? classes.evenRow : classes.oddRow;
+                const rowclass = index % 2 ? classes.evenRow : classes.oddRow;
 
-            return (
-              <React.Fragment key={index}>
+                return (
+                  <React.Fragment key={index}>
 
-                <Grid className={rowclass} item container xs={12}>
+                    <Grid className={rowclass} item container xs={12}>
 
-                  <Grid
-                    item
-                    container
-                    alignItems='center'
-                    justify="flex-start"
-                    xs={5}
-                  >
-                    <Typography
-                      variant="body1"
-                      noWrap={true}
-                    >
-                      {id}
-                    </Typography>
-                  </Grid>
-                  <Grid
-                    item
-                    container
-                    alignItems='center'
-                    justify="flex-start"
-                    xs={5}
-                  >
-                    <Typography
-                      variant="body1"
-                      noWrap={true}
-                    >
-                      {url}
-                    </Typography>
-                  </Grid>
-                  <Grid item container justify="flex-end" xs={2}>
-                    <Button
-                      onClick={() => deleteToken(token, index)}
-                      disabled={isDisabled[index]}
-                      style={{
-                        marginTop: theme.spacing(0.5),
-                        background: 'linear-gradient(#FF0000, #FF0000)',
-                      }}
-                    >
-                      { largeScreen ?
+                      <Grid
+                        item
+                        container
+                        alignItems='center'
+                        justify="flex-start"
+                        xs={5}
+                      >
+                        <Typography
+                          variant="body1"
+                          noWrap={true}
+                        >
+                          {id}
+                        </Typography>
+                      </Grid>
+                      <Grid
+                        item
+                        container
+                        alignItems='center'
+                        justify="flex-start"
+                        xs={5}
+                      >
+                        <Typography
+                          variant="body1"
+                          noWrap={true}
+                        >
+                          {url}
+                        </Typography>
+                      </Grid>
+                      <Grid item container justify="flex-end" xs={2}>
+                        <Button
+                          onClick={() => deleteToken(token, index)}
+                          disabled={isDisabled[index]}
+                          style={{
+                            marginTop: theme.spacing(0.5),
+                            background: 'linear-gradient(#FF0000, #FF0000)',
+                          }}
+                        >
+                          { largeScreen ?
                         TokenVars.deleteButton:
                         TokenVars.smallDeleteButton
-                      }
-                    </Button>
-                  </Grid>
-                </Grid>
+                          }
+                        </Button>
+                      </Grid>
+                    </Grid>
 
-              </React.Fragment>
-            );
-          })}
+                  </React.Fragment>
+                );
+              })}
         </Grid>
       </Grid>
     </>

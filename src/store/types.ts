@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+import Decimal from 'decimal.js';
 import {Action} from 'redux';
 import {ThunkDispatch} from 'redux-thunk';
 
@@ -7,6 +8,7 @@ import {ThunkDispatch} from 'redux-thunk';
 */
 export interface ApplicationState {
   balanceData: BalanceProps,
+  statusData: StatusProps,
   tokensData: TokenProps,
   logsData: LogsProps
   addressData: AddressProps,
@@ -46,11 +48,14 @@ export interface CmdProps extends PayloadProps {
  * Minima token balances
  */
 export interface Balance {
-  token: string
-  sendable: string
   confirmed: string
-  unconfirmed: string
+  decimals: string
   mempool: string
+  sendable: string
+  token: string
+  tokenid: string
+  total: string
+  unconfirmed: string
 }
 
 export interface BalanceProps extends PayloadProps {
@@ -62,14 +67,57 @@ export interface BalanceProps extends PayloadProps {
  */
 
 export interface Token {
-  tokenId: string
-  tokenName: string
+  coinid: string
+  decimals: string
+  description: string
+  icon: string
+  proof: string
   scale: string
+  script: string
+  token: string
+  tokenid: string
   total: string
+  totalamount: string
 }
 
 export interface TokenProps extends PayloadProps {
   data: Array<Token>
+}
+
+/**
+ * Minima status info
+ */
+
+export interface Status {
+  automine: boolean
+  cascade: string
+  chainlength: number
+  chainspeed: Decimal
+  chainweight: string
+  conf: string
+  connections: number
+  difficulty: string
+  host: string
+  lastblock: string
+  lasttime: string
+  mempoolcoins: number
+  mempooltxn: number
+  minidappserver: number
+  minimaport: number
+  ram: string
+  root: string
+  rpcport: number
+  time: string
+  tip: string
+  total: string
+  txpowdb: number
+  uptime: string
+  version: string
+  websocketport: number
+}
+
+export interface StatusProps extends PayloadProps {
+  data: Array<Status>
 }
 
 /**
@@ -219,6 +267,11 @@ export const enum BalanceActionTypes {
   BALANCE_FAILURE = '@@BalanceActionTypes/BALANCE_FAILURE'
 }
 
+export const enum StatusActionTypes {
+  STATUS_INIT = '@@StatusActionTypes/STATUS_INIT',
+  STATUS_SUCCESS = '@@StatusActionTypes/STATUS_SUCCESS',
+  STATUS_FAILURE = '@@StatusActionTypes/STATUS_FAILURE'
+}
 export type ActionTypes =
   AppDataActionTypes |
   TxActionTypes |
@@ -229,7 +282,8 @@ export type ActionTypes =
   TokenIdActionTypes |
   TokenActionTypes |
   TriggerActionTypes |
-  BalanceActionTypes;
+  BalanceActionTypes |
+  StatusActionTypes;
 
 export type SuccessAndFailType = {
   success: ActionTypes,

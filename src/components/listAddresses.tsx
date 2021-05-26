@@ -109,7 +109,7 @@ const list = (props: Props) => {
         </Grid>
 
         <Grid item container className={classes.formSummary} xs={12}>
-          { props.addressData.data.map(
+          { props.addressData?.data.map(
               ( call: AddressType, index: number ) => {
                 const address = call.ADDRESS;
                 const url = call.URL;

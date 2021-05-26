@@ -233,6 +233,16 @@ class Balances {
   static readonly mempool = 'Mempool'
 }
 
+
+/** @class Status */
+class Status {
+  static readonly heading = 'Status'
+
+  static readonly ram = 'RAM'
+  static readonly upTime = 'Uptime'
+  static readonly block = 'Block'
+}
+
 /** @class Log */
 class Log {
   static readonly heading = 'Logs'
@@ -288,6 +298,7 @@ export {
   Tokens,
   Triggers,
   Balances,
+  Status,
   SQL,
   Post,
 };
