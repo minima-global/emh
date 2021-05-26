@@ -23,6 +23,18 @@ type Props = StateProps
 const display = (props: Props) => {
   const classes = themeStyles();
 
+  const hoursPerYear = 8760;
+  const hoursPerMonth = 730; // approx
+  const hoursPerWeek = 168;
+  const hoursPerDay = 24;
+
+  const years = 'Years';
+  const months = 'Months';
+  const weeks = 'Weeks';
+  const days = 'Days';
+  const hours = 'Hours';
+  const minutes = 'Minutes';
+
   return (
     <>
       <Grid
@@ -42,7 +54,44 @@ const display = (props: Props) => {
         <Grid item container className={classes.formSummary} xs={12}>
           {
             props.statusData?.data.map( ( status: Status, index: number ) => {
-              const upTime = status.uptime;
+              // 0 Years 0 Months 0 Weeks 0 Days 3 Hours 47 Minutes
+              console.log(status.uptime);
+
+              const upToYears = status.uptime.indexOf(years);
+              const upToMonths = status.uptime.indexOf(months);
+              const upToWeeks = status.uptime.indexOf(weeks);
+              const upToDays = status.uptime.indexOf(days);
+              const upToHours = status.uptime.indexOf(hours);
+              const upToMinutes = status.uptime.indexOf(minutes);
+
+              const thisYears = status.uptime.slice(0, upToYears).trim();
+              const thisMonths = status.uptime.slice(
+                  upToYears + years.length, upToMonths)
+                  .trim();
+              const thisWeeks = status.uptime.slice(
+                  upToMonths + months.length, upToWeeks)
+                  .trim();
+              const thisDays = status.uptime.slice(
+                  upToWeeks + weeks.length, upToDays)
+                  .trim();
+              const thisHours = status.uptime.slice(
+                  upToDays + days.length, upToHours)
+                  .trim();
+              const thisMinutes = status.uptime.slice(
+                  upToHours + hours.length, upToMinutes)
+                  .trim();
+
+              const totalHours = ( +thisYears * hoursPerYear ) +
+                ( +thisMonths * hoursPerMonth ) +
+                ( +thisWeeks * hoursPerWeek ) +
+                ( +thisDays * hoursPerDay ) +
+                ( +thisHours );
+
+              const upTime =
+               '' + totalHours +
+               ' ' + hours +
+               ' ' + thisMinutes +
+               ' ' + minutes;
               const ram = status.ram;
               const lastBlock = status.lastblock;
 

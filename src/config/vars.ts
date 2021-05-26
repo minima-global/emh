@@ -187,7 +187,7 @@ class Addresses {
 /** @class Tokens */
 class Tokens {
   static readonly heading = 'Tokens to URLs'
-  static readonly chartHeading = 'Total Transactions for Token'
+  static readonly chartHeading = 'Total Transactions'
 
   static readonly tokenId = 'Token ID'
   static readonly url = 'URL'
