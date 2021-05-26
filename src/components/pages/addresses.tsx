@@ -17,7 +17,7 @@ import {
   Dbase,
 } from '../../config';
 
-import {addRow} from '../../store/app/blockchain/actions';
+import {addRow} from '../../store/app/dbase/actions';
 
 import {ListAddresses} from '../listAddresses';
 

@@ -14,7 +14,7 @@ import {
   Logs as LogsType,
 } from '../store/types';
 
-import {getDbaseEntries} from '../store/app/blockchain/actions';
+import {getDbaseEntries} from '../store/app/dbase/actions';
 
 import {
   Dbase,

@@ -13,9 +13,11 @@ import {
   AppDispatch,
   LogsProps,
   Logs as LogsType,
+  TokenProps,
+  Token,
 } from '../store/types';
 
-import {getDbaseEntries} from '../store/app/blockchain/actions';
+import {getDbaseEntries} from '../store/app/dbase/actions';
 
 import {
   Dbase,
@@ -23,6 +25,7 @@ import {
 
 interface StateProps {
   logsData: LogsProps
+  tokensData: TokenProps
 }
 
 interface DispatchProps {
@@ -72,40 +75,52 @@ const chart = (props: Props) => {
           'DATE',
           'DESC');
     } else {
-      props.logsData.data.map( ( log: LogsType, index: number ) => {
+      console.log(props.logsData.data);
+      console.log(props.tokensData.data);
+      if ( props.logsData.data.length && props.tokensData.data.length ) {
+        props.logsData.data.map( ( log: LogsType, index: number ) => {
         // const thisDate = new Date(+log.DATE);
-        const thisData = log.DATA;
-        const thisType = log.LOGGINGTYPE;
-        const tokenInsertString = 'insert 0x';
-        if ( thisType === Dbase.tables.txpow.name &&
+          const thisData = log.DATA;
+          const thisType = log.LOGGINGTYPE;
+          const tokenInsertString = 'insert 0x';
+          if ( thisType === Dbase.tables.txpow.name &&
              thisData.includes(tokenInsertString, 0)) {
-          const thisToken = '0x' + thisData.slice(
-              tokenInsertString.length,
-              thisData.indexOf(' ', tokenInsertString.length));
-          const tokenDetails = tokens[thisToken];
-          if (!tokenDetails) {
-            tokens[thisToken] = 1;
-          } else {
-            tokens[thisToken] += 1;
+            const thisTokenId = '0x' + thisData.slice(
+                tokenInsertString.length,
+                thisData.indexOf(' ', tokenInsertString.length));
+            console.log('token id', thisTokenId);
+            let tokenName = 'Minima';
+            props.tokensData.data.forEach((token: Token) => {
+              if ( token.tokenId == thisTokenId ) {
+                tokenName = token.tokenName;
+              }
+            });
+            console.log('token name', tokenName);
+            const tokenDetails = tokens[tokenName];
+            if (!tokenDetails) {
+              tokens[tokenName] = 1;
+            } else {
+              tokens[tokenName] += 1;
+            }
           }
-        }
-      });
-      const ctx = chartCtx.current;
-      if ( ctx ) {
-        new Chart(ctx, {
-          type: 'pie',
-          data: {
-            labels: Object.keys(tokens).map((key: string) => key),
-            datasets: [{
-              data: Object.values(tokens).map((value: number) => value),
-              backgroundColor:
-                getRandomColourForEachToken(Object.keys(tokens).length),
-            }],
-          },
         });
+        const ctx = chartCtx.current;
+        if ( ctx ) {
+          new Chart(ctx, {
+            type: 'pie',
+            data: {
+              labels: Object.keys(tokens).map((key: string) => key),
+              datasets: [{
+                data: Object.values(tokens).map((value: number) => value),
+                backgroundColor:
+                getRandomColourForEachToken(Object.keys(tokens).length),
+              }],
+            },
+          });
+        }
       }
     }
-  }, [props.logsData]);
+  }, [props.logsData, props.tokensData]);
 
   /*
   const getRecords = () => {
@@ -133,6 +148,7 @@ const chart = (props: Props) => {
 const mapStateToProps = (state: ApplicationState): StateProps => {
   return {
     logsData: state.logsData as LogsProps,
+    tokensData: state.tokensData as TokenProps,
   };
 };
 

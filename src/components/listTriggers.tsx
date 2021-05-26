@@ -16,11 +16,8 @@ import {
   TxData,
 } from '../store/types';
 
-import {
-  initTx,
-  deleteRow,
-  getDbaseEntries,
-} from '../store/app/blockchain/actions';
+import {initTx} from '../store/app/blockchain/actions';
+import {deleteRow, getDbaseEntries} from '../store/app/dbase/actions';
 
 import {
   Dbase,

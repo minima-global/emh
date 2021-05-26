@@ -11,16 +11,13 @@ import {theme, themeStyles} from '../styles';
 import {
   ApplicationState,
   AppDispatch,
-  TokensProps,
-  Tokens as TokensType,
+  TokenIdProps,
+  TokenId as TokensType,
   TxData,
 } from '../store/types';
 
-import {
-  initTx,
-  deleteRow,
-  getDbaseEntries,
-} from '../store/app/blockchain/actions';
+import {initTx} from '../store/app/blockchain/actions';
+import {deleteRow, getDbaseEntries} from '../store/app/dbase/actions';
 
 import {
   Dbase,
@@ -30,7 +27,7 @@ import {
 
 interface StateProps {
   tx: TxData
-  tokensData: TokensProps
+  tokensData: TokenIdProps
 }
 
 interface DispatchProps {
@@ -182,7 +179,7 @@ const list = (props: Props) => {
 const mapStateToProps = (state: ApplicationState): StateProps => {
   return {
     tx: state.tx.data as TxData,
-    tokensData: state.tokensData as TokensProps,
+    tokensData: state.tokenIdsData as TokenIdProps,
   };
 };
 

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import {Action} from 'redux';
 import {ThunkDispatch} from 'redux-thunk';
 
@@ -6,9 +7,10 @@ import {ThunkDispatch} from 'redux-thunk';
 */
 export interface ApplicationState {
   balanceData: BalanceProps,
+  tokensData: TokenProps,
   logsData: LogsProps
   addressData: AddressProps,
-  tokensData: TokensProps,
+  tokenIdsData: TokenIdProps,
   triggersData: TriggersProps,
   cmdData: CmdProps,
   tx: TxProps
@@ -41,60 +43,7 @@ export interface CmdProps extends PayloadProps {
 }
 
 /**
- * Logs
- */
-export interface Logs {
-  ID: number
-  DATE: string
-  LOGGINGTYPE: string
-  DATA: string
-  LOGGINGTYPEID: string
-}
-
-export interface LogsProps extends PayloadProps {
-  data: Array<Logs>
-}
-
-/**
- * Address
- */
-export interface Address {
-  ADDRESS: string
-  URL: string
-}
-
-export interface AddressProps extends PayloadProps {
-  data: Array<Address>
-}
-
-/**
- * Tokens
- */
-export interface Tokens {
-  TOKENID: string
-  URL: string
-}
-
-export interface TokensProps extends PayloadProps {
-  data: Array<Tokens>
-}
-
-/**
- * Triggers
- */
-export interface Triggers {
-  ENDPOINT: string
-  CMD: string
-  SETPARAMS: string
-  PARAMS: string
-}
-
-export interface TriggersProps extends PayloadProps {
-  data: Array<Triggers>
-}
-
-/**
- * Token blaances
+ * Minima token balances
  */
 export interface Balance {
   token: string
@@ -106,6 +55,21 @@ export interface Balance {
 
 export interface BalanceProps extends PayloadProps {
   data: Array<Balance>
+}
+
+/**
+ * Minima token info
+ */
+
+export interface Token {
+  tokenId: string
+  tokenName: string
+  scale: string
+  total: string
+}
+
+export interface TokenProps extends PayloadProps {
+  data: Array<Token>
 }
 
 /**
@@ -124,6 +88,61 @@ export interface TxProps extends PayloadProps {
 export type SelectOptionType = {
   value: string
   label: string
+}
+
+// Database definitions
+
+/**
+ * Logs database table
+ */
+export interface Logs {
+  ID: number
+  DATE: string
+  LOGGINGTYPE: string
+  DATA: string
+  LOGGINGTYPEID: string
+}
+
+export interface LogsProps extends PayloadProps {
+  data: Array<Logs>
+}
+
+/**
+ * Address database table
+ */
+export interface Address {
+  ADDRESS: string
+  URL: string
+}
+
+export interface AddressProps extends PayloadProps {
+  data: Array<Address>
+}
+
+/**
+ * Tokens database table
+ */
+export interface TokenId {
+  TOKENID: string
+  URL: string
+}
+
+export interface TokenIdProps extends PayloadProps {
+  data: Array<TokenId>
+}
+
+/**
+ * Triggers database table
+ */
+export interface Triggers {
+  ENDPOINT: string
+  CMD: string
+  SETPARAMS: string
+  PARAMS: string
+}
+
+export interface TriggersProps extends PayloadProps {
+  data: Array<Triggers>
 }
 
 /**
@@ -176,6 +195,12 @@ export const enum AddressActionTypes {
   ADDRESS_FAILURE = '@@AddressActionTypes/ADDRESS_FAILURE'
 }
 
+export const enum TokenIdActionTypes {
+  TOKENID_INIT = '@@TokenIdActionTypes/TOKENID_INIT',
+  TOKENID_SUCCESS = '@@TokenIdActionTypes/TOKENID_SUCCESS',
+  TOKENID_FAILURE = '@@TokenIdActionTypes/TOKENID_FAILURE'
+}
+
 export const enum TokenActionTypes {
   TOKEN_INIT = '@@TokenActionTypes/TOKEN_INIT',
   TOKEN_SUCCESS = '@@TokenActionTypes/TOKEN_SUCCESS',
@@ -201,6 +226,7 @@ export type ActionTypes =
   CmdActionTypes |
   LogsActionTypes |
   AddressActionTypes |
+  TokenIdActionTypes |
   TokenActionTypes |
   TriggerActionTypes |
   BalanceActionTypes;

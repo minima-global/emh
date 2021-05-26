@@ -19,7 +19,8 @@ import {
   TriggersProps,
 } from '../../store/types';
 
-import {command, getDbaseEntries} from '../../store/app/blockchain/actions';
+import {command} from '../../store/app/blockchain/actions';
+import {getDbaseEntries} from '../../store/app/dbase/actions';
 
 import {
   Dbase,

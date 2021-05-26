@@ -220,7 +220,6 @@ class Triggers {
   static readonly triggerButton = 'Submit'
   static readonly deleteButton = 'Delete'
   static readonly smallDeleteButton = 'Del'
-
 }
 
 /** @class Balances */
