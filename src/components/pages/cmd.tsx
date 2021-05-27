@@ -70,17 +70,47 @@ const display = (props: Props) => {
     onSubmit: (values: any) => {
       const endpoint = props.triggersData.data[values.trigger.value].ENDPOINT;
       let command = props.triggersData.data[values.trigger.value].CMD;
-      if ( props.triggersData.data[values.trigger.value].SETPARAMS ) {
-        command =
-          command + ' ' +
-          props.triggersData.data[values.trigger.value].SETPARAMS + ' ' +
-          values.params;
-      } else {
-        command =
-          command + ' ' +
-          values.params;
+
+      // get the format of the command
+      const format = (
+        props.triggersData.data[values.trigger.value].FORMAT).split(' ');
+
+      /**
+      * get the parameters for the command, and split into key value pairs
+      */
+      const setParams = (
+        props.triggersData.data[values.trigger.value].SETPARAMS).split(' ');
+      const params = values.params.split(' ');
+      const setParamKeys: string[] = [];
+      const setParamValues: string[] = [];
+      for ( let i = 0; i < setParams.length; i++ ) {
+        const tuple = setParams[i].split('=');
+        setParamKeys.push(tuple[0]);
+        setParamValues.push(tuple[1]);
       }
-      // console.log(command);
+      const paramKeys: string[] = [];
+      const paramValues: string[] = [];
+      for ( let i = 0; i < params.length; i++ ) {
+        const tuple = params[i].split('=');
+        paramKeys.push(tuple[0]);
+        paramValues.push(tuple[1]);
+      }
+
+      /**
+       * for each parameter specified in the command format,
+       * grab the value from its parameter key
+       * and construct the requisite command
+       */
+      format.forEach((param) => {
+        const setIndex = setParamKeys.indexOf(param);
+        const paramIndex = paramKeys.indexOf(param);
+        if ( setIndex !== -1 ) {
+          command += ' ' + setParamValues[setIndex];
+        } else if ( paramIndex !== -1 ) {
+          command += ' ' + paramValues[paramIndex];
+        }
+      });
+      // console.log(endpoint, ' this command: ', command);
       props.command(endpoint, command.trim());
     },
   });
