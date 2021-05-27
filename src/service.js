@@ -344,7 +344,8 @@ function processApiCall(qParams) {
   const qParamsJSON = JSON.parse(decodeURIComponent(qParams));
   const endpoint = qParamsJSON.command;
   if ( endpoint ) {
-    const commandSelectSQL = 'SELECT CMD, SETPARAMS, PARAMS FROM ' +
+    const commandSelectSQL =
+      'SELECT CMD, FORMAT, SETPARAMS, PARAMS, ISPUBLIC FROM ' +
       tables.trigger.name +
         ' WHERE ENDPOINT = \'' +
         endpoint +
@@ -353,26 +354,40 @@ function processApiCall(qParams) {
     Minima.sql(commandSelectSQL, function(endpointResults) {
       // Minima.log(JSON.stringify(endpointResults));
       if (endpointResults.response.count) {
-        const command = endpointResults.response.rows[0].CMD;
-        var cmdParams = '';
-        if ( endpointResults.response.rows[0].SETPARAMS ) {
-          cmdParams += endpointResults.response.rows[0].SETPARAMS;
-        }
-        var paramsTemp = endpointResults.response.rows[0].PARAMS.split(' ');
-        for (var i = 0; i < paramsTemp.length; i++ ) {
-          var thisParam = paramsTemp[i];
-          cmdParams += ' ' + qParamsJSON[thisParam];
-        }
+        if ( endpointResults.response.rows[0].ISPUBLIC ) {
+          var command = endpointResults.response.rows[0].CMD;
 
-        const thisCommand = command + ' ' + cmdParams;
-        // Minima.log(app + ' command ' + thisCommand);
-        Minima.cmd(thisCommand, function(msg) {
-          if ( msg.status ) {
-            doLog(endpoint, extraLogTypes.API, thisCommand);
-          } else {
-            Minima.log(app + ' Error with API Call ' + endpoint);
+          const format = (
+            endpointResults.response.rows[0].FORMAT).split(' ');
+          const setParams = (
+            endpointResults.response.rows[0].SETPARAMS).split(' ');
+
+          var setParamKeys = [];
+          var setParamValues = [];
+          for ( var i = 0; i < setParams.length; i++ ) {
+            var tuple = setParams[i].split('=');
+            setParamKeys.push(tuple[0]);
+            setParamValues.push(tuple[1]);
           }
-        });
+
+          for ( var j = 0; j < format.length; j++ ) {
+            var setIndex = setParamKeys.indexOf(format[j]);
+            if ( setIndex !== -1 ) {
+              command += ' ' + setParamValues[setIndex];
+            } else {
+              command += ' ' + qParamsJSON[format[j]];
+            }
+          }
+
+          // Minima.log(app + ' command ' + command);
+          Minima.cmd(command, function(msg) {
+            if ( msg.status ) {
+              doLog(endpoint, extraLogTypes.API, command);
+            } else {
+              Minima.log(app + ' Error with API Call ' + endpoint);
+            }
+          });
+        }
       }
     });
   }
