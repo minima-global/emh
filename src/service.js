@@ -339,8 +339,9 @@ function processTx(txId, tokenId, mxAddress) {
  * Processes any URL call call
  * @function processApiCall
  * @param {string} qParams
+ * @param {string} replyId
 */
-function processApiCall(qParams) {
+function processApiCall(qParams, replyId) {
   const qParamsJSON = JSON.parse(decodeURIComponent(qParams));
   const endpoint = qParamsJSON.command;
   if ( endpoint ) {
@@ -354,7 +355,7 @@ function processApiCall(qParams) {
     Minima.sql(commandSelectSQL, function(endpointResults) {
       // Minima.log(JSON.stringify(endpointResults));
       if (endpointResults.response.count) {
-        if ( endpointResults.response.rows[0].ISPUBLIC ) {
+        if ( endpointResults.response.rows[0].ISPUBLIC == 'true' ) {
           var command = endpointResults.response.rows[0].CMD;
 
           if ( endpointResults.response.rows[0].FORMAT ) {
@@ -388,20 +389,22 @@ function processApiCall(qParams) {
           Minima.cmd(command, function(msg) {
             if ( msg.status ) {
               doLog(endpoint, extraLogTypes.API, command);
+              // Reply..
+              Minima.minidapps.reply(replyId, JSON.stringify(msg.response));
             } else {
               Minima.log(app + ' Error with API Call ' + endpoint);
+              Minima.minidapps.reply(replyId, '');
             }
           });
+        } else {
+          Minima.minidapps.reply(replyId, '');
         }
+      } else {
+        Minima.minidapps.reply(replyId, '');
       }
     });
   }
 }
-
-// 127.0.0.1:9004/api/EMH/?command=gimme50&address=MxC52CMZJ56TQPJMJUIB62K55ER6QTXJ5D&tokenid=0x00
-// 127.0.0.1:9004/api/EMH/?command=gimme50&address=MxXR4E5ZIRUKFDPUQQHTKGLCVLYMNYG2OL&tokenid=0x00
-// 127.0.0.1:9004/api/EMH/?command=gimme50&address=MxCSDCZVNU2AB3KHB4B37V7OZLJGMQBE45&tokenid=0x00
-// 127.0.0.1:9004/api/EMH/?command=gimme50&address=MxQ37CGQPS6R7XI4JHCLNNVGWSZ66NVJ5E&tokenid=0x00
 
 /** Initialise the app */
 Minima.init( function(msg) {
@@ -411,9 +414,7 @@ Minima.init( function(msg) {
     // Listen for messages posted to this service
     Minima.minidapps.listen(function(msg) {
       // process the call
-      processApiCall(msg.message);
-      // Reply..
-      Minima.minidapps.reply(msg.replyid, 'OK');
+      processApiCall(msg.message, msg.replyid);
     });
   } else if (msg.event == 'newtxpow') {
     const txPoW = msg.info.txpow;
