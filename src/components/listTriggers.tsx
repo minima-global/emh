@@ -94,11 +94,13 @@ const list = (props: Props) => {
             item
             container
             justify="flex-start"
-            xs={3}
-            lg={1}
+            xs={1}
           >
-            <Typography variant="h5">
-              {TriggerVars.endpoint}
+            <Typography variant="h5" noWrap={true}>
+              { largeScreen ?
+                TriggerVars.endpoint:
+                TriggerVars.smallEndpoint
+              }
             </Typography>
           </Grid>
           <Grid
@@ -107,7 +109,7 @@ const list = (props: Props) => {
             justify="flex-start"
             xs={1}
           >
-            <Typography variant="h5">
+            <Typography variant="h5" noWrap={true}>
               { largeScreen ?
                 TriggerVars.public:
                 TriggerVars.smallPublic
@@ -118,10 +120,9 @@ const list = (props: Props) => {
             item
             container
             justify="flex-start"
-            xs={2}
-            lg={1}
+            xs={1}
           >
-            <Typography variant="h5">
+            <Typography variant="h5" noWrap={true}>
               { largeScreen ?
                 TriggerVars.command:
                 TriggerVars.smallCommand
@@ -133,9 +134,8 @@ const list = (props: Props) => {
             container
             justify="flex-start"
             xs={2}
-            lg={3}
           >
-            <Typography variant="h5">
+            <Typography variant="h5" noWrap={true}>
               { largeScreen ?
                 TriggerVars.format:
                 TriggerVars.smallFormat
@@ -146,10 +146,9 @@ const list = (props: Props) => {
             item
             container
             justify="flex-start"
-            xs={2}
-            lg={3}
+            xs={3}
           >
-            <Typography variant="h5">
+            <Typography variant="h5" noWrap={true}>
               { largeScreen ?
                 TriggerVars.setParams:
                 TriggerVars.smallSetParams
@@ -160,10 +159,9 @@ const list = (props: Props) => {
             item
             container
             justify="flex-start"
-            xs={4}
-            lg={2}
+            xs={3}
           >
-            <Typography variant="h5">
+            <Typography variant="h5" noWrap={true}>
               { largeScreen ?
                 TriggerVars.params:
                 TriggerVars.smallParams
@@ -175,7 +173,6 @@ const list = (props: Props) => {
             container
             justify="flex-end"
             xs={1}
-            lg={1}
           >
             <Typography variant="h5">
               &nbsp;
@@ -206,8 +203,7 @@ const list = (props: Props) => {
                         container
                         alignItems='center'
                         justify="flex-start"
-                        xs={3}
-                        lg={1}
+                        xs={1}
                       >
                         <Typography
                           variant="body1"
@@ -221,8 +217,7 @@ const list = (props: Props) => {
                         container
                         alignItems='center'
                         justify="flex-start"
-                        xs={3}
-                        lg={1}
+                        xs={1}
                       >
                         <Typography
                           variant="body1"
@@ -250,8 +245,7 @@ const list = (props: Props) => {
                         container
                         alignItems='center'
                         justify="flex-start"
-                        xs={3}
-                        lg={3}
+                        xs={2}
                       >
                         <Typography
                           variant="body1"
@@ -265,8 +259,7 @@ const list = (props: Props) => {
                         container
                         alignItems='center'
                         justify="flex-start"
-                        xs={2}
-                        lg={3}
+                        xs={3}
                       >
                         <Typography
                           variant="body1"
@@ -280,8 +273,7 @@ const list = (props: Props) => {
                         container
                         alignItems='center'
                         justify="flex-start"
-                        xs={4}
-                        lg={2}
+                        xs={3}
                       >
                         <Typography
                           variant="body1"
@@ -295,7 +287,6 @@ const list = (props: Props) => {
                         container
                         justify="flex-end"
                         xs={1}
-                        lg={1}
                       >
                         <Button
                           onClick={() => deleteTrigger(trigger, index)}

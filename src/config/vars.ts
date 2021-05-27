@@ -216,11 +216,12 @@ class Triggers {
   static readonly params = 'Params'
   static readonly public = 'Public?'
 
+  static readonly smallEndpoint = 'Trg'
   static readonly smallCommand = 'Cmd'
   static readonly smallFormat = 'Fmt'
   static readonly smallSetParams = 'Set'
   static readonly smallParams = 'Params'
-  static readonly smallPublic = 'Pbc?'
+  static readonly smallPublic = 'P?'
 
   static readonly triggerButton = 'Submit'
   static readonly deleteButton = 'Delete'
