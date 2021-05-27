@@ -81,6 +81,7 @@ const display = (props: Props) => {
       const setParams = (
         props.triggersData.data[values.trigger.value].SETPARAMS).split(' ');
       const params = values.params.split(' ');
+
       const setParamKeys: string[] = [];
       const setParamValues: string[] = [];
       for ( let i = 0; i < setParams.length; i++ ) {
