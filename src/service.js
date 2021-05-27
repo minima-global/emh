@@ -41,7 +41,7 @@ const tables = {
       name: ['ENDPOINT'],
       isAuto: false,
     },
-    columns: ['ENDPOINT', 'CMD', 'SETPARAMS', 'PARAMS'],
+    columns: ['ENDPOINT', 'CMD', 'FORMAT', 'SETPARAMS', 'PARAMS', 'ISPUBLIC'],
   },
 };
 
@@ -146,8 +146,10 @@ function createTrigger() {
       tables.trigger.name + ' (' +
       'ENDPOINT VARCHAR(255) NOT NULL, ' +
       'CMD VARCHAR(255) NOT NULL, ' +
+      'FORMAT VARCHAR(255) NOT NULL, ' +
       'SETPARAMS VARCHAR(255), ' +
       'PARAMS VARCHAR(255), ' +
+      'ISPUBLIC BOOLEAN, ' +
       'PRIMARY KEY(ENDPOINT)' +
     ');';
 

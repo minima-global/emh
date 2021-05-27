@@ -72,7 +72,7 @@ class Dbase {
         name: ['ENDPOINT'],
         isAuto: false,
       },
-      columns: ['ENDPOINT', 'CMD', 'SETPARAMS', 'PARAMS'],
+      columns: ['ENDPOINT', 'CMD', 'FORMAT', 'SETPARAMS', 'PARAMS', 'ISPUBLIC'],
     },
   };
 
@@ -211,12 +211,16 @@ class Triggers {
 
   static readonly endpoint = 'URL'
   static readonly command = 'Command'
+  static readonly format = 'Format'
   static readonly setParams = 'Set Params'
   static readonly params = 'Params'
+  static readonly public = 'Public?'
 
   static readonly smallCommand = 'Cmd'
+  static readonly smallFormat = 'Fmt'
   static readonly smallSetParams = 'Set'
   static readonly smallParams = 'Params'
+  static readonly smallPublic = 'Pbc?'
 
   static readonly triggerButton = 'Submit'
   static readonly deleteButton = 'Delete'

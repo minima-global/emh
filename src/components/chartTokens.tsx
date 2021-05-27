@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 
 import Chart from 'chart.js/auto';
 
-import {themeStyles} from '../styles';
+// import {themeStyles} from '../styles';
 
 import {
   ApplicationState,
@@ -63,7 +63,7 @@ const getRandomColourForEachToken = (count: number) => {
 
 const chart = (props: Props) => {
   const isFirstRun = useRef(true);
-  const classes = themeStyles();
+  // const classes = themeStyles();
   // eslint-disable-next-line no-unused-vars
   const [tokens, setTokens] = useState({} as ChartData);
   const tokenCtx = useRef<HTMLCanvasElement>(null);

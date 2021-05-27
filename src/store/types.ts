@@ -185,8 +185,10 @@ export interface TokenIdProps extends PayloadProps {
 export interface Triggers {
   ENDPOINT: string
   CMD: string
+  FORMAT: string
   SETPARAMS: string
   PARAMS: string
+  ISPUBLIC: boolean
 }
 
 export interface TriggersProps extends PayloadProps {

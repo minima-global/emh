@@ -95,7 +95,7 @@ const list = (props: Props) => {
             container
             justify="flex-start"
             xs={3}
-            lg={2}
+            lg={1}
           >
             <Typography variant="h5">
               {TriggerVars.endpoint}
@@ -105,12 +105,40 @@ const list = (props: Props) => {
             item
             container
             justify="flex-start"
+            xs={1}
+          >
+            <Typography variant="h5">
+              { largeScreen ?
+                TriggerVars.public:
+                TriggerVars.smallPublic
+              }
+            </Typography>
+          </Grid>
+          <Grid
+            item
+            container
+            justify="flex-start"
             xs={2}
+            lg={1}
           >
             <Typography variant="h5">
               { largeScreen ?
                 TriggerVars.command:
                 TriggerVars.smallCommand
+              }
+            </Typography>
+          </Grid>
+          <Grid
+            item
+            container
+            justify="flex-start"
+            xs={2}
+            lg={3}
+          >
+            <Typography variant="h5">
+              { largeScreen ?
+                TriggerVars.format:
+                TriggerVars.smallFormat
               }
             </Typography>
           </Grid>
@@ -133,7 +161,7 @@ const list = (props: Props) => {
             container
             justify="flex-start"
             xs={4}
-            lg={3}
+            lg={2}
           >
             <Typography variant="h5">
               { largeScreen ?
@@ -147,7 +175,7 @@ const list = (props: Props) => {
             container
             justify="flex-end"
             xs={1}
-            lg={2}
+            lg={1}
           >
             <Typography variant="h5">
               &nbsp;
@@ -161,8 +189,10 @@ const list = (props: Props) => {
               ( trigger: TriggersType, index: number ) => {
                 const endpoint = trigger.ENDPOINT;
                 const command = trigger.CMD;
+                const format = trigger.FORMAT;
                 const setParams = trigger.SETPARAMS;
                 const params = trigger.PARAMS;
+                const isPublic = trigger.ISPUBLIC ? '✓': '✕';
 
                 const rowclass = index % 2 ? classes.evenRow : classes.oddRow;
 
@@ -177,7 +207,7 @@ const list = (props: Props) => {
                         alignItems='center'
                         justify="flex-start"
                         xs={3}
-                        lg={2}
+                        lg={1}
                       >
                         <Typography
                           variant="body1"
@@ -191,13 +221,43 @@ const list = (props: Props) => {
                         container
                         alignItems='center'
                         justify="flex-start"
-                        xs={2}
+                        xs={3}
+                        lg={1}
+                      >
+                        <Typography
+                          variant="body1"
+                          noWrap={true}
+                        >
+                          {isPublic}
+                        </Typography>
+                      </Grid>
+                      <Grid
+                        item
+                        container
+                        alignItems='center'
+                        justify="flex-start"
+                        xs={1}
                       >
                         <Typography
                           variant="body1"
                           noWrap={true}
                         >
                           {command}
+                        </Typography>
+                      </Grid>
+                      <Grid
+                        item
+                        container
+                        alignItems='center'
+                        justify="flex-start"
+                        xs={3}
+                        lg={3}
+                      >
+                        <Typography
+                          variant="body1"
+                          noWrap={true}
+                        >
+                          {format}
                         </Typography>
                       </Grid>
                       <Grid
@@ -221,7 +281,7 @@ const list = (props: Props) => {
                         alignItems='center'
                         justify="flex-start"
                         xs={4}
-                        lg={3}
+                        lg={2}
                       >
                         <Typography
                           variant="body1"
@@ -235,7 +295,7 @@ const list = (props: Props) => {
                         container
                         justify="flex-end"
                         xs={1}
-                        lg={2}
+                        lg={1}
                       >
                         <Button
                           onClick={() => deleteTrigger(trigger, index)}
