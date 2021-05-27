@@ -357,25 +357,30 @@ function processApiCall(qParams) {
         if ( endpointResults.response.rows[0].ISPUBLIC ) {
           var command = endpointResults.response.rows[0].CMD;
 
-          const format = (
-            endpointResults.response.rows[0].FORMAT).split(' ');
-          const setParams = (
-            endpointResults.response.rows[0].SETPARAMS).split(' ');
+          if ( endpointResults.response.rows[0].FORMAT ) {
+            const format = (
+              endpointResults.response.rows[0].FORMAT).split(' ');
 
-          var setParamKeys = [];
-          var setParamValues = [];
-          for ( var i = 0; i < setParams.length; i++ ) {
-            var tuple = setParams[i].split('=');
-            setParamKeys.push(tuple[0]);
-            setParamValues.push(tuple[1]);
-          }
+            var setParams = [];
+            var setParamKeys = [];
+            var setParamValues = [];
+            if ( endpointResults.response.rows[0].SETPARAMS ) {
+              setParams = (
+                endpointResults.response.rows[0].SETPARAMS).split(' ');
+              for ( var i = 0; i < setParams.length; i++ ) {
+                var tuple = setParams[i].split('=');
+                setParamKeys.push(tuple[0]);
+                setParamValues.push(tuple[1]);
+              }
+            }
 
-          for ( var j = 0; j < format.length; j++ ) {
-            var setIndex = setParamKeys.indexOf(format[j]);
-            if ( setIndex !== -1 ) {
-              command += ' ' + setParamValues[setIndex];
-            } else {
-              command += ' ' + qParamsJSON[format[j]];
+            for ( var j = 0; j < format.length; j++ ) {
+              var setIndex = setParamKeys.indexOf(format[j]);
+              if ( setIndex !== -1 ) {
+                command += ' ' + setParamValues[setIndex];
+              } else {
+                command += ' ' + qParamsJSON[format[j]];
+              }
             }
           }
 

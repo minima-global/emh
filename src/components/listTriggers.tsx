@@ -192,7 +192,7 @@ const list = (props: Props) => {
                 const format = trigger.FORMAT;
                 const setParams = trigger.SETPARAMS;
                 const params = trigger.PARAMS;
-                const isPublic = trigger.ISPUBLIC ? '✓': '✕';
+                const isPublic = trigger.ISPUBLIC === 'true' ? '✓': '✕';
 
                 const rowclass = index % 2 ? classes.evenRow : classes.oddRow;
 

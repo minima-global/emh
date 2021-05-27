@@ -72,46 +72,55 @@ const display = (props: Props) => {
       let command = props.triggersData.data[values.trigger.value].CMD;
 
       // get the format of the command
-      const format = (
-        props.triggersData.data[values.trigger.value].FORMAT).split(' ');
+      if ( props.triggersData.data[values.trigger.value].FORMAT ) {
+        const format = (
+          props.triggersData.data[values.trigger.value].FORMAT).split(' ');
 
-      /**
-      * get the parameters for the command, and split into key value pairs
-      */
-      const setParams = (
-        props.triggersData.data[values.trigger.value].SETPARAMS).split(' ');
-      const params = values.params.split(' ');
-
-      const setParamKeys: string[] = [];
-      const setParamValues: string[] = [];
-      for ( let i = 0; i < setParams.length; i++ ) {
-        const tuple = setParams[i].split('=');
-        setParamKeys.push(tuple[0]);
-        setParamValues.push(tuple[1]);
-      }
-      const paramKeys: string[] = [];
-      const paramValues: string[] = [];
-      for ( let i = 0; i < params.length; i++ ) {
-        const tuple = params[i].split('=');
-        paramKeys.push(tuple[0]);
-        paramValues.push(tuple[1]);
-      }
-
-      /**
-       * for each parameter specified in the command format,
-       * grab the value from its parameter key
-       * and construct the requisite command
-       */
-      format.forEach((param) => {
-        const setIndex = setParamKeys.indexOf(param);
-        const paramIndex = paramKeys.indexOf(param);
-        if ( setIndex !== -1 ) {
-          command += ' ' + setParamValues[setIndex];
-        } else if ( paramIndex !== -1 ) {
-          command += ' ' + paramValues[paramIndex];
+        /**
+        * get the parameters for the command, and split into key value pairs
+        */
+        let setParams = [];
+        const setParamKeys: string[] = [];
+        const setParamValues: string[] = [];
+        if ( props.triggersData.data[values.trigger.value].SETPARAMS ) {
+          setParams = (
+            props.triggersData.data[values.trigger.value].SETPARAMS).split(' ');
+          for ( let i = 0; i < setParams.length; i++ ) {
+            const tuple = setParams[i].split('=');
+            setParamKeys.push(tuple[0]);
+            setParamValues.push(tuple[1]);
+          }
         }
-      });
-      // console.log(endpoint, ' this command: ', command);
+
+        let params = [];
+        const paramKeys: string[] = [];
+        const paramValues: string[] = [];
+        if ( values.params ) {
+          params = values.params.split(' ');
+          for ( let i = 0; i < params.length; i++ ) {
+            const tuple = params[i].split('=');
+            paramKeys.push(tuple[0]);
+            paramValues.push(tuple[1]);
+          }
+        }
+
+        /**
+         * for each parameter specified in the command format,
+         * grab the value from its parameter key
+         * and construct the requisite command
+         */
+        format.forEach((param) => {
+          const setIndex = setParamKeys.indexOf(param);
+          const paramIndex = paramKeys.indexOf(param);
+          if ( setIndex !== -1 ) {
+            command += ' ' + setParamValues[setIndex];
+          } else if ( paramIndex !== -1 ) {
+            command += ' ' + paramValues[paramIndex];
+          }
+        });
+      }
+
+      console.log(endpoint, ' this command: ', command);
       props.command(endpoint, command.trim());
     },
   });

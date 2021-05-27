@@ -68,7 +68,7 @@ export const initTx = () => {
  */
 export const command = (endpoint: string, cmd: string) => {
   return async (dispatch: AppDispatch) => {
-    // console.log('Got command', cmd);
+    console.log('Got command', cmd);
     const successAction: ActionTypes = CmdActionTypes.CMD_SUCCESS;
     Minima.cmd(cmd, function(msg: any) {
       dispatch(doLog(endpoint, Dbase.extraLogTypes.COMMAND, cmd));
