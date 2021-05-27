@@ -19,7 +19,7 @@ import {
 
 import {Dbase} from '../../../config';
 
-import {doLog} from '../dbase/actions';
+import {doLog, getDbaseEntries} from '../dbase/actions';
 import {write} from '../../actions';
 
 /**
@@ -33,10 +33,12 @@ export const init = () => {
         dispatch(getBalance());
         dispatch(getTokens());
         dispatch(getStatus());
+        dispatch( getDbaseEntries(Dbase.tables.log.name, 'DATE', 'DESC'));
       } else if ( msg.event == 'newbalance' ) {
         dispatch(getBalance());
         dispatch(getTokens());
         dispatch(getStatus());
+        dispatch( getDbaseEntries(Dbase.tables.log.name, 'DATE', 'DESC'));
       }
     });
   };

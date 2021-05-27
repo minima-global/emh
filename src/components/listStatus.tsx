@@ -55,7 +55,7 @@ const display = (props: Props) => {
           {
             props.statusData?.data.map( ( status: Status, index: number ) => {
               // 0 Years 0 Months 0 Weeks 0 Days 3 Hours 47 Minutes
-              console.log(status.uptime);
+              // console.log(status.uptime);
 
               const upToYears = status.uptime.indexOf(years);
               const upToMonths = status.uptime.indexOf(months);
@@ -139,9 +139,9 @@ const display = (props: Props) => {
 };
 
 const mapStateToProps = (state: ApplicationState): StateProps => {
-  const statuss = state.statusData as StatusProps;
+  const status = state.statusData as StatusProps;
   return {
-    statusData: statuss,
+    statusData: status,
   };
 };
 

@@ -20,7 +20,7 @@ import {getDbaseEntries} from '../store/app/dbase/actions';
 
 import {
   Dbase,
-  Addresses as AddressVars,
+  API as APIVars,
 } from '../config';
 
 interface StateProps {
@@ -38,7 +38,7 @@ interface DispatchProps {
 type Props = StateProps & DispatchProps
 
 type ChartData = {
-  [address: string]: number
+  [call: string]: number
 }
 
 const getRandomColour = () => {
@@ -61,44 +61,37 @@ const getRandomColourForEachAddress = (count: number) => {
 const chart = (props: Props) => {
   // const classes = themeStyles();
   // eslint-disable-next-line no-unused-vars
-  let [address, setAddress] = useState({} as ChartData);
-  const addressCtx = useRef<HTMLCanvasElement>(null);
+  let [call, setCall] = useState({} as ChartData);
+  const callCtx = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     let chart: any;
     if ( props.logsData?.data.length ) {
       props.logsData.data.map( ( log: LogsType, index: number ) => {
         if (!index) {
-          address = {};
+          call = {};
         }
-        const thisData = log.DATA;
-        const thisType = log.LOGGINGTYPE;
-        const addressInsertString = 'insert Mx';
-        if ( thisType === Dbase.tables.txpow.name &&
-            thisData.includes(addressInsertString, 0)) {
-          const thisAddressId = 'Mx' + thisData.slice(
-              addressInsertString.length,
-              thisData.indexOf(' ', addressInsertString.length));
-          // console.log('address id', thisAddressId);
-          // console.log('address name', addressName);
-          const addressDetails = address[thisAddressId];
-          if (!addressDetails) {
-            address[thisAddressId] = 1;
+        // const thisDate = new Date(+log.DATE);
+        if ( log.LOGGINGTYPE === Dbase.extraLogTypes.API ) {
+          console.log(log.LOGGINGTYPEID);
+          const callDetails = call[log.LOGGINGTYPEID];
+          if (!callDetails) {
+            call[log.LOGGINGTYPEID] = 1;
           } else {
-            address[thisAddressId] += 1;
+            call[log.LOGGINGTYPEID] += 1;
           }
         }
       });
-      const ctx = addressCtx.current;
+      const ctx = callCtx.current;
       if ( ctx ) {
         chart = new Chart(ctx, {
           type: 'pie',
           data: {
-            labels: Object.keys(address).map((key: string) => key),
+            labels: Object.keys(call).map((key: string) => key),
             datasets: [{
-              data: Object.values(address).map((value: number) => value),
+              data: Object.values(call).map((value: number) => value),
               backgroundColor:
-              getRandomColourForEachAddress(Object.keys(address).length),
+                getRandomColourForEachAddress(Object.keys(call).length),
             }],
           },
         });
@@ -123,11 +116,11 @@ const chart = (props: Props) => {
     <>
       <Grid item container alignItems="flex-start" justify='center' xs={12}>
         <Typography variant="h3">
-          {AddressVars.chartHeading}
+          {APIVars.chartHeading}
         </Typography>
         <canvas
-          id='chartAddress'
-          ref={addressCtx}
+          id='chartCall'
+          ref={callCtx}
         />
       </Grid>
     </>
@@ -154,9 +147,9 @@ const mapDispatchToProps = (dispatch: AppDispatch): DispatchProps => {
   };
 };
 
-const ChartAddresses = connect<StateProps, DispatchProps, {}, ApplicationState>(
+const ChartAPICalls = connect<StateProps, DispatchProps, {}, ApplicationState>(
     mapStateToProps,
     mapDispatchToProps,
 )(chart);
 
-export {ChartAddresses};
+export {ChartAPICalls};

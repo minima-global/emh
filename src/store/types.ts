@@ -188,7 +188,7 @@ export interface Triggers {
   FORMAT: string
   SETPARAMS: string
   PARAMS: string
-  ISPUBLIC: boolean
+  ISPUBLIC: string
 }
 
 export interface TriggersProps extends PayloadProps {

@@ -209,7 +209,7 @@ class Tokens {
 class Triggers {
   static readonly heading = 'Triggers'
 
-  static readonly endpoint = 'URL'
+  static readonly endpoint = 'Trigger'
   static readonly command = 'Command'
   static readonly format = 'Format'
   static readonly setParams = 'Set Params'
@@ -238,6 +238,11 @@ class Balances {
   static readonly mempool = 'Mempool'
 }
 
+/** @class API */
+class API {
+  static readonly heading = 'API'
+  static readonly chartHeading = 'API Calls'
+}
 
 /** @class Status */
 class Status {
@@ -303,6 +308,7 @@ export {
   Tokens,
   Triggers,
   Balances,
+  API,
   Status,
   SQL,
   Post,

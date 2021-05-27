@@ -62,63 +62,56 @@ const getRandomColourForEachToken = (count: number) => {
 };
 
 const chart = (props: Props) => {
-  const isFirstRun = useRef(true);
   // const classes = themeStyles();
   // eslint-disable-next-line no-unused-vars
-  const [tokens, setTokens] = useState({} as ChartData);
+  let [tokens, setTokens] = useState({} as ChartData);
   const tokenCtx = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     let chart: any;
-    if ( isFirstRun.current ) {
-      isFirstRun.current = false;
-
-      props.getDbaseEntries(
-          Dbase.tables.log.name,
-          'DATE',
-          'DESC');
-    } else {
-      if ( props.logsData?.data.length && props.tokensData?.data.length ) {
-        props.logsData.data.map( ( log: LogsType, index: number ) => {
-        // const thisDate = new Date(+log.DATE);
-          const thisData = log.DATA;
-          const thisType = log.LOGGINGTYPE;
-          const tokenInsertString = 'insert 0x';
-          if ( thisType === Dbase.tables.txpow.name &&
-             thisData.includes(tokenInsertString, 0)) {
-            const thisTokenId = '0x' + thisData.slice(
-                tokenInsertString.length,
-                thisData.indexOf(' ', tokenInsertString.length));
-            // console.log('token id', thisTokenId);
-            let tokenName = 'Minima';
-            props.tokensData.data.forEach((token: Token) => {
-              if ( token.tokenid == thisTokenId ) {
-                tokenName = token.token;
-              }
-            });
-            // console.log('token name', tokenName);
-            const tokenDetails = tokens[tokenName];
-            if (!tokenDetails) {
-              tokens[tokenName] = 1;
-            } else {
-              tokens[tokenName] += 1;
-            }
-          }
-        });
-        const ctx = tokenCtx.current;
-        if ( ctx ) {
-          chart = new Chart(ctx, {
-            type: 'pie',
-            data: {
-              labels: Object.keys(tokens).map((key: string) => key),
-              datasets: [{
-                data: Object.values(tokens).map((value: number) => value),
-                backgroundColor:
-                getRandomColourForEachToken(Object.keys(tokens).length),
-              }],
-            },
-          });
+    if ( props.logsData?.data.length && props.tokensData?.data.length ) {
+      props.logsData.data.map( ( log: LogsType, index: number ) => {
+        if (!index) {
+          tokens = {};
         }
+        // const thisDate = new Date(+log.DATE);
+        const thisData = log.DATA;
+        const thisType = log.LOGGINGTYPE;
+        const tokenInsertString = 'insert 0x';
+        if ( thisType === Dbase.tables.txpow.name &&
+            thisData.includes(tokenInsertString, 0)) {
+          const thisTokenId = '0x' + thisData.slice(
+              tokenInsertString.length,
+              thisData.indexOf(' ', tokenInsertString.length));
+          // console.log('token id', thisTokenId);
+          let tokenName = 'Minima';
+          props.tokensData.data.forEach((token: Token) => {
+            if ( token.tokenid == thisTokenId ) {
+              tokenName = token.token;
+            }
+          });
+          // console.log('token name', tokenName);
+          const tokenDetails = tokens[tokenName];
+          if (!tokenDetails) {
+            tokens[tokenName] = 1;
+          } else {
+            tokens[tokenName] += 1;
+          }
+        }
+      });
+      const ctx = tokenCtx.current;
+      if ( ctx ) {
+        chart = new Chart(ctx, {
+          type: 'pie',
+          data: {
+            labels: Object.keys(tokens).map((key: string) => key),
+            datasets: [{
+              data: Object.values(tokens).map((value: number) => value),
+              backgroundColor:
+              getRandomColourForEachToken(Object.keys(tokens).length),
+            }],
+          },
+        });
       }
     }
     return () => {
@@ -138,7 +131,7 @@ const chart = (props: Props) => {
   return (
 
     <>
-      <Grid item container alignItems="flex-start" xs={12}>
+      <Grid item container alignItems="flex-start" justify='center' xs={12}>
 
         <Typography variant="h3">
           {TokenVars.chartHeading}

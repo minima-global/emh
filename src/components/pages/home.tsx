@@ -11,6 +11,7 @@ import {ListBalances} from '../listBalances';
 import {ListStatus} from '../listStatus';
 import {ChartTokens} from '../chartTokens';
 import {ChartAddresses} from '../chartAddresses';
+import {ChartAPICalls} from '../chartAPICalls';
 
 export const Home = () => {
   return (
@@ -53,12 +54,16 @@ export const Home = () => {
           </svg>
         </Grid>
 
-        <Grid item container justify="flex-start" xs={6}>
+        <Grid item container justify="flex-start" xs={4}>
           { <ChartTokens /> }
         </Grid>
 
-        <Grid item container justify="flex-start" xs={6}>
+        <Grid item container justify="flex-start" xs={4}>
           { <ChartAddresses /> }
+        </Grid>
+
+        <Grid item container justify="flex-start" xs={4}>
+          { <ChartAPICalls /> }
         </Grid>
 
       </Grid>
