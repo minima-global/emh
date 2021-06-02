@@ -85,7 +85,7 @@ const chart = (props: Props) => {
       const ctx = callCtx.current;
       if ( ctx ) {
         chart = new Chart(ctx, {
-          type: 'pie',
+          type: 'bar',
           data: {
             labels: Object.keys(call).map((key: string) => key),
             datasets: [{
@@ -93,6 +93,9 @@ const chart = (props: Props) => {
               backgroundColor:
                 getRandomColourForEachAddress(Object.keys(call).length),
             }],
+          },
+          options: {
+            indexAxis: 'y',
           },
         });
       }

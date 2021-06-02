@@ -92,7 +92,7 @@ const chart = (props: Props) => {
       const ctx = addressCtx.current;
       if ( ctx ) {
         chart = new Chart(ctx, {
-          type: 'pie',
+          type: 'bar',
           data: {
             labels: Object.keys(address).map((key: string) => key),
             datasets: [{
@@ -100,6 +100,9 @@ const chart = (props: Props) => {
               backgroundColor:
               getRandomColourForEachAddress(Object.keys(address).length),
             }],
+          },
+          options: {
+            indexAxis: 'y',
           },
         });
       }

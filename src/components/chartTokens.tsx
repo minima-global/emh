@@ -111,7 +111,7 @@ const chart = (props: Props) => {
         const ctx = tokenCtx.current;
         if ( ctx ) {
           chart = new Chart(ctx, {
-            type: 'pie',
+            type: 'bar',
             data: {
               labels: Object.keys(tokens).map((key: string) => key),
               datasets: [{
@@ -119,6 +119,9 @@ const chart = (props: Props) => {
                 backgroundColor:
                 getRandomColourForEachToken(Object.keys(tokens).length),
               }],
+            },
+            options: {
+              indexAxis: 'y',
             },
           });
         }

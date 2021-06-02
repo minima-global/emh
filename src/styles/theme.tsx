@@ -295,11 +295,13 @@ const themeStyles = makeStyles({
   },
   oddRow: {
     backgroundColor: '#F5F3F2',
-    paddingBottom: theme.spacing(0.5),
+    paddingTop: theme.spacing(1),
+    paddingBottom: theme.spacing(1),
   },
   evenRow: {
     backgroundColor: '#FAFAFF',
-    paddingBottom: theme.spacing(0.5),
+    paddingTop: theme.spacing(1),
+    paddingBottom: theme.spacing(1),
   },
   formSubmit: {
     paddingTop: theme.spacing(0.5),

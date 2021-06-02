@@ -54,16 +54,20 @@ export const Home = () => {
           </svg>
         </Grid>
 
-        <Grid item container justify="flex-start" xs={4}>
+        <Grid item container justify="flex-start" xs={6}>
           { <ChartTokens /> }
         </Grid>
 
-        <Grid item container justify="flex-start" xs={4}>
+        <Grid item container justify="flex-start" xs={6}>
           { <ChartAddresses /> }
         </Grid>
 
-        <Grid item container justify="flex-start" xs={4}>
+        <Grid item container justify="flex-start" xs={6}>
           { <ChartAPICalls /> }
+        </Grid>
+
+        <Grid item container justify="flex-start" xs={6}>
+          &nbsp;
         </Grid>
 
       </Grid>

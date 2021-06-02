@@ -59,7 +59,7 @@ class Dbase {
       columns: ['TXID', 'URL', 'ADDRESS', 'TOKENID', 'DATE'],
     },
     log: {
-      name: 'CONSOLE',
+      name: 'LOGGING',
       key: {
         name: ['ID'],
         isAuto: true,
@@ -67,7 +67,7 @@ class Dbase {
       columns: ['ID', 'LOGGINGTYPEID', 'LOGGINGTYPE', 'DATE', 'DATA'],
     },
     trigger: {
-      name: 'COMMAND',
+      name: 'API',
       key: {
         name: ['ENDPOINT'],
         isAuto: false,
@@ -78,8 +78,8 @@ class Dbase {
 
   static readonly extraLogTypes = {
     COMMAND: 'COMMAND',
-    API: 'API',
-    URL: 'URL',
+    API: 'APICALL',
+    URL: 'URLCALL',
   };
 
   static readonly maxLimit = 2147483647
