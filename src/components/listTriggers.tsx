@@ -20,6 +20,7 @@ import {initTx} from '../store/app/blockchain/actions';
 import {deleteRow, getDbaseEntries} from '../store/app/dbase/actions';
 
 import {
+  Local,
   Dbase,
   SQL,
   Triggers as TriggerVars,
@@ -146,7 +147,7 @@ const list = (props: Props) => {
             item
             container
             justify="flex-start"
-            xs={3}
+            xs={1}
           >
             <Typography variant="h5" noWrap={true}>
               { largeScreen ?
@@ -159,12 +160,25 @@ const list = (props: Props) => {
             item
             container
             justify="flex-start"
-            xs={3}
+            xs={2}
           >
             <Typography variant="h5" noWrap={true}>
               { largeScreen ?
                 TriggerVars.params:
                 TriggerVars.smallParams
+              }
+            </Typography>
+          </Grid>
+          <Grid
+            item
+            container
+            justify="flex-start"
+            xs={2}
+          >
+            <Typography variant="h5" noWrap={true}>
+              { largeScreen ?
+                TriggerVars.url:
+                TriggerVars.smallUrl
               }
             </Typography>
           </Grid>
@@ -259,7 +273,7 @@ const list = (props: Props) => {
                         container
                         alignItems='center'
                         justify="flex-start"
-                        xs={3}
+                        xs={1}
                       >
                         <Typography
                           variant="body1"
@@ -273,13 +287,27 @@ const list = (props: Props) => {
                         container
                         alignItems='center'
                         justify="flex-start"
-                        xs={3}
+                        xs={2}
                       >
                         <Typography
                           variant="body1"
                           noWrap={true}
                         >
                           {params}
+                        </Typography>
+                      </Grid>
+                      <Grid
+                        item
+                        container
+                        alignItems='center'
+                        justify="flex-start"
+                        xs={2}
+                      >
+                        <Typography
+                          variant="body1"
+                          noWrap={true}
+                        >
+                          {`${Local.base}${Local.apiBase}${endpoint}`}
                         </Typography>
                       </Grid>
                       <Grid

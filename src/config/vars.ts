@@ -77,6 +77,7 @@ class Dbase {
   };
 
   static readonly extraLogTypes = {
+    SYSTEM: 'SYSTEM',
     COMMAND: 'COMMAND',
     API: 'APICALL',
     URL: 'URLCALL',
@@ -215,6 +216,7 @@ class Triggers {
   static readonly setParams = 'Set Params'
   static readonly params = 'Params'
   static readonly public = 'Public?'
+  static readonly url = 'URL'
 
   static readonly smallEndpoint = 'Trg'
   static readonly smallCommand = 'Cmd'
@@ -222,6 +224,7 @@ class Triggers {
   static readonly smallSetParams = 'Set'
   static readonly smallParams = 'Params'
   static readonly smallPublic = 'P?'
+  static readonly smallUrl = 'URL'
 
   static readonly triggerButton = 'Submit'
   static readonly deleteButton = 'Delete'

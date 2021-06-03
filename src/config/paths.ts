@@ -1,5 +1,6 @@
 /** @class Local */
 class Local {
+  static readonly base = 'http://127.0.0.1:9004/'
   static readonly home = '/'
   static readonly about = '/about'
   static readonly help = '/help'
@@ -9,6 +10,7 @@ class Local {
   static readonly tokens = '/tokens'
   static readonly triggers = '/triggers'
   static readonly cmd = '/cmd'
+  static readonly apiBase = 'api/EMH/?command='
 }
 
 export {Local};
