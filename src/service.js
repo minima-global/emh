@@ -3,6 +3,8 @@
 
 // http://127.0.0.1:9004/api/EMH/?command=getDbase&table=LOGGING&sortField=ID&sortOrder=DESC&limitLow=0&offset=100
 // 127.0.0.1:9004/api/EMH/?command=addTokenListener&token=0x00
+// eslint-disable-next-line max-len
+// 127.0.0.1:9004/api/EMH/?command=tokenCreate&name=AnotherTest&amount=1&description="Another Test Token"&script="RETURN TRUE"&icon=""&proof=""
 
 const app = 'EMH';
 
