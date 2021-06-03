@@ -71,6 +71,7 @@ export const command = (endpoint: string, cmd: string) => {
     console.log('Got command', cmd);
     const successAction: ActionTypes = CmdActionTypes.CMD_SUCCESS;
     Minima.cmd(cmd, function(msg: any) {
+      // console.log('Command?: ', msg);
       dispatch(doLog(endpoint, Dbase.extraLogTypes.COMMAND, cmd));
       dispatch(write({data: msg.response})(successAction));
     });

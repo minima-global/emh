@@ -83,6 +83,65 @@ class Dbase {
     URL: 'URLCALL',
   };
 
+  static readonly defaultAPI = {
+    url: {
+      endpoint: 'setDefaultURL',
+      command: '',
+      format: 'url',
+      setParams: '',
+      params: 'url=http://an.url.com',
+      isPublic: 1,
+    },
+    address: {
+      endpoint: 'addAddressListener',
+      command: '',
+      format: 'address [url]',
+      setParams: '',
+      params: 'address=MxQ37CGQPS6R7XI4JHCLNNVGWSZ66NVJ5E url=http://an.url.com',
+      isPublic: 1,
+    },
+    token: {
+      endpoint: 'addTokenListener',
+      command: '',
+      format: 'token [url]',
+      setParams: '',
+      params: 'token=0x9454BB52A5777D... url=http://an.url.com]',
+      isPublic: 1,
+    },
+    dbase: {
+      endpoint: 'getDbase',
+      command: '',
+      format: 'table sortField sortOrder limitLow offset',
+      setParams: '',
+      params: 'table=LOGGING sortField=ID sortOrder=DESC limitLow=0 offset=100',
+      isPublic: 1,
+    },
+    gimme50: {
+      endpoint: 'gimme50',
+      command: 'send',
+      format: 'amount address tokenid',
+      setParams: 'amount=50 tokenid=0x00',
+      params: 'address=MxQ37CGQPS6R7XI4JHCLNNVGWSZ66NVJ5E',
+      isPublic: 1,
+    },
+    send: {
+      endpoint: 'send',
+      command: 'send',
+      format: 'amount address tokenid',
+      setParams: '',
+      params: 'amount=1 address=Mx... tokenid=0x00',
+      isPublic: 1,
+    },
+    tokenCreate: {
+      endpoint: 'tokenCreate',
+      command: 'tokencreate',
+      format: 'name amount description script icon proof',
+      setParams: '',
+      params: 'name=MyToken amount=1000000 description="Token description" script="RETURN TRUE" icon="http://my.icon.url" proof="http://my.proof.url"',
+      isPublic: 1,
+    },
+  };
+
   static readonly maxLimit = 2147483647
   static readonly pageLimit = 25
 }

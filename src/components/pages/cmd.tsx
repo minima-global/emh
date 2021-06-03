@@ -54,6 +54,7 @@ type SelectOptionType = {
 
 const display = (props: Props) => {
   const isFirstRun = useRef(true);
+  // eslint-disable-next-line no-unused-vars
   const [triggers, setTriggers] = useState([] as SelectOptionType[]);
   const [thisTrigger, setThisTrigger] = useState({} as SelectOptionType);
   const [paramsDisabled, setParamsDisabled] = useState(false);
@@ -79,28 +80,34 @@ const display = (props: Props) => {
         /**
         * get the parameters for the command, and split into key value pairs
         */
-        let setParams = [];
+        let setParams: string[] | null = [];
         const setParamKeys: string[] = [];
         const setParamValues: string[] = [];
         if ( props.triggersData.data[values.trigger.value].SETPARAMS ) {
+          // regex from https://stackoverflow.com/questions/16261635/javascript-split-string-by-space-but-ignore-space-in-quotes-notice-not-to-spli
           setParams = (
-            props.triggersData.data[values.trigger.value].SETPARAMS).split(' ');
-          for ( let i = 0; i < setParams.length; i++ ) {
-            const tuple = setParams[i].split('=');
-            setParamKeys.push(tuple[0]);
-            setParamValues.push(tuple[1]);
+            props.triggersData.data[values.trigger.value].SETPARAMS)
+              .match(/(?:[^\s"]+|"[^"]*")+/g);
+          if ( setParams ) {
+            for ( let i = 0; i < setParams.length; i++ ) {
+              const tuple = setParams[i].split('=');
+              setParamKeys.push(tuple[0]);
+              setParamValues.push(tuple[1]);
+            }
           }
         }
 
-        let params = [];
+        let params: string[] | null = [];
         const paramKeys: string[] = [];
         const paramValues: string[] = [];
         if ( values.params ) {
-          params = values.params.split(' ');
-          for ( let i = 0; i < params.length; i++ ) {
-            const tuple = params[i].split('=');
-            paramKeys.push(tuple[0]);
-            paramValues.push(tuple[1]);
+          params = values.params.match(/(?:[^\s"]+|"[^"]*")+/g);
+          if ( params ) {
+            for ( let i = 0; i < params.length; i++ ) {
+              const tuple = params[i].split('=');
+              paramKeys.push(tuple[0]);
+              paramValues.push(tuple[1]);
+            }
           }
         }
 
@@ -115,12 +122,20 @@ const display = (props: Props) => {
           if ( setIndex !== -1 ) {
             command += ' ' + setParamValues[setIndex];
           } else if ( paramIndex !== -1 ) {
-            command += ' ' + paramValues[paramIndex];
+            if ( endpoint === Dbase.defaultAPI.tokenCreate.endpoint ) {
+              if (paramValues[paramIndex].includes('"')) {
+                command += ' ' + param + ':' + paramValues[paramIndex];
+              } else {
+                command += ' ' + param + ':"' + paramValues[paramIndex] + '"';
+              }
+            } else {
+              command += ' ' + paramValues[paramIndex];
+            }
           }
         });
       }
 
-      console.log(endpoint, ' this command: ', command);
+      // console.log(endpoint, ' this command: ', command);
       props.command(endpoint, command.trim());
     },
   });

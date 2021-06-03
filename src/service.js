@@ -70,7 +70,7 @@ const defaultAPI = {
     command: '',
     format: 'address [url]',
     setParams: '',
-    params: 'address=MxQ37CGQPS6R7XI4JHCLNNVGWSZ66NVJ5E url=http://an.url.com',
+    params: 'address=Mx... url=http://an.url.com',
     isPublic: 1,
   },
   token: {
@@ -89,20 +89,28 @@ const defaultAPI = {
     params: 'table=LOGGING sortField=ID sortOrder=DESC limitLow=0 offset=100',
     isPublic: 1,
   },
+  gimme50: {
+    endpoint: 'gimme50',
+    command: 'send',
+    format: 'amount address tokenid',
+    setParams: 'amount=50 tokenid=0x00',
+    params: 'address=Mx...',
+    isPublic: 1,
+  },
   send: {
     endpoint: 'send',
     command: 'send',
     format: 'amount address tokenid',
     setParams: '',
-    params: 'amount=1 address=MxQ37CGQPS6R7XI4JHCLNNVGWSZ66NVJ5E tokenid=0x00',
+    params: 'amount=1 address=Mx... tokenid=0x00',
     isPublic: 1,
   },
   tokenCreate: {
     endpoint: 'tokenCreate',
     command: 'tokencreate',
-    format: 'name amount description [icon] [proof]',
+    format: 'name amount description script icon proof',
     setParams: '',
-    params: 'name=MyToken amount=1000000 description=token icon=http://my.icon.url proof=http://my.proof.url',
+    params: 'name=MyToken amount=1000000 description="Token description" script="RETURN TRUE" icon="http://my.icon.url" proof="http://my.proof.url"',
     isPublic: 1,
   },
 };
@@ -113,153 +121,6 @@ var failedURLCall = {};
 // const deleteAfter = 1000 * 3600 * 24;
 const deleteAfter = 300000;
 const blockConfirmedDepth = 3;
-
-/**
- * Runs supplied Minima SQL on given table
- * @function doSQL
- * @param {string} sql
- * @param {string} tableName
-*/
-function doSQL(sql, tableName) {
-  Minima.sql(sql, function(resp) {
-    if (!resp.status) {
-      Minima.log(app + ' Error with SQL ' + tableName + resp.message);
-    }
-  });
-}
-
-/**
- * Creates log entries
- * @function doLog
- * @param {string} typeId
- * @param {string} type
- * @param {string} data
-*/
-function doLog(typeId, type, data) {
-  const date = Date.now();
-  const insertSQL = 'INSERT INTO ' +
-      tables.log.name +
-      ' (LOGGINGTYPEID, LOGGINGTYPE, DATE, DATA) ' +
-      'VALUES (' +
-      '\'' + typeId + '\', ' +
-      '\'' + type + '\', ' +
-      '\'' + date + '\', ' +
-      '\'' + data + '\'' +
-    ')';
-  doSQL(insertSQL, tables.log.name);
-}
-
-/**
- * sets the default URL used when inserting tokens and addresses
- * @function setDefaultURL
- * @param {object} qParamsJSON
- * @param {string} replyId
-*/
-function setDefaultURL(qParamsJSON, replyId) {
-  const endpoint = qParamsJSON.command;
-  // Minima.log(app + ' API Call ' + endpoint);
-
-  if ( endpoint == defaultAPI.url.endpoint ) {
-    defaultURL=qParamsJSON.url;
-    doLog('Default URL', extraLogTypes.SYSTEM, 'url: ' + url);
-    Minima.minidapps.reply(replyId, 'OK');
-  } else {
-    Minima.minidapps.reply(replyId, '');
-  }
-}
-
-/**
- * Creates address entries to listen for
- * @function insertAddress
- * @param {object} qParamsJSON
- * @param {string} replyId
-*/
-function insertAddress(qParamsJSON, replyId) {
-  const endpoint = qParamsJSON.command;
-  // Minima.log(app + ' API Call ' + endpoint);
-
-  if ( endpoint == defaultAPI.address.endpoint ) {
-    const address = qParamsJSON.address;
-    var url = defaultURL;
-    if ( qParamsJSON.url ) {
-      url = qParamsJSON.url;
-    }
-    const insertSQL = 'INSERT IGNORE INTO ' +
-        tables.address.name +
-        ' (ADDRESS, URL) ' +
-        'VALUES (' +
-        '\'' + address + '\', ' +
-        '\'' + url + '\'' +
-      ')';
-    doSQL(insertSQL, tables.address.name);
-    Minima.minidapps.reply(replyId, 'OK');
-  } else {
-    Minima.minidapps.reply(replyId, '');
-  }
-}
-
-/**
- * Creates token entries to listen for
- * @function insertToken
- * @param {object} qParamsJSON
- * @param {string} replyId
-*/
-function insertToken(qParamsJSON, replyId) {
-  const endpoint = qParamsJSON.command;
-  if ( endpoint == defaultAPI.token.endpoint ) {
-    const token = qParamsJSON.token;
-    var url = defaultURL;
-    if ( qParamsJSON.url ) {
-      url = qParamsJSON.url;
-    }
-    const insertSQL = 'INSERT IGNORE INTO ' +
-        tables.token.name +
-        ' (TOKENID, URL) ' +
-        'VALUES (' +
-        '\'' + token + '\', ' +
-        '\'' + url + '\'' +
-      ')';
-    doSQL(insertSQL, tables.token.name);
-    Minima.minidapps.reply(replyId, 'OK');
-  } else {
-    Minima.minidapps.reply(replyId, '');
-  }
-}
-
-/**
- * Runs dbase queries
- * @function getDbase
- * @param {object} qParamsJSON
- * @param {string} replyId
-*/
-function getDbase(qParamsJSON, replyId) {
-  const endpoint = qParamsJSON.command;
-  if ( endpoint == defaultAPI.dbase.endpoint ) {
-    const table = qParamsJSON.table;
-    const sortField = qParamsJSON.sortField;
-    const sortOrder = qParamsJSON.sortOrder;
-    const limitLow = qParamsJSON.limitLow;
-    const offset = qParamsJSON.offset;
-
-    const querySQL = 'SELECT * FROM ' +
-      table +
-      ' ORDER BY ' +
-      sortField + ' ' +
-      sortOrder +
-      ' LIMIT ' +
-      limitLow + ', ' +
-      offset;
-
-    Minima.sql(querySQL, function(result) {
-      if ( result.status ) {
-        Minima.minidapps.reply(replyId,
-            JSON.stringify(result.response.rows.slice()));
-      } else {
-        Minima.minidapps.reply(replyId, '');
-      }
-    });
-  }
-}
 
 /**
  * Creates TxPow table
@@ -361,6 +222,7 @@ function createURLAPI() {
       '\'' + defaultAPI.url.isPublic + '\'' +
     ')';
   doSQL(insertSQL, tables.log.name);
+  doLog('Default API', extraLogTypes.SYSTEM, defaultAPI.url.endpoint);
 }
 
 /**
@@ -380,6 +242,7 @@ function createAddressListenAPI() {
       '\'' + defaultAPI.address.isPublic + '\'' +
     ')';
   doSQL(insertSQL, tables.log.name);
+  doLog('Default API', extraLogTypes.SYSTEM, defaultAPI.address.endpoint);
 }
 
 /**
@@ -399,6 +262,7 @@ function createTokenListenAPI() {
       '\'' + defaultAPI.token.isPublic + '\'' +
     ')';
   doSQL(insertSQL, tables.log.name);
+  doLog('Default API', extraLogTypes.SYSTEM, defaultAPI.token.endpoint);
 }
 
 /**
@@ -418,6 +282,27 @@ function createGetDbaseAPI() {
       '\'' + defaultAPI.dbase.isPublic + '\'' +
     ')';
   doSQL(insertSQL, tables.log.name);
+  doLog('Default API', extraLogTypes.SYSTEM, defaultAPI.dbase.endpoint);
+}
+
+/**
+ * Creates an API for gimme50
+ * @function createGimme50API
+ */
+function createGimme50API() {
+  const insertSQL = 'INSERT IGNORE INTO ' +
+      tables.trigger.name +
+      ' (ENDPOINT, CMD, FORMAT, SETPARAMS, PARAMS, ISPUBLIC) ' +
+      'VALUES (' +
+      '\'' + defaultAPI.gimme50.endpoint + '\', ' +
+      '\'' + defaultAPI.gimme50.command + '\', ' +
+      '\'' + defaultAPI.gimme50.format + '\', ' +
+      '\'' + defaultAPI.gimme50.setParams + '\', ' +
+      '\'' + defaultAPI.gimme50.params + '\', ' +
+      '\'' + defaultAPI.gimme50.isPublic + '\'' +
+    ')';
+  doSQL(insertSQL, tables.log.name);
+  doLog('Default API', extraLogTypes.SYSTEM, defaultAPI.gimme50.endpoint);
 }
 
 /**
@@ -437,6 +322,7 @@ function createSendAPI() {
       '\'' + defaultAPI.send.isPublic + '\'' +
     ')';
   doSQL(insertSQL, tables.log.name);
+  doLog('Default API', extraLogTypes.SYSTEM, defaultAPI.send.endpoint);
 }
 
 /**
@@ -456,6 +342,157 @@ function createTokenAPI() {
       '\'' + defaultAPI.tokenCreate.isPublic + '\'' +
     ')';
   doSQL(insertSQL, tables.log.name);
+  doLog('Default API', extraLogTypes.SYSTEM, defaultAPI.tokenCreate.endpoint);
+}
+
+/**
+ * Runs supplied Minima SQL on given table
+ * @function doSQL
+ * @param {string} sql
+ * @param {string} tableName
+*/
+function doSQL(sql, tableName) {
+  Minima.sql(sql, function(resp) {
+    if (!resp.status) {
+      Minima.log(app + ' Error with SQL ' + tableName + resp.message);
+    }
+  });
+}
+
+/**
+ * Creates log entries
+ * @function doLog
+ * @param {string} typeId
+ * @param {string} type
+ * @param {string} data
+*/
+function doLog(typeId, type, data) {
+  const date = Date.now();
+  const insertSQL = 'INSERT INTO ' +
+      tables.log.name +
+      ' (LOGGINGTYPEID, LOGGINGTYPE, DATE, DATA) ' +
+      'VALUES (' +
+      '\'' + typeId + '\', ' +
+      '\'' + type + '\', ' +
+      '\'' + date + '\', ' +
+      '\'' + data + '\'' +
+    ')';
+  doSQL(insertSQL, tables.log.name);
+}
+
+/**
+ * sets the default URL used when inserting tokens and addresses
+ * @function setDefaultURL
+ * @param {object} qParamsJSON
+ * @param {string} replyId
+*/
+function setDefaultURL(qParamsJSON, replyId) {
+  const endpoint = qParamsJSON.command;
+  // Minima.log(app + ' API Call ' + endpoint);
+
+  if ( endpoint == defaultAPI.url.endpoint ) {
+    defaultURL=qParamsJSON.url;
+    doLog(endpoint, extraLogTypes.API, 'url: ' + url);
+    Minima.minidapps.reply(replyId, 'OK');
+  } else {
+    Minima.minidapps.reply(replyId, '');
+  }
+}
+
+/**
+ * Creates address entries to listen for
+ * @function insertAddress
+ * @param {object} qParamsJSON
+ * @param {string} replyId
+*/
+function insertAddress(qParamsJSON, replyId) {
+  const endpoint = qParamsJSON.command;
+  // Minima.log(app + ' API Call ' + endpoint);
+
+  if ( endpoint == defaultAPI.address.endpoint ) {
+    const address = qParamsJSON.address;
+    var url = defaultURL;
+    if ( qParamsJSON.url ) {
+      url = qParamsJSON.url;
+    }
+    const insertSQL = 'INSERT IGNORE INTO ' +
+        tables.address.name +
+        ' (ADDRESS, URL) ' +
+        'VALUES (' +
+        '\'' + address + '\', ' +
+        '\'' + url + '\'' +
+      ')';
+    doSQL(insertSQL, tables.address.name);
+    doLog(endpoint, extraLogTypes.API, address);
+    Minima.minidapps.reply(replyId, 'OK');
+  } else {
+    Minima.minidapps.reply(replyId, '');
+  }
+}
+
+/**
+ * Creates token entries to listen for
+ * @function insertToken
+ * @param {object} qParamsJSON
+ * @param {string} replyId
+*/
+function insertToken(qParamsJSON, replyId) {
+  const endpoint = qParamsJSON.command;
+  if ( endpoint == defaultAPI.token.endpoint ) {
+    const token = qParamsJSON.token;
+    var url = defaultURL;
+    if ( qParamsJSON.url ) {
+      url = qParamsJSON.url;
+    }
+    const insertSQL = 'INSERT IGNORE INTO ' +
+        tables.token.name +
+        ' (TOKENID, URL) ' +
+        'VALUES (' +
+        '\'' + token + '\', ' +
+        '\'' + url + '\'' +
+      ')';
+    doSQL(insertSQL, tables.token.name);
+    doLog(endpoint, extraLogTypes.API, token);
+    Minima.minidapps.reply(replyId, 'OK');
+  } else {
+    Minima.minidapps.reply(replyId, '');
+  }
+}
+
+/**
+ * Runs dbase queries
+ * @function getDbase
+ * @param {object} qParamsJSON
+ * @param {string} replyId
+*/
+function getDbase(qParamsJSON, replyId) {
+  const endpoint = qParamsJSON.command;
+  if ( endpoint == defaultAPI.dbase.endpoint ) {
+    const table = qParamsJSON.table;
+    const sortField = qParamsJSON.sortField;
+    const sortOrder = qParamsJSON.sortOrder;
+    const limitLow = qParamsJSON.limitLow;
+    const offset = qParamsJSON.offset;
+
+    const querySQL = 'SELECT * FROM ' +
+      table +
+      ' ORDER BY ' +
+      sortField + ' ' +
+      sortOrder +
+      ' LIMIT ' +
+      limitLow + ', ' +
+      offset;
+
+    Minima.sql(querySQL, function(result) {
+      if ( result.status ) {
+        Minima.minidapps.reply(replyId,
+            JSON.stringify(result.response.rows.slice()));
+        doLog(endpoint, extraLogTypes.API, table);
+      } else {
+        Minima.minidapps.reply(replyId, '');
+      }
+    });
+  }
 }
 
 /**
@@ -690,11 +727,14 @@ function processApiCall(qParams, replyId) {
               var setParamValues = [];
               if ( endpointResults.response.rows[0].SETPARAMS ) {
                 setParams = (
-                  endpointResults.response.rows[0].SETPARAMS).split(' ');
-                for ( var i = 0; i < setParams.length; i++ ) {
-                  var tuple = setParams[i].split('=');
-                  setParamKeys.push(tuple[0]);
-                  setParamValues.push(tuple[1]);
+                  endpointResults.response.rows[0].SETPARAMS)
+                    .match(/(?:[^\s"]+|"[^"]*")+/g);
+                if ( setParams ) {
+                  for ( var i = 0; i < setParams.length; i++ ) {
+                    var tuple = setParams[i].split('=');
+                    setParamKeys.push(tuple[0]);
+                    setParamValues.push(tuple[1]);
+                  }
                 }
               }
 
@@ -703,7 +743,16 @@ function processApiCall(qParams, replyId) {
                 if ( setIndex !== -1 ) {
                   command += ' ' + setParamValues[setIndex];
                 } else {
-                  command += ' ' + qParamsJSON[format[j]];
+                  if ( endpoint === defaultAPI.tokenCreate.endpoint ) {
+                    if (qParamsJSON[format[j]].indexOf('"') != -1 ) {
+                      command += ' ' + format[j] + ':' + qParamsJSON[format[j]];
+                    } else {
+                      command +=
+                        ' ' + format[j] + ':"' + qParamsJSON[format[j]] + '"';
+                    }
+                  } else {
+                    command += ' ' + qParamsJSON[format[j]];
+                  }
                 }
               }
             }
@@ -745,6 +794,7 @@ function createDefaultAPI() {
   createAddressListenAPI();
   createTokenListenAPI();
   createGetDbaseAPI();
+  createGimme50API();
   createSendAPI();
   createTokenAPI();
 }
