@@ -1,5 +1,9 @@
 /* eslint-disable new-cap */
 /* eslint-disable no-var */
+
+// http://127.0.0.1:9004/api/EMH/?command=getDbase&table=LOGGING&sortField=ID&sortOrder=DESC&limitLow=0&offset=100
+// 127.0.0.1:9004/api/EMH/?command=addTokenListener&token=0x00
+
 const app = 'EMH';
 
 const tables = {
@@ -53,6 +57,14 @@ const extraLogTypes = {
 };
 
 const defaultAPI = {
+  url: {
+    endpoint: 'setDefaultURL',
+    command: '',
+    format: 'url',
+    setParams: '',
+    params: 'url=http://an.url.com',
+    isPublic: 1,
+  },
   address: {
     endpoint: 'addAddressListener',
     command: '',
@@ -74,7 +86,7 @@ const defaultAPI = {
     command: '',
     format: 'table sortField sortOrder limitLow offset',
     setParams: '',
-    params: 'table=token sortField=ID sortOrder=DESC limitLow=0 offset=100',
+    params: 'table=LOGGING sortField=ID sortOrder=DESC limitLow=0 offset=100',
     isPublic: 1,
   },
   send: {
@@ -95,6 +107,7 @@ const defaultAPI = {
   },
 };
 
+var defaultURL = 'https://10b3db98-c5d7-4c4e-9a35-c4811eecbf70.mock.pstmn.io';
 const maxURLFails = 3;
 var failedURLCall = {};
 // const deleteAfter = 1000 * 3600 * 24;
@@ -137,6 +150,25 @@ function doLog(typeId, type, data) {
 }
 
 /**
+ * sets the default URL used when inserting tokens and addresses
+ * @function setDefaultURL
+ * @param {object} qParamsJSON
+ * @param {string} replyId
+*/
+function setDefaultURL(qParamsJSON, replyId) {
+  const endpoint = qParamsJSON.command;
+  // Minima.log(app + ' API Call ' + endpoint);
+
+  if ( endpoint == defaultAPI.url.endpoint ) {
+    defaultURL=qParamsJSON.url;
+    doLog('Default URL', extraLogTypes.SYSTEM, 'url: ' + url);
+    Minima.minidapps.reply(replyId, 'OK');
+  } else {
+    Minima.minidapps.reply(replyId, '');
+  }
+}
+
+/**
  * Creates address entries to listen for
  * @function insertAddress
  * @param {object} qParamsJSON
@@ -148,7 +180,7 @@ function insertAddress(qParamsJSON, replyId) {
 
   if ( endpoint == defaultAPI.address.endpoint ) {
     const address = qParamsJSON.address;
-    var url = '';
+    var url = defaultURL;
     if ( qParamsJSON.url ) {
       url = qParamsJSON.url;
     }
@@ -176,7 +208,7 @@ function insertToken(qParamsJSON, replyId) {
   const endpoint = qParamsJSON.command;
   if ( endpoint == defaultAPI.token.endpoint ) {
     const token = qParamsJSON.token;
-    var url = '';
+    var url = defaultURL;
     if ( qParamsJSON.url ) {
       url = qParamsJSON.url;
     }
@@ -310,6 +342,25 @@ function createLog() {
     ');';
 
   doSQL(createSQL, tables.log.name);
+}
+
+/**
+ * Creates an API for adding default URL for token and address listeners
+ * @function createURLAPI
+ */
+function createURLAPI() {
+  const insertSQL = 'INSERT IGNORE INTO ' +
+      tables.trigger.name +
+      ' (ENDPOINT, CMD, FORMAT, SETPARAMS, PARAMS, ISPUBLIC) ' +
+      'VALUES (' +
+      '\'' + defaultAPI.url.endpoint + '\', ' +
+      '\'' + defaultAPI.url.command + '\', ' +
+      '\'' + defaultAPI.url.format + '\', ' +
+      '\'' + defaultAPI.url.setParams + '\', ' +
+      '\'' + defaultAPI.url.params + '\', ' +
+      '\'' + defaultAPI.url.isPublic + '\'' +
+    ')';
+  doSQL(insertSQL, tables.log.name);
 }
 
 /**
@@ -614,6 +665,8 @@ function processApiCall(qParams, replyId) {
       insertToken(qParamsJSON, replyId);
     } else if ( endpoint == defaultAPI.dbase.endpoint ) {
       getDbase(qParamsJSON, replyId);
+    } else if ( endpoint == defaultAPI.url.endpoint ) {
+      setDefaultURL(qParamsJSON, replyId);
     } else {
       const commandSelectSQL =
         'SELECT CMD, FORMAT, SETPARAMS, PARAMS, ISPUBLIC FROM ' +
@@ -688,6 +741,7 @@ function initDbase() {
 
 /** @function createDefaultAPI */
 function createDefaultAPI() {
+  createURLAPI();
   createAddressListenAPI();
   createTokenListenAPI();
   createGetDbaseAPI();
