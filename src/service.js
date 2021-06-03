@@ -74,7 +74,7 @@ const defaultAPI = {
     command: '',
     format: 'table sortField sortOrder limitLow offset',
     setParams: '',
-    params: 'table=token sortField=URL sortOrder=DESC limitLow=0 offset=100',
+    params: 'table=token sortField=ID sortOrder=DESC limitLow=0 offset=100',
     isPublic: 1,
   },
   send: {
@@ -201,7 +201,32 @@ function insertToken(qParamsJSON, replyId) {
  * @param {string} replyId
 */
 function getDbase(qParamsJSON, replyId) {
+  const endpoint = qParamsJSON.command;
+  if ( endpoint == defaultAPI.dbase.endpoint ) {
+    const table = qParamsJSON.table;
+    const sortField = qParamsJSON.sortField;
+    const sortOrder = qParamsJSON.sortOrder;
+    const limitLow = qParamsJSON.limitLow;
+    const offset = qParamsJSON.offset;
 
+    const querySQL = 'SELECT * FROM ' +
+      table +
+      ' ORDER BY ' +
+      sortField + ' ' +
+      sortOrder +
+      ' LIMIT ' +
+      limitLow + ', ' +
+      offset;
+
+    Minima.sql(querySQL, function(result) {
+      if ( result.status ) {
+        Minima.minidapps.reply(replyId,
+            JSON.stringify(result.response.rows.slice()));
+      } else {
+        Minima.minidapps.reply(replyId, '');
+      }
+    });
+  }
 }
 
 /**
@@ -581,7 +606,7 @@ function processTx(txId, tokenId, mxAddress) {
 function processApiCall(qParams, replyId) {
   const qParamsJSON = JSON.parse(decodeURIComponent(qParams));
   const endpoint = qParamsJSON.command;
-  Minima.log(app + ' API Call ' + endpoint);
+  // Minima.log(app + ' API Call ' + endpoint);
   if ( endpoint ) {
     if ( endpoint == defaultAPI.address.endpoint ) {
       insertAddress(qParamsJSON, replyId);
