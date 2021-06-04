@@ -12,42 +12,46 @@ import {useFormik} from 'formik';
 import {themeStyles} from '../../styles';
 
 import {
-  Dbase,
   GeneralError,
   Tokens as TokenVars,
 } from '../../config';
 
-import {addRow} from '../../store/app/dbase/actions';
+// eslint-disable-next-line max-len
+// 127.0.0.1:9004/api/EMH/?command=tokenCreate&name=AnotherTest&amount=1&description="Another Test Token"&script="RETURN TRUE"&icon=""&proof=""
 
-import {ListTokens} from '../listTokens';
 
 import {
   ApplicationState,
   AppDispatch,
-  TokenProps,
+  TxProps,
+  NewToken,
 } from '../../store/types';
 
+import {createToken} from '../../store/app/EMH/actions';
+
 const tokenSchema = Yup.object().shape({
-  tokenId: Yup.string()
+  name: Yup.string()
       .required(GeneralError.required)
-      .min(4, TokenVars.tokenLengthError)
-      .max(130, TokenVars.tokenLengthError),
-  url: Yup.string()
+      .max(255, GeneralError.lengthError255),
+  amount: Yup.number()
+      .required(GeneralError.required),
+  description: Yup.string()
+      .required(GeneralError.required)
+      .max(255, GeneralError.lengthError255),
+  icon: Yup.string()
+      .url(TokenVars.urlError)
+      .max(255, GeneralError.lengthError255),
+  proof: Yup.string()
       .url(TokenVars.urlError)
       .max(255, GeneralError.lengthError255),
 });
 
 interface StateProps {
-  tokens: TokenProps
+  tx: TxProps
 }
 
 interface DispatchProps {
-  addRow: (
-    table: string,
-    columns: Array<string>,
-    key: Array<string>,
-    values: Array<string>,
-  ) => void
+  createToken: (token: NewToken) => void
 }
 
 type Props = StateProps & DispatchProps
@@ -56,18 +60,24 @@ const display = (props: Props) => {
   const classes = themeStyles();
   const formik = useFormik({
     initialValues: {
-      tokenId: '',
-      url: '',
+      name: '',
+      amount: 0,
+      description: '',
+      icon: '',
+      proof: '',
     },
     enableReinitialize: true,
     validationSchema: tokenSchema,
     onSubmit: (values: any) => {
-      props.addRow(
-          Dbase.tables.token.name,
-          Dbase.tables.token.columns,
-          [values.tokenId, values.url],
-          [values.tokenId, values.url],
-      );
+      const tokenInfo: NewToken = {
+        name: values.name,
+        amount: values.amount,
+        description: values.description,
+        script: 'RETURN TRUE',
+        icon: values.icon,
+        proof: values.proof,
+      };
+      props.createToken(tokenInfo);
     },
   });
 
@@ -106,20 +116,20 @@ const display = (props: Props) => {
               xs={4}
               lg={2}
             >
-              <label htmlFor="tokenId">{TokenVars.tokenId}</label>
+              <label htmlFor="name">{TokenVars.tokenName}</label>
             </Grid>
             <Grid item container xs={8} lg={10}>
               <TextField
                 fullWidth
                 size="small"
-                name="tokenId"
+                name="name"
                 type="text"
-                value={formik.values.tokenId}
+                value={formik.values.name}
                 onChange={formik.handleChange}
                 InputProps={{disableUnderline: true}}
               />
             </Grid>
-            {formik.errors.tokenId && formik.touched.tokenId ? (
+            {formik.errors.name && formik.touched.name ? (
               <>
                 <Grid item container xs={4} lg={2}>
                   <Typography variant="body1">
@@ -132,7 +142,7 @@ const display = (props: Props) => {
                   xs={8}
                   lg={10}
                 >
-                  {formik.errors.tokenId}
+                  {formik.errors.name}
                 </Grid>
               </>
               ) : null
@@ -150,20 +160,20 @@ const display = (props: Props) => {
               xs={4}
               lg={2}
             >
-              <label htmlFor="url">{TokenVars.url}</label>
+              <label htmlFor="amount">{TokenVars.amount}</label>
             </Grid>
             <Grid item container xs={8} lg={10}>
               <TextField
                 fullWidth
                 size="small"
-                name="url"
+                name="amount"
                 type="text"
-                value={formik.values.url}
+                value={formik.values.name}
                 onChange={formik.handleChange}
                 InputProps={{disableUnderline: true}}
               />
             </Grid>
-            {formik.errors.url && formik.touched.url ? (
+            {formik.errors.amount && formik.touched.amount ? (
               <>
                 <Grid item container xs={4} lg={2}>
                   <Typography variant="body1">
@@ -176,7 +186,95 @@ const display = (props: Props) => {
                   xs={8}
                   lg={10}
                 >
-                  {formik.errors.url}
+                  {formik.errors.amount}
+                </Grid>
+              </>
+              ) : null
+            }
+          </Grid>
+
+          <Grid item container xs={12}>
+
+            <Grid
+              item
+              container
+              className={classes.formLabel}
+              justify="flex-start"
+              alignItems="center"
+              xs={4}
+              lg={2}
+            >
+              <label htmlFor="icon">{TokenVars.icon}</label>
+            </Grid>
+            <Grid item container xs={8} lg={10}>
+              <TextField
+                fullWidth
+                size="small"
+                name="icon"
+                type="text"
+                value={formik.values.icon}
+                onChange={formik.handleChange}
+                InputProps={{disableUnderline: true}}
+              />
+            </Grid>
+            {formik.errors.icon && formik.touched.icon ? (
+              <>
+                <Grid item container xs={4} lg={2}>
+                  <Typography variant="body1">
+                    &nbsp;
+                  </Typography>
+                </Grid>
+                <Grid
+                  className={classes.formError}
+                  item container
+                  xs={8}
+                  lg={10}
+                >
+                  {formik.errors.icon}
+                </Grid>
+              </>
+              ) : null
+            }
+          </Grid>
+
+          <Grid item container xs={12}>
+
+            <Grid
+              item
+              container
+              className={classes.formLabel}
+              justify="flex-start"
+              alignItems="center"
+              xs={4}
+              lg={2}
+            >
+              <label htmlFor="proof">{TokenVars.proof}</label>
+            </Grid>
+            <Grid item container xs={8} lg={10}>
+              <TextField
+                fullWidth
+                size="small"
+                name="url"
+                type="text"
+                value={formik.values.proof}
+                onChange={formik.handleChange}
+                InputProps={{disableUnderline: true}}
+              />
+            </Grid>
+            {formik.errors.proof && formik.touched.proof ? (
+              <>
+                <Grid item container xs={4} lg={2}>
+                  <Typography variant="body1">
+                    &nbsp;
+                  </Typography>
+                </Grid>
+                <Grid
+                  className={classes.formError}
+                  item container
+                  xs={8}
+                  lg={10}
+                >
+                  {formik.errors.proof}
                 </Grid>
               </>
               ) : null
@@ -215,8 +313,6 @@ const display = (props: Props) => {
           </svg>
         </Grid>
 
-        { <ListTokens /> }
-
       </Grid>
 
     </Grid>
@@ -225,22 +321,17 @@ const display = (props: Props) => {
 
 const mapStateToProps = (state: ApplicationState): StateProps => {
   return {
-    tokens: state.tokensData as TokenProps,
+    tx: state.tx as TxProps,
   };
 };
 
 const mapDispatchToProps = (dispatch: AppDispatch): DispatchProps => {
   return {
-    addRow: (
-        table: string,
-        columns: Array<string>,
-        key: Array<string>,
-        values: Array<string>,
-    ) => dispatch(addRow(table, columns, key, values)),
+    createToken: (token: NewToken) => dispatch(createToken(token)),
   };
 };
 
-export const Tokens = connect<StateProps, DispatchProps, {}, ApplicationState>(
+export const Token = connect<StateProps, DispatchProps, {}, ApplicationState>(
     mapStateToProps,
     mapDispatchToProps,
 )(display);
