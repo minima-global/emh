@@ -16,10 +16,6 @@ import {
   Tokens as TokenVars,
 } from '../../config';
 
-// eslint-disable-next-line max-len
-// 127.0.0.1:9004/api/EMH/?command=tokenCreate&name=AnotherTest&amount=1&description="Another Test Token"&script="RETURN TRUE"&icon=""&proof=""
-
-
 import {
   ApplicationState,
   AppDispatch,
@@ -61,7 +57,7 @@ const display = (props: Props) => {
   const formik = useFormik({
     initialValues: {
       name: '',
-      amount: 0,
+      amount: 1,
       description: '',
       icon: '',
       proof: '',
@@ -77,6 +73,7 @@ const display = (props: Props) => {
         icon: values.icon,
         proof: values.proof,
       };
+      console.log('here: ', tokenInfo);
       props.createToken(tokenInfo);
     },
   });
@@ -168,7 +165,7 @@ const display = (props: Props) => {
                 size="small"
                 name="amount"
                 type="text"
-                value={formik.values.name}
+                value={formik.values.amount}
                 onChange={formik.handleChange}
                 InputProps={{disableUnderline: true}}
               />
@@ -187,6 +184,50 @@ const display = (props: Props) => {
                   lg={10}
                 >
                   {formik.errors.amount}
+                </Grid>
+              </>
+              ) : null
+            }
+          </Grid>
+
+          <Grid item container xs={12}>
+
+            <Grid
+              item
+              container
+              className={classes.formLabel}
+              justify="flex-start"
+              alignItems="center"
+              xs={4}
+              lg={2}
+            >
+              <label htmlFor="description">{TokenVars.description}</label>
+            </Grid>
+            <Grid item container xs={8} lg={10}>
+              <TextField
+                fullWidth
+                size="small"
+                name="description"
+                type="text"
+                value={formik.values.description}
+                onChange={formik.handleChange}
+                InputProps={{disableUnderline: true}}
+              />
+            </Grid>
+            {formik.errors.description && formik.touched.description ? (
+              <>
+                <Grid item container xs={4} lg={2}>
+                  <Typography variant="body1">
+                    &nbsp;
+                  </Typography>
+                </Grid>
+                <Grid
+                  className={classes.formError}
+                  item container
+                  xs={8}
+                  lg={10}
+                >
+                  {formik.errors.description}
                 </Grid>
               </>
               ) : null
@@ -254,7 +295,7 @@ const display = (props: Props) => {
               <TextField
                 fullWidth
                 size="small"
-                name="url"
+                name="proof"
                 type="text"
                 value={formik.values.proof}
                 onChange={formik.handleChange}

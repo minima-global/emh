@@ -696,7 +696,6 @@ function processTx(txId, tokenId, mxAddress) {
 function processApiCall(qParams, replyId) {
   const qParamsJSON = JSON.parse(decodeURIComponent(qParams));
   const endpoint = qParamsJSON.command;
-  // Minima.log(app + ' API Call ' + endpoint);
   if ( endpoint ) {
     if ( endpoint == defaultAPI.address.endpoint ) {
       insertAddress(qParamsJSON, replyId);
@@ -759,12 +758,11 @@ function processApiCall(qParams, replyId) {
               }
             }
 
-            // Minima.log(app + ' command ' + command);
             Minima.cmd(command, function(msg) {
               if ( msg.status ) {
                 doLog(endpoint, extraLogTypes.API, command);
-                // Reply..
-                Minima.minidapps.reply(replyId, JSON.stringify(msg.response));
+                // Reply..endpoint
+                Minima.minidapps.reply(replyId, msg.response);
               } else {
                 Minima.log(app + ' Error with API Call ' + endpoint);
                 Minima.minidapps.reply(replyId, '');
