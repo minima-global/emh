@@ -19,6 +19,48 @@ import {write} from '../../actions';
 import { Console } from 'console';
 
 /**
+ * Initialises the app
+ * @return {function}
+ */
+ export const init = () => {
+  return async (dispatch: AppDispatch) => {
+
+    const url =
+      `${Remote.server}/${Remote.serverApiBase}=${Remote.balanceCommand}`
+    const encodedURL = encodeURI(url);
+
+    // console.log(encodedURL);
+
+    Minima.net.GET(encodedURL, function(getResult) {
+      console.log('got reply: ', getResult);
+
+      /*const result = decodeURIComponent(getResult.result)
+      const resultObject = JSON.parse(result);
+      if ( resultObject.status ) {
+
+        console.log('Yay!', resultObject);
+        const txData = {
+          code: "200",
+          summary: Post.postSuccess,
+          time: time
+        }
+        dispatch(write({data: txData})(TxActionTypes.TX_SUCCESS));
+      } else {
+
+        console.log('Boo: ', resultObject);
+        const txData = {
+          code: "400",
+          summary: Post.postFailure,
+          time: time
+        }
+        dispatch(write({data: txData})(TxActionTypes.TX_FAILURE))
+      }*/
+    });
+    
+  };
+};
+
+/**
  * Initialises the Redux Tx store
  * @return {function}
  */
@@ -48,7 +90,7 @@ export const createToken = (token: NewToken) => {
     // 127.0.0.1:9004/api/EMH/?command=tokenCreate&name=AnotherTest&amount=1&description="Another Test Token"&script="RETURN TRUE"&icon=""&proof=""
     // eslint-disable-next-line max-len
     const url =
-      `${Remote.server}/${Remote.serverApiBase}=${Remote.command}&${Remote.nameParam}="${token.name}"&${Remote.amountParam}=${token.amount}&${Remote.descriptionParam}="${token.description}"&${Remote.scriptParam}="${token.script}"&${Remote.iconParam}="${token.icon}"&${Remote.proofParam}="${token.proof}"`
+      `${Remote.server}/${Remote.serverApiBase}=${Remote.tokenCommand}&${Remote.nameParam}="${token.name}"&${Remote.amountParam}=${token.amount}&${Remote.descriptionParam}="${token.description}"&${Remote.scriptParam}="${token.script}"&${Remote.iconParam}="${token.icon}"&${Remote.proofParam}="${token.proof}"`
     const encodedURL = encodeURI(url);
 
     // console.log(encodedURL);

@@ -123,6 +123,7 @@ var failedURLCall = {};
 // const deleteAfter = 1000 * 3600 * 24;
 const deleteAfter = 300000;
 const blockConfirmedDepth = 3;
+var listeners = [];
 
 /**
  * Creates TxPow table
@@ -813,15 +814,16 @@ Minima.init( function(msg) {
       processApiCall(msg.message, msg.replyid);
     });
   } else if (msg.event == 'newtxpow') {
-    const txPoW = msg.info.txpow;
-    const txOutputs = txPoW.body.txn.outputs;
-    if ( ( Array.isArray(txOutputs) ) &&
-        ( txOutputs.length ) ) {
-      processTx(txPoW.txpowid, txOutputs[0].tokenid, txOutputs[0].mxaddress);
+      const txPoW = msg.info.txpow;
+      const txOutputs = txPoW.body.txn.outputs;
+      if ( ( Array.isArray(txOutputs) ) &&
+          ( txOutputs.length ) ) {
+        processTx(txPoW.txpowid, txOutputs[0].tokenid, txOutputs[0].mxaddress);
+      }
+    } else if (msg.event == 'newblock') {
+      // Minima.log(app + ' msg ' + JSON.stringify(msg));
+      const blockTime = parseInt(msg.info.txpow.header.block, 10);
+      processTxPow(blockTime);
     }
-  } else if (msg.event == 'newblock') {
-    // Minima.log(app + ' msg ' + JSON.stringify(msg));
-    const blockTime = parseInt(msg.info.txpow.header.block, 10);
-    processTxPow(blockTime);
   }
 });
