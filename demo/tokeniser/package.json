@@ -8,14 +8,14 @@
     "url": "git+https://github.com/minima-global/emh"
   },
   "scripts": {
-    "compile": "./node_modules/.bin/webpack --config ./webpack.dev.js --mode development && rm ./build/app.js && rm ./build/app.js.map && mkdir ./build/images && cp ./miniDapp/images/* ./build/images && cp ./miniDapp/config/minidapp.conf ./build  && cd ./build && zip -r ../miniDapp/dist/tokeniser.minidapp *",
+    "compile": "./node_modules/.bin/webpack --config ./webpack.dev.js --mode development && rm ./build/app.js && rm ./build/app.js.map && mkdir ./build/images && cp ./src/service.js ./build && cp ./miniDapp/images/* ./build/images && cp ./miniDapp/config/minidapp.conf ./build  && cd ./build && zip -r ../miniDapp/dist/emh.minidapp *",
     "watch": "./node_modules/.bin/webpack --config ./webpack.dev.js --watch --mode development",
     "prodWatch": "./node_modules/.bin/webpack --config ./webpack.prod.js --watch --mode production",
-    "devel": "./node_modules/.bin/webpack --config ./webpack.prod.js --mode development && rm ./build/app.js && cp ./miniDapp/images/* /home/steve/.minima/webroot/minidapps/0x2E0A1B03FE8AFE709B7307577E338974B5B23AEB/images && cp ./build/index.html /home/steve/.minima/webroot/minidapps/0x2E0A1B03FE8AFE709B7307577E338974B5B23AEB",
-    "develCopy": "cp ./miniDapp/images/* /home/steve/.minima/webroot/minidapps/0x2E0A1B03FE8AFE709B7307577E338974B5B23AEB/images && cp ./miniDapp/config/* /home/steve/.minima/webroot/minidapps/0x2E0A1B03FE8AFE709B7307577E338974B5B23AEB && cp ./build/index.html /home/steve/.minima/webroot/minidapps/0x2E0A1B03FE8AFE709B7307577E338974B5B23AEB",
-    "prod": "./node_modules/.bin/webpack --config ./webpack.prod.js --mode production && rm ./build/app.js && mkdir ./build/images && cp ./miniDapp/images/* ./build/images && cp ./miniDapp/config/* ./build && cd ./build && zip -r ../miniDapp/dist/tokeniser.minidapp *",
+    "devel": "./node_modules/.bin/webpack --config ./webpack.prod.js --mode development && rm ./build/app.js && cp ./src/service.js /home/steve/.minima/webroot/minidapps/0x2E0A1B03FE8AFE709B7307577E338974B5B23AEB/ && cp ./miniDapp/images/* /home/steve/.minima/webroot/minidapps/0x2E0A1B03FE8AFE709B7307577E338974B5B23AEB/images && cp ./build/index.html /home/steve/.minima/webroot/minidapps/0x2E0A1B03FE8AFE709B7307577E338974B5B23AEB",
+    "develCopy": "cp ./src/service.js /home/steve/.minima/webroot/minidapps/0x2E0A1B03FE8AFE709B7307577E338974B5B23AEB/ && cp ./miniDapp/images/* /home/steve/.minima/webroot/minidapps/0x2E0A1B03FE8AFE709B7307577E338974B5B23AEB/images && cp ./miniDapp/config/* /home/steve/.minima/webroot/minidapps/0x2E0A1B03FE8AFE709B7307577E338974B5B23AEB && cp ./build/index.html /home/steve/.minima/webroot/minidapps/0x2E0A1B03FE8AFE709B7307577E338974B5B23AEB",
+    "prod": "./node_modules/.bin/webpack --config ./webpack.prod.js --mode production && rm ./build/app.js && mkdir ./build/images && cp ./src/service.js /home/steve/.minima/webroot/minidapps/0x2E0A1B03FE8AFE709B7307577E338974B5B23AEB/ && cp ./miniDapp/images/* ./build/images && cp ./miniDapp/config/* ./build && cd ./build && zip -r ../miniDapp/dist/emh.minidapp *",
     "prodClean": "rm ./build/app.js && mkdir ./build/images",
-    "prodCopy": "cp ./miniDapp/images/* ./build/images && cp ./miniDapp/config/* ./build && cd ./build && zip -r ../miniDapp/dist/tokeniser.minidapp *"
+    "prodCopy": "cp ./src/service.js /home/steve/.minima/webroot/minidapps/0x2E0A1B03FE8AFE709B7307577E338974B5B23AEB/ && cp ./miniDapp/images/* ./build/images && cp ./miniDapp/config/* ./build && cd ./build && zip -r ../miniDapp/dist/storefront.minidapp *"
   },
   "author": "Dr Steve Huckle",
   "license": "LGPL-3.0",

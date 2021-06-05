@@ -8,6 +8,8 @@
 
 const app = 'EMH';
 
+const server = 'http://127.0.0.1:9004';
+
 const tables = {
   address: {
     name: 'ADDRESS',
@@ -59,6 +61,14 @@ const extraLogTypes = {
 };
 
 const defaultAPI = {
+  listener: {
+    endpoint: 'addAppListener',
+    command: '',
+    format: 'name',
+    setParams: '',
+    params: 'name=AppName',
+    isPublic: 1,
+  },
   url: {
     endpoint: 'setDefaultURL',
     command: '',
@@ -384,6 +394,26 @@ function doLog(typeId, type, data) {
 }
 
 /**
+ * Adds apps to which EMH sends info'
+ * @function setDefaultURL
+ * @param {object} qParamsJSON
+ * @param {string} replyId
+*/
+function addListener(qParamsJSON, replyId) {
+  const endpoint = qParamsJSON.command;
+  // Minima.log(app + ' API Call ' + endpoint);
+
+  if ( endpoint == defaultAPI.listener.endpoint ) {
+    const appName=qParamsJSON.name;
+    listeners.push(appName);
+    doLog(endpoint, extraLogTypes.API, 'listener: ' + appName);
+    Minima.minidapps.reply(replyId, 'OK');
+  } else {
+    Minima.minidapps.reply(replyId, '');
+  }
+}
+
+/**
  * sets the default URL used when inserting tokens and addresses
  * @function setDefaultURL
  * @param {object} qParamsJSON
@@ -698,7 +728,9 @@ function processApiCall(qParams, replyId) {
   const qParamsJSON = JSON.parse(decodeURIComponent(qParams));
   const endpoint = qParamsJSON.command;
   if ( endpoint ) {
-    if ( endpoint == defaultAPI.address.endpoint ) {
+    if ( endpoint == defaultAPI.listener.endpoint ) {
+      addListener(qParamsJSON, replyId);
+    } else if ( endpoint == defaultAPI.address.endpoint ) {
       insertAddress(qParamsJSON, replyId);
     } else if ( endpoint == defaultAPI.token.endpoint ) {
       insertToken(qParamsJSON, replyId);
@@ -813,7 +845,18 @@ Minima.init( function(msg) {
       // process the call
       processApiCall(msg.message, msg.replyid);
     });
-  } else if (msg.event == 'newtxpow') {
+  } else {
+    for ( var i = 0; i < listeners.length; i++ ) {
+      Minima.log(app + ' finding listener ' + listeners[i]);
+      // eslint-disable-next-line max-len
+      var url = server + '/api/' + listeners[i] + '/?message="' + msg.event + '"';
+      var encodedURL = encodeURI(url);
+
+      Minima.net.GET(encodedURL, function(getResult) {
+        Minima.log('thius asdfasdf ' + JSON.stringify(getResult));
+      });
+    }
+    if (msg.event == 'newtxpow') {
       const txPoW = msg.info.txpow;
       const txOutputs = txPoW.body.txn.outputs;
       if ( ( Array.isArray(txOutputs) ) &&

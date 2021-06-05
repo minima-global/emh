@@ -8,10 +8,8 @@ class Local {
 
 class Remote {
 
-
   static readonly server = 'http://127.0.0.1:9004'
   static readonly serverApiBase = 'api/EMH/?command'
-  static readonly balanceCommand = 'balance'
   static readonly tokenCommand = 'tokenCreate'
   static readonly nameParam = 'name'
   static readonly amountParam = 'amount'

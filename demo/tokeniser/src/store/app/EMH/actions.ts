@@ -16,47 +16,13 @@ import {
 } from '../../../config';
 
 import {write} from '../../actions';
-import { Console } from 'console';
 
 /**
  * Initialises the app
  * @return {function}
  */
- export const init = () => {
+export const init = () => {
   return async (dispatch: AppDispatch) => {
-
-    const url =
-      `${Remote.server}/${Remote.serverApiBase}=${Remote.balanceCommand}`
-    const encodedURL = encodeURI(url);
-
-    // console.log(encodedURL);
-
-    Minima.net.GET(encodedURL, function(getResult) {
-      console.log('got reply: ', getResult);
-
-      /*const result = decodeURIComponent(getResult.result)
-      const resultObject = JSON.parse(result);
-      if ( resultObject.status ) {
-
-        console.log('Yay!', resultObject);
-        const txData = {
-          code: "200",
-          summary: Post.postSuccess,
-          time: time
-        }
-        dispatch(write({data: txData})(TxActionTypes.TX_SUCCESS));
-      } else {
-
-        console.log('Boo: ', resultObject);
-        const txData = {
-          code: "400",
-          summary: Post.postFailure,
-          time: time
-        }
-        dispatch(write({data: txData})(TxActionTypes.TX_FAILURE))
-      }*/
-    });
-    
   };
 };
 
@@ -119,4 +85,4 @@ export const createToken = (token: NewToken) => {
       }
     });
   };
-};
+}
