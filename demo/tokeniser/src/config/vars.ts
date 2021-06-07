@@ -13,6 +13,7 @@ class App {
   static readonly bugEmail = 'minima-global@fire.fundersclub.com'
   static readonly version = '0.1.1'
   static readonly release = 'Testnet'
+  static readonly minidappId = '0x2E0A1B03FE8AFE709B7307577E338974B5B23AEB'
 }
 
 /** @class Misc */

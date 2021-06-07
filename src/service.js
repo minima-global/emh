@@ -8,8 +8,6 @@
 
 const app = 'EMH';
 
-const server = 'http://127.0.0.1:9004';
-
 const tables = {
   address: {
     name: 'ADDRESS',
@@ -64,9 +62,17 @@ const defaultAPI = {
   listener: {
     endpoint: 'addAppListener',
     command: '',
-    format: 'name',
+    format: 'id',
     setParams: '',
-    params: 'name=AppName',
+    params: 'id=MiniDappId',
+    isPublic: 1,
+  },
+  removeListener: {
+    endpoint: 'removeAppListener',
+    command: '',
+    format: 'id',
+    setParams: '',
+    params: 'id=MiniDappId',
     isPublic: 1,
   },
   url: {
@@ -93,6 +99,14 @@ const defaultAPI = {
     params: 'token=0x9454BB52A5777D... url=http://an.url.com]',
     isPublic: 1,
   },
+  tokenCreate: {
+    endpoint: 'tokenCreate',
+    command: 'tokencreate',
+    format: 'name amount description script icon proof',
+    setParams: '',
+    params: 'name=MyToken amount=1000000 description="Token description" script="RETURN TRUE" icon="http://my.icon.url" proof="http://my.proof.url"',
+    isPublic: 1,
+  },
   dbase: {
     endpoint: 'getDbase',
     command: '',
@@ -117,23 +131,13 @@ const defaultAPI = {
     params: 'amount=1 address=Mx... tokenid=0x00',
     isPublic: 1,
   },
-  tokenCreate: {
-    endpoint: 'tokenCreate',
-    command: 'tokencreate',
-    format: 'name amount description script icon proof',
-    setParams: '',
-    params: 'name=MyToken amount=1000000 description="Token description" script="RETURN TRUE" icon="http://my.icon.url" proof="http://my.proof.url"',
-    isPublic: 1,
-  },
 };
 
 var defaultURL = 'https://10b3db98-c5d7-4c4e-9a35-c4811eecbf70.mock.pstmn.io';
 const maxURLFails = 3;
-var failedURLCall = {};
 // const deleteAfter = 1000 * 3600 * 24;
 const deleteAfter = 300000;
 const blockConfirmedDepth = 3;
-var listeners = [];
 
 /**
  * Creates TxPow table
@@ -395,19 +399,57 @@ function doLog(typeId, type, data) {
 
 /**
  * Adds apps to which EMH sends info'
- * @function setDefaultURL
+ * @function addListener
+ * @param {array} listeners
  * @param {object} qParamsJSON
  * @param {string} replyId
 */
-function addListener(qParamsJSON, replyId) {
+function addListener(listeners, qParamsJSON, replyId) {
   const endpoint = qParamsJSON.command;
-  // Minima.log(app + ' API Call ' + endpoint);
 
   if ( endpoint == defaultAPI.listener.endpoint ) {
-    const appName=qParamsJSON.name;
-    listeners.push(appName);
-    doLog(endpoint, extraLogTypes.API, 'listener: ' + appName);
-    Minima.minidapps.reply(replyId, 'OK');
+    const miniDappId=qParamsJSON.id;
+    if ( miniDappId ) {
+      Minima.log(app + ' Adding listener ' + miniDappId);
+      listeners.push(miniDappId);
+      doLog(endpoint, extraLogTypes.API, 'listener: ' + miniDappId);
+      Minima.minidapps.reply(replyId, 'OK');
+    }
+  } else {
+    Minima.minidapps.reply(replyId, '');
+  }
+}
+
+/**
+ * Removes apps to which EMH sends info'
+ * @function removeListener
+ * @param {array} listeners
+ * @param {object} qParamsJSON
+ * @param {string} replyId
+*/
+function removeListener(listeners, qParamsJSON, replyId) {
+  const endpoint = qParamsJSON.command;
+  var removed = false;
+
+  if ( endpoint == defaultAPI.listener.endpoint ) {
+    const miniDappId=qParamsJSON.id;
+    if ( miniDappId ) {
+      for ( var i = 0; i < listeners.length; i++ ) {
+        if ( miniDappId == listeners[i] ) {
+          Minima.log(app + ' Removing listener ' + miniDappId);
+          listeners.splice(i, 1);
+          removed = true;
+          break;
+        }
+      }
+      if ( removed ) {
+        Minima.minidapps.reply(replyId, 'OK');
+      } else {
+        Minima.minidapps.reply(replyId, '');
+      }
+    } else {
+      Minima.minidapps.reply(replyId, '');
+    }
   } else {
     Minima.minidapps.reply(replyId, '');
   }
@@ -531,13 +573,14 @@ function getDbase(qParamsJSON, replyId) {
 /**
  * Calls external URL
  * @function processURL
+ * @param {object} failedURLCall
  * @param {string} txId
  * @param {string} uRL
  * @param {string} address
  * @param {string} tokenId
  * @param {string} state
 */
-function processURL(txId, uRL, address, tokenId, state) {
+function processURL(failedURLCall, txId, uRL, address, tokenId, state) {
   // Minima.log(
   //  app + ' URL Call ' + uRL + ' ' + address + ' ' + tokenId + ' ' + state
   // );
@@ -576,9 +619,10 @@ function processURL(txId, uRL, address, tokenId, state) {
  * Spins through entries in the TxPoW table, and calls URLs for any valid TX
  * that are at least 3 blocks deep. Also cleans up any old TxPow entries
  * @function processTxPow
+ * @param {object} failedURLCall
  * @param {number} blockTime
 */
-function processTxPow(blockTime) {
+function processTxPow(failedURLCall, blockTime) {
   // Minima.log(app + ' here! ' + blockTime);
   const now = +new Date();
   const txPowSelectSQL = 'SELECT TXID, URL, ADDRESS, TOKENID, DATE FROM ' +
@@ -721,15 +765,19 @@ function processTx(txId, tokenId, mxAddress) {
 /**
  * Processes any URL call call
  * @function processApiCall
+ * @param {array} listeners
  * @param {string} qParams
  * @param {string} replyId
 */
-function processApiCall(qParams, replyId) {
+function processApiCall(listeners, qParams, replyId) {
   const qParamsJSON = JSON.parse(decodeURIComponent(qParams));
   const endpoint = qParamsJSON.command;
+  Minima.log(app + ' Got endpoint call ' + endpoint);
   if ( endpoint ) {
     if ( endpoint == defaultAPI.listener.endpoint ) {
-      addListener(qParamsJSON, replyId);
+      addListener(listeners, qParamsJSON, replyId);
+    } else if ( endpoint == defaultAPI.removeListener.endpoint ) {
+      removeListener(listeners, qParamsJSON, replyId);
     } else if ( endpoint == defaultAPI.address.endpoint ) {
       insertAddress(qParamsJSON, replyId);
     } else if ( endpoint == defaultAPI.token.endpoint ) {
@@ -812,6 +860,27 @@ function processApiCall(qParams, replyId) {
   }
 }
 
+/**
+ * sends Minima messages to interested listeners
+ * @function processTx
+ * @param {array} listeners
+ * @param {object} msg
+*/
+function processListeners(listeners, msg) {
+  for ( var i = 0; i < listeners.length; i++ ) {
+    Minima.minidapps.send(listeners[i], msg, function(getResult) {
+      // var results = JSON.stringify(getResult);
+      // var messageResults = JSON.stringify(results.response);
+      // eslint-disable-next-line max-len
+      // Minima.log(app + ' Sent to ' + listeners[i] + ' got ' + results);
+      if (!getResult.status) {
+        Minima.log(app + ' removing listener ' + listeners[i]);
+        listeners.splice(i, 1);
+      }
+    });
+  }
+}
+
 /** @function initDbase */
 function initDbase() {
   createTxPow();
@@ -832,41 +901,42 @@ function createDefaultAPI() {
   createTokenAPI();
 }
 
-/** Initialise the app */
-Minima.init( function(msg) {
-  if (msg.event == 'connected') {
-    doLog('Bootstrap', extraLogTypes.SYSTEM, 'init');
+/** @function init */
+function init() {
+  var listeners = [];
+  var failedURLCall = {};
 
-    initDbase();
-    createDefaultAPI();
+  /** Initialise the app */
+  Minima.init( function(msg) {
+    if (msg.event == 'connected') {
+      doLog('Bootstrap', extraLogTypes.SYSTEM, 'init');
 
-    // Listen for messages posted to this service
-    Minima.minidapps.listen(function(msg) {
+      initDbase();
+      createDefaultAPI();
+
+      // Listen for messages posted to this service
+      Minima.minidapps.listen(function(msg) {
       // process the call
-      processApiCall(msg.message, msg.replyid);
-    });
-  } else {
-    for ( var i = 0; i < listeners.length; i++ ) {
-      Minima.log(app + ' finding listener ' + listeners[i]);
-      // eslint-disable-next-line max-len
-      var url = server + '/api/' + listeners[i] + '/?message="' + msg.event + '"';
-      var encodedURL = encodeURI(url);
-
-      Minima.net.GET(encodedURL, function(getResult) {
-        Minima.log('thius asdfasdf ' + JSON.stringify(getResult));
+        processApiCall(listeners, msg.message, msg.replyid);
       });
-    }
-    if (msg.event == 'newtxpow') {
-      const txPoW = msg.info.txpow;
-      const txOutputs = txPoW.body.txn.outputs;
-      if ( ( Array.isArray(txOutputs) ) &&
+    } else {
+      processListeners(listeners, msg);
+      if (msg.event == 'newtxpow') {
+        const txPoW = msg.info.txpow;
+        const txOutputs = txPoW.body.txn.outputs;
+        if ( ( Array.isArray(txOutputs) ) &&
           ( txOutputs.length ) ) {
-        processTx(txPoW.txpowid, txOutputs[0].tokenid, txOutputs[0].mxaddress);
-      }
-    } else if (msg.event == 'newblock') {
+          // eslint-disable-next-line max-len
+          processTx(txPoW.txpowid, txOutputs[0].tokenid, txOutputs[0].mxaddress);
+        }
+      } else if (msg.event == 'newblock') {
       // Minima.log(app + ' msg ' + JSON.stringify(msg));
-      const blockTime = parseInt(msg.info.txpow.header.block, 10);
-      processTxPow(blockTime);
+        const blockTime = parseInt(msg.info.txpow.header.block, 10);
+        processTxPow(failedURLCall, blockTime);
+      }
     }
-  }
-});
+  });
+}
+
+init();
+
