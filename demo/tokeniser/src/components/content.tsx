@@ -6,6 +6,9 @@ import {PageTypes} from '../store/types';
 import {
   Home,
   Info,
+  Token,
+  Send,
+  Balance,
 } from '../components/pages';
 
 import {Local} from '../config';
@@ -29,8 +32,16 @@ export const Content = () => {
       />
 
       <Route
+        exact path={Local.token}
+        render= {() => <Token />}
+      />
+      <Route
+        exact path={Local.send}
+        render= {() => <Send />}
+      />
+      <Route
         path={Local.home}
-        render= {() => <Home />}
+        render= {() => <Balance />}
       />
 
     </Switch>

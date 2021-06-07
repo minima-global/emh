@@ -772,7 +772,7 @@ function processTx(txId, tokenId, mxAddress) {
 function processApiCall(listeners, qParams, replyId) {
   const qParamsJSON = JSON.parse(decodeURIComponent(qParams));
   const endpoint = qParamsJSON.command;
-  Minima.log(app + ' Got endpoint call ' + endpoint);
+  // Minima.log(app + ' Got endpoint call ' + endpoint);
   if ( endpoint ) {
     if ( endpoint == defaultAPI.listener.endpoint ) {
       addListener(listeners, qParamsJSON, replyId);

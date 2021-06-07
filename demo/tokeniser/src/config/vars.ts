@@ -89,6 +89,31 @@ class Contact {
   ]
 }
 
+/** @class Send */
+class Send {
+
+  static readonly heading = 'Send and receive'
+
+  static readonly token = 'Token'
+  static readonly amount = 'Amount'
+  static readonly address = "Address"
+  static readonly statevars = 'State Variables'
+
+  static readonly sendButton = 'Send'
+}
+
+/** @class Balance */
+class Balance {
+
+  static readonly heading = 'My Balances'
+
+  static readonly token = 'Token'
+  static readonly sendable = 'Sendable'
+  static readonly amount = 'Confirmed'
+  static readonly unconfirmed = "Transient"
+  static readonly mempool = 'Mempool'
+}
+
 /** @class Tokens */
 class Tokens {
   static readonly heading = 'Create Token'
@@ -105,17 +130,6 @@ class Tokens {
   static readonly urlError = 'Please input a valid URL'
 
   static readonly tokenButton = 'Submit'
-}
-
-/** @class Balances */
-class Balances {
-  static readonly heading = 'Balances'
-
-  static readonly token = 'Token'
-  static readonly sendable = 'Sendable'
-  static readonly amount = 'Confirmed'
-  static readonly unconfirmed = 'Transient'
-  static readonly mempool = 'Mempool'
 }
 
 /** @class Transaction */
@@ -148,8 +162,9 @@ export {
   About,
   Help,
   Contact,
+  Send,
   Tokens,
-  Balances,
+  Balance,
   Transaction,
   Post,
 };

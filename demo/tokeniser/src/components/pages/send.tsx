@@ -1,5 +1,7 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
+
+import Select from 'react-select'
 
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -13,69 +15,93 @@ import {themeStyles} from '../../styles';
 
 import {
   GeneralError,
-  Tokens as TokenVars,
+  Send as SendVars,
 } from '../../config';
 
 import {
   ApplicationState,
   AppDispatch,
+  BalanceProps,
   TxProps,
-  NewToken,
+  NewSend,
+  SelectOptionType
 } from '../../store/types';
 
-import {createToken} from '../../store/app/EMH/actions';
+import {send} from '../../store/app/EMH/actions';
 
 const tokenSchema = Yup.object().shape({
-  name: Yup.string()
-      .required(GeneralError.required)
-      .max(255, GeneralError.lengthError255),
+  token: Yup.object()
+    .required(`${GeneralError.required}`)
+    .nullable(),
   amount: Yup.number()
       .required(GeneralError.required),
-  description: Yup.string()
+  address: Yup.string()
       .required(GeneralError.required)
       .max(255, GeneralError.lengthError255),
-  icon: Yup.string()
-      .url(TokenVars.urlError)
-      .max(255, GeneralError.lengthError255),
-  proof: Yup.string()
-      .url(TokenVars.urlError)
-      .max(255, GeneralError.lengthError255),
+  statevars: Yup.string()
+      .max(255, GeneralError.lengthError255)
 });
 
 interface StateProps {
+  balanceData: BalanceProps
   tx: TxProps
 }
 
 interface DispatchProps {
-  createToken: (token: NewToken) => void
+  send: (token: NewSend) => void
 }
 
 type Props = StateProps & DispatchProps
 
 const display = (props: Props) => {
+
+  const [tokens, setTokens] = useState([] as SelectOptionType[])
+  const [thisToken, setThisToken] = useState({} as SelectOptionType)
+
   const classes = themeStyles();
+
+  useEffect(() => {
+
+    props.balanceData.data.forEach(balance => {
+
+      const tokenOption: SelectOptionType = {
+        value: balance.tokenid,
+        label: balance.token
+      }
+      tokens.push(tokenOption);
+    });
+
+  }, [props.balanceData])
+
   const formik = useFormik({
     initialValues: {
-      name: '',
+      token: null,
       amount: 1,
-      description: '',
-      icon: '',
-      proof: '',
+      address: '',
+      statevars: ''
     },
     enableReinitialize: true,
     validationSchema: tokenSchema,
     onSubmit: (values: any) => {
-      const tokenInfo: NewToken = {
-        name: values.name,
+      const tokenInfo: NewSend = {
         amount: values.amount,
-        description: values.description,
-        script: 'RETURN TRUE',
-        icon: values.icon,
-        proof: values.proof,
+        address: values.address,
+        tokenid: values.token.value,
+        statevars: values.statevars
       };
-      props.createToken(tokenInfo);
+
+      // console.log('sending: ', tokenInfo);
+      props.send(tokenInfo);
     },
   });
+
+  const doSetToken = (token: SelectOptionType | null | undefined) => {
+
+    if ( token ) {
+
+      setThisToken(token)
+    }
+  }
 
   return (
 
@@ -86,7 +112,7 @@ const display = (props: Props) => {
         <Grid item container justify="flex-start" xs={12}>
 
           <Typography variant="h2">
-            {TokenVars.heading}
+            {SendVars.heading}
           </Typography>
 
         </Grid>
@@ -101,6 +127,7 @@ const display = (props: Props) => {
         </Grid>
 
         <form onSubmit={formik.handleSubmit} className={classes.formSubmit}>
+
           <Grid item container xs={12}>
 
             <Grid
@@ -112,20 +139,25 @@ const display = (props: Props) => {
               xs={4}
               lg={2}
             >
-              <label htmlFor="name">{TokenVars.tokenName}</label>
+              <label htmlFor="token">{SendVars.token}</label>
             </Grid>
             <Grid item container xs={8} lg={10}>
-              <TextField
-                fullWidth
-                size="small"
-                name="name"
-                type="text"
-                value={formik.values.name}
-                onChange={formik.handleChange}
-                InputProps={{disableUnderline: true}}
-              />
+              <div style={{width: '100%'}}>
+                <Select
+                  className={classes.select}
+                  size="small"
+                  value={thisToken}
+                  onChange={selectedOption => {
+                    doSetToken(selectedOption)
+                    const thisValue = selectedOption ? selectedOption : {}
+                    formik.setFieldValue("token", thisValue)
+                  }}
+                  options={tokens}
+                  name="token"
+                />
+              </div>
             </Grid>
-            {formik.errors.name && formik.touched.name ? (
+            {formik.errors.token && formik.touched.token ? (
               <>
                 <Grid item container xs={4} lg={2}>
                   <Typography variant="body1">
@@ -138,7 +170,7 @@ const display = (props: Props) => {
                   xs={8}
                   lg={10}
                 >
-                  {formik.errors.name}
+                  {formik.errors.token}
                 </Grid>
               </>
               ) : null
@@ -156,7 +188,7 @@ const display = (props: Props) => {
               xs={4}
               lg={2}
             >
-              <label htmlFor="amount">{TokenVars.amount}</label>
+              <label htmlFor="amount">{SendVars.amount}</label>
             </Grid>
             <Grid item container xs={8} lg={10}>
               <TextField
@@ -200,20 +232,20 @@ const display = (props: Props) => {
               xs={4}
               lg={2}
             >
-              <label htmlFor="description">{TokenVars.description}</label>
+              <label htmlFor="amount">{SendVars.address}</label>
             </Grid>
             <Grid item container xs={8} lg={10}>
               <TextField
                 fullWidth
                 size="small"
-                name="description"
+                name="address"
                 type="text"
-                value={formik.values.description}
+                value={formik.values.address}
                 onChange={formik.handleChange}
                 InputProps={{disableUnderline: true}}
               />
             </Grid>
-            {formik.errors.description && formik.touched.description ? (
+            {formik.errors.address && formik.touched.address ? (
               <>
                 <Grid item container xs={4} lg={2}>
                   <Typography variant="body1">
@@ -226,7 +258,7 @@ const display = (props: Props) => {
                   xs={8}
                   lg={10}
                 >
-                  {formik.errors.description}
+                  {formik.errors.address}
                 </Grid>
               </>
               ) : null
@@ -244,20 +276,20 @@ const display = (props: Props) => {
               xs={4}
               lg={2}
             >
-              <label htmlFor="icon">{TokenVars.icon}</label>
+              <label htmlFor="statevars">{SendVars.statevars}</label>
             </Grid>
             <Grid item container xs={8} lg={10}>
               <TextField
                 fullWidth
                 size="small"
-                name="icon"
+                name="statevars"
                 type="text"
-                value={formik.values.icon}
+                value={formik.values.statevars}
                 onChange={formik.handleChange}
                 InputProps={{disableUnderline: true}}
               />
             </Grid>
-            {formik.errors.icon && formik.touched.icon ? (
+            {formik.errors.statevars && formik.touched.statevars ? (
               <>
                 <Grid item container xs={4} lg={2}>
                   <Typography variant="body1">
@@ -270,51 +302,7 @@ const display = (props: Props) => {
                   xs={8}
                   lg={10}
                 >
-                  {formik.errors.icon}
-                </Grid>
-              </>
-              ) : null
-            }
-          </Grid>
-
-          <Grid item container xs={12}>
-
-            <Grid
-              item
-              container
-              className={classes.formLabel}
-              justify="flex-start"
-              alignItems="center"
-              xs={4}
-              lg={2}
-            >
-              <label htmlFor="proof">{TokenVars.proof}</label>
-            </Grid>
-            <Grid item container xs={8} lg={10}>
-              <TextField
-                fullWidth
-                size="small"
-                name="proof"
-                type="text"
-                value={formik.values.proof}
-                onChange={formik.handleChange}
-                InputProps={{disableUnderline: true}}
-              />
-            </Grid>
-            {formik.errors.proof && formik.touched.proof ? (
-              <>
-                <Grid item container xs={4} lg={2}>
-                  <Typography variant="body1">
-                    &nbsp;
-                  </Typography>
-                </Grid>
-                <Grid
-                  className={classes.formError}
-                  item container
-                  xs={8}
-                  lg={10}
-                >
-                  {formik.errors.proof}
+                  {formik.errors.statevars}
                 </Grid>
               </>
               ) : null
@@ -336,7 +324,7 @@ const display = (props: Props) => {
                 size='medium'
                 variant="contained"
               >
-                {TokenVars.tokenButton}
+                {SendVars.sendButton}
               </Button>
             </Grid>
 
@@ -360,18 +348,20 @@ const display = (props: Props) => {
 };
 
 const mapStateToProps = (state: ApplicationState): StateProps => {
+  const balances = state.balance as BalanceProps
   return {
+    balanceData: balances,
     tx: state.tx as TxProps,
-  };
+  }
 };
 
 const mapDispatchToProps = (dispatch: AppDispatch): DispatchProps => {
   return {
-    createToken: (token: NewToken) => dispatch(createToken(token)),
+    send: (token: NewSend) => dispatch(send(token)),
   };
 };
 
-export const Token = connect<StateProps, DispatchProps, {}, ApplicationState>(
+export const Send = connect<StateProps, DispatchProps, {}, ApplicationState>(
     mapStateToProps,
     mapDispatchToProps,
 )(display);

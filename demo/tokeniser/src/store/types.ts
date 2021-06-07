@@ -6,6 +6,7 @@ import {ThunkDispatch} from 'redux-thunk';
  * Store stuff
 */
 export interface ApplicationState {
+  balance: BalanceProps
   tx: TxProps
 }
 
@@ -20,12 +21,27 @@ export interface ActionProps extends Action {
 
 export type AppDispatch = ThunkDispatch<ApplicationState, any, ActionProps>
 
+export type SelectOptionType = {
+  value: string
+  label: string
+}
+
 /**
  * Static info props
  */
 export interface InfoProps {
   title: string
   data: string[]
+}
+
+/**
+ * Send info
+ */
+ export interface NewSend {
+  amount: number
+  address: string
+  tokenid: string
+  statevars: string
 }
 
 /**
@@ -40,19 +56,29 @@ export interface NewToken {
   proof: string
 }
 
-
-export interface Token {
+/**
+ * Balance stuff
+ */
+export interface Balance {
+  token: string
+  tokenid: string
   coinid: string
-  decimals: string
   description: string
   icon: string
   proof: string
-  scale: string
   script: string
-  token: string
-  tokenid: string
+  sendable: string
+  confirmed: string
+  unconfirmed: string
+  mempool: string
+  decimals: number
   total: string
   totalamount: string
+  scale: string
+}
+
+export interface BalanceProps extends PayloadProps {
+  data: Array<Balance>
 }
 
 /**
@@ -85,6 +111,10 @@ export const enum AppDataActionTypes {
   APPDATA_INIT = '@@AppDataActionTypes/APPDATA_INIT',
   APPDATA_SUCCESS = '@@AppDataActionTypes/APPDATA_SUCCESS',
   APPDATA_FAILURE = '@@AppDataActionTypes/APPDATA_FAILURE'
+}
+
+export const enum BalanceActionTypes {
+  GET_BALANCES = '@@BalanceActionTypes/GET_BALANCES'
 }
 
 export const enum TxActionTypes {
