@@ -1,3 +1,5 @@
+import {Minima} from 'minima';
+
 import {
   AppDispatch,
   ActionTypes,
@@ -64,6 +66,8 @@ const closeNetwork = () => {
 
         //Send your name..
         ws.send(JSON.stringify(uid));
+
+        dispatch(balance());
       };
 
       ws.onmessage = (evt: any) => {
@@ -222,5 +226,53 @@ export const send = (token: NewSend) => {
       dispatch(write({data: txData})(TxActionTypes.TX_FAILURE))
 
     }
+  };
+}
+
+export const balance = () => {
+  return async (dispatch: AppDispatch) => {
+    const time = new Date(Date.now()).toString();
+    const pendingData: TxData = {
+      code: '200',
+      summary: Transaction.pending,
+      time: time,
+    };
+    dispatch(write({data: pendingData})(TxActionTypes.TX_PENDING));
+
+    // eslint-disable-next-line max-len
+    // 127.0.0.1:9004/api/EMH/?command=tokenCreate&name=AnotherTest&amount=1&description="Another Test Token"&script="RETURN TRUE"&icon=""&proof=""
+    // eslint-disable-next-line max-len
+    const url =
+      `${Remote.server}/${Remote.serverApiBase}=${Remote.balanceCommand}`
+    const encodedBalance = encodeURI(url);
+
+    Minima.net.GET( encodedBalance, function ( reply ) {
+      const results = JSON.parse(decodeURIComponent(reply.result));
+      console.log('got new balance response ', results);
+    });
+
+    /*
+    const response = await fetch(encodedBalance, {
+      method: 'GET'
+    });
+
+    console.log('and blimey balance response ', response);
+
+    if (response.ok) {
+      const txData = {
+        code: "200",
+        summary: Post.postSuccess,
+        time: time
+      }
+      dispatch(write({data: txData})(TxActionTypes.TX_SUCCESS));
+    } else {
+      const txData = {
+        code: "400",
+        summary: Post.postFailure,
+        time: time
+      }
+      dispatch(write({data: txData})(TxActionTypes.TX_FAILURE))
+
+    }*/
   };
 }

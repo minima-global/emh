@@ -131,6 +131,22 @@ const defaultAPI = {
     params: 'amount=1 address=Mx... tokenid=0x00',
     isPublic: 1,
   },
+  balance: {
+    endpoint: 'balance',
+    command: 'balance',
+    format: '',
+    setParams: '',
+    params: '',
+    isPublic: 1,
+  },
+  scripts: {
+    endpoint: 'scripts',
+    command: 'scripts',
+    format: '',
+    setParams: '',
+    params: '',
+    isPublic: 1,
+  },
 };
 
 var defaultURL = 'https://10b3db98-c5d7-4c4e-9a35-c4811eecbf70.mock.pstmn.io';
@@ -220,6 +236,47 @@ function createLog() {
     ');';
 
   doSQL(createSQL, tables.log.name);
+}
+
+/**
+ * Creates an API for adding Websocket listeners
+ * @function createListenerAPI
+ */
+function createListenerAPI() {
+  const insertSQL = 'INSERT IGNORE INTO ' +
+      tables.trigger.name +
+      ' (ENDPOINT, CMD, FORMAT, SETPARAMS, PARAMS, ISPUBLIC) ' +
+      'VALUES (' +
+      '\'' + defaultAPI.listener.endpoint + '\', ' +
+      '\'' + defaultAPI.listener.command + '\', ' +
+      '\'' + defaultAPI.listener.format + '\', ' +
+      '\'' + defaultAPI.listener.setParams + '\', ' +
+      '\'' + defaultAPI.listener.params + '\', ' +
+      '\'' + defaultAPI.listener.isPublic + '\'' +
+    ')';
+  doSQL(insertSQL, tables.log.name);
+  doLog('Default API', extraLogTypes.SYSTEM, defaultAPI.listener.endpoint);
+}
+
+/**
+ * Creates an API for removing Websocket listeners
+ * @function createRemoveListenerAPI
+ */
+function createRemoveListenerAPI() {
+  const insertSQL = 'INSERT IGNORE INTO ' +
+      tables.trigger.name +
+      ' (ENDPOINT, CMD, FORMAT, SETPARAMS, PARAMS, ISPUBLIC) ' +
+      'VALUES (' +
+      '\'' + defaultAPI.removeListener.endpoint + '\', ' +
+      '\'' + defaultAPI.removeListener.command + '\', ' +
+      '\'' + defaultAPI.removeListener.format + '\', ' +
+      '\'' + defaultAPI.removeListener.setParams + '\', ' +
+      '\'' + defaultAPI.removeListener.params + '\', ' +
+      '\'' + defaultAPI.removeListener.isPublic + '\'' +
+    ')';
+  doSQL(insertSQL, tables.log.name);
+  doLog(
+      'Default API', extraLogTypes.SYSTEM, defaultAPI.removeListener.endpoint);
 }
 
 /**
@@ -360,6 +417,46 @@ function createTokenAPI() {
     ')';
   doSQL(insertSQL, tables.log.name);
   doLog('Default API', extraLogTypes.SYSTEM, defaultAPI.tokenCreate.endpoint);
+}
+
+/**
+ * Creates an API for retreiving balance info
+ * @function createBalanceAPI
+ */
+function createBalanceAPI() {
+  const insertSQL = 'INSERT IGNORE INTO ' +
+      tables.trigger.name +
+      ' (ENDPOINT, CMD, FORMAT, SETPARAMS, PARAMS, ISPUBLIC) ' +
+      'VALUES (' +
+      '\'' + defaultAPI.balance.endpoint + '\', ' +
+      '\'' + defaultAPI.balance.command + '\', ' +
+      '\'' + defaultAPI.balance.format + '\', ' +
+      '\'' + defaultAPI.balance.setParams + '\', ' +
+      '\'' + defaultAPI.balance.params + '\', ' +
+      '\'' + defaultAPI.balance.isPublic + '\'' +
+    ')';
+  doSQL(insertSQL, tables.log.name);
+  doLog('Default API', extraLogTypes.SYSTEM, defaultAPI.balance.endpoint);
+}
+
+/**
+ * Creates an API for retreiving address info
+ * @function createScriptsAPI
+ */
+function createScriptsAPI() {
+  const insertSQL = 'INSERT IGNORE INTO ' +
+      tables.trigger.name +
+      ' (ENDPOINT, CMD, FORMAT, SETPARAMS, PARAMS, ISPUBLIC) ' +
+      'VALUES (' +
+      '\'' + defaultAPI.scripts.endpoint + '\', ' +
+      '\'' + defaultAPI.scripts.command + '\', ' +
+      '\'' + defaultAPI.scripts.format + '\', ' +
+      '\'' + defaultAPI.scripts.setParams + '\', ' +
+      '\'' + defaultAPI.scripts.params + '\', ' +
+      '\'' + defaultAPI.scripts.isPublic + '\'' +
+    ')';
+  doSQL(insertSQL, tables.log.name);
+  doLog('Default API', extraLogTypes.SYSTEM, defaultAPI.scripts.endpoint);
 }
 
 /**
@@ -842,7 +939,8 @@ function processApiCall(listeners, qParams, replyId) {
             Minima.cmd(command, function(msg) {
               if ( msg.status ) {
                 doLog(endpoint, extraLogTypes.API, command);
-                // Reply..endpoint
+                // eslint-disable-next-line max-len
+                // Minima.log(app + ' Command response ' + JSON.stringify(msg.response));
                 Minima.minidapps.reply(replyId, msg.response);
               } else {
                 Minima.log(app + ' Error with API Call ' + endpoint);
@@ -892,6 +990,8 @@ function initDbase() {
 
 /** @function createDefaultAPI */
 function createDefaultAPI() {
+  createListenerAPI();
+  createRemoveListenerAPI();
   createURLAPI();
   createAddressListenAPI();
   createTokenListenAPI();
@@ -899,6 +999,8 @@ function createDefaultAPI() {
   createGimme50API();
   createSendAPI();
   createTokenAPI();
+  createBalanceAPI();
+  createScriptsAPI();
 }
 
 /** @function init */
@@ -939,4 +1041,3 @@ function init() {
 }
 
 init();
-

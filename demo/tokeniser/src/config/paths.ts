@@ -29,6 +29,8 @@ class Remote {
   static readonly iconParam = 'icon'
   static readonly proofParam = 'proof'
 
+  static readonly balanceCommand = 'balance'
+
   static readonly sendCommand = 'send'
   static readonly tokenParam = 'tokenid'
   static readonly addressParam = 'address'
