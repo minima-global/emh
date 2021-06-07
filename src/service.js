@@ -941,7 +941,7 @@ function processApiCall(listeners, qParams, replyId) {
                 doLog(endpoint, extraLogTypes.API, command);
                 // eslint-disable-next-line max-len
                 // Minima.log(app + ' Command response ' + JSON.stringify(msg.response));
-                Minima.minidapps.reply(replyId, msg.response);
+                Minima.minidapps.reply(replyId, JSON.stringify(msg.response));
               } else {
                 Minima.log(app + ' Error with API Call ' + endpoint);
                 Minima.minidapps.reply(replyId, '');

@@ -248,31 +248,29 @@ export const balance = () => {
 
     Minima.net.GET( encodedBalance, function ( reply ) {
       const results = JSON.parse(decodeURIComponent(reply.result));
-      console.log('got new balance response ', results);
-    });
-
-    /*
-    const response = await fetch(encodedBalance, {
-      method: 'GET'
-    });
-
-    console.log('and blimey balance response ', response);
-
-    if (response.ok) {
-      const txData = {
-        code: "200",
-        summary: Post.postSuccess,
-        time: time
+      if ( results.status ) {
+        const balances = JSON.parse(results.response?.reply);
+        const balanceData: BalanceProps = {
+          data: []
+        }      
+        for( let i = 0; i < balances.balance?.length; i++ ) {    
+          balanceData.data.push(balances.balance[i]);
+        }
+        dispatch(write({ data: balanceData.data })(BalanceActionTypes.GET_BALANCES))
+        const txData = {
+          code: "200",
+          summary: Post.postSuccess,
+          time: time
+        }
+        dispatch(write({data: txData})(TxActionTypes.TX_SUCCESS));
+      } else {
+        const txData = {
+          code: "400",
+          summary: Post.postFailure,
+          time: time
+        }
+        dispatch(write({data: txData})(TxActionTypes.TX_FAILURE))
       }
-      dispatch(write({data: txData})(TxActionTypes.TX_SUCCESS));
-    } else {
-      const txData = {
-        code: "400",
-        summary: Post.postFailure,
-        time: time
-      }
-      dispatch(write({data: txData})(TxActionTypes.TX_FAILURE))
-
-    }*/
+    });
   };
 }
