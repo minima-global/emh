@@ -14,6 +14,8 @@ import {
   AppDispatch,
   LogsProps,
   Logs as LogsType,
+  ChartValues,
+  ChartData,
 } from '../store/types';
 
 import {getDbaseEntries} from '../store/app/dbase/actions';
@@ -37,10 +39,6 @@ interface DispatchProps {
 
 type Props = StateProps & DispatchProps
 
-type ChartData = {
-  [address: string]: number
-}
-
 const getRandomColour = () => {
   const letters = '0123456789ABCDEF'.split('');
   let color = '#';
@@ -50,6 +48,7 @@ const getRandomColour = () => {
   return color;
 };
 
+/*
 const getRandomColourForEachAddress = (count: number) => {
   const data =[];
   for (let i = 0; i < count; i++) {
@@ -57,6 +56,7 @@ const getRandomColourForEachAddress = (count: number) => {
   }
   return data;
 };
+*/
 
 const chart = (props: Props) => {
   // const classes = themeStyles();
@@ -83,9 +83,13 @@ const chart = (props: Props) => {
           // console.log('address name', addressName);
           const addressDetails = address[thisAddressId];
           if (!addressDetails) {
-            address[thisAddressId] = 1;
+            const chartValues: ChartValues = {
+              count: 1,
+              colour: getRandomColour(),
+            };
+            address[thisAddressId] = chartValues;
           } else {
-            address[thisAddressId] += 1;
+            address[thisAddressId].count += 1;
           }
         }
       });
@@ -96,17 +100,41 @@ const chart = (props: Props) => {
           data: {
             labels: Object.keys(address).map((key: string) => key),
             datasets: [{
-              data: Object.values(address).map((value: number) => value),
+              data:
+                Object.values(address).map((value: ChartValues) => value.count),
               backgroundColor:
-              getRandomColourForEachAddress(Object.keys(address).length),
+                Object.values(
+                    address).map((value: ChartValues) => value.colour),
+              barThickness: 30,
+              maxBarThickness: 32,
             }],
           },
           options: {
+            plugins: {
+              legend: {
+                display: false,
+              },
+              gridLines: {
+                display: false,
+              },
+            },
             indexAxis: 'y',
             scales: {
               y: {
+                grid: {
+                  display: false,
+                },
                 ticks: {
+                  color: Object.values(
+                      address).map((value: ChartValues) => value.colour),
                   mirror: true,
+                  labelOffset: -40,
+                  z: 1,
+                },
+              },
+              x: {
+                grid: {
+                  display: false,
                 },
               },
             },
