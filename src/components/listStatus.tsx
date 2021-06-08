@@ -42,7 +42,7 @@ const display = (props: Props) => {
         container
         alignItems="flex-start"
         style={{
-          marginLeft: theme.spacing(2),
+          padding: theme.spacing(2),
         }}
         xs={12}
       >
@@ -105,26 +105,77 @@ const display = (props: Props) => {
                   >
                     <Grid item container justify="flex-start" xs={12}>
                       <Typography
-                        variant="body1"
+                        variant="h6"
                         noWrap={true}
                       >
-                        {StatusVars.upTime}: {upTime}
+                        {StatusVars.upTime}
                       </Typography>
                     </Grid>
-                    <Grid item container justify="flex-start" xs={12}>
+
+                    <Grid
+                      item
+                      container
+                      justify="flex-start"
+                      style={{
+                        marginBottom: theme.spacing(2),
+                      }}
+                      xs={12}
+                    >
                       <Typography
                         variant="body1"
                         noWrap={true}
                       >
-                        {StatusVars.ram}: {ram}
+                        {upTime}
                       </Typography>
                     </Grid>
                     <Grid item container justify="flex-start" xs={12}>
                       <Typography
+                        variant="h6"
+                        noWrap={true}
+                      >
+                        {StatusVars.ram}
+                      </Typography>
+                    </Grid>
+
+                    <Grid
+                      item
+                      container
+                      justify="flex-start"
+                      style={{
+                        marginBottom: theme.spacing(2),
+                      }}
+                      xs={12}
+                    >
+
+                      <Typography
                         variant="body1"
                         noWrap={true}
                       >
-                        {StatusVars.block}: {lastBlock}
+                        {ram}
+                      </Typography>
+                    </Grid>
+                    <Grid item container justify="flex-start" xs={12}>
+                      <Typography
+                        variant="h6"
+                        noWrap={true}
+                      >
+                        {StatusVars.block}
+                      </Typography>
+                    </Grid>
+                    <Grid
+                      item
+                      container
+                      justify="flex-start"
+                      style={{
+                        marginBottom: theme.spacing(2),
+                      }}
+                      xs={12}
+                    >
+                      <Typography
+                        variant="body1"
+                        noWrap={true}
+                      >
+                        {lastBlock}
                       </Typography>
                     </Grid>
                   </Grid>

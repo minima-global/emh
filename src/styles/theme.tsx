@@ -38,24 +38,24 @@ let theme = createMuiTheme({
     fontWeightBold: 700,
     h1: {
       lineHeight: '1',
-      fontSize: '1.8em',
+      fontSize: '1em',
       fontWeight: 700,
       fontFamily: '"Manrope", "Roboto", "Arial", "sans-serif"',
       color: '#91919D',
     },
     h2: {
-      lineHeight: '1.5',
-      fontSize: '1.6em',
-      fontWeight: 400,
+      lineHeight: '2',
+      fontSize: '1.5em',
+      fontWeight: 700,
       fontFamily: '"Manrope", "Roboto", "Arial", "sans-serif"',
-      color: '#91919D',
+      color: '#001C32',
     },
     h3: {
       lineHeight: '1.5',
       fontSize: '1.5em',
-      fontWeight: 400,
+      fontWeight: 700,
       fontFamily: '"Manrope", "Roboto", "Arial", "sans-serif"',
-      color: '91919D',
+      color: '#001C32',
     },
     h4: {
       lineHeight: '1.5',
@@ -73,8 +73,8 @@ let theme = createMuiTheme({
     },
     h6: {
       lineHeight: '1.5',
-      fontSize: '1.4em',
-      fontWeight: 400,
+      fontSize: '1em',
+      fontWeight: 700,
       fontFamily: '"Manrope", "Roboto", "Arial", "sans-serif"',
       color: '#001C32',
     },
@@ -173,7 +173,6 @@ const themeStyles = makeStyles({
   },
   header: {
     background: 'linear-gradient(#001C32, #001C32)',
-    margin: 0,
     width: '100%',
     position: 'relative',
     height: '60px',
@@ -188,7 +187,6 @@ const themeStyles = makeStyles({
   },
   content: {
     background: 'white',
-    margin: 0,
     position: 'absolute',
     overflow: 'auto',
     width: '100%',
@@ -268,6 +266,22 @@ const themeStyles = makeStyles({
       justifyContent: 'flex-end',
       height: '40px',
       width: '40px',
+    },
+  },
+  balanceIcon: {
+    'color': '#FFFFFF',
+    'fill': '#FFFFFF',
+    '&:active': {
+      color: '#317AFF',
+      fill: '#317AFF',
+    },
+    [breakpoints.up('xs')]: {
+      height: '35px',
+      width: '35px',
+    },
+    [breakpoints.up('lg')]: {
+      height: '45px',
+      width: '45px',
     },
   },
   footerIcon: {

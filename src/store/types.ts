@@ -48,14 +48,21 @@ export interface CmdProps extends PayloadProps {
  * Minima token balances
  */
 export interface Balance {
-  confirmed: string
-  decimals: string
-  mempool: string
-  sendable: string
-  token: string
-  tokenid: string
-  total: string
-  unconfirmed: string
+  tokenid: string;
+  token: string;
+  total: string;
+  sendable: string;
+  unconfirmed: string;
+  confirmed: string;
+  decimals: string;
+  mempool: string;
+  coinid?: string;
+  totalamount?: string;
+  scale?: string;
+  description?: string;
+  icon?: string;
+  proof?: string;
+  script?: string;
 }
 
 export interface BalanceProps extends PayloadProps {

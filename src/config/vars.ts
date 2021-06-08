@@ -3,7 +3,7 @@ class App {
   static readonly title = 'Minima'
   static readonly subTitle = 'The evolution will not be centralised'
   static readonly appName = 'Enterprise Minima'
-  static readonly catchLine = `${App.title} Powered`
+  static readonly catchLine = `Powered by ${App.title}`
   static readonly tagline = ''
   static readonly website = 'http://www.minima.global'
   static readonly copyright = '© Copyright 2021 Minima GmbH'
@@ -292,7 +292,7 @@ class Triggers {
 
 /** @class Balances */
 class Balances {
-  static readonly heading = 'Balances'
+  static readonly heading = 'Tokens and Balances'
 
   static readonly token = 'Token'
   static readonly sendable = 'Sendable'

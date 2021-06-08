@@ -60,21 +60,21 @@ export interface NewToken {
  * Balance stuff
  */
 export interface Balance {
-  token: string
-  tokenid: string
-  coinid: string
-  description: string
-  icon: string
-  proof: string
-  script: string
-  sendable: string
-  confirmed: string
-  unconfirmed: string
-  mempool: string
-  decimals: number
-  total: string
-  totalamount: string
-  scale: string
+  tokenid: string;
+	token: string;
+	total: string;
+	sendable: string;
+	unconfirmed: string;
+	confirmed: string;
+	decimals: string;
+	mempool: string;
+	coinid?: string;
+	totalamount?: string;
+	scale?: string;
+	description?: string;
+	icon?: string;
+	proof?: string;
+	script?: string;
 }
 
 export interface BalanceProps extends PayloadProps {

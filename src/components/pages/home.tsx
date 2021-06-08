@@ -2,6 +2,7 @@ import React from 'react';
 
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import Paper from '@material-ui/core/Paper';
 
 import {
   Home as HomeVars,
@@ -12,11 +13,21 @@ import {ListStatus} from '../listStatus';
 import {ChartTokens} from '../chartTokens';
 import {ChartAddresses} from '../chartAddresses';
 import {ChartAPICalls} from '../chartAPICalls';
+import {theme} from '../../styles';
 
 export const Home = () => {
   return (
 
-    <Grid item container alignItems='flex-start' xs={12}>
+
+    <Grid
+      item
+      container
+      alignItems='flex-start'
+      style={{
+        marginLeft: theme.spacing(8),
+        marginRight: theme.spacing(8),
+      }}
+      xs={12}>
 
       <Grid item container xs={12}>
 
@@ -28,42 +39,96 @@ export const Home = () => {
 
         </Grid>
 
-        <Grid item container justify="flex-start" xs={12}>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 4000 20"
+        <Grid
+          item
+          container
+          justify="flex-start"
+          alignItems='flex-start'
+          xs={8}
+        >
+          <Paper
+            elevation={3}
+            style={{
+              marginTop: theme.spacing(1),
+              marginRight: theme.spacing(1),
+              width: '100%',
+              height: '30vh',
+              overflow: 'auto',
+              background: 'white',
+            }}
           >
-            <line x2="4000" stroke="#001C32" width="100%" height="100%"/>
-          </svg>
+            { <ListBalances /> }
+          </Paper>
         </Grid>
 
-        <Grid item container justify="flex-start" xs={6}>
-          { <ListBalances /> }
-        </Grid>
-
-        <Grid item container justify="flex-start" xs={6}>
-          { <ListStatus /> }
-        </Grid>
-
-        <Grid item container justify="flex-start" xs={12}>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 4000 20"
+        <Grid
+          item
+          container
+          justify="flex-start"
+          alignItems='flex-start'
+          xs={4}
+        >
+          <Paper
+            elevation={3}
+            style={{
+              marginTop: theme.spacing(1),
+              marginLeft: theme.spacing(1),
+              width: '100%',
+              height: '30vh',
+              background: 'white',
+            }}
           >
-            <line x2="4000" stroke="#001C32" width="100%" height="100%"/>
-          </svg>
+            { <ListStatus /> }
+          </Paper>
+
         </Grid>
 
         <Grid item container justify="flex-start" xs={6}>
-          { <ChartTokens /> }
+          <Paper
+            elevation={3}
+            style={{
+              marginTop: theme.spacing(1),
+              marginRight: theme.spacing(1),
+              width: '100%',
+              height: '45vh',
+              overflow: 'auto',
+              background: 'white',
+            }}
+          >
+            { <ChartTokens /> }
+          </Paper>
         </Grid>
 
         <Grid item container justify="flex-start" xs={6}>
-          { <ChartAddresses /> }
+          <Paper
+            elevation={3}
+            style={{
+              marginTop: theme.spacing(1),
+              marginLeft: theme.spacing(1),
+              width: '100%',
+              height: '45vh',
+              overflow: 'auto',
+              background: 'white',
+            }}
+          >
+            { <ChartAddresses /> }
+          </Paper>
         </Grid>
 
         <Grid item container justify="flex-start" xs={6}>
-          { <ChartAPICalls /> }
+          <Paper
+            elevation={3}
+            style={{
+              marginTop: theme.spacing(1),
+              marginRight: theme.spacing(1),
+              width: '100%',
+              height: '45vh',
+              overflow: 'auto',
+              background: 'white',
+            }}
+          >
+            { <ChartAPICalls /> }
+          </Paper>
         </Grid>
 
         <Grid item container justify="flex-start" xs={6}>

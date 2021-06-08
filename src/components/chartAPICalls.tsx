@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 
 import Chart from 'chart.js/auto';
 
-// import {themeStyles} from '../styles';
+import {theme} from '../styles';
 
 import {
   ApplicationState,
@@ -73,7 +73,7 @@ const chart = (props: Props) => {
         }
         // const thisDate = new Date(+log.DATE);
         if ( log.LOGGINGTYPE === Dbase.extraLogTypes.API ) {
-          console.log(log.LOGGINGTYPEID);
+          // console.log(log.LOGGINGTYPEID);
           const callDetails = call[log.LOGGINGTYPEID];
           if (!callDetails) {
             call[log.LOGGINGTYPEID] = 1;
@@ -117,7 +117,16 @@ const chart = (props: Props) => {
   return (
 
     <>
-      <Grid item container alignItems="flex-start" justify='center' xs={12}>
+      <Grid
+        item
+        container
+        alignItems="flex-start"
+        justify='flex-start'
+        style={{
+          padding: theme.spacing(2),
+        }}
+        xs={12}
+      >
         <Typography variant="h3">
           {APIVars.chartHeading}
         </Typography>

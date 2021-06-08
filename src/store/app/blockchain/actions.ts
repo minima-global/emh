@@ -9,7 +9,6 @@ import {
   TxActionTypes,
   CmdActionTypes,
   BalanceProps,
-  Balance,
   BalanceActionTypes,
   StatusProps,
   Status,
@@ -107,8 +106,7 @@ const getBalance = () => {
     };
 
     for ( let i = 0; i < Minima.balance.length; i++ ) {
-      const thisBalance: Balance = Minima.balance[i];
-      balanceData.data.push(thisBalance);
+      balanceData.data.push(Minima.balance[i]);
     }
 
     dispatch(

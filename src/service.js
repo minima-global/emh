@@ -59,6 +59,7 @@ const extraLogTypes = {
 };
 
 const defaultAPI = {
+  /*
   listener: {
     endpoint: 'addAppListener',
     command: '',
@@ -75,6 +76,7 @@ const defaultAPI = {
     params: 'id=MiniDappId',
     isPublic: 1,
   },
+  */
   url: {
     endpoint: 'setDefaultURL',
     command: '',
@@ -149,6 +151,8 @@ const defaultAPI = {
   },
 };
 
+// var listeners = [];
+var failedURLCall = {};
 var defaultURL = 'https://10b3db98-c5d7-4c4e-9a35-c4811eecbf70.mock.pstmn.io';
 const maxURLFails = 3;
 // const deleteAfter = 1000 * 3600 * 24;
@@ -241,7 +245,6 @@ function createLog() {
 /**
  * Creates an API for adding Websocket listeners
  * @function createListenerAPI
- */
 function createListenerAPI() {
   const insertSQL = 'INSERT IGNORE INTO ' +
       tables.trigger.name +
@@ -257,11 +260,11 @@ function createListenerAPI() {
   doSQL(insertSQL, tables.log.name);
   doLog('Default API', extraLogTypes.SYSTEM, defaultAPI.listener.endpoint);
 }
+ */
 
 /**
  * Creates an API for removing Websocket listeners
  * @function createRemoveListenerAPI
- */
 function createRemoveListenerAPI() {
   const insertSQL = 'INSERT IGNORE INTO ' +
       tables.trigger.name +
@@ -278,6 +281,7 @@ function createRemoveListenerAPI() {
   doLog(
       'Default API', extraLogTypes.SYSTEM, defaultAPI.removeListener.endpoint);
 }
+ */
 
 /**
  * Creates an API for adding default URL for token and address listeners
@@ -497,11 +501,9 @@ function doLog(typeId, type, data) {
 /**
  * Adds apps to which EMH sends info'
  * @function addListener
- * @param {array} listeners
  * @param {object} qParamsJSON
  * @param {string} replyId
-*/
-function addListener(listeners, qParamsJSON, replyId) {
+function addListener(qParamsJSON, replyId) {
   const endpoint = qParamsJSON.command;
 
   if ( endpoint == defaultAPI.listener.endpoint ) {
@@ -516,15 +518,14 @@ function addListener(listeners, qParamsJSON, replyId) {
     Minima.minidapps.reply(replyId, '');
   }
 }
+*/
 
 /**
  * Removes apps to which EMH sends info'
  * @function removeListener
- * @param {array} listeners
  * @param {object} qParamsJSON
  * @param {string} replyId
-*/
-function removeListener(listeners, qParamsJSON, replyId) {
+function removeListener(qParamsJSON, replyId) {
   const endpoint = qParamsJSON.command;
   var removed = false;
 
@@ -551,6 +552,7 @@ function removeListener(listeners, qParamsJSON, replyId) {
     Minima.minidapps.reply(replyId, '');
   }
 }
+*/
 
 /**
  * sets the default URL used when inserting tokens and addresses
@@ -670,14 +672,13 @@ function getDbase(qParamsJSON, replyId) {
 /**
  * Calls external URL
  * @function processURL
- * @param {object} failedURLCall
  * @param {string} txId
  * @param {string} uRL
  * @param {string} address
  * @param {string} tokenId
  * @param {string} state
 */
-function processURL(failedURLCall, txId, uRL, address, tokenId, state) {
+function processURL(txId, uRL, address, tokenId, state) {
   // Minima.log(
   //  app + ' URL Call ' + uRL + ' ' + address + ' ' + tokenId + ' ' + state
   // );
@@ -716,10 +717,9 @@ function processURL(failedURLCall, txId, uRL, address, tokenId, state) {
  * Spins through entries in the TxPoW table, and calls URLs for any valid TX
  * that are at least 3 blocks deep. Also cleans up any old TxPow entries
  * @function processTxPow
- * @param {object} failedURLCall
  * @param {number} blockTime
 */
-function processTxPow(failedURLCall, blockTime) {
+function processTxPow(blockTime) {
   // Minima.log(app + ' here! ' + blockTime);
   const now = +new Date();
   const txPowSelectSQL = 'SELECT TXID, URL, ADDRESS, TOKENID, DATE FROM ' +
@@ -862,20 +862,20 @@ function processTx(txId, tokenId, mxAddress) {
 /**
  * Processes any URL call call
  * @function processApiCall
- * @param {array} listeners
  * @param {string} qParams
  * @param {string} replyId
 */
-function processApiCall(listeners, qParams, replyId) {
+function processApiCall(qParams, replyId) {
   const qParamsJSON = JSON.parse(decodeURIComponent(qParams));
   const endpoint = qParamsJSON.command;
   // Minima.log(app + ' Got endpoint call ' + endpoint);
   if ( endpoint ) {
-    if ( endpoint == defaultAPI.listener.endpoint ) {
+    /* if ( endpoint == defaultAPI.listener.endpoint ) {
       addListener(listeners, qParamsJSON, replyId);
     } else if ( endpoint == defaultAPI.removeListener.endpoint ) {
       removeListener(listeners, qParamsJSON, replyId);
-    } else if ( endpoint == defaultAPI.address.endpoint ) {
+    } */
+    if ( endpoint == defaultAPI.address.endpoint ) {
       insertAddress(qParamsJSON, replyId);
     } else if ( endpoint == defaultAPI.token.endpoint ) {
       insertToken(qParamsJSON, replyId);
@@ -961,10 +961,8 @@ function processApiCall(listeners, qParams, replyId) {
 /**
  * sends Minima messages to interested listeners
  * @function processTx
- * @param {array} listeners
  * @param {object} msg
-*/
-function processListeners(listeners, msg) {
+function processListeners(msg) {
   for ( var i = 0; i < listeners.length; i++ ) {
     Minima.minidapps.send(listeners[i], msg, function(getResult) {
       // var results = JSON.stringify(getResult);
@@ -978,6 +976,7 @@ function processListeners(listeners, msg) {
     });
   }
 }
+*/
 
 /** @function initDbase */
 function initDbase() {
@@ -990,8 +989,8 @@ function initDbase() {
 
 /** @function createDefaultAPI */
 function createDefaultAPI() {
-  createListenerAPI();
-  createRemoveListenerAPI();
+  // createListenerAPI();
+  // createRemoveListenerAPI();
   createURLAPI();
   createAddressListenAPI();
   createTokenListenAPI();
@@ -1005,9 +1004,6 @@ function createDefaultAPI() {
 
 /** @function init */
 function init() {
-  var listeners = [];
-  var failedURLCall = {};
-
   /** Initialise the app */
   Minima.init( function(msg) {
     if (msg.event == 'connected') {
@@ -1019,10 +1015,10 @@ function init() {
       // Listen for messages posted to this service
       Minima.minidapps.listen(function(msg) {
       // process the call
-        processApiCall(listeners, msg.message, msg.replyid);
+        processApiCall(msg.message, msg.replyid);
       });
     } else {
-      processListeners(listeners, msg);
+      // processListeners(msg);
       if (msg.event == 'newtxpow') {
         const txPoW = msg.info.txpow;
         const txOutputs = txPoW.body.txn.outputs;
@@ -1034,7 +1030,7 @@ function init() {
       } else if (msg.event == 'newblock') {
       // Minima.log(app + ' msg ' + JSON.stringify(msg));
         const blockTime = parseInt(msg.info.txpow.header.block, 10);
-        processTxPow(failedURLCall, blockTime);
+        processTxPow(blockTime);
       }
     }
   });

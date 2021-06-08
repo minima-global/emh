@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 
 import Chart from 'chart.js/auto';
 
-// import {themeStyles} from '../styles';
+import {theme} from '../styles';
 
 import {
   ApplicationState,
@@ -144,8 +144,16 @@ const chart = (props: Props) => {
   return (
 
     <>
-      <Grid item container alignItems="flex-start" justify='center' xs={12}>
-
+      <Grid
+        item
+        container
+        alignItems="flex-start"
+        justify='flex-start'
+        style={{
+          padding: theme.spacing(2),
+        }}
+        xs={12}
+      >
         <Typography variant="h3">
           {TokenVars.chartHeading}
         </Typography>

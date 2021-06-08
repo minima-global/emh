@@ -6,7 +6,6 @@ import {
   NewSend,
   NewToken,
   BalanceProps,
-  Balance,
   BalanceActionTypes,
   TxActionTypes,
   TxData,
@@ -21,22 +20,21 @@ import {
 
 import {write} from '../../actions';
 
-let ws: any;
+// let ws: any;
 
 /**
  * Close app networking
  * @return {function}
- */
+ 
 const closeNetwork = () => {
   return async (dispatch: AppDispatch) => {
     ws.close(); 
   };
 };
+*/
 
 /**
- * Initialises app networking
- * @return {function}
- */
+ * Initialises app network
  const initNetwork = () => {
   return async (dispatch: AppDispatch) => {
 
@@ -110,6 +108,7 @@ const closeNetwork = () => {
     }    
   };
 };
+*/
 
 /**
  * Initialises the app
@@ -118,7 +117,27 @@ const closeNetwork = () => {
 export const init = () => {
   return async (dispatch: AppDispatch) => {
 
-    dispatch(initNetwork());
+    // dispatch(initNetwork());
+    Minima.init( function(msg) {
+      if (msg.event == 'connected') {
+
+        dispatch(balance());
+        
+      } else if (msg.event == "newbalance") {  
+          
+       //  console.log('Got balance message ', msg);     
+        
+        const balanceData: BalanceProps = {
+          data: []
+        }      
+        for( let i = 0; i < msg.info.balance.length; i++ ) {    
+          balanceData.data.push(msg.info.balance[i])
+        }
+    
+        dispatch(write({ data: balanceData.data })(BalanceActionTypes.GET_BALANCES))
+      } 
+    });
+
   };
 };
 
@@ -129,7 +148,7 @@ export const init = () => {
  export const close = () => {
   return async (dispatch: AppDispatch) => {
 
-    dispatch(closeNetwork());
+    // dispatch(closeNetwork());
   };
 };
 
@@ -206,6 +225,8 @@ export const send = (token: NewSend) => {
       `${Remote.server}/${Remote.serverApiBase}=${Remote.sendCommand}&${Remote.amountParam}=${token.amount}&${Remote.addressParam}=${token.address}&${Remote.tokenParam}=${token.tokenid}`
     const encodedSend = encodeURI(url);
 
+    // console.log('send: ', token, 'url: ', url);
+
     const response = await fetch(encodedSend, {
       method: 'GET'
     });
@@ -247,6 +268,7 @@ export const balance = () => {
     const encodedBalance = encodeURI(url);
 
     Minima.net.GET( encodedBalance, function ( reply ) {
+      // console.log('got reply ', reply);
       const results = JSON.parse(decodeURIComponent(reply.result));
       if ( results.status ) {
         const balances = JSON.parse(results.response?.reply);

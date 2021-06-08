@@ -55,46 +55,36 @@ export const Main = () => {
                 },
               ]}
             />
-            <Grid item container className={classes.header} xs={12}>
 
+            <Grid
+              item
+              container
+              className={classes.header}
+              xs={12}
+            >
               <Grid
                 item
                 container
                 alignItems="center"
                 justify="flex-start"
-                xs={4}
+                xs={6}
               >
-
-                <img className={classes.headerIcon} src={minimaIcon} />
-
-              </Grid>
-
-              <Grid
-                item
-                container
-                alignItems="center"
-                justify="center"
-                xs={4}
-              >
-
                 <Typography variant="h1">
                   {App.appName}
                 </Typography>
-
               </Grid>
 
               <Grid
                 item
                 container
                 alignItems="center"
-                justify="center"
-                xs={4}
+                justify="flex-end"
+                xs={6}
               >
-
                 <Typography variant="h1">
-                  &nbsp;
+                  {App.catchLine} &nbsp;&nbsp;
                 </Typography>
-
+                <img className={classes.headerIcon} src={minimaIcon} />
               </Grid>
 
             </Grid>
@@ -225,7 +215,7 @@ export const Main = () => {
                 xs={12}
               >
                 <Typography variant="caption">
-                  {App.catchLine} {App.copyright}
+                  {App.copyright}
                 </Typography>
 
               </Grid>
