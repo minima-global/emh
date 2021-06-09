@@ -23,6 +23,7 @@ import {getDbaseEntries} from '../store/app/dbase/actions';
 import {
   Dbase,
   Addresses as AddressVars,
+  Chart as ChartVars,
 } from '../config';
 
 interface StateProps {
@@ -62,6 +63,7 @@ const chart = (props: Props) => {
   // const classes = themeStyles();
   // eslint-disable-next-line no-unused-vars
   let [address, setAddress] = useState({} as ChartData);
+  const [chartHeight, setChartHeight] = useState(0);
   const addressCtx = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -93,6 +95,8 @@ const chart = (props: Props) => {
           }
         }
       });
+
+      setChartHeight(Object.keys(address).length * ChartVars.gridHeight);
       const ctx = addressCtx.current;
       if ( ctx ) {
         chart = new Chart(ctx, {
@@ -105,8 +109,8 @@ const chart = (props: Props) => {
               backgroundColor:
                 Object.values(
                     address).map((value: ChartValues) => value.colour),
-              barThickness: 30,
-              maxBarThickness: 32,
+              barThickness: ChartVars.barThickness,
+              maxBarThickness: ChartVars.barThickness + 2,
             }],
           },
           options: {
@@ -117,7 +121,12 @@ const chart = (props: Props) => {
               gridLines: {
                 display: false,
               },
+              title: {
+                display: false,
+              },
             },
+            responsive: true,
+            maintainAspectRatio: false,
             indexAxis: 'y',
             scales: {
               y: {
@@ -128,11 +137,12 @@ const chart = (props: Props) => {
                   color: Object.values(
                       address).map((value: ChartValues) => value.colour),
                   mirror: true,
-                  labelOffset: -40,
+                  labelOffset: ChartVars.labelOffset * -1,
                   z: 1,
                 },
               },
               x: {
+                position: 'top',
                 grid: {
                   display: false,
                 },
@@ -147,15 +157,6 @@ const chart = (props: Props) => {
     };
   }, [props.logsData]);
 
-  /*
-  const getRecords = () => {
-    props.getDbaseEntries(
-        Dbase.tables.log.name,
-        'DATE',
-        'DESC');
-  };
-  */
-
   return (
 
     <>
@@ -165,18 +166,39 @@ const chart = (props: Props) => {
         alignItems="flex-start"
         justify='flex-start'
         style={{
-          padding: theme.spacing(2),
+          paddingLeft: theme.spacing(2),
+          paddingRight: theme.spacing(2),
+          paddingTop: theme.spacing(2),
         }}
         xs={12}
       >
-
         <Typography variant="h3">
           {AddressVars.chartHeading}
         </Typography>
-        <canvas
-          id='chartAddress'
-          ref={addressCtx}
-        />
+      </Grid>
+      <Grid
+        item
+        container
+        alignItems="flex-start"
+        justify='flex-start'
+        style={{
+          paddingLeft: theme.spacing(2),
+          paddingRight: theme.spacing(2),
+          paddingBottom: theme.spacing(2),
+        }}
+        xs={12}
+      >
+        <div
+          style={{
+            height: chartHeight,
+            width: '100%',
+          }}
+        >
+          <canvas
+            id='chartAddress'
+            ref={addressCtx}
+          />
+        </div>
       </Grid>
     </>
   );

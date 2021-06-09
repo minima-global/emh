@@ -47,7 +47,7 @@ export const Home = () => {
           xs={8}
         >
           <Paper
-            elevation={3}
+            elevation={5}
             style={{
               marginTop: theme.spacing(1),
               marginRight: theme.spacing(1),
@@ -69,7 +69,7 @@ export const Home = () => {
           xs={4}
         >
           <Paper
-            elevation={3}
+            elevation={5}
             style={{
               marginTop: theme.spacing(1),
               marginLeft: theme.spacing(1),
@@ -85,7 +85,7 @@ export const Home = () => {
 
         <Grid item container justify="flex-start" xs={6}>
           <Paper
-            elevation={3}
+            elevation={5}
             style={{
               marginTop: theme.spacing(1),
               marginRight: theme.spacing(1),
@@ -101,7 +101,7 @@ export const Home = () => {
 
         <Grid item container justify="flex-start" xs={6}>
           <Paper
-            elevation={3}
+            elevation={5}
             style={{
               marginTop: theme.spacing(1),
               marginLeft: theme.spacing(1),
@@ -117,7 +117,7 @@ export const Home = () => {
 
         <Grid item container justify="flex-start" xs={6}>
           <Paper
-            elevation={3}
+            elevation={5}
             style={{
               marginTop: theme.spacing(1),
               marginRight: theme.spacing(1),

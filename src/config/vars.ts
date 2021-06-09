@@ -346,11 +346,20 @@ class SQL {
 
 /** @class Post */
 class Post {
-  static readonly postSuccess = 'Post Success'
+  postSuccess = 'Post Success'
   static readonly postFailure = 'Post Failure'
 
   static readonly getSuccess = 'Get Success'
   static readonly getFailure = 'Get Failure'
+}
+
+/** @class Chart */
+class Chart {
+  static readonly barThickness = 30;
+  static readonly labelOffset = 20;
+  static readonly labelFontsize = 16;
+  static readonly gridHeight =
+    Chart.barThickness + Chart.labelOffset + Chart.labelFontsize + 15;
 }
 
 export {
@@ -375,4 +384,5 @@ export {
   Status,
   SQL,
   Post,
+  Chart,
 };

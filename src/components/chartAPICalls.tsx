@@ -23,6 +23,7 @@ import {getDbaseEntries} from '../store/app/dbase/actions';
 import {
   Dbase,
   API as APIVars,
+  Chart as ChartVars,
 } from '../config';
 
 interface StateProps {
@@ -62,6 +63,7 @@ const chart = (props: Props) => {
   // const classes = themeStyles();
   // eslint-disable-next-line no-unused-vars
   let [call, setCall] = useState({} as ChartData);
+  const [chartHeight, setChartHeight] = useState(0);
   const callCtx = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -86,6 +88,8 @@ const chart = (props: Props) => {
           }
         }
       });
+
+      setChartHeight(Object.keys(call).length * ChartVars.gridHeight);
       const ctx = callCtx.current;
       if ( ctx ) {
         chart = new Chart(ctx, {
@@ -98,8 +102,8 @@ const chart = (props: Props) => {
               backgroundColor:
                 Object.values(
                     call).map((value: ChartValues) => value.colour),
-              barThickness: 30,
-              maxBarThickness: 32,
+              barThickness: ChartVars.barThickness,
+              maxBarThickness: ChartVars.barThickness + 2,
             }],
           },
           options: {
@@ -108,6 +112,8 @@ const chart = (props: Props) => {
                 display: false,
               },
             },
+            responsive: true,
+            maintainAspectRatio: false,
             indexAxis: 'y',
             scales: {
               y: {
@@ -118,11 +124,12 @@ const chart = (props: Props) => {
                   color: Object.values(
                       call).map((value: ChartValues) => value.colour),
                   mirror: true,
-                  labelOffset: -40,
+                  labelOffset: ChartVars.labelOffset * -1,
                   z: 1,
                 },
               },
               x: {
+                position: 'top',
                 grid: {
                   display: false,
                 },
@@ -137,15 +144,6 @@ const chart = (props: Props) => {
     };
   }, [props.logsData]);
 
-  /*
-  const getRecords = () => {
-    props.getDbaseEntries(
-        Dbase.tables.log.name,
-        'DATE',
-        'DESC');
-  };
-  */
-
   return (
 
     <>
@@ -155,17 +153,39 @@ const chart = (props: Props) => {
         alignItems="flex-start"
         justify='flex-start'
         style={{
-          padding: theme.spacing(2),
+          paddingLeft: theme.spacing(2),
+          paddingRight: theme.spacing(2),
+          paddingTop: theme.spacing(2),
         }}
         xs={12}
       >
         <Typography variant="h3">
           {APIVars.chartHeading}
         </Typography>
-        <canvas
-          id='chartCall'
-          ref={callCtx}
-        />
+      </Grid>
+      <Grid
+        item
+        container
+        alignItems="flex-start"
+        justify='flex-start'
+        style={{
+          paddingLeft: theme.spacing(2),
+          paddingRight: theme.spacing(2),
+          paddingBottom: theme.spacing(2),
+        }}
+        xs={12}
+      >
+        <div
+          style={{
+            height: chartHeight,
+            width: '100%',
+          }}
+        >
+          <canvas
+            id='chartCall'
+            ref={callCtx}
+          />
+        </div>
       </Grid>
     </>
   );
