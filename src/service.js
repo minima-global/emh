@@ -59,24 +59,6 @@ const extraLogTypes = {
 };
 
 const defaultAPI = {
-  /*
-  listener: {
-    endpoint: 'addAppListener',
-    command: '',
-    format: 'id',
-    setParams: '',
-    params: 'id=MiniDappId',
-    isPublic: 1,
-  },
-  removeListener: {
-    endpoint: 'removeAppListener',
-    command: '',
-    format: 'id',
-    setParams: '',
-    params: 'id=MiniDappId',
-    isPublic: 1,
-  },
-  */
   url: {
     endpoint: 'setDefaultURL',
     command: '',
@@ -151,7 +133,6 @@ const defaultAPI = {
   },
 };
 
-// var listeners = [];
 var failedURLCall = {};
 var defaultURL = 'https://10b3db98-c5d7-4c4e-9a35-c4811eecbf70.mock.pstmn.io';
 const maxURLFails = 3;
@@ -241,47 +222,6 @@ function createLog() {
 
   doSQL(createSQL, tables.log.name);
 }
-
-/**
- * Creates an API for adding Websocket listeners
- * @function createListenerAPI
-function createListenerAPI() {
-  const insertSQL = 'INSERT IGNORE INTO ' +
-      tables.trigger.name +
-      ' (ENDPOINT, CMD, FORMAT, SETPARAMS, PARAMS, ISPUBLIC) ' +
-      'VALUES (' +
-      '\'' + defaultAPI.listener.endpoint + '\', ' +
-      '\'' + defaultAPI.listener.command + '\', ' +
-      '\'' + defaultAPI.listener.format + '\', ' +
-      '\'' + defaultAPI.listener.setParams + '\', ' +
-      '\'' + defaultAPI.listener.params + '\', ' +
-      '\'' + defaultAPI.listener.isPublic + '\'' +
-    ')';
-  doSQL(insertSQL, tables.log.name);
-  doLog('Default API', extraLogTypes.SYSTEM, defaultAPI.listener.endpoint);
-}
- */
-
-/**
- * Creates an API for removing Websocket listeners
- * @function createRemoveListenerAPI
-function createRemoveListenerAPI() {
-  const insertSQL = 'INSERT IGNORE INTO ' +
-      tables.trigger.name +
-      ' (ENDPOINT, CMD, FORMAT, SETPARAMS, PARAMS, ISPUBLIC) ' +
-      'VALUES (' +
-      '\'' + defaultAPI.removeListener.endpoint + '\', ' +
-      '\'' + defaultAPI.removeListener.command + '\', ' +
-      '\'' + defaultAPI.removeListener.format + '\', ' +
-      '\'' + defaultAPI.removeListener.setParams + '\', ' +
-      '\'' + defaultAPI.removeListener.params + '\', ' +
-      '\'' + defaultAPI.removeListener.isPublic + '\'' +
-    ')';
-  doSQL(insertSQL, tables.log.name);
-  doLog(
-      'Default API', extraLogTypes.SYSTEM, defaultAPI.removeListener.endpoint);
-}
- */
 
 /**
  * Creates an API for adding default URL for token and address listeners
@@ -497,62 +437,6 @@ function doLog(typeId, type, data) {
     ')';
   doSQL(insertSQL, tables.log.name);
 }
-
-/**
- * Adds apps to which EMH sends info'
- * @function addListener
- * @param {object} qParamsJSON
- * @param {string} replyId
-function addListener(qParamsJSON, replyId) {
-  const endpoint = qParamsJSON.command;
-
-  if ( endpoint == defaultAPI.listener.endpoint ) {
-    const miniDappId=qParamsJSON.id;
-    if ( miniDappId ) {
-      Minima.log(app + ' Adding listener ' + miniDappId);
-      listeners.push(miniDappId);
-      doLog(endpoint, extraLogTypes.API, 'listener: ' + miniDappId);
-      Minima.minidapps.reply(replyId, 'OK');
-    }
-  } else {
-    Minima.minidapps.reply(replyId, '');
-  }
-}
-*/
-
-/**
- * Removes apps to which EMH sends info'
- * @function removeListener
- * @param {object} qParamsJSON
- * @param {string} replyId
-function removeListener(qParamsJSON, replyId) {
-  const endpoint = qParamsJSON.command;
-  var removed = false;
-
-  if ( endpoint == defaultAPI.listener.endpoint ) {
-    const miniDappId=qParamsJSON.id;
-    if ( miniDappId ) {
-      for ( var i = 0; i < listeners.length; i++ ) {
-        if ( miniDappId == listeners[i] ) {
-          Minima.log(app + ' Removing listener ' + miniDappId);
-          listeners.splice(i, 1);
-          removed = true;
-          break;
-        }
-      }
-      if ( removed ) {
-        Minima.minidapps.reply(replyId, 'OK');
-      } else {
-        Minima.minidapps.reply(replyId, '');
-      }
-    } else {
-      Minima.minidapps.reply(replyId, '');
-    }
-  } else {
-    Minima.minidapps.reply(replyId, '');
-  }
-}
-*/
 
 /**
  * sets the default URL used when inserting tokens and addresses
@@ -868,13 +752,7 @@ function processTx(txId, tokenId, mxAddress) {
 function processApiCall(qParams, replyId) {
   const qParamsJSON = JSON.parse(decodeURIComponent(qParams));
   const endpoint = qParamsJSON.command;
-  // Minima.log(app + ' Got endpoint call ' + endpoint);
   if ( endpoint ) {
-    /* if ( endpoint == defaultAPI.listener.endpoint ) {
-      addListener(listeners, qParamsJSON, replyId);
-    } else if ( endpoint == defaultAPI.removeListener.endpoint ) {
-      removeListener(listeners, qParamsJSON, replyId);
-    } */
     if ( endpoint == defaultAPI.address.endpoint ) {
       insertAddress(qParamsJSON, replyId);
     } else if ( endpoint == defaultAPI.token.endpoint ) {
@@ -958,26 +836,6 @@ function processApiCall(qParams, replyId) {
   }
 }
 
-/**
- * sends Minima messages to interested listeners
- * @function processTx
- * @param {object} msg
-function processListeners(msg) {
-  for ( var i = 0; i < listeners.length; i++ ) {
-    Minima.minidapps.send(listeners[i], msg, function(getResult) {
-      // var results = JSON.stringify(getResult);
-      // var messageResults = JSON.stringify(results.response);
-      // eslint-disable-next-line max-len
-      // Minima.log(app + ' Sent to ' + listeners[i] + ' got ' + results);
-      if (!getResult.status) {
-        Minima.log(app + ' removing listener ' + listeners[i]);
-        listeners.splice(i, 1);
-      }
-    });
-  }
-}
-*/
-
 /** @function initDbase */
 function initDbase() {
   createTxPow();
@@ -989,8 +847,6 @@ function initDbase() {
 
 /** @function createDefaultAPI */
 function createDefaultAPI() {
-  // createListenerAPI();
-  // createRemoveListenerAPI();
   createURLAPI();
   createAddressListenAPI();
   createTokenListenAPI();
@@ -1018,7 +874,6 @@ function init() {
         processApiCall(msg.message, msg.replyid);
       });
     } else {
-      // processListeners(msg);
       if (msg.event == 'newtxpow') {
         const txPoW = msg.info.txpow;
         const txOutputs = txPoW.body.txn.outputs;

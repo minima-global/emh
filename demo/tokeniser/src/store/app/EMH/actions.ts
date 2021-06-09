@@ -20,95 +20,74 @@ import {
 
 import {write} from '../../actions';
 
-// let ws: any;
+let ws: any;
 
 /**
  * Close app networking
- * @return {function}
- 
+ * @return {function} 
+*/
 const closeNetwork = () => {
-  return async (dispatch: AppDispatch) => {
-    ws.close(); 
+  return async (dispatch: AppDispatch) => { 
+    ws.close();  
   };
 };
-*/
 
 /**
  * Initialises app network
+*/
  const initNetwork = () => {
   return async (dispatch: AppDispatch) => {
+   
+    if (ws) {
+      ws.close();
+    }
+    ws = new WebSocket(Remote.websocketServer);
+    const uid = { "type":"minidappid", "minidappid": App.minidappId };
+    
+    ws.onopen = async () => {
+      //Connected
+      console.log("Starting WebSocket Listener @ " + Remote.websocketServer);
 
-    const addUrl =
-      `${Remote.server}/${Remote.serverApiBase}=${Remote.addListenerCommand}&${Remote.idParam}=${App.minidappId}`;
-    const encodedAdd = encodeURI(addUrl);
+      //Now set the MiniDAPPID
 
-    const response = await fetch(encodedAdd, {
-      method: 'GET'
-    });
+      //Send your name..
+      ws.send(JSON.stringify(uid));
 
-    if (response.ok) {
+      // dispatch(balance());
+    };
 
-      console.log("Posted listener for " + App.minidappId);
-      ws = new WebSocket(Remote.websocketServer);
+    ws.onmessage = (evt: any) => {
+      //Convert to JSON
+      const jmsg = JSON.parse(evt.data);
+      // console.log('Got message: ', jmsg);    
+      if (jmsg.event == "newbalance") {  
+        
+        // console.log('Got balance message ', jmsg)        
+        
+        const balanceData: BalanceProps = {
+          data: []
+        }      
+        for( let i = 0; i < jmsg.balance.length; i++ ) {    
+          balanceData.data.push(jmsg.balance[i])
+        }
+    
+        dispatch(write({ data: balanceData.data })(BalanceActionTypes.GET_BALANCES))
+      } 
 
-      const removeUrl =
-      `${Remote.server}/${Remote.serverApiBase}=${Remote.removeListenerCommand}&${Remote.idParam}=${App.minidappId}`;
-      const encodedRemove = encodeURI(removeUrl);
-      
-      ws.onopen = async () => {
-        //Connected
-        console.log("Starting Shiny New WebSocket Listener @ " + Remote.websocketServer);
+    }
 
-        //Now set the MiniDAPPID
-        const uid = { "type":"minidappid", "minidappid": App.minidappId };
+    ws.onclose = async () => {
+      console.log("Stopping WebSocket Listener @ " + Remote.websocketServer)
+    }
 
-        //Send your name..
-        ws.send(JSON.stringify(uid));
-
-        dispatch(balance());
-      };
-
-      ws.onmessage = (evt: any) => {
-        //Convert to JSON
-        const jmsg = JSON.parse(evt.data);
-
-        if (jmsg.event == "newbalance") {  
-          
-          console.log('Got balance message ', jmsg)        
-          
-          const balanceData: BalanceProps = {
-            data: []
-          }      
-          for( let i = 0; i < jmsg.balance.length; i++ ) {    
-            balanceData.data.push(jmsg.balance[i])
-          }
-      
-          dispatch(write({ data: balanceData.data })(BalanceActionTypes.GET_BALANCES))
-        } 
-      }
-
-      ws.onclose = async () => {
-        await fetch(encodedRemove, {
-          method: 'GET'
-        });
-      }
-
-      ws.onerror = (error: any) => {
-        //let err = JSON.stringify(error);
-        const err = JSON.stringify(error, ["message", "arguments", "type", "name", "data"]);
-        // websocket is closed.
-        console.log("Minima WS Listener Error ... ", err);
-      }
-
-
-    } else {
-
-      console.error("Error posting listener for " + App.minidappId);
-      
-    }    
+    ws.onerror = (error: any) => {
+      //let err = JSON.stringify(error);
+      const err = JSON.stringify(error, ["message", "arguments", "type", "name", "data"]);
+      // websocket is closed.
+      console.log("Minima WS Listener Error ... ", err);
+    }
   };
 };
-*/
 
 /**
  * Initialises the app
@@ -117,27 +96,8 @@ const closeNetwork = () => {
 export const init = () => {
   return async (dispatch: AppDispatch) => {
 
-    // dispatch(initNetwork());
-    Minima.init( function(msg) {
-      if (msg.event == 'connected') {
-
-        dispatch(balance());
-        
-      } else if (msg.event == "newbalance") {  
-          
-       //  console.log('Got balance message ', msg);     
-        
-        const balanceData: BalanceProps = {
-          data: []
-        }      
-        for( let i = 0; i < msg.info.balance.length; i++ ) {    
-          balanceData.data.push(msg.info.balance[i])
-        }
-    
-        dispatch(write({ data: balanceData.data })(BalanceActionTypes.GET_BALANCES))
-      } 
-    });
-
+    await dispatch(initNetwork());  
+    dispatch(balance());  
   };
 };
 
@@ -148,7 +108,7 @@ export const init = () => {
  export const close = () => {
   return async (dispatch: AppDispatch) => {
 
-    // dispatch(closeNetwork());
+    dispatch(closeNetwork());
   };
 };
 

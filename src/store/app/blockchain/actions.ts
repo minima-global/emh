@@ -33,6 +33,11 @@ export const init = () => {
         dispatch(getTokens());
         dispatch(getStatus());
         dispatch( getDbaseEntries(Dbase.tables.log.name, 'DATE', 'DESC'));
+
+        // need this empty listener, apparently...
+        Minima.minidapps.listen(function(msg) {
+          null;
+        });
       } else if ( msg.event == 'newbalance' ) {
         dispatch(getBalance());
         dispatch(getTokens());
