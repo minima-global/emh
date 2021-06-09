@@ -10,7 +10,6 @@ import { themeStyles } from '../../styles'
 
 import {
   ApplicationState,
-  AppDispatch,
   BalanceProps,
   Balance as BalanceType
 } from '../../store'

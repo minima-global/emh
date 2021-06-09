@@ -3,6 +3,8 @@ import Decimal from 'decimal.js';
 import {Action} from 'redux';
 import {ThunkDispatch} from 'redux-thunk';
 
+import {Token as Balance} from 'minima';
+
 /**
  * Store stuff
 */
@@ -54,27 +56,6 @@ export interface CmdProps extends PayloadProps {
   data: Array<object>
 }
 
-/**
- * Minima token balances
- */
-export interface Balance {
-  tokenid: string;
-  token: string;
-  total: string;
-  sendable: string;
-  unconfirmed: string;
-  confirmed: string;
-  decimals: string;
-  mempool: string;
-  coinid?: string;
-  totalamount?: string;
-  scale?: string;
-  description?: string;
-  icon?: string;
-  proof?: string;
-  script?: string;
-}
-
 export interface BalanceProps extends PayloadProps {
   data: Array<Balance>
 }
@@ -83,22 +64,8 @@ export interface BalanceProps extends PayloadProps {
  * Minima token info
  */
 
-export interface Token {
-  coinid: string
-  decimals: string
-  description: string
-  icon: string
-  proof: string
-  scale: string
-  script: string
-  token: string
-  tokenid: string
-  total: string
-  totalamount: string
-}
-
 export interface TokenProps extends PayloadProps {
-  data: Array<Token>
+  data: Array<Balance>
 }
 
 /**

@@ -3,6 +3,8 @@ import {connect} from 'react-redux';
 
 import SparkMD5 from 'spark-md5';
 
+import {Token as Balance} from 'minima';
+
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
@@ -13,7 +15,6 @@ import {theme, themeStyles} from '../styles';
 import {
   ApplicationState,
   BalanceProps,
-  Balance,
 } from '../store';
 
 interface StateProps {
