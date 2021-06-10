@@ -1,3 +1,3 @@
 # EMH Demo Apps
 
-Applications that demonstrate use cases of the emh.
+Applications that demonstrate use cases of the EMH.

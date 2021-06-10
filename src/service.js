@@ -134,7 +134,7 @@ const defaultAPI = {
 };
 
 var failedURLCall = {};
-var defaultURL = 'https://10b3db98-c5d7-4c4e-9a35-c4811eecbf70.mock.pstmn.io';
+var defaultURL = 'http://127.0.0.1:3000/';
 const maxURLFails = 3;
 // const deleteAfter = 1000 * 3600 * 24;
 const deleteAfter = 300000;
@@ -570,7 +570,7 @@ function processURL(txId, uRL, address, tokenId, state) {
     txId: txId,
     address: address,
     tokenId: tokenId,
-    state: state,
+    state: '',
   };
 
   const deleteSQL = 'DELETE FROM ' +

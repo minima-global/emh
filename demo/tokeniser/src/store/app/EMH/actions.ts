@@ -148,15 +148,16 @@ export const createToken = (token: NewToken) => {
       const results = JSON.parse(decodeURIComponent(reply.result));
       if ( results.status ) {
         const responseResults = JSON.parse(decodeURIComponent(results.response?.reply));
-        // console.log ( 'got response results', responseResults );
+        console.log ( 'got response results', responseResults );
         const tokenId = responseResults?.txpow?.body?.txn?.tokengen?.tokenid;
-        // console.log ( 'tokenid', tokenId );
+        console.log ( 'tokenid', tokenId );
         if ( tokenId ) {
           const listenerUrl =
           `${Remote.server}/${Remote.serverApiBase}=${Remote.addTokenListenerCommand}&${Remote.tokenParam}=${tokenId}`
-          const encodedListener = encodeURI(listenerUrl);     
+          const encodedListener = encodeURI(listenerUrl);    
+          // console.log('url: ', listenerUrl);
           Minima.net.GET( encodedListener, function ( reply ) {
-            // console.log('got reply ', reply);
+            // console.log('got reply for add listner', reply);
             const results = JSON.parse(decodeURIComponent(reply.result));
             if ( results.status ) {
               const txData = {

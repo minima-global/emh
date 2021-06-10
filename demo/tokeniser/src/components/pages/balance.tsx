@@ -28,102 +28,105 @@ const display = (props: Props) => {
   //console.log(props.balanceData)
 
   return (
-    <Grid container alignItems="flex-start">
+    <Grid item container alignItems='flex-start' xs={12}>
 
-      <Grid item container justify="flex-start" xs={12}>
-        <Typography variant="h2">
-          {BalancesVars.heading}
-        </Typography>
-      </Grid>
+      <Grid item container xs={12}>
 
-      <Grid item container justify="flex-start" xs={2}>
-        <Typography variant="h3">
-          &nbsp;
-        </Typography>
-      </Grid>
-      <Grid item container justify="flex-end" xs={3}>
-        <Typography variant="h3">
-          {BalancesVars.sendable}
-        </Typography>
-      </Grid>
-      <Grid item container justify="flex-end" xs={3}>
-        <Typography variant="h3">
-          {BalancesVars.amount}
-        </Typography>
-      </Grid>
-      <Grid item container justify="flex-end" xs={2}>
-        <Typography variant="h3">
-          {BalancesVars.unconfirmed}
-        </Typography>
-      </Grid>
-      <Grid item container justify="flex-end" xs={2}>
-        <Typography variant="h3">
-          {BalancesVars.mempool}
-        </Typography>
-      </Grid>
+        <Grid item container justify="flex-start" xs={12}>
+          <Typography variant="h2">
+            {BalancesVars.heading}
+          </Typography>
+        </Grid>
 
-      <Grid item container justify="flex-start" xs={12}>
-        <svg
-           xmlns="http://www.w3.org/2000/svg"
-           viewBox="0 0 2000 4"
-        >
-          <line x2="2000" stroke="#001c32" strokeWidth={4} />
-        </svg>
-      </Grid>
+        <Grid item container justify="flex-start" xs={2}>
+          <Typography variant="h3">
+            &nbsp;
+          </Typography>
+        </Grid>
+        <Grid item container justify="flex-end" xs={3}>
+          <Typography variant="h3">
+            {BalancesVars.sendable}
+          </Typography>
+        </Grid>
+        <Grid item container justify="flex-end" xs={3}>
+          <Typography variant="h3">
+            {BalancesVars.amount}
+          </Typography>
+        </Grid>
+        <Grid item container justify="flex-end" xs={2}>
+          <Typography variant="h3">
+            {BalancesVars.unconfirmed}
+          </Typography>
+        </Grid>
+        <Grid item container justify="flex-end" xs={2}>
+          <Typography variant="h3">
+            {BalancesVars.mempool}
+          </Typography>
+        </Grid>
 
-      {
-        props.balanceData.data.map( ( balance: BalanceType, index: number ) => {
+        <Grid item container justify="flex-start" xs={12}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 2000 4"
+          >
+            <line x2="2000" stroke="#001c32" strokeWidth={4} />
+          </svg>
+        </Grid>
 
-          //console.log(balance)
-          const sendable = +balance.sendable
-          const amount = +balance.confirmed
-          const unconfirmed = +balance.unconfirmed
-          const mempool = +balance.mempool
+        {
+          props.balanceData.data.map( ( balance: BalanceType, index: number ) => {
 
-          const thisSendable = sendable.toFixed(Misc.sendableDecimals)
-          const thisAmount = amount.toFixed(Misc.confirmedDecimals)
-          const thisUnconfirmed = unconfirmed.toFixed(Misc.unconfirmedDecimals)
-          const thisMempool = mempool.toFixed(Misc.mempoolDecimals)
+            //console.log(balance)
+            const sendable = +balance.sendable
+            const amount = +balance.confirmed
+            const unconfirmed = +balance.unconfirmed
+            const mempool = +balance.mempool
 
-          const rowclass = index % 2 ? classes.evenRow : classes.oddRow
+            const thisSendable = sendable.toFixed(Misc.sendableDecimals)
+            const thisAmount = amount.toFixed(Misc.confirmedDecimals)
+            const thisUnconfirmed = unconfirmed.toFixed(Misc.unconfirmedDecimals)
+            const thisMempool = mempool.toFixed(Misc.mempoolDecimals)
 
-          return (
-            <React.Fragment key={index}>
+            const rowclass = index % 2 ? classes.evenRow : classes.oddRow
 
-              <Grid className={rowclass} item container xs={12}>
+            return (
+              <React.Fragment key={index}>
 
-                <Grid item container justify="flex-start" xs={2}>
-                 <Typography variant="body1">
-                   {balance.token}
-                 </Typography>
-                </Grid>
-                <Grid item container justify="flex-end" xs={3}>
-                 <Typography variant="body2">
-                   {thisSendable}
-                 </Typography>
-                </Grid>
-                <Grid item container justify="flex-end" xs={3}>
-                 <Typography variant="body2">
-                   {thisAmount}
-                 </Typography>
-                </Grid>
-                <Grid item container justify="flex-end" xs={2}>
-                  <Typography variant="body2">
-                    {thisUnconfirmed}
+                <Grid className={rowclass} item container xs={12}>
+
+                  <Grid item container justify="flex-start" xs={2}>
+                  <Typography variant="body1">
+                    {balance.token}
                   </Typography>
-                </Grid>
-                <Grid item container justify="flex-end" xs={2}>
+                  </Grid>
+                  <Grid item container justify="flex-end" xs={3}>
                   <Typography variant="body2">
-                    {thisMempool}
+                    {thisSendable}
                   </Typography>
+                  </Grid>
+                  <Grid item container justify="flex-end" xs={3}>
+                  <Typography variant="body2">
+                    {thisAmount}
+                  </Typography>
+                  </Grid>
+                  <Grid item container justify="flex-end" xs={2}>
+                    <Typography variant="body2">
+                      {thisUnconfirmed}
+                    </Typography>
+                  </Grid>
+                  <Grid item container justify="flex-end" xs={2}>
+                    <Typography variant="body2">
+                      {thisMempool}
+                    </Typography>
+                  </Grid>
+
                 </Grid>
 
-              </Grid>
-
-            </React.Fragment>
-          )
-        })
-      }
+              </React.Fragment>
+            )
+          })
+        }
+      </Grid>
     </Grid>
   )
 }
