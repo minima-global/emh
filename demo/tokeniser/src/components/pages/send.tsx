@@ -27,7 +27,7 @@ import {
   SelectOptionType
 } from '../../store/types';
 
-import {send} from '../../store/app/EMH/actions';
+import {initTx, send} from '../../store/app/EMH/actions';
 
 const tokenSchema = Yup.object().shape({
   token: Yup.object()
@@ -48,6 +48,7 @@ interface StateProps {
 }
 
 interface DispatchProps {
+  initTx: () => void
   send: (token: NewSend) => void
 }
 
@@ -61,6 +62,8 @@ const display = (props: Props) => {
   const classes = themeStyles();
 
   useEffect(() => {
+
+    props.initTx();
 
     props.balanceData.data.forEach(balance => {
 
@@ -341,6 +344,8 @@ const display = (props: Props) => {
           </svg>
         </Grid>
 
+        {props.tx.data.summary}
+
       </Grid>
 
     </Grid>
@@ -357,6 +362,7 @@ const mapStateToProps = (state: ApplicationState): StateProps => {
 
 const mapDispatchToProps = (dispatch: AppDispatch): DispatchProps => {
   return {
+    initTx: () => dispatch(initTx()),
     send: (token: NewSend) => dispatch(send(token)),
   };
 };

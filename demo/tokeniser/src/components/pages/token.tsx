@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {connect} from 'react-redux';
 
 import Grid from '@material-ui/core/Grid';
@@ -23,7 +23,7 @@ import {
   NewToken,
 } from '../../store/types';
 
-import {createToken} from '../../store/app/EMH/actions';
+import {initTx, createToken} from '../../store/app/EMH/actions';
 
 const tokenSchema = Yup.object().shape({
   name: Yup.string()
@@ -47,6 +47,7 @@ interface StateProps {
 }
 
 interface DispatchProps {
+  initTx: () => void
   createToken: (token: NewToken) => void
 }
 
@@ -54,6 +55,11 @@ type Props = StateProps & DispatchProps
 
 const display = (props: Props) => {
   const classes = themeStyles();
+
+  useEffect (() => {
+    props.initTx();    
+  }, []);
+
   const formik = useFormik({
     initialValues: {
       name: '',
@@ -73,6 +79,7 @@ const display = (props: Props) => {
         icon: values.icon,
         proof: values.proof,
       };
+      props.initTx();
       props.createToken(tokenInfo);
     },
   });
@@ -353,6 +360,8 @@ const display = (props: Props) => {
           </svg>
         </Grid>
 
+        {props.tx.data.summary}
+
       </Grid>
 
     </Grid>
@@ -367,6 +376,7 @@ const mapStateToProps = (state: ApplicationState): StateProps => {
 
 const mapDispatchToProps = (dispatch: AppDispatch): DispatchProps => {
   return {
+    initTx: () => dispatch(initTx()),
     createToken: (token: NewToken) => dispatch(createToken(token)),
   };
 };

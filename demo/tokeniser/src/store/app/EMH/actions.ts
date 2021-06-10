@@ -2,7 +2,6 @@ import {Minima} from 'minima';
 
 import {
   AppDispatch,
-  ActionTypes,
   NewSend,
   NewToken,
   BalanceProps,
@@ -15,7 +14,6 @@ import {
   App,
   Transaction,
   Remote,
-  Post,
 } from '../../../config';
 
 import {write} from '../../actions';
@@ -118,13 +116,12 @@ export const init = () => {
  */
 export const initTx = () => {
   return async (dispatch: AppDispatch) => {
-    const initAction: ActionTypes = TxActionTypes.TX_INIT;
     const txInit: TxData = {
       code: '',
       summary: '',
       time: '',
     };
-    dispatch(write({data: txInit})(initAction));
+    dispatch(write({data: txInit})(TxActionTypes.TX_INIT));
   };
 };
 
@@ -152,14 +149,14 @@ export const createToken = (token: NewToken) => {
     if (response.ok) {
       const txData = {
         code: "200",
-        summary: Post.postSuccess,
+        summary: Transaction.success,
         time: time
       }
       dispatch(write({data: txData})(TxActionTypes.TX_SUCCESS));
     } else {
       const txData = {
         code: "400",
-        summary: Post.postFailure,
+        summary: Transaction.failure,
         time: time
       }
       dispatch(write({data: txData})(TxActionTypes.TX_FAILURE))
@@ -194,14 +191,14 @@ export const send = (token: NewSend) => {
     if (response.ok) {
       const txData = {
         code: "200",
-        summary: Post.postSuccess,
+        summary: Transaction.success,
         time: time
       }
       dispatch(write({data: txData})(TxActionTypes.TX_SUCCESS));
     } else {
       const txData = {
         code: "400",
-        summary: Post.postFailure,
+        summary: Transaction.failure,
         time: time
       }
       dispatch(write({data: txData})(TxActionTypes.TX_FAILURE))
@@ -241,14 +238,14 @@ export const balance = () => {
         dispatch(write({ data: balanceData.data })(BalanceActionTypes.GET_BALANCES))
         const txData = {
           code: "200",
-          summary: Post.postSuccess,
+          summary: Transaction.success,
           time: time
         }
         dispatch(write({data: txData})(TxActionTypes.TX_SUCCESS));
       } else {
         const txData = {
           code: "400",
-          summary: Post.postFailure,
+          summary: Transaction.failure,
           time: time
         }
         dispatch(write({data: txData})(TxActionTypes.TX_FAILURE))

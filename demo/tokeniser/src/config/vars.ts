@@ -134,22 +134,16 @@ class Tokens {
 
 /** @class Transaction */
 class Transaction {
-  static readonly pending = 'Please wait - transaction is pending'
-  static readonly success = 'Transaction Succeeded'
-  static readonly failure = 'Transaction Failed'
+  static readonly pending = 'Please wait - Tx is pending'
+  static readonly success = 'Tx Success'
+  static readonly failure = 'Tx Failure'
+
+  static readonly getSuccess = 'Get Success'
+  static readonly getFailure = 'Get Failure'
 
   static readonly block = 'Block'
 
   static readonly errorGettingData = 'Error getting data'
-}
-
-/** @class Post */
-class Post {
-  static readonly postSuccess = 'Post Success'
-  static readonly postFailure = 'Post Failure'
-
-  static readonly getSuccess = 'Get Success'
-  static readonly getFailure = 'Get Failure'
 }
 
 export {
@@ -166,5 +160,4 @@ export {
   Tokens,
   Balance,
   Transaction,
-  Post,
 };
