@@ -317,6 +317,10 @@ const themeStyles = makeStyles({
     margin: 0,
     padding: 0,
   },
+  formFields: {
+    paddingTop: theme.spacing(1),
+    paddingBottom: theme.spacing(1),
+  },
   formButton: {
     paddingTop: theme.spacing(1),
     paddingBottom: theme.spacing(1),

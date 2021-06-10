@@ -1,4 +1,4 @@
-import {Minima} from 'minima';
+import {Minima, Address} from 'minima';
 
 import {
   AppDispatch,
@@ -8,6 +8,8 @@ import {
   BalanceActionTypes,
   TxActionTypes,
   TxData,
+  AddressProps,
+  AddressActionTypes,
 } from '../../types';
 
 import {
@@ -138,30 +140,58 @@ export const createToken = (token: NewToken) => {
     // eslint-disable-next-line max-len
     // 127.0.0.1:9004/api/EMH/?command=tokenCreate&name=AnotherTest&amount=1&description="Another Test Token"&script="RETURN TRUE"&icon=""&proof=""
     // eslint-disable-next-line max-len
-    const url =
+    const createUrl =
       `${Remote.server}/${Remote.serverApiBase}=${Remote.createTokenCommand}&${Remote.nameParam}="${token.name}"&${Remote.amountParam}=${token.amount}&${Remote.descriptionParam}="${token.description}"&${Remote.scriptParam}="${token.script}"&${Remote.iconParam}="${token.icon}"&${Remote.proofParam}="${token.proof}"`
-    const encodedCreate = encodeURI(url);
+    const encodedCreate = encodeURI(createUrl);
 
-    const response = await fetch(encodedCreate, {
-      method: 'GET'
+    Minima.net.GET( encodedCreate, function ( reply ) {
+      const results = JSON.parse(decodeURIComponent(reply.result));
+      if ( results.status ) {
+        const responseResults = JSON.parse(decodeURIComponent(results.response?.reply));
+        // console.log ( 'got response results', responseResults );
+        const tokenId = responseResults?.txpow?.body?.txn?.tokengen?.tokenid;
+        // console.log ( 'tokenid', tokenId );
+        if ( tokenId ) {
+          const listenerUrl =
+          `${Remote.server}/${Remote.serverApiBase}=${Remote.addTokenListenerCommand}&${Remote.tokenParam}=${tokenId}`
+          const encodedListener = encodeURI(listenerUrl);     
+          Minima.net.GET( encodedListener, function ( reply ) {
+            // console.log('got reply ', reply);
+            const results = JSON.parse(decodeURIComponent(reply.result));
+            if ( results.status ) {
+              const txData = {
+                code: "200",
+                summary: Transaction.getSuccess,
+                time: time
+              }
+              dispatch(write({data: txData})(TxActionTypes.TX_SUCCESS));
+            } else {
+              const txData = {
+                code: "400",
+                summary: Transaction.getFailure,
+                time: time
+              }
+              dispatch(write({data: txData})(TxActionTypes.TX_FAILURE))
+            }
+          });
+        } else {
+          const txData = {
+            code: "400",
+            summary: Transaction.getFailure,
+            time: time
+          }
+          dispatch(write({data: txData})(TxActionTypes.TX_FAILURE));
+        }       
+
+      } else {
+        const txData = {
+          code: "400",
+          summary: Transaction.getFailure,
+          time: time
+        }
+        dispatch(write({data: txData})(TxActionTypes.TX_FAILURE));
+      }
     });
-
-    if (response.ok) {
-      const txData = {
-        code: "200",
-        summary: Transaction.success,
-        time: time
-      }
-      dispatch(write({data: txData})(TxActionTypes.TX_SUCCESS));
-    } else {
-      const txData = {
-        code: "400",
-        summary: Transaction.failure,
-        time: time
-      }
-      dispatch(write({data: txData})(TxActionTypes.TX_FAILURE))
-
-    }
   };
 }
 
@@ -238,14 +268,63 @@ export const balance = () => {
         dispatch(write({ data: balanceData.data })(BalanceActionTypes.GET_BALANCES))
         const txData = {
           code: "200",
-          summary: Transaction.success,
+          summary: Transaction.getSuccess,
           time: time
         }
         dispatch(write({data: txData})(TxActionTypes.TX_SUCCESS));
       } else {
         const txData = {
           code: "400",
-          summary: Transaction.failure,
+          summary: Transaction.getFailure,
+          time: time
+        }
+        dispatch(write({data: txData})(TxActionTypes.TX_FAILURE))
+      }
+    });
+  };
+}
+
+export const addresses = () => {
+  return async (dispatch: AppDispatch) => {
+    const time = new Date(Date.now()).toString();
+    const pendingData: TxData = {
+      code: '200',
+      summary: Transaction.pending,
+      time: time,
+    };
+    dispatch(write({data: pendingData})(TxActionTypes.TX_PENDING));
+
+    // eslint-disable-next-line max-len
+    // 127.0.0.1:9004/api/EMH/?command=tokenCreate&name=AnotherTest&amount=1&description="Another Test Token"&script="RETURN TRUE"&icon=""&proof=""
+    // eslint-disable-next-line max-len
+    const url =
+      `${Remote.server}/${Remote.serverApiBase}=${Remote.scriptsCommand}`
+    const encodedBalance = encodeURI(url);
+
+    Minima.net.GET( encodedBalance, function ( reply ) {
+      const results = JSON.parse(decodeURIComponent(reply.result));
+      if ( results.status ) {
+        const scripts = JSON.parse(results.response?.reply);
+        const scriptsData: AddressProps = {
+          data: []
+        }      
+        for( let i = 0; i < scripts.addresses?.length; i++ ) { 
+          const thisAddress: Address = scripts.addresses[i]; 
+          if ( thisAddress.script.startsWith('RETURN+SIGNEDBY+(+0x') ) {
+            scriptsData.data.push(thisAddress);
+          }
+        }
+        dispatch(write({ data: scriptsData.data })(AddressActionTypes.GET_ADDRESSES))
+        const txData = {
+          code: "200",
+          summary: Transaction.getSuccess,
+          time: time
+        }
+        dispatch(write({data: txData})(TxActionTypes.TX_SUCCESS));
+      } else {
+        const txData = {
+          code: "400",
+          summary: Transaction.getFailure,
           time: time
         }
         dispatch(write({data: txData})(TxActionTypes.TX_FAILURE))

@@ -2,7 +2,7 @@
 /* eslint-disable no-var */
 
 // http://127.0.0.1:9004/api/EMH/?command=getDbase&table=LOGGING&sortField=ID&sortOrder=DESC&limitLow=0&offset=100
-// 127.0.0.1:9004/api/EMH/?command=addTokenListener&token=0x00
+// 127.0.0.1:9004/api/EMH/?command=addTokenListener&tokenId=0x00
 // eslint-disable-next-line max-len
 // 127.0.0.1:9004/api/EMH/?command=tokenCreate&name=AnotherTest&amount=1&description="Another Test Token"&script="RETURN TRUE"&icon=""&proof=""
 
@@ -78,9 +78,9 @@ const defaultAPI = {
   token: {
     endpoint: 'addTokenListener',
     command: '',
-    format: 'token [url]',
+    format: 'tokenId [url]',
     setParams: '',
-    params: 'token=0x9454BB52A5777D... url=http://an.url.com]',
+    params: 'tokenId=0x9454BB52A5777D... url=http://an.url.com]',
     isPublic: 1,
   },
   tokenCreate: {
@@ -102,17 +102,17 @@ const defaultAPI = {
   gimme50: {
     endpoint: 'gimme50',
     command: 'send',
-    format: 'amount address tokenid',
-    setParams: 'amount=50 tokenid=0x00',
+    format: 'amount address tokenId',
+    setParams: 'amount=50 tokenId=0x00',
     params: 'address=Mx...',
     isPublic: 1,
   },
   send: {
     endpoint: 'send',
     command: 'send',
-    format: 'amount address tokenid',
+    format: 'amount address tokenId',
     setParams: '',
-    params: 'amount=1 address=Mx... tokenid=0x00',
+    params: 'amount=1 address=Mx... tokenId=0x00',
     isPublic: 1,
   },
   balance: {
@@ -497,7 +497,7 @@ function insertAddress(qParamsJSON, replyId) {
 function insertToken(qParamsJSON, replyId) {
   const endpoint = qParamsJSON.command;
   if ( endpoint == defaultAPI.token.endpoint ) {
-    const token = qParamsJSON.token;
+    const token = qParamsJSON.tokenId;
     var url = defaultURL;
     if ( qParamsJSON.url ) {
       url = qParamsJSON.url;

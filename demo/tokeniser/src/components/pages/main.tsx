@@ -118,9 +118,9 @@ export const Main = () => {
             xs={2}
           >
 
-            <NavLink to={Local.send} className={classes.iconLink}>
+            <NavLink to={Local.wallet} className={classes.iconLink}>
               <IconButton
-                aria-label="send"
+                aria-label="wallet"
               >
                 <img className={classes.footerIcon} src={sendIcon}/>
               </IconButton>

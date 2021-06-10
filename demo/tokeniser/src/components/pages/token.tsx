@@ -108,7 +108,7 @@ const display = (props: Props) => {
         </Grid>
 
         <form onSubmit={formik.handleSubmit} className={classes.formSubmit}>
-          <Grid item container xs={12}>
+          <Grid className={classes.formFields} item container xs={12}>
 
             <Grid
               item
@@ -152,7 +152,7 @@ const display = (props: Props) => {
             }
           </Grid>
 
-          <Grid item container xs={12}>
+          <Grid className={classes.formFields} item container xs={12}>
 
             <Grid
               item
@@ -196,7 +196,7 @@ const display = (props: Props) => {
             }
           </Grid>
 
-          <Grid item container xs={12}>
+          <Grid className={classes.formFields} item container xs={12}>
 
             <Grid
               item
@@ -240,7 +240,7 @@ const display = (props: Props) => {
             }
           </Grid>
 
-          <Grid item container xs={12}>
+          <Grid className={classes.formFields} item container xs={12}>
 
             <Grid
               item
@@ -284,7 +284,7 @@ const display = (props: Props) => {
             }
           </Grid>
 
-          <Grid item container xs={12}>
+          <Grid className={classes.formFields} item container xs={12}>
 
             <Grid
               item

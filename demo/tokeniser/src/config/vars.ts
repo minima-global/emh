@@ -89,10 +89,15 @@ class Contact {
   ]
 }
 
-/** @class Send */
-class Send {
+/** @class Wallet */
+class Wallet {
 
-  static readonly heading = 'Send and receive'
+  static readonly heading = 'Wallet'
+  static readonly sendHeading = 'Send'
+  static readonly receiveHeading = 'Receive'
+
+  static readonly receiveAddress = 'Addresses'
+  static readonly currentAddress = 'Current Address'
 
   static readonly token = 'Token'
   static readonly amount = 'Amount'
@@ -140,10 +145,6 @@ class Transaction {
 
   static readonly getSuccess = 'Get Success'
   static readonly getFailure = 'Get Failure'
-
-  static readonly block = 'Block'
-
-  static readonly errorGettingData = 'Error getting data'
 }
 
 export {
@@ -156,7 +157,7 @@ export {
   About,
   Help,
   Contact,
-  Send,
+  Wallet,
   Tokens,
   Balance,
   Transaction,

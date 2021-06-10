@@ -4,10 +4,9 @@ import {Switch, Route} from 'react-router-dom';
 import {PageTypes} from '../store/types';
 
 import {
-  Home,
   Info,
   Token,
-  Send,
+  Wallet,
   Balance,
 } from '../components/pages';
 
@@ -36,8 +35,8 @@ export const Content = () => {
         render= {() => <Token />}
       />
       <Route
-        exact path={Local.send}
-        render= {() => <Send />}
+        exact path={Local.wallet}
+        render= {() => <Wallet />}
       />
       <Route
         path={Local.home}

@@ -1,6 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
+import {Token as BalanceType} from 'minima';
+
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 
@@ -11,7 +13,6 @@ import { themeStyles } from '../../styles'
 import {
   ApplicationState,
   BalanceProps,
-  Balance as BalanceType
 } from '../../store'
 
 interface BalanceStateProps {

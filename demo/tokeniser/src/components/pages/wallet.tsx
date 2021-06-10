@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {connect} from 'react-redux';
 
 import Select from 'react-select'
@@ -15,19 +15,20 @@ import {themeStyles} from '../../styles';
 
 import {
   GeneralError,
-  Send as SendVars,
+  Wallet as WalletVars,
 } from '../../config';
 
 import {
   ApplicationState,
   AppDispatch,
   BalanceProps,
+  AddressProps,
   TxProps,
   NewSend,
   SelectOptionType
 } from '../../store/types';
 
-import {initTx, send} from '../../store/app/EMH/actions';
+import {initTx, send, addresses} from '../../store/app/EMH/actions';
 
 const tokenSchema = Yup.object().shape({
   token: Yup.object()
@@ -44,37 +45,58 @@ const tokenSchema = Yup.object().shape({
 
 interface StateProps {
   balanceData: BalanceProps
+  addressData: AddressProps
   tx: TxProps
 }
 
 interface DispatchProps {
   initTx: () => void
   send: (token: NewSend) => void
+  addresses: () => void
 }
 
 type Props = StateProps & DispatchProps
 
 const display = (props: Props) => {
 
+  const isFirstRun = useRef(true);
   const [tokens, setTokens] = useState([] as SelectOptionType[])
   const [thisToken, setThisToken] = useState({} as SelectOptionType)
+
+  const [addresses, setAddresses] = useState([] as SelectOptionType[])
+  const [thisAddress, setThisAddress] = useState({} as SelectOptionType)
 
   const classes = themeStyles();
 
   useEffect(() => {
 
-    props.initTx();
+    if ( isFirstRun.current ) {
+      isFirstRun.current = false;
+      props.initTx();
+      props.addresses();
+    } else {    
 
-    props.balanceData.data.forEach(balance => {
+      props.addressData.data.forEach(address => {
 
-      const tokenOption: SelectOptionType = {
-        value: balance.tokenid,
-        label: balance.token
-      }
-      tokens.push(tokenOption);
-    });
+        const addressOption: SelectOptionType = {
+          value: address.miniaddress,
+          label: address.miniaddress
+        }
+        addresses.push(addressOption);
+      });
+      setThisAddress(addresses[Math.floor(Math.random() * addresses.length)]);
 
-  }, [props.balanceData])
+      props.balanceData.data.forEach(balance => {
+
+        const tokenOption: SelectOptionType = {
+          value: balance.tokenid,
+          label: balance.token
+        }
+        tokens.push(tokenOption);
+      });
+    }
+
+  }, [props.balanceData, props.addressData])
 
   const formik = useFormik({
     initialValues: {
@@ -106,6 +128,14 @@ const display = (props: Props) => {
     }
   }
 
+  const doSetAddress = (address: SelectOptionType | null | undefined) => {
+
+    if ( address ) {
+
+      setThisAddress(address)
+    }
+  }
+
   return (
 
     <Grid item container alignItems='flex-start' xs={12}>
@@ -115,7 +145,7 @@ const display = (props: Props) => {
         <Grid item container justify="flex-start" xs={12}>
 
           <Typography variant="h2">
-            {SendVars.heading}
+            {WalletVars.heading}
           </Typography>
 
         </Grid>
@@ -129,9 +159,91 @@ const display = (props: Props) => {
           </svg>
         </Grid>
 
+        <Grid item container justify="flex-start" xs={12}>
+
+          <Typography variant="h3">
+            {WalletVars.receiveHeading}
+          </Typography>
+
+        </Grid>
+
+        <Grid className={classes.formFields} item container xs={12}>
+          <Grid
+            item
+            container
+            className={classes.formLabel}
+            justify="flex-start"
+            alignItems="center"
+            xs={4}
+            lg={2}
+          >
+            <label htmlFor="myAddress">{WalletVars.receiveAddress}</label>
+          </Grid>
+          <Grid item container xs={10}>
+            <div style={{width: '100%'}}>
+              <Select
+                className={classes.select}
+                size="small"
+                value={thisAddress}
+                onChange={selectedOption => {
+                  doSetAddress(selectedOption)
+                }}
+                options={addresses}
+                name="myAddress"
+              />
+            </div>
+          </Grid>
+        </Grid>
+
+        <Grid className={classes.formFields} item container xs={12}>
+
+          <Grid
+            item
+            container
+            className={classes.formLabel}
+            justify="flex-start"
+            alignItems="center"
+            xs={4}
+            lg={2}
+          >
+            <label htmlFor="currentAddress">{WalletVars.currentAddress}</label>
+          </Grid>        
+
+          <Grid item container xs={8} lg={10}>
+
+            <TextField
+              disabled={true}
+              fullWidth
+              size="small"
+              name="currentAddress"
+              type="text"
+              value={thisAddress.value}
+            />
+
+          </Grid>
+
+        </Grid>
+
+        <Grid item container justify="flex-start" xs={12}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 4000 20"
+          >
+            <line x2="4000" stroke="#001C32" width="100%" height="100%"/>
+          </svg>
+        </Grid>
+
+        <Grid item container justify="flex-start" xs={12}>
+
+          <Typography variant="h3">
+            {WalletVars.sendHeading}
+          </Typography>
+
+        </Grid>
+
         <form onSubmit={formik.handleSubmit} className={classes.formSubmit}>
 
-          <Grid item container xs={12}>
+          <Grid className={classes.formFields} item container xs={12}>
 
             <Grid
               item
@@ -142,7 +254,7 @@ const display = (props: Props) => {
               xs={4}
               lg={2}
             >
-              <label htmlFor="token">{SendVars.token}</label>
+              <label htmlFor="token">{WalletVars.token}</label>
             </Grid>
             <Grid item container xs={8} lg={10}>
               <div style={{width: '100%'}}>
@@ -180,7 +292,7 @@ const display = (props: Props) => {
             }
           </Grid>
 
-          <Grid item container xs={12}>
+          <Grid className={classes.formFields} item container xs={12}>
 
             <Grid
               item
@@ -191,7 +303,7 @@ const display = (props: Props) => {
               xs={4}
               lg={2}
             >
-              <label htmlFor="amount">{SendVars.amount}</label>
+              <label htmlFor="amount">{WalletVars.amount}</label>
             </Grid>
             <Grid item container xs={8} lg={10}>
               <TextField
@@ -224,7 +336,7 @@ const display = (props: Props) => {
             }
           </Grid>
 
-          <Grid item container xs={12}>
+          <Grid className={classes.formFields} item container xs={12}>
 
             <Grid
               item
@@ -235,7 +347,7 @@ const display = (props: Props) => {
               xs={4}
               lg={2}
             >
-              <label htmlFor="amount">{SendVars.address}</label>
+              <label htmlFor="amount">{WalletVars.address}</label>
             </Grid>
             <Grid item container xs={8} lg={10}>
               <TextField
@@ -268,7 +380,7 @@ const display = (props: Props) => {
             }
           </Grid>
 
-          <Grid item container xs={12}>
+          <Grid className={classes.formFields} item container xs={12}>
 
             <Grid
               item
@@ -279,7 +391,7 @@ const display = (props: Props) => {
               xs={4}
               lg={2}
             >
-              <label htmlFor="statevars">{SendVars.statevars}</label>
+              <label htmlFor="statevars">{WalletVars.statevars}</label>
             </Grid>
             <Grid item container xs={8} lg={10}>
               <TextField
@@ -327,7 +439,7 @@ const display = (props: Props) => {
                 size='medium'
                 variant="contained"
               >
-                {SendVars.sendButton}
+                {WalletVars.sendButton}
               </Button>
             </Grid>
 
@@ -354,8 +466,10 @@ const display = (props: Props) => {
 
 const mapStateToProps = (state: ApplicationState): StateProps => {
   const balances = state.balance as BalanceProps
+  const addresses = state.address as AddressProps
   return {
     balanceData: balances,
+    addressData: addresses,
     tx: state.tx as TxProps,
   }
 };
@@ -364,10 +478,11 @@ const mapDispatchToProps = (dispatch: AppDispatch): DispatchProps => {
   return {
     initTx: () => dispatch(initTx()),
     send: (token: NewSend) => dispatch(send(token)),
+    addresses: () => dispatch(addresses()),
   };
 };
 
-export const Send = connect<StateProps, DispatchProps, {}, ApplicationState>(
+export const Wallet = connect<StateProps, DispatchProps, {}, ApplicationState>(
     mapStateToProps,
     mapDispatchToProps,
 )(display);

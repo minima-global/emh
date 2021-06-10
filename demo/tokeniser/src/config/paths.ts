@@ -5,7 +5,7 @@ class Local {
   static readonly help = '/help'
   static readonly contact = '/contact'
 
-  static readonly send = '/send'
+  static readonly wallet = '/wallet'
   static readonly balance = '/balance'
   static readonly token = '/token'
 }
@@ -17,7 +17,6 @@ class Remote {
   static readonly serverApiBase = 'api/EMH/?command'
 
   static readonly createTokenCommand = 'tokenCreate'
-  static readonly addTokenListenerCommand = 'addTokenListener'
   static readonly nameParam = 'name'
   static readonly amountParam = 'amount'
   static readonly descriptionParam = 'description'
@@ -25,11 +24,16 @@ class Remote {
   static readonly iconParam = 'icon'
   static readonly proofParam = 'proof'
 
+
+  static readonly addTokenListenerCommand = 'addTokenListener'
+
   static readonly balanceCommand = 'balance'
 
   static readonly sendCommand = 'send'
-  static readonly tokenParam = 'tokenid'
+  static readonly tokenParam = 'tokenId'
   static readonly addressParam = 'address'
+
+  static readonly scriptsCommand = 'scripts'
 }
 
 export {Local, Remote};

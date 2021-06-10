@@ -2,11 +2,14 @@
 import {Action} from 'redux';
 import {ThunkDispatch} from 'redux-thunk';
 
+import {Token as Balance, Address} from 'minima';
+
 /**
  * Store stuff
 */
 export interface ApplicationState {
   balance: BalanceProps
+  address: AddressProps,
   tx: TxProps
 }
 
@@ -56,27 +59,17 @@ export interface NewToken {
   proof: string
 }
 
+
+/**
+ * Address stuff
+ */
+ export interface AddressProps extends PayloadProps {
+  data: Array<Address>
+}
+
 /**
  * Balance stuff
  */
-export interface Balance {
-  tokenid: string;
-	token: string;
-	total: string;
-	sendable: string;
-	unconfirmed: string;
-	confirmed: string;
-	decimals: string;
-	mempool: string;
-	coinid?: string;
-	totalamount?: string;
-	scale?: string;
-	description?: string;
-	icon?: string;
-	proof?: string;
-	script?: string;
-}
-
 export interface BalanceProps extends PayloadProps {
   data: Array<Balance>
 }
@@ -111,6 +104,10 @@ export const enum AppDataActionTypes {
   APPDATA_INIT = '@@AppDataActionTypes/APPDATA_INIT',
   APPDATA_SUCCESS = '@@AppDataActionTypes/APPDATA_SUCCESS',
   APPDATA_FAILURE = '@@AppDataActionTypes/APPDATA_FAILURE'
+}
+
+export const enum AddressActionTypes {
+  GET_ADDRESSES = '@@AddressActionTypes/GET_ADDRESSES'
 }
 
 export const enum BalanceActionTypes {
