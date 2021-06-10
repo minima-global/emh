@@ -75,7 +75,6 @@ const display = (props: Props) => {
         name: values.name,
         amount: values.amount,
         description: values.description,
-        script: 'RETURN TRUE',
         icon: values.icon,
         proof: values.proof,
       };

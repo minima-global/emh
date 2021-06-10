@@ -141,7 +141,7 @@ export const createToken = (token: NewToken) => {
     // 127.0.0.1:9004/api/EMH/?command=tokenCreate&name=AnotherTest&amount=1&description="Another Test Token"&script="RETURN TRUE"&icon=""&proof=""
     // eslint-disable-next-line max-len
     const createUrl =
-      `${Remote.server}/${Remote.serverApiBase}=${Remote.createTokenCommand}&${Remote.nameParam}="${token.name}"&${Remote.amountParam}=${token.amount}&${Remote.descriptionParam}="${token.description}"&${Remote.scriptParam}="${token.script}"&${Remote.iconParam}="${token.icon}"&${Remote.proofParam}="${token.proof}"`
+      `${Remote.server}/${Remote.serverApiBase}=${Remote.createTokenCommand}&${Remote.nameParam}="${token.name}"&${Remote.amountParam}=${token.amount}&${Remote.descriptionParam}="${token.description}"&${Remote.iconParam}="${token.icon}"&${Remote.proofParam}="${token.proof}"`
     const encodedCreate = encodeURI(createUrl);
 
     Minima.net.GET( encodedCreate, function ( reply ) {

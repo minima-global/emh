@@ -86,9 +86,9 @@ const defaultAPI = {
   tokenCreate: {
     endpoint: 'tokenCreate',
     command: 'tokencreate',
-    format: 'name amount description script icon proof',
-    setParams: '',
-    params: 'name=MyToken amount=1000000 description="Token description" script="RETURN TRUE" icon="http://my.icon.url" proof="http://my.proof.url"',
+    format: 'name amount description icon proof',
+    setParams: 'script="RETURN TRUE"',
+    params: 'name=MyToken amount=1000000 description="Token description" icon="http://my.icon.url" proof="http://my.proof.url"',
     isPublic: 1,
   },
   dbase: {
