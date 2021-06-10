@@ -112,6 +112,7 @@ export const ChartTokens = () => {
     if (apiResponse.ok) {
       const thisJson = await apiResponse.json();
       setTokens(thisJson);
+      setChartHeight(Object.keys(thisJson).length * ChartVars.gridHeight);
     }
   };
 
