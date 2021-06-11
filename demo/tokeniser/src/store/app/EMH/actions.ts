@@ -1,4 +1,4 @@
-import {Minima, Address} from 'minima';
+import {Address} from 'minima';
 
 import {
   AppDispatch,
@@ -144,55 +144,60 @@ export const createToken = (token: NewToken) => {
       `${Remote.server}/${Remote.serverApiBase}=${Remote.createTokenCommand}&${Remote.nameParam}="${token.name}"&${Remote.amountParam}=${token.amount}&${Remote.descriptionParam}="${token.description}"&${Remote.iconParam}="${token.icon}"&${Remote.proofParam}="${token.proof}"`
     const encodedCreate = encodeURI(createUrl);
 
-    Minima.net.GET( encodedCreate, function ( reply ) {
-      const results = JSON.parse(decodeURIComponent(reply.result));
-      if ( results.status ) {
-        const responseResults = JSON.parse(decodeURIComponent(results.response?.reply));
-        console.log ( 'got response results', responseResults );
-        const tokenId = responseResults?.txpow?.body?.txn?.tokengen?.tokenid;
-        console.log ( 'tokenid', tokenId );
-        if ( tokenId ) {
-          const listenerUrl =
-          `${Remote.server}/${Remote.serverApiBase}=${Remote.addTokenListenerCommand}&${Remote.tokenParam}=${tokenId}`
-          const encodedListener = encodeURI(listenerUrl);    
-          // console.log('url: ', listenerUrl);
-          Minima.net.GET( encodedListener, function ( reply ) {
-            // console.log('got reply for add listner', reply);
-            const results = JSON.parse(decodeURIComponent(reply.result));
-            if ( results.status ) {
-              const txData = {
-                code: "200",
-                summary: Transaction.getSuccess,
-                time: time
-              }
-              dispatch(write({data: txData})(TxActionTypes.TX_SUCCESS));
-            } else {
-              const txData = {
-                code: "400",
-                summary: Transaction.getFailure,
-                time: time
-              }
-              dispatch(write({data: txData})(TxActionTypes.TX_FAILURE))
-            }
-          });
+    const createResponse = await fetch(encodedCreate, {
+      method: 'GET'
+    });
+
+    if (createResponse.ok) {
+
+      const thisJson = await createResponse.json();
+      const responseResults = JSON.parse(thisJson.response?.reply);
+      // console.log ( 'got response results', responseResults );
+      const tokenId = responseResults?.txpow?.body?.txn?.tokengen?.tokenid;
+      console.log ( 'tokenid', tokenId );
+      /* if ( tokenId ) {
+        const listenerUrl =
+        `${Remote.server}/${Remote.serverApiBase}=${Remote.addTokenListenerCommand}&${Remote.tokenParam}=${tokenId}`
+        const encodedListener = encodeURI(listenerUrl);    
+        // console.log('url: ', listenerUrl);
+        const listenerResponse = await fetch(encodedListener, {
+          method: 'GET'
+        });
+
+        if (listenerResponse.ok) {
+
+          const txData = {
+            code: "200",
+            summary: Transaction.getSuccess,
+            time: time
+          }
+          dispatch(write({data: txData})(TxActionTypes.TX_SUCCESS));
         } else {
           const txData = {
             code: "400",
             summary: Transaction.getFailure,
             time: time
           }
-          dispatch(write({data: txData})(TxActionTypes.TX_FAILURE));
-        }       
-
+          dispatch(write({data: txData})(TxActionTypes.TX_FAILURE))
+        }
       } else {
+
         const txData = {
           code: "400",
           summary: Transaction.getFailure,
           time: time
         }
-        dispatch(write({data: txData})(TxActionTypes.TX_FAILURE));
+        dispatch(write({data: txData})(TxActionTypes.TX_FAILURE))
+
+      }*/
+    } else {
+      const txData = {
+        code: "400",
+        summary: Transaction.getFailure,
+        time: time
       }
-    });
+      dispatch(write({data: txData})(TxActionTypes.TX_FAILURE))
+    }
   };
 }
 
@@ -255,33 +260,35 @@ export const balance = () => {
       `${Remote.server}/${Remote.serverApiBase}=${Remote.balanceCommand}`
     const encodedBalance = encodeURI(url);
 
-    Minima.net.GET( encodedBalance, function ( reply ) {
-      // console.log('got reply ', reply);
-      const results = JSON.parse(decodeURIComponent(reply.result));
-      if ( results.status ) {
-        const balances = JSON.parse(results.response?.reply);
-        const balanceData: BalanceProps = {
-          data: []
-        }      
-        for( let i = 0; i < balances.balance?.length; i++ ) {    
-          balanceData.data.push(balances.balance[i]);
-        }
-        dispatch(write({ data: balanceData.data })(BalanceActionTypes.GET_BALANCES))
-        const txData = {
-          code: "200",
-          summary: Transaction.getSuccess,
-          time: time
-        }
-        dispatch(write({data: txData})(TxActionTypes.TX_SUCCESS));
-      } else {
-        const txData = {
-          code: "400",
-          summary: Transaction.getFailure,
-          time: time
-        }
-        dispatch(write({data: txData})(TxActionTypes.TX_FAILURE))
-      }
+    const response = await fetch(encodedBalance, {
+      method: 'GET'
     });
+
+    if (response.ok) {
+
+      const thisJson = await response.json();
+      const balances = JSON.parse(thisJson.response?.reply);
+      const balanceData: BalanceProps = {
+        data: []
+      }      
+      for( let i = 0; i < balances.balance?.length; i++ ) {    
+        balanceData.data.push(balances.balance[i]);
+      }
+      dispatch(write({ data: balanceData.data })(BalanceActionTypes.GET_BALANCES))
+      const txData = {
+        code: "200",
+        summary: Transaction.getSuccess,
+        time: time
+      }
+      dispatch(write({data: txData})(TxActionTypes.TX_SUCCESS));
+    } else {
+      const txData = {
+        code: "400",
+        summary: Transaction.getFailure,
+        time: time
+      }
+      dispatch(write({data: txData})(TxActionTypes.TX_FAILURE))
+    }
   };
 }
 
@@ -302,34 +309,38 @@ export const addresses = () => {
       `${Remote.server}/${Remote.serverApiBase}=${Remote.scriptsCommand}`
     const encodedBalance = encodeURI(url);
 
-    Minima.net.GET( encodedBalance, function ( reply ) {
-      const results = JSON.parse(decodeURIComponent(reply.result));
-      if ( results.status ) {
-        const scripts = JSON.parse(results.response?.reply);
-        const scriptsData: AddressProps = {
-          data: []
-        }      
-        for( let i = 0; i < scripts.addresses?.length; i++ ) { 
-          const thisAddress: Address = scripts.addresses[i]; 
-          if ( thisAddress.script.startsWith('RETURN+SIGNEDBY+(+0x') ) {
-            scriptsData.data.push(thisAddress);
-          }
-        }
-        dispatch(write({ data: scriptsData.data })(AddressActionTypes.GET_ADDRESSES))
-        const txData = {
-          code: "200",
-          summary: Transaction.getSuccess,
-          time: time
-        }
-        dispatch(write({data: txData})(TxActionTypes.TX_SUCCESS));
-      } else {
-        const txData = {
-          code: "400",
-          summary: Transaction.getFailure,
-          time: time
-        }
-        dispatch(write({data: txData})(TxActionTypes.TX_FAILURE))
-      }
+    const response = await fetch(encodedBalance, {
+      method: 'GET'
     });
+
+    if (response.ok) {
+
+      const thisJson = await response.json();
+      const scripts = JSON.parse(thisJson.response?.reply);
+      const scriptsData: AddressProps = {
+        data: []
+      }      
+      for( let i = 0; i < scripts.addresses?.length; i++ ) { 
+        const thisAddress: Address = scripts.addresses[i]; 
+        if ( thisAddress.script.startsWith('RETURN SIGNEDBY ( 0x') ) {
+
+          scriptsData.data.push(thisAddress);
+        }
+      }
+      dispatch(write({ data: scriptsData.data })(AddressActionTypes.GET_ADDRESSES))
+      const txData = {
+        code: "200",
+        summary: Transaction.getSuccess,
+        time: time
+      }
+      dispatch(write({data: txData})(TxActionTypes.TX_SUCCESS));
+    } else {
+      const txData = {
+        code: "400",
+        summary: Transaction.getFailure,
+        time: time
+      }
+      dispatch(write({data: txData})(TxActionTypes.TX_FAILURE))
+    }
   };
 }

@@ -76,24 +76,30 @@ const display = (props: Props) => {
       props.addresses();
     } else {    
 
-      props.addressData.data.forEach(address => {
+      if ( props.addressData && !addresses.length ) {
 
-        const addressOption: SelectOptionType = {
-          value: address.miniaddress,
-          label: address.miniaddress
-        }
-        addresses.push(addressOption);
-      });
-      setThisAddress(addresses[Math.floor(Math.random() * addresses.length)]);
+        props.addressData.data.forEach(address => {
 
-      props.balanceData.data.forEach(balance => {
+          const addressOption: SelectOptionType = {
+            value: address.miniaddress,
+            label: address.miniaddress
+          }
+          addresses.push(addressOption);
+        });
+      
+        setThisAddress(addresses[Math.floor(Math.random() * addresses.length)]);
+      }
 
-        const tokenOption: SelectOptionType = {
-          value: balance.tokenid,
-          label: balance.token
-        }
-        tokens.push(tokenOption);
-      });
+      if ( props.balanceData && !tokens.length ) {
+        props.balanceData.data.forEach(balance => {
+
+          const tokenOption: SelectOptionType = {
+            value: balance.tokenid,
+            label: balance.token
+          }
+          tokens.push(tokenOption);
+        });
+      }
     }
 
   }, [props.balanceData, props.addressData])
@@ -217,7 +223,7 @@ const display = (props: Props) => {
               size="small"
               name="currentAddress"
               type="text"
-              value={thisAddress.value}
+              value={thisAddress ? thisAddress.value : ''}
             />
 
           </Grid>
