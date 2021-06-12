@@ -23,7 +23,32 @@ import {write} from '../../actions';
 let ws: any;
 
 /**
- * Close app networking
+ * Process EMH websocket messages
+ * @return {function} 
+*/
+export const processMessage = (msg: any) => {
+  return async (dispatch: AppDispatch) => {
+
+    // console.log('got message, ', msg);
+
+    if (msg.event == "newbalance") {  
+        
+      // console.log('Got balance message ', jmsg)        
+      
+      const balanceData: BalanceProps = {
+        data: []
+      }      
+      for( let i = 0; i < msg.balance.length; i++ ) {    
+        balanceData.data.push(msg.balance[i])
+      }
+  
+      dispatch(write({ data: balanceData.data })(BalanceActionTypes.GET_BALANCES))
+    } 
+  };
+};
+
+/**
+ * Close app websocket
  * @return {function} 
 */
 const closeNetwork = () => {
@@ -52,28 +77,12 @@ const closeNetwork = () => {
 
       //Send your name..
       ws.send(JSON.stringify(uid));
-
-      // dispatch(balance());
     };
 
     ws.onmessage = (evt: any) => {
       //Convert to JSON
       const jmsg = JSON.parse(evt.data);
-      // console.log('Got message: ', jmsg);    
-      if (jmsg.event == "newbalance") {  
-        
-        // console.log('Got balance message ', jmsg)        
-        
-        const balanceData: BalanceProps = {
-          data: []
-        }      
-        for( let i = 0; i < jmsg.balance.length; i++ ) {    
-          balanceData.data.push(jmsg.balance[i])
-        }
-    
-        dispatch(write({ data: balanceData.data })(BalanceActionTypes.GET_BALANCES))
-      } 
-
+      dispatch(processMessage(jmsg));
     }
 
     ws.onclose = async () => {
@@ -84,7 +93,7 @@ const closeNetwork = () => {
       //let err = JSON.stringify(error);
       const err = JSON.stringify(error, ["message", "arguments", "type", "name", "data"]);
       // websocket is closed.
-      console.log("Minima WS Listener Error ... ", err);
+      console.error("Minima WS Listener Error ... ", err);
     }
   };
 };
@@ -137,16 +146,15 @@ export const createToken = (token: NewToken) => {
     };
     dispatch(write({data: pendingData})(TxActionTypes.TX_PENDING));
 
-    // eslint-disable-next-line max-len
-    // 127.0.0.1:9004/api/EMH/?command=tokenCreate&name=AnotherTest&amount=1&description="Another Test Token"&script="RETURN TRUE"&icon=""&proof=""
-    // eslint-disable-next-line max-len
     const createUrl =
       `${Remote.server}/${Remote.serverApiBase}=${Remote.createTokenCommand}&${Remote.nameParam}="${token.name}"&${Remote.amountParam}=${token.amount}&${Remote.descriptionParam}="${token.description}"&${Remote.iconParam}="${token.icon}"&${Remote.proofParam}="${token.proof}"`
-    const encodedCreate = encodeURI(createUrl);
+    // const encodedCreate = encodeURI(createUrl);
 
-    const createResponse = await fetch(encodedCreate, {
+    const createResponse = await fetch(createUrl, {
       method: 'GET'
     });
+
+    // console.log(createUrl)
 
     if (createResponse.ok) {
 
@@ -211,16 +219,13 @@ export const send = (token: NewSend) => {
     };
     dispatch(write({data: pendingData})(TxActionTypes.TX_PENDING));
 
-    // eslint-disable-next-line max-len
-    // 127.0.0.1:9004/api/EMH/?command=tokenCreate&name=AnotherTest&amount=1&description="Another Test Token"&script="RETURN TRUE"&icon=""&proof=""
-    // eslint-disable-next-line max-len
-    const url =
+    const sendUrl =
       `${Remote.server}/${Remote.serverApiBase}=${Remote.sendCommand}&${Remote.amountParam}=${token.amount}&${Remote.addressParam}=${token.address}&${Remote.tokenParam}=${token.tokenid}`
-    const encodedSend = encodeURI(url);
+    // const encodedSend = encodeURI(url);
 
     // console.log('send: ', token, 'url: ', url);
 
-    const response = await fetch(encodedSend, {
+    const response = await fetch(sendUrl, {
       method: 'GET'
     });
 
@@ -253,14 +258,11 @@ export const balance = () => {
     };
     dispatch(write({data: pendingData})(TxActionTypes.TX_PENDING));
 
-    // eslint-disable-next-line max-len
-    // 127.0.0.1:9004/api/EMH/?command=tokenCreate&name=AnotherTest&amount=1&description="Another Test Token"&script="RETURN TRUE"&icon=""&proof=""
-    // eslint-disable-next-line max-len
-    const url =
+    const balanceUrl =
       `${Remote.server}/${Remote.serverApiBase}=${Remote.balanceCommand}`
-    const encodedBalance = encodeURI(url);
+    //const encodedBalance = encodeURI(url);
 
-    const response = await fetch(encodedBalance, {
+    const response = await fetch(balanceUrl, {
       method: 'GET'
     });
 
@@ -302,14 +304,11 @@ export const addresses = () => {
     };
     dispatch(write({data: pendingData})(TxActionTypes.TX_PENDING));
 
-    // eslint-disable-next-line max-len
-    // 127.0.0.1:9004/api/EMH/?command=tokenCreate&name=AnotherTest&amount=1&description="Another Test Token"&script="RETURN TRUE"&icon=""&proof=""
-    // eslint-disable-next-line max-len
-    const url =
+    const addressUrl =
       `${Remote.server}/${Remote.serverApiBase}=${Remote.scriptsCommand}`
-    const encodedBalance = encodeURI(url);
+    // const encodedBalance = encodeURI(addressUrl);
 
-    const response = await fetch(encodedBalance, {
+    const response = await fetch(addressUrl, {
       method: 'GET'
     });
 
