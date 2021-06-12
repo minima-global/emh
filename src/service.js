@@ -133,12 +133,59 @@ const defaultAPI = {
   },
 };
 
+const defaultActions = {
+  init: 'bootstrap',
+  setURL: 'url',
+  run: 'run',
+  get: 'get',
+  insert: 'insert',
+  delete: 'delete',
+  update: 'update',
+  callSuccess: 'call',
+  callFail: 'fail',
+};
+
 var failedURLCall = {};
 var defaultURL = 'http://127.0.0.1:3000/';
 const maxURLFails = 3;
 // const deleteAfter = 1000 * 3600 * 24;
 const deleteAfter = 300000;
 const blockConfirmedDepth = 3;
+
+/**
+ * Runs supplied Minima SQL on given table
+ * @function doSQL
+ * @param {string} sql
+ * @param {string} tableName
+*/
+function doSQL(sql, tableName) {
+  Minima.sql(sql, function(resp) {
+    if (!resp.status) {
+      Minima.log(app + ' Error with SQL ' + tableName + resp.message);
+    }
+  });
+}
+
+/**
+ * Creates log entries
+ * @function doLog
+ * @param {string} type
+ * @param {object} logInfo
+*/
+function doLog(type, logInfo) {
+  const date = Date.now();
+  const thisData = JSON.stringify(logInfo.info);
+  const insertSQL = 'INSERT INTO ' +
+      tables.log.name +
+      ' (LOGGINGTYPEID, LOGGINGTYPE, DATE, DATA) ' +
+      'VALUES (' +
+      '\'' + logInfo.id + '\', ' +
+      '\'' + type + '\', ' +
+      '\'' + date + '\', ' +
+      '\'' + thisData + '\'' +
+    ')';
+  doSQL(insertSQL, tables.log.name);
+}
 
 /**
  * Creates TxPow table
@@ -214,7 +261,7 @@ function createLog() {
   const createSQL = 'CREATE Table IF NOT EXISTS ' +
       tables.log.name + ' (' +
       'ID INT PRIMARY KEY AUTO_INCREMENT, ' +
-      'LOGGINGTYPEID VARCHAR(512) NOT NULL, ' +
+      'LOGGINGTYPEID VARCHAR(1024) NOT NULL, ' +
       'LOGGINGTYPE VARCHAR(255) NOT NULL, ' +
       'DATE VARCHAR(255) NOT NULL, ' +
       'DATA VARCHAR(2048)' +
@@ -240,7 +287,15 @@ function createURLAPI() {
       '\'' + defaultAPI.url.isPublic + '\'' +
     ')';
   doSQL(insertSQL, tables.log.name);
-  doLog('Default API', extraLogTypes.SYSTEM, defaultAPI.url.endpoint);
+
+  const logData = {
+    id: defaultActions.insert,
+    info: {
+      action: defaultAPI.url.endpoint,
+      data: '',
+    },
+  };
+  doLog(extraLogTypes.SYSTEM, logData);
 }
 
 /**
@@ -260,7 +315,15 @@ function createAddressListenAPI() {
       '\'' + defaultAPI.address.isPublic + '\'' +
     ')';
   doSQL(insertSQL, tables.log.name);
-  doLog('Default API', extraLogTypes.SYSTEM, defaultAPI.address.endpoint);
+
+  const logData = {
+    id: defaultActions.insert,
+    info: {
+      action: defaultAPI.address.endpoint,
+      data: '',
+    },
+  };
+  doLog(extraLogTypes.SYSTEM, logData);
 }
 
 /**
@@ -280,7 +343,15 @@ function createTokenListenAPI() {
       '\'' + defaultAPI.token.isPublic + '\'' +
     ')';
   doSQL(insertSQL, tables.log.name);
-  doLog('Default API', extraLogTypes.SYSTEM, defaultAPI.token.endpoint);
+
+  const logData = {
+    id: defaultActions.insert,
+    info: {
+      action: defaultAPI.token.endpoint,
+      data: '',
+    },
+  };
+  doLog(extraLogTypes.SYSTEM, logData);
 }
 
 /**
@@ -300,7 +371,15 @@ function createGetDbaseAPI() {
       '\'' + defaultAPI.dbase.isPublic + '\'' +
     ')';
   doSQL(insertSQL, tables.log.name);
-  doLog('Default API', extraLogTypes.SYSTEM, defaultAPI.dbase.endpoint);
+
+  const logData = {
+    id: defaultActions.insert,
+    info: {
+      action: defaultAPI.dbase.endpoint,
+      data: '',
+    },
+  };
+  doLog(extraLogTypes.SYSTEM, logData);
 }
 
 /**
@@ -320,7 +399,15 @@ function createGimme50API() {
       '\'' + defaultAPI.gimme50.isPublic + '\'' +
     ')';
   doSQL(insertSQL, tables.log.name);
-  doLog('Default API', extraLogTypes.SYSTEM, defaultAPI.gimme50.endpoint);
+
+  const logData = {
+    id: defaultActions.insert,
+    info: {
+      action: defaultAPI.gimme50.endpoint,
+      data: '',
+    },
+  };
+  doLog(extraLogTypes.SYSTEM, logData);
 }
 
 /**
@@ -340,7 +427,15 @@ function createSendAPI() {
       '\'' + defaultAPI.send.isPublic + '\'' +
     ')';
   doSQL(insertSQL, tables.log.name);
-  doLog('Default API', extraLogTypes.SYSTEM, defaultAPI.send.endpoint);
+
+  const logData = {
+    id: defaultActions.insert,
+    info: {
+      action: defaultAPI.send.endpoint,
+      data: '',
+    },
+  };
+  doLog(extraLogTypes.SYSTEM, logData);
 }
 
 /**
@@ -360,7 +455,15 @@ function createTokenAPI() {
       '\'' + defaultAPI.tokenCreate.isPublic + '\'' +
     ')';
   doSQL(insertSQL, tables.log.name);
-  doLog('Default API', extraLogTypes.SYSTEM, defaultAPI.tokenCreate.endpoint);
+
+  const logData = {
+    id: defaultActions.insert,
+    info: {
+      action: defaultAPI.tokenCreate.endpoint,
+      data: '',
+    },
+  };
+  doLog(extraLogTypes.SYSTEM, logData);
 }
 
 /**
@@ -380,7 +483,15 @@ function createBalanceAPI() {
       '\'' + defaultAPI.balance.isPublic + '\'' +
     ')';
   doSQL(insertSQL, tables.log.name);
-  doLog('Default API', extraLogTypes.SYSTEM, defaultAPI.balance.endpoint);
+
+  const logData = {
+    id: defaultActions.insert,
+    info: {
+      action: defaultAPI.balance.endpoint,
+      data: '',
+    },
+  };
+  doLog(extraLogTypes.SYSTEM, logData);
 }
 
 /**
@@ -400,42 +511,15 @@ function createScriptsAPI() {
       '\'' + defaultAPI.scripts.isPublic + '\'' +
     ')';
   doSQL(insertSQL, tables.log.name);
-  doLog('Default API', extraLogTypes.SYSTEM, defaultAPI.scripts.endpoint);
-}
 
-/**
- * Runs supplied Minima SQL on given table
- * @function doSQL
- * @param {string} sql
- * @param {string} tableName
-*/
-function doSQL(sql, tableName) {
-  Minima.sql(sql, function(resp) {
-    if (!resp.status) {
-      Minima.log(app + ' Error with SQL ' + tableName + resp.message);
-    }
-  });
-}
-
-/**
- * Creates log entries
- * @function doLog
- * @param {string} typeId
- * @param {string} type
- * @param {string} data
-*/
-function doLog(typeId, type, data) {
-  const date = Date.now();
-  const insertSQL = 'INSERT INTO ' +
-      tables.log.name +
-      ' (LOGGINGTYPEID, LOGGINGTYPE, DATE, DATA) ' +
-      'VALUES (' +
-      '\'' + typeId + '\', ' +
-      '\'' + type + '\', ' +
-      '\'' + date + '\', ' +
-      '\'' + data + '\'' +
-    ')';
-  doSQL(insertSQL, tables.log.name);
+  const logData = {
+    id: defaultActions.insert,
+    data: {
+      action: defaultAPI.scripts.endpoint,
+      data: '',
+    },
+  };
+  doLog(extraLogTypes.SYSTEM, logData);
 }
 
 /**
@@ -450,7 +534,15 @@ function setDefaultURL(qParamsJSON, replyId) {
 
   if ( endpoint == defaultAPI.url.endpoint ) {
     defaultURL=qParamsJSON.url;
-    doLog(endpoint, extraLogTypes.API, 'url: ' + url);
+
+    const logData = {
+      id: defaultActions.setURL,
+      info: {
+        action: endpoint,
+        data: url,
+      },
+    };
+    doLog(extraLogTypes.API, logData);
     Minima.minidapps.reply(replyId, 'OK');
   } else {
     Minima.minidapps.reply(replyId, '');
@@ -481,7 +573,15 @@ function insertAddress(qParamsJSON, replyId) {
         '\'' + url + '\'' +
       ')';
     doSQL(insertSQL, tables.address.name);
-    doLog(endpoint, extraLogTypes.API, address);
+
+    const logData = {
+      id: address + ' ' + url,
+      info: {
+        action: endpoint,
+        data: address,
+      },
+    };
+    doLog(extraLogTypes.API, logData);
     Minima.minidapps.reply(replyId, 'OK');
   } else {
     Minima.minidapps.reply(replyId, '');
@@ -510,7 +610,15 @@ function insertToken(qParamsJSON, replyId) {
         '\'' + url + '\'' +
       ')';
     doSQL(insertSQL, tables.token.name);
-    doLog(endpoint, extraLogTypes.API, token);
+
+    const logData = {
+      id: token + ' ' + url,
+      info: {
+        action: endpoint,
+        data: token,
+      },
+    };
+    doLog(extraLogTypes.API, logData);
     Minima.minidapps.reply(replyId, 'OK');
   } else {
     Minima.minidapps.reply(replyId, '');
@@ -545,7 +653,15 @@ function getDbase(qParamsJSON, replyId) {
       if ( result.status ) {
         Minima.minidapps.reply(replyId,
             JSON.stringify(result.response.rows.slice()));
-        doLog(endpoint, extraLogTypes.API, table);
+
+        const logData = {
+          id: defaultActions.get,
+          info: {
+            action: endpoint,
+            data: table,
+          },
+        };
+        doLog(extraLogTypes.API, logData);
       } else {
         Minima.minidapps.reply(replyId, '');
       }
@@ -582,15 +698,44 @@ function processURL(txId, uRL, address, tokenId, state) {
   Minima.net.POST(uRL, JSON.stringify(postData), function(postResults) {
     // Minima.log(app + ' POST results ' + JSON.stringify(postResults));
     if ( postResults.result == 'OK' ) {
-      doLog(uRL, extraLogTypes.URL, txId);
+      let logData = {
+        id: txId,
+        info: {
+          action: defaultActions.callSuccess,
+          data: extraLogTypes.URL,
+        },
+      };
+      doLog(extraLogTypes.URL, logData);
+
       doSQL(deleteSQL, tables.txpow.name);
-      doLog(txId, tables.txpow.name, 'delete');
+      logData = {
+        id: txId,
+        info: {
+          action: defaultActions.delete,
+          data: '',
+        },
+      };
+      doLog(tables.txpow.name, logData);
     } else {
-      doLog(uRL, extraLogTypes.URL, 'FAIL ' + txId);
+      let logData = {
+        id: txId,
+        info: {
+          action: defaultActions.callFail,
+          data: extraLogTypes.URL,
+        },
+      };
+      doLog(extraLogTypes.URL, logData);
       failedURLCall[uRL].count += 1;
       if ( failedURLCall[uRL].count == maxURLFails ) {
         doSQL(deleteSQL, tables.txpow.name);
-        doLog(txId, tables.txpow.name, 'delete');
+        logData = {
+          id: txId,
+          info: {
+            action: defaultActions.delete,
+            data: '',
+          },
+        };
+        doLog(tables.txpow.name);
         failedURLCall = {};
       }
     }
@@ -621,7 +766,14 @@ function processTxPow(blockTime) {
 
         if ((now - txPow.DATE) > deleteAfter) {
           doSQL(deleteSQL, tables.txpow.name);
-          doLog(txPow.TXID, tables.txpow.name, 'delete');
+          const logData = {
+            id: txId,
+            info: {
+              action: defaultActions.delete,
+              data: '',
+            },
+          };
+          doLog(tables.txpow.name, logData);
         } else {
           const txPowInfo = 'txpowinfo ' + txPow.TXID;
           Minima.cmd(txPowInfo, function(infoResults) {
@@ -682,9 +834,14 @@ function processTokenTx(txId, tokenId, mxAddress) {
         ')';
 
         doSQL(insertSQL, tables.txpow.name);
-        doLog(txId, tables.txpow.name, 'insert ' +
-            tokenId + ' ' +
-            tokenResults.response.rows[i].URL);
+        const logData = {
+          id: txId,
+          info: {
+            action: defaultActions.insert,
+            data: tokenId,
+          },
+        };
+        doLog(tables.txpow.name, logData);
       }
     }
   });
@@ -722,9 +879,14 @@ function processAddressTx(txId, tokenId, mxAddress) {
             ')';
 
         doSQL(insertSQL, tables.txpow.name);
-        doLog(txId, tables.txpow.name, 'insert ' +
-                mxAddress + ' ' +
-                mxResults.response.rows[i].URL);
+        const logData = {
+          id: txId,
+          info: {
+            action: defaultActions.insert,
+            data: mxAddress,
+          },
+        };
+        doLog(tables.txpow.name, logData);
       }
     }
   });
@@ -816,7 +978,14 @@ function processApiCall(qParams, replyId) {
 
             Minima.cmd(command, function(msg) {
               if ( msg.status ) {
-                doLog(endpoint, extraLogTypes.API, command);
+                const logData = {
+                  id: defaultActions.run,
+                  info: {
+                    action: endpoint,
+                    data: command,
+                  },
+                };
+                doLog(extraLogTypes.API, logData);
                 // eslint-disable-next-line max-len
                 // Minima.log(app + ' Command response ' + JSON.stringify(msg.response));
                 Minima.minidapps.reply(replyId, JSON.stringify(msg.response));
@@ -860,13 +1029,19 @@ function createDefaultAPI() {
 
 /** @function init */
 function init() {
+  initDbase();
+  createDefaultAPI();
   /** Initialise the app */
   Minima.init( function(msg) {
     if (msg.event == 'connected') {
-      doLog('Bootstrap', extraLogTypes.SYSTEM, 'init');
-
-      initDbase();
-      createDefaultAPI();
+      const logData = {
+        id: defaultActions.init,
+        info: {
+          action: '',
+          data: '',
+        },
+      };
+      doLog(extraLogTypes.SYSTEM, logData);
 
       // Listen for messages posted to this service
       Minima.minidapps.listen(function(msg) {

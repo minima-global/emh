@@ -95,7 +95,7 @@ const list = (props: Props) => {
         const thisData = log.DATA;
         const loggingTypeId = log.LOGGINGTYPEID;
         const rowData: any[] =
-          [dateCreated, loggingType, thisData, loggingTypeId];
+          [dateCreated, loggingTypeId, loggingType, thisData];
         logsData.push(rowData);
         console.log('pushing data', rowData);
       });
