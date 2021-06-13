@@ -292,7 +292,7 @@ function createURLAPI() {
     id: defaultActions.insert,
     info: {
       action: defaultAPI.url.endpoint,
-      data: '',
+      data: tables.trigger.name,
     },
   };
   doLog(extraLogTypes.SYSTEM, logData);
@@ -320,7 +320,7 @@ function createAddressListenAPI() {
     id: defaultActions.insert,
     info: {
       action: defaultAPI.address.endpoint,
-      data: '',
+      data: tables.trigger.name,
     },
   };
   doLog(extraLogTypes.SYSTEM, logData);
@@ -348,7 +348,7 @@ function createTokenListenAPI() {
     id: defaultActions.insert,
     info: {
       action: defaultAPI.token.endpoint,
-      data: '',
+      data: tables.trigger.name,
     },
   };
   doLog(extraLogTypes.SYSTEM, logData);
@@ -376,7 +376,7 @@ function createGetDbaseAPI() {
     id: defaultActions.insert,
     info: {
       action: defaultAPI.dbase.endpoint,
-      data: '',
+      data: tables.trigger.name,
     },
   };
   doLog(extraLogTypes.SYSTEM, logData);
@@ -404,7 +404,7 @@ function createGimme50API() {
     id: defaultActions.insert,
     info: {
       action: defaultAPI.gimme50.endpoint,
-      data: '',
+      data: tables.trigger.name,
     },
   };
   doLog(extraLogTypes.SYSTEM, logData);
@@ -432,7 +432,7 @@ function createSendAPI() {
     id: defaultActions.insert,
     info: {
       action: defaultAPI.send.endpoint,
-      data: '',
+      data: tables.trigger.name,
     },
   };
   doLog(extraLogTypes.SYSTEM, logData);
@@ -460,7 +460,7 @@ function createTokenAPI() {
     id: defaultActions.insert,
     info: {
       action: defaultAPI.tokenCreate.endpoint,
-      data: '',
+      data: tables.trigger.name,
     },
   };
   doLog(extraLogTypes.SYSTEM, logData);
@@ -488,7 +488,7 @@ function createBalanceAPI() {
     id: defaultActions.insert,
     info: {
       action: defaultAPI.balance.endpoint,
-      data: '',
+      data: tables.trigger.name,
     },
   };
   doLog(extraLogTypes.SYSTEM, logData);
@@ -514,9 +514,9 @@ function createScriptsAPI() {
 
   const logData = {
     id: defaultActions.insert,
-    data: {
+    info: {
       action: defaultAPI.scripts.endpoint,
-      data: '',
+      data: tables.trigger.name,
     },
   };
   doLog(extraLogTypes.SYSTEM, logData);
@@ -698,11 +698,11 @@ function processURL(txId, uRL, address, tokenId, state) {
   Minima.net.POST(uRL, JSON.stringify(postData), function(postResults) {
     // Minima.log(app + ' POST results ' + JSON.stringify(postResults));
     if ( postResults.result == 'OK' ) {
-      let logData = {
+      var logData = {
         id: txId,
         info: {
           action: defaultActions.callSuccess,
-          data: extraLogTypes.URL,
+          data: uRL,
         },
       };
       doLog(extraLogTypes.URL, logData);
@@ -712,16 +712,16 @@ function processURL(txId, uRL, address, tokenId, state) {
         id: txId,
         info: {
           action: defaultActions.delete,
-          data: '',
+          data: tables.txpow.name,
         },
       };
       doLog(tables.txpow.name, logData);
     } else {
-      let logData = {
+      var logData = {
         id: txId,
         info: {
           action: defaultActions.callFail,
-          data: extraLogTypes.URL,
+          data: uRL,
         },
       };
       doLog(extraLogTypes.URL, logData);
@@ -732,7 +732,7 @@ function processURL(txId, uRL, address, tokenId, state) {
           id: txId,
           info: {
             action: defaultActions.delete,
-            data: '',
+            data: tables.txpow.name,
           },
         };
         doLog(tables.txpow.name);
@@ -770,7 +770,7 @@ function processTxPow(blockTime) {
             id: txId,
             info: {
               action: defaultActions.delete,
-              data: '',
+              data: tables.txpow.name,
             },
           };
           doLog(tables.txpow.name, logData);
@@ -838,7 +838,7 @@ function processTokenTx(txId, tokenId, mxAddress) {
           id: txId,
           info: {
             action: defaultActions.insert,
-            data: tokenId,
+            data: tables.txpow.name + ' ' + tokenId + ' ' + mxAddress,
           },
         };
         doLog(tables.txpow.name, logData);
@@ -883,7 +883,7 @@ function processAddressTx(txId, tokenId, mxAddress) {
           id: txId,
           info: {
             action: defaultActions.insert,
-            data: mxAddress,
+            data: tables.txpow.name + ' ' + tokenId + ' ' + mxAddress,
           },
         };
         doLog(tables.txpow.name, logData);

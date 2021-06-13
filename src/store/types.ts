@@ -1,9 +1,8 @@
 /* eslint-disable no-unused-vars */
-import Decimal from 'decimal.js';
 import {Action} from 'redux';
 import {ThunkDispatch} from 'redux-thunk';
 
-import {Token as Balance} from 'minima';
+import {Token as Balance, NetworkStatus as Status} from 'minima';
 
 /**
  * Store stuff
@@ -31,6 +30,13 @@ export interface ActionProps extends Action {
 
 export type AppDispatch = ThunkDispatch<ApplicationState, any, ActionProps>
 
+export interface LogInfo {
+  id: string
+  info: {
+    action: string
+    data: string
+  }
+}
 
 export type ChartValues = {
   count: number
@@ -66,38 +72,6 @@ export interface BalanceProps extends PayloadProps {
 
 export interface TokenProps extends PayloadProps {
   data: Array<Balance>
-}
-
-/**
- * Minima status info
- */
-
-export interface Status {
-  automine: boolean
-  cascade: string
-  chainlength: number
-  chainspeed: Decimal
-  chainweight: string
-  conf: string
-  connections: number
-  difficulty: string
-  host: string
-  lastblock: string
-  lasttime: string
-  mempoolcoins: number
-  mempooltxn: number
-  minidappserver: number
-  minimaport: number
-  ram: string
-  root: string
-  rpcport: number
-  time: string
-  tip: string
-  total: string
-  txpowdb: number
-  uptime: string
-  version: string
-  websocketport: number
 }
 
 export interface StatusProps extends PayloadProps {
@@ -182,7 +156,6 @@ export interface TriggersProps extends PayloadProps {
 /**
  *  Enums that make this app' work
  */
-
 export const enum PageTypes {
   ABOUT = 'about',
   HELP = 'help',

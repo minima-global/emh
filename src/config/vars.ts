@@ -142,6 +142,18 @@ class Dbase {
     },
   };
 
+  static readonly defaultActions = {
+    init: 'bootstrap',
+    setURL: 'url',
+    run: 'run',
+    get: 'get',
+    insert: 'insert',
+    delete: 'delete',
+    update: 'update',
+    callSuccess: 'call',
+    callFail: 'fail',
+  };
+
   static readonly maxLimit = 2147483647
   static readonly pageLimit = 25
 }

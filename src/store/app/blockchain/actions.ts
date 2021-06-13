@@ -5,13 +5,12 @@ import {
   ActionTypes,
   TokenActionTypes,
   TokenProps,
-  Token,
+  LogInfo,
   TxActionTypes,
   CmdActionTypes,
   BalanceProps,
   BalanceActionTypes,
   StatusProps,
-  Status,
   StatusActionTypes,
   TxData,
 } from '../../types';
@@ -32,7 +31,7 @@ export const init = () => {
         dispatch(getBalance());
         dispatch(getTokens());
         dispatch(getStatus());
-        dispatch( getDbaseEntries(Dbase.tables.log.name, 'DATE', 'DESC'));
+        dispatch(getDbaseEntries(Dbase.tables.log.name, 'DATE', 'DESC'));
 
         // need this empty listener, apparently...
         Minima.minidapps.listen(function(msg) {
@@ -42,7 +41,7 @@ export const init = () => {
         dispatch(getBalance());
         dispatch(getTokens());
         dispatch(getStatus());
-        dispatch( getDbaseEntries(Dbase.tables.log.name, 'DATE', 'DESC'));
+        dispatch(getDbaseEntries(Dbase.tables.log.name, 'DATE', 'DESC'));
       }
     });
   };
@@ -72,11 +71,18 @@ export const initTx = () => {
  */
 export const command = (endpoint: string, cmd: string) => {
   return async (dispatch: AppDispatch) => {
-    console.log('Got command', cmd);
+    // console.log('Got command', cmd);
     const successAction: ActionTypes = CmdActionTypes.CMD_SUCCESS;
     Minima.cmd(cmd, function(msg: any) {
       // console.log('Command?: ', msg);
-      dispatch(doLog(endpoint, Dbase.extraLogTypes.COMMAND, cmd));
+      const logData: LogInfo = {
+        id: Dbase.defaultActions.run,
+        info: {
+          action: endpoint,
+          data: cmd,
+        },
+      };
+      dispatch(doLog(Dbase.extraLogTypes.COMMAND, logData));
       dispatch(write({data: msg.response})(successAction));
     });
   };
@@ -93,7 +99,7 @@ export const getTokens = () => {
         };
         const tokens = respJSON[0].response.tokens;
         for ( let i=0; i < tokens.length; i++ ) {
-          const thisToken: Token = tokens[i];
+          const thisToken = tokens[i];
           tokenData.data.push(thisToken);
         }
         dispatch(write({data: tokenData.data})(TokenActionTypes.TOKEN_SUCCESS));
@@ -126,7 +132,7 @@ export const getStatus = () => {
         const statusData: StatusProps = {
           data: [],
         };
-        const status: Status = respJSON[0].response;
+        const status = respJSON[0].response;
         statusData.data.push(status);
         dispatch(write(
             {data: statusData.data})(StatusActionTypes.STATUS_SUCCESS));

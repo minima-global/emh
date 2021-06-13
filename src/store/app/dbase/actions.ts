@@ -3,6 +3,7 @@ import {Minima} from 'minima';
 import {
   AppDispatch,
   ActionTypes,
+  LogInfo,
   SuccessAndFailType,
   TxPoWActionTypes,
   AddressActionTypes,
@@ -22,31 +23,31 @@ import {write} from '../../actions';
 
 /**
  * Logs stuff going into the database
- * @param {string} typeId - the key of the type
  * @param {string} type - the type of the log entry
- * @param {string} data - relevant data for the log entry
+ * @param {object} logInfo - relevant data for the log entry
  * @return {function}
  */
-export const doLog = (typeId: string, type: string, data: string) => {
+export const doLog = (type: string, logInfo: LogInfo) => {
   return async (dispatch: AppDispatch) => {
     const table = Dbase.tables.log.name;
+    const thisData = JSON.stringify(logInfo.info);
     const date = Date.now();
     const insertSQL = 'INSERT INTO ' +
         table +
         ' (LOGGINGTYPEID, LOGGINGTYPE, DATE, DATA) ' +
         'VALUES (' +
-        '\'' + typeId + '\', ' +
+        '\'' + logInfo.id + '\', ' +
         '\'' + type + '\', ' +
         '\'' + date + '\', ' +
-        '\'' + data + '\'' +
+        '\'' + thisData + '\'' +
       ')';
     Minima.sql(insertSQL, function(result: any) {
       if ( !result.status ) {
         Minima.log(App.appName +
           ' Error logging ' +
-          typeId + ' ' +
+          logInfo.id + ' ' +
           type + ' ' +
-          data,
+          thisData,
         );
       }
     });
@@ -196,7 +197,16 @@ export const addRow = (
         };
         dispatch(write({data: txData})(txFailAction));
       } else {
-        dispatch(doLog(thisKey, table, 'insert'));
+        // If Minima.sql gave me back the id of the row created,
+        // I could use it as the 'id' here...
+        const logData: LogInfo = {
+          id: thisKey,
+          info: {
+            action: Dbase.defaultActions.insert,
+            data: table + thisValues,
+          },
+        };
+        dispatch(doLog(table, logData));
         dispatch(write({data: txData})(txSuccessAction));
       }
     });
@@ -246,7 +256,14 @@ export const deleteRow = (
         };
         dispatch(write({data: txData})(txFailAction));
       } else {
-        dispatch(doLog(thisKey, table, 'delete'));
+        const logData: LogInfo = {
+          id: thisKey,
+          info: {
+            action: Dbase.defaultActions.delete,
+            data: table,
+          },
+        };
+        dispatch(doLog(table, logData));
         dispatch(write({data: txData})(txSuccessAction));
       }
     });
