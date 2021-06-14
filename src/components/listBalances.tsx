@@ -41,7 +41,17 @@ const display = (props: Props) => {
           {BalanceVars.heading}
         </Typography>
 
-        <Grid item container className={classes.formSummary} xs={12}>
+        <Grid
+          item
+          container
+          alignItems="flex-start"
+          style={{
+            width: '100%',
+            maxHeight: '20vh',
+            overflow: 'auto',
+          }}
+          xs={12}
+        >
           {
             props.balanceData?.data.map(
                 ( balance: Balance, index: number ) => {
@@ -59,12 +69,12 @@ const display = (props: Props) => {
                         xs={2}
                       >
                         {balance.icon?
-                          <img
-                            className={classes.balanceIcon}
-                            src={balance.icon} /> :
-                          <img
-                            className={classes.balanceIcon}
-                            src={'https://www.gravatar.com/avatar/' + SparkMD5.hash(balance.tokenid) + '?d=identicon'} />
+                            <img
+                              className={classes.balanceIcon}
+                              src={balance.icon} /> :
+                            <img
+                              className={classes.balanceIcon}
+                              src={'https://www.gravatar.com/avatar/' + SparkMD5.hash(balance.tokenid) + '?d=identicon'} />
                         }
                       </Grid>
                       <Grid

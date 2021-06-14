@@ -66,17 +66,17 @@ let theme = createMuiTheme({
     },
     h5: {
       lineHeight: '1.5',
-      fontSize: '1.4em',
-      fontWeight: 400,
-      fontFamily: '"Manrope", "Roboto", "Arial", "sans-serif"',
-      color: '#AAAABE',
-    },
-    h6: {
-      lineHeight: '1.5',
-      fontSize: '1em',
+      fontSize: '1.3em',
       fontWeight: 700,
       fontFamily: '"Manrope", "Roboto", "Arial", "sans-serif"',
       color: '#001C32',
+    },
+    h6: {
+      lineHeight: '1.5',
+      fontSize: '1.3em',
+      fontWeight: 700,
+      fontFamily: '"Manrope", "Roboto", "Arial", "sans-serif"',
+      color: '#91919D',
     },
     subtitle1: {
       lineHeight: '1.5',
@@ -201,9 +201,6 @@ const themeStyles = makeStyles({
       paddingRight: theme.spacing(2),
     },
   },
-  active: {
-    color: 'red',
-  },
   footer: {
     display: 'flex',
     alignItems: 'center',
@@ -241,6 +238,9 @@ const themeStyles = makeStyles({
       lineHeight: '1.5',
       fontSize: '1em',
     },
+  },
+  active: {
+    color: 'red',
   },
   helpIcon: {
     [breakpoints.up('xs')]: {
@@ -308,12 +308,12 @@ const themeStyles = makeStyles({
     },
   },
   oddRow: {
-    backgroundColor: '#F5F3F2',
+    backgroundColor: '#FAFAFF',
     paddingTop: theme.spacing(1),
     paddingBottom: theme.spacing(1),
   },
   evenRow: {
-    backgroundColor: '#FAFAFF',
+    backgroundColor: '#F5F3F2',
     paddingTop: theme.spacing(1),
     paddingBottom: theme.spacing(1),
   },

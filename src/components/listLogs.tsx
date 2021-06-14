@@ -89,7 +89,7 @@ const list = (props: Props) => {
       <Grid item container alignItems="flex-start" xs={12}>
         <Grid item container justify="flex-start" xs={3}>
           <Typography variant="h5">
-            {LogVars.records}: {numRecords / Dbase.pageLimit}
+            {LogVars.records} {numRecords / Dbase.pageLimit}
           </Typography>
         </Grid>
         <Grid item container justify="flex-end" xs={9}>
@@ -127,7 +127,7 @@ const list = (props: Props) => {
             xs={3}
             lg={2}
           >
-            <Typography variant="h5">
+            <Typography variant="h6">
               {LogVars.dateCreated}
             </Typography>
           </Grid>
@@ -140,7 +140,7 @@ const list = (props: Props) => {
             lg={5}
           >
             <Typography
-              variant="h5"
+              variant="h6"
               noWrap={true}
             >
               {LogVars.loggingTypeId}
@@ -154,7 +154,7 @@ const list = (props: Props) => {
             xs={3}
             lg={1}
           >
-            <Typography variant="h5">
+            <Typography variant="h6">
               {LogVars.loggingType}
             </Typography>
           </Grid>
@@ -166,11 +166,26 @@ const list = (props: Props) => {
             xs={3}
             lg={4}
           >
-            <Typography variant="h5">
+            <Typography variant="h6">
               {LogVars.data}
             </Typography>
           </Grid>
 
+        </Grid>
+
+        <Grid
+          className={classes.formSummary}
+          item
+          container
+          justify="flex-start"
+          xs={12}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 4000 20"
+          >
+            <line x2="4000" stroke="#001C32" width="100%" height="100%"/>
+          </svg>
         </Grid>
 
         <Grid item container className={classes.formSummary} xs={12}>

@@ -53,7 +53,6 @@ export const Home = () => {
               marginRight: theme.spacing(1),
               width: '100%',
               height: '30vh',
-              overflow: 'auto',
               background: 'white',
             }}
           >

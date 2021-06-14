@@ -53,7 +53,7 @@ export const Info = (props: Props) => {
   }, [props.page]);
 
   return (
-    <Grid className={classes.loggedInContent} item container xs={12}>
+    <Grid item container xs={12}>
 
       <Grid item container xs={12}>
 

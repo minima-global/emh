@@ -337,7 +337,7 @@ class Log {
   static readonly user = 'User'
   static readonly loggingType = 'Type'
   static readonly data = 'Data'
-  static readonly loggingTypeId = 'ID'
+  static readonly loggingTypeId = 'iD'
   static readonly records = 'Page'
 
   static readonly nextButton = 'Next'
