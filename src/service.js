@@ -578,7 +578,7 @@ function insertAddress(qParamsJSON, replyId) {
       id: address + ' ' + url,
       info: {
         action: endpoint,
-        data: address,
+        data: address + ',' + url,
       },
     };
     doLog(extraLogTypes.API, logData);
@@ -615,7 +615,7 @@ function insertToken(qParamsJSON, replyId) {
       id: token + ' ' + url,
       info: {
         action: endpoint,
-        data: token,
+        data: token + ',' + url,
       },
     };
     doLog(extraLogTypes.API, logData);

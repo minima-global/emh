@@ -2,16 +2,19 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {connect} from 'react-redux';
 
-import MUIDataTable, {Responsive, FilterType} from 'mui-datatables';
+import
+MUIDataTable,
+{Responsive, FilterType, SelectableRows} from 'mui-datatables';
 
 import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+
 import {
   createMuiTheme,
   MuiThemeProvider,
-  withStyles,
 } from '@material-ui/core/styles';
 
-import {theme, themeStyles} from '../styles';
+import {themeStyles} from '../styles';
 
 import {
   ApplicationState,
@@ -48,17 +51,79 @@ const list = (props: Props) => {
 
   const [responsive, setResponsive] = useState('simple' as Responsive);
   const [filterType, setFilterType] = useState('checkbox' as FilterType);
+  const [selectableRows, setSelectableRows] =
+      useState('none' as SelectableRows);
   const [searchBtn, setSearchBtn] = useState(true);
   const [downloadBtn, setDownloadBtn] = useState(true);
   const [printBtn, setPrintBtn] = useState(true);
-  const [viewColumnBtn, setViewColumnBtn] = useState(true);
+  const [viewColumnBtn, setViewColumnBtn] = useState(false);
   const [filterBtn, setFilterBtn] = useState(true);
   const columns =
     [
-      LogVars.dateCreated,
-      LogVars.loggingTypeId,
-      LogVars.loggingType,
-      LogVars.data,
+      {
+        name: LogVars.dateCreated,
+        options: {
+          filter: true,
+          sort: true,
+          customBodyRender:
+            // eslint-disable-next-line react/display-name
+            (value: any, _tableMeta: any, _updateValue: any) => {
+              return (
+                <Typography variant="body1" noWrap={true}>
+                  {value}
+                </Typography>
+              );
+            },
+        },
+      },
+      {
+        name: LogVars.loggingTypeId,
+        options: {
+          filter: false,
+          sort: false,
+          customBodyRender:
+            // eslint-disable-next-line react/display-name
+            (value: any, _tableMeta: any, _updateValue: any) => {
+              return (
+                <Typography variant="body1" noWrap={true}>
+                  {value}
+                </Typography>
+              );
+            },
+        },
+      },
+      {
+        name: LogVars.loggingType,
+        options: {
+          filter: true,
+          sort: true,
+          customBodyRender:
+            // eslint-disable-next-line react/display-name
+            (value: any, _tableMeta: any, _updateValue: any) => {
+              return (
+                <Typography variant="body1" noWrap={true}>
+                  {value}
+                </Typography>
+              );
+            },
+        },
+      },
+      {
+        name: LogVars.data,
+        options: {
+          filter: false,
+          sort: false,
+          customBodyRender:
+            // eslint-disable-next-line react/display-name
+            (value: any, _tableMeta: any, _updateValue: any) => {
+              return (
+                <Typography variant="body1" noWrap={true}>
+                  {value}
+                </Typography>
+              );
+            },
+        },
+      },
     ];
   const [data, setData] = useState([] as any[]);
   const options = {
@@ -69,6 +134,7 @@ const list = (props: Props) => {
     filter: filterBtn,
     filterType: filterType,
     resizableColumns: true,
+    selectableRows: selectableRows,
     draggableColumns: {
       enabled: true,
     },
@@ -106,9 +172,19 @@ const list = (props: Props) => {
   const getMuiTheme = () =>
     createMuiTheme({
       overrides: {
+        MUIDataTableHeadCell: {
+          root: {
+            'lineHeight': '1.5',
+            'fontSize': '1.4em',
+            'fontWeight': 400,
+            'fontFamily': '"Manrope", "Roboto", "Arial", "sans-serif"',
+            'color': '#AAAABE',
+          },
+        },
         MUIDataTable: {
           root: {
-            backgroundColor: 'white',
+            'backgroundColor': 'white',
+            'width': '100%',
           },
           paper: {
             boxShadow: 'none',
@@ -116,7 +192,16 @@ const list = (props: Props) => {
         },
         MUIDataTableBodyCell: {
           root: {
-            backgroundColor: 'white',
+            'backgroundColor': 'white',
+          },
+        },
+        MuiButton: {
+          label: {
+            'lineHeight': '1.5',
+            'fontSize': '1.4em',
+            'fontWeight': 400,
+            'fontFamily': '"Manrope", "Roboto", "Arial", "sans-serif"',
+            'color': '#AAAABE',
           },
         },
       },
@@ -141,20 +226,14 @@ const list = (props: Props) => {
         alignItems='flex-start'
         xs={12}
       >
-        <div
-          style={{
-            width: '100%',
-          }}
-        >
-          <MuiThemeProvider theme={getMuiTheme()}>
-            <MUIDataTable
-              title=''
-              data={data}
-              columns={columns}
-              options={options}
-            />
-          </MuiThemeProvider>
-        </div>
+        <MuiThemeProvider theme={getMuiTheme()}>
+          <MUIDataTable
+            title=''
+            data={data}
+            columns={columns}
+            options={options}
+          />
+        </MuiThemeProvider>
       </Grid>
     </>
   );

@@ -197,13 +197,11 @@ export const addRow = (
         };
         dispatch(write({data: txData})(txFailAction));
       } else {
-        // If Minima.sql gave me back the id of the row created,
-        // I could use it as the 'id' here...
         const logData: LogInfo = {
           id: thisKey,
           info: {
             action: Dbase.defaultActions.insert,
-            data: table + thisValues,
+            data: values.toString(),
           },
         };
         dispatch(doLog(table, logData));
