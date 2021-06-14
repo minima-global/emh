@@ -1,20 +1,11 @@
-/* eslint-disable no-unused-vars */
 import React, {useEffect, useRef, useState} from 'react';
 import {connect} from 'react-redux';
 
-import
-MUIDataTable,
-{Responsive, FilterType, SelectableRows} from 'mui-datatables';
-
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
 
-import {
-  createMuiTheme,
-  MuiThemeProvider,
-} from '@material-ui/core/styles';
-
-import {themeStyles} from '../styles';
+import {theme, themeStyles} from '../styles';
 
 import {
   ApplicationState,
@@ -47,100 +38,11 @@ interface DispatchProps {
 type Props = StateProps & DispatchProps
 
 const list = (props: Props) => {
+  const [limitLow, setLimitLow] = useState(0);
+  const [numRecords, setNumRecords] = useState(Dbase.pageLimit);
+  const [nextDisabled, setNextDisabled] = useState(true);
+  const [backDisabled, setBackDisabled] = useState(true);
   const isFirstRun = useRef(true);
-
-  const [responsive, setResponsive] = useState('simple' as Responsive);
-  const [filterType, setFilterType] = useState('checkbox' as FilterType);
-  const [selectableRows, setSelectableRows] =
-      useState('none' as SelectableRows);
-  const [searchBtn, setSearchBtn] = useState(true);
-  const [downloadBtn, setDownloadBtn] = useState(true);
-  const [printBtn, setPrintBtn] = useState(true);
-  const [viewColumnBtn, setViewColumnBtn] = useState(false);
-  const [filterBtn, setFilterBtn] = useState(true);
-  const columns =
-    [
-      {
-        name: LogVars.dateCreated,
-        options: {
-          filter: true,
-          sort: true,
-          customBodyRender:
-            // eslint-disable-next-line react/display-name
-            (value: any, _tableMeta: any, _updateValue: any) => {
-              return (
-                <Typography variant="body1" noWrap={true}>
-                  {value}
-                </Typography>
-              );
-            },
-        },
-      },
-      {
-        name: LogVars.loggingTypeId,
-        options: {
-          filter: false,
-          sort: false,
-          customBodyRender:
-            // eslint-disable-next-line react/display-name
-            (value: any, _tableMeta: any, _updateValue: any) => {
-              return (
-                <Typography variant="body1" noWrap={true}>
-                  {value}
-                </Typography>
-              );
-            },
-        },
-      },
-      {
-        name: LogVars.loggingType,
-        options: {
-          filter: true,
-          sort: true,
-          customBodyRender:
-            // eslint-disable-next-line react/display-name
-            (value: any, _tableMeta: any, _updateValue: any) => {
-              return (
-                <Typography variant="body1" noWrap={true}>
-                  {value}
-                </Typography>
-              );
-            },
-        },
-      },
-      {
-        name: LogVars.data,
-        options: {
-          filter: false,
-          sort: false,
-          customBodyRender:
-            // eslint-disable-next-line react/display-name
-            (value: any, _tableMeta: any, _updateValue: any) => {
-              return (
-                <Typography variant="body1" noWrap={true}>
-                  {value}
-                </Typography>
-              );
-            },
-        },
-      },
-    ];
-  const [data, setData] = useState([] as any[]);
-  const options = {
-    search: searchBtn,
-    download: downloadBtn,
-    print: printBtn,
-    viewColumns: viewColumnBtn,
-    filter: filterBtn,
-    filterType: filterType,
-    resizableColumns: true,
-    selectableRows: selectableRows,
-    draggableColumns: {
-      enabled: true,
-    },
-    responsive,
-  };
-
   const classes = themeStyles();
 
   useEffect(() => {
@@ -150,65 +52,29 @@ const list = (props: Props) => {
           Dbase.tables.log.name,
           'DATE',
           'DESC',
-          0,
-          Dbase.maxLimit);
+          limitLow,
+          Dbase.pageLimit);
     } else {
-      const logsData: any[] = [];
-      props.logsData?.data.forEach( ( log: LogsType, index: number ) => {
-        const thisDate = new Date(+log.DATE);
-        const dateCreated = thisDate.toString().replace(/ GMT.*$/g, '');
-        const loggingType = log.LOGGINGTYPE;
-        const thisData = log.DATA;
-        const loggingTypeId = log.LOGGINGTYPEID;
-        const rowData: any[] =
-          [dateCreated, loggingTypeId, loggingType, thisData];
-        logsData.push(rowData);
-        console.log('pushing data', rowData);
-      });
-      setData(logsData);
+      if ( props.logsData.data.length < Dbase.pageLimit - 1 ) {
+        setNextDisabled(true);
+        if ( limitLow === 0 ) {
+          setBackDisabled(true);
+        } else {
+          setBackDisabled(false);
+        }
+      } else if ( limitLow === 0 ) {
+        setNextDisabled(false);
+        setBackDisabled(true);
+      } else {
+        setNextDisabled(false);
+        setBackDisabled(false);
+      }
     }
   }, [props.logsData]);
 
-  const getMuiTheme = () =>
-    createMuiTheme({
-      overrides: {
-        MUIDataTableHeadCell: {
-          root: {
-            'lineHeight': '1.5',
-            'fontSize': '1.4em',
-            'fontWeight': 400,
-            'fontFamily': '"Manrope", "Roboto", "Arial", "sans-serif"',
-            'color': '#AAAABE',
-          },
-        },
-        MUIDataTable: {
-          root: {
-            'backgroundColor': 'white',
-            'width': '100%',
-          },
-          paper: {
-            boxShadow: 'none',
-          },
-        },
-        MUIDataTableBodyCell: {
-          root: {
-            'backgroundColor': 'white',
-          },
-        },
-        MuiButton: {
-          label: {
-            'lineHeight': '1.5',
-            'fontSize': '1.4em',
-            'fontWeight': 400,
-            'fontFamily': '"Manrope", "Roboto", "Arial", "sans-serif"',
-            'color': '#AAAABE',
-          },
-        },
-      },
-    });
-
-  /*
   const getRecords = (lowLimit: number) => {
+    setLimitLow(lowLimit);
+    setNumRecords(lowLimit + Dbase.pageLimit);
     props.getDbaseEntries(
         Dbase.tables.log.name,
         'DATE',
@@ -216,24 +82,171 @@ const list = (props: Props) => {
         lowLimit,
         Dbase.pageLimit);
   };
-  */
 
   return (
 
     <>
-      <Grid
-        item container
-        alignItems='flex-start'
-        xs={12}
-      >
-        <MuiThemeProvider theme={getMuiTheme()}>
-          <MUIDataTable
-            title=''
-            data={data}
-            columns={columns}
-            options={options}
-          />
-        </MuiThemeProvider>
+      <Grid item container alignItems="flex-start" xs={12}>
+        <Grid item container justify="flex-start" xs={3}>
+          <Typography variant="h5">
+            {LogVars.records}: {numRecords / Dbase.pageLimit}
+          </Typography>
+        </Grid>
+        <Grid item container justify="flex-end" xs={9}>
+          <Grid item container justify="flex-end" xs={4} lg={1}>
+            <Button
+              onClick={() => getRecords(limitLow + Dbase.pageLimit)}
+              disabled={nextDisabled}
+              style={{
+                marginRight: theme.spacing(0.5),
+              }}
+            >
+              {LogVars.nextButton}
+            </Button>
+          </Grid>
+          <Grid item container justify="flex-end" xs={4} lg={1}>
+            <Button
+              onClick={() => getRecords(limitLow - Dbase.pageLimit)}
+              disabled={backDisabled}
+            >
+              {LogVars.backButton}
+            </Button>
+          </Grid>
+        </Grid>
+      </Grid>
+
+      <Grid item container alignItems="flex-start" xs={12}>
+
+        <Grid item container xs={12}>
+
+
+          <Grid
+            item
+            container
+            justify="flex-start"
+            xs={3}
+            lg={2}
+          >
+            <Typography variant="h5">
+              {LogVars.dateCreated}
+            </Typography>
+          </Grid>
+
+          <Grid
+            item
+            container
+            justify="flex-start"
+            xs={3}
+            lg={5}
+          >
+            <Typography
+              variant="h5"
+              noWrap={true}
+            >
+              {LogVars.loggingTypeId}
+            </Typography>
+          </Grid>
+
+          <Grid
+            item
+            container
+            justify="flex-start"
+            xs={3}
+            lg={1}
+          >
+            <Typography variant="h5">
+              {LogVars.loggingType}
+            </Typography>
+          </Grid>
+
+          <Grid
+            item
+            container
+            justify="flex-start"
+            xs={3}
+            lg={4}
+          >
+            <Typography variant="h5">
+              {LogVars.data}
+            </Typography>
+          </Grid>
+
+        </Grid>
+
+        <Grid item container className={classes.formSummary} xs={12}>
+          { props.logsData?.data.map( ( log: LogsType, index: number ) => {
+            const thisDate = new Date(+log.DATE);
+            const dateCreated = thisDate.toString().replace(/ GMT.*$/g, '');
+            const loggingType = log.LOGGINGTYPE;
+            const thisData = log.DATA;
+            const loggingTypeId = log.LOGGINGTYPEID;
+
+            const rowclass = index % 2 ? classes.evenRow : classes.oddRow;
+
+            return (
+              <React.Fragment key={index}>
+
+                <Grid className={rowclass} item container xs={12}>
+                  <Grid
+                    item
+                    container
+                    justify="flex-start"
+                    xs={3}
+                    lg={2}
+                  >
+                    <Typography variant="body1">
+                      {dateCreated}
+                    </Typography>
+                  </Grid>
+
+                  <Grid
+                    item
+                    container
+                    justify="flex-start"
+                    xs={3}
+                    lg={5}
+                  >
+                    <Typography
+                      variant="body1"
+                      noWrap={true}
+                    >
+                      {loggingTypeId}
+                    </Typography>
+                  </Grid>
+
+                  <Grid
+                    item
+                    container
+                    justify="flex-start"
+                    xs={3}
+                    lg={1}
+                  >
+                    <Typography variant="body1">
+                      {loggingType}
+                    </Typography>
+                  </Grid>
+
+                  <Grid
+                    item
+                    container
+                    justify="flex-start"
+                    xs={3}
+                    lg={4}
+                  >
+                    <Typography
+                      variant="body1"
+                      noWrap={true}
+                    >
+                      {thisData}
+                    </Typography>
+                  </Grid>
+
+                </Grid>
+
+              </React.Fragment>
+            );
+          })}
+        </Grid>
       </Grid>
     </>
   );
