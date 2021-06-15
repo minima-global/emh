@@ -118,7 +118,7 @@ const display = (props: Props) => {
                       container
                       justify="flex-start"
                       style={{
-                        marginBottom: theme.spacing(2),
+                        marginBottom: theme.spacing(3),
                       }}
                       xs={12}
                     >
@@ -143,7 +143,7 @@ const display = (props: Props) => {
                       container
                       justify="flex-start"
                       style={{
-                        marginBottom: theme.spacing(2),
+                        marginBottom: theme.spacing(3),
                       }}
                       xs={12}
                     >

@@ -73,10 +73,10 @@ let theme = createMuiTheme({
     },
     h6: {
       lineHeight: '1.5',
-      fontSize: '1.3em',
+      fontSize: '1.2em',
       fontWeight: 700,
       fontFamily: '"Manrope", "Roboto", "Arial", "sans-serif"',
-      color: '#91919D',
+      color: '#001C32',
     },
     subtitle1: {
       lineHeight: '1.5',
@@ -269,6 +269,7 @@ const themeStyles = makeStyles({
     },
   },
   balanceIcon: {
+    'paddingTop': theme.spacing(1),
     'color': '#FFFFFF',
     'fill': '#FFFFFF',
     '&:active': {
