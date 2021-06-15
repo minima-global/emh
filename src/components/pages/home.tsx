@@ -12,7 +12,7 @@ import {themeStyles} from '../../styles';
 
 import {ListBalances} from '../listBalances';
 import {ListStatus} from '../listStatus';
-import {ChartTokens} from '../chartTokens';
+import {ChartTokens} from './chartTokens';
 import {ChartAddresses} from '../chartAddresses';
 import {ChartAPICalls} from '../chartAPICalls';
 import {theme} from '../../styles';
@@ -85,7 +85,7 @@ export const Home = () => {
             elevation={5}
             className={classes.dashboardChartLeft}
           >
-            { <ChartTokens /> }
+            { <ChartTokens isFullScreen={false} /> }
           </Paper>
         </Grid>
 

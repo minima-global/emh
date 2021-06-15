@@ -10,6 +10,7 @@ import {
   Info,
   Addresses,
   Tokens,
+  ChartTokens,
   Triggers,
 } from '../components/pages';
 
@@ -52,6 +53,10 @@ export const Content = () => {
       <Route
         exact path={Local.cmd}
         render= {() => <Cmd />}
+      />
+      <Route
+        exact path={Local.chartTokens}
+        render= {() => <ChartTokens isFullScreen={true} />}
       />
 
       <Route

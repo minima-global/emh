@@ -265,6 +265,8 @@ class Tokens {
   static readonly tokenId = 'Token ID'
   static readonly url = 'URL'
 
+  static readonly totals = 'Total token transactions'
+
   static readonly tokenLengthError =
     'Tokens should be 4 or 130 characters, of the form 0x...'
   static readonly tokenFormatError = 'Not a Minima token'

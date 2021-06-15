@@ -24,7 +24,6 @@ import {ListTokens} from '../listTokens';
 import {
   ApplicationState,
   AppDispatch,
-  TokenProps,
 } from '../../store/types';
 
 const tokenSchema = Yup.object().shape({
@@ -37,10 +36,6 @@ const tokenSchema = Yup.object().shape({
       .max(255, GeneralError.lengthError255),
 });
 
-interface StateProps {
-  tokens: TokenProps
-}
-
 interface DispatchProps {
   addRow: (
     table: string,
@@ -50,7 +45,7 @@ interface DispatchProps {
   ) => void
 }
 
-type Props = StateProps & DispatchProps
+type Props = DispatchProps
 
 const display = (props: Props) => {
   const classes = themeStyles();
@@ -223,12 +218,6 @@ const display = (props: Props) => {
   );
 };
 
-const mapStateToProps = (state: ApplicationState): StateProps => {
-  return {
-    tokens: state.tokensData as TokenProps,
-  };
-};
-
 const mapDispatchToProps = (dispatch: AppDispatch): DispatchProps => {
   return {
     addRow: (
@@ -240,7 +229,7 @@ const mapDispatchToProps = (dispatch: AppDispatch): DispatchProps => {
   };
 };
 
-export const Tokens = connect<StateProps, DispatchProps, {}, ApplicationState>(
-    mapStateToProps,
+export const Tokens = connect<{}, DispatchProps, {}, ApplicationState>(
+    null,
     mapDispatchToProps,
 )(display);

@@ -8,6 +8,7 @@ class Local {
   static readonly logs = '/logs'
   static readonly addresses = '/addresses'
   static readonly tokens = '/tokens'
+  static readonly chartTokens = '/charTokens'
   static readonly triggers = '/triggers'
   static readonly cmd = '/cmd'
   static readonly apiBase = 'api/EMH/?command='

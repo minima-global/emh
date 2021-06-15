@@ -1,15 +1,19 @@
 import React, {useEffect, useState, useRef} from 'react';
 import {connect} from 'react-redux';
+import {NavLink} from 'react-router-dom';
 
 import {Token as Balance} from 'minima';
 
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
 // import Button from '@material-ui/core/Button';
+
+import token from '../../images/token.png';
 
 import Chart from 'chart.js/auto';
 
-import {theme} from '../styles';
+import {theme, themeStyles} from '../../styles';
 
 import {
   ApplicationState,
@@ -19,15 +23,20 @@ import {
   BalanceProps,
   ChartValues,
   ChartData,
-} from '../store/types';
+} from '../../store/types';
 
-import {getDbaseEntries} from '../store/app/dbase/actions';
+import {getDbaseEntries} from '../../store/app/dbase/actions';
 
 import {
+  Local,
   Dbase,
   Tokens as TokenVars,
   Chart as ChartVars,
-} from '../config';
+} from '../../config';
+
+interface ChartProps {
+  isFullScreen: boolean
+}
 
 interface StateProps {
   logsData: LogsProps
@@ -42,7 +51,7 @@ interface DispatchProps {
   ) => void
 }
 
-type Props = StateProps & DispatchProps
+type Props = ChartProps & StateProps & DispatchProps
 
 const getRandomColour = () => {
   const letters = '0123456789ABCDEF'.split('');
@@ -59,7 +68,12 @@ const chart = (props: Props) => {
   // eslint-disable-next-line no-unused-vars
   let [tokens, setTokens] = useState({} as ChartData);
   const [chartHeight, setChartHeight] = useState(0);
+  const [total, setTotal] = useState(0);
   const tokenCtx = useRef<HTMLCanvasElement>(null);
+
+  const classes = themeStyles();
+
+  const screenHeight = props.isFullScreen ? '800px' : '300px';
 
   useEffect(() => {
     let chart: any;
@@ -72,14 +86,13 @@ const chart = (props: Props) => {
           'DESC');
     } else {
       if ( props.logsData?.data.length && props.balanceData?.data.length ) {
+        let total = 0;
         props.logsData.data.map( ( log: LogsType, index: number ) => {
           if (!index) {
             tokens = {};
           }
           // const thisDate = new Date(+log.DATE);
-          console.log(log.DATA);
           const dataJSON = JSON.parse(log.DATA);
-          console.log('here?');
           // console.log(dataJSON);
           const thisAction = dataJSON.action;
           const thisData = dataJSON.data;
@@ -91,12 +104,11 @@ const chart = (props: Props) => {
             const thisTokenId = '0x' + thisData.slice(
                 tokenInsertString.length,
                 thisData.indexOf(' ', tokenInsertString.length));
-            console.log('token id', thisTokenId);
+            // console.log('token id', thisTokenId);
             let tokenName = 'Minima';
             props.balanceData.data.forEach((token: Balance) => {
               if ( token.tokenid == thisTokenId ) {
                 tokenName = token.token;
-                // console.log('token name', tokenName);
               }
             });
             // console.log('token name', tokenName);
@@ -110,12 +122,12 @@ const chart = (props: Props) => {
             } else {
               tokens[tokenName].count += 1;
             }
-            console.log('tokens', tokens);
+            total += 1;
+            // console.log('tokens', tokens);
           }
         });
 
-        console.log('egaswdefasdf', tokens);
-
+        setTotal(total);
         setChartHeight(Object.keys(tokens).length * ChartVars.gridHeight);
         const ctx = tokenCtx.current;
         if ( ctx ) {
@@ -185,9 +197,113 @@ const chart = (props: Props) => {
         }}
         xs={12}
       >
-        <Typography variant="h3">
-          {TokenVars.chartHeading}
-        </Typography>
+
+        <Grid
+          item
+          container
+          alignItems="flex-start"
+          xs={4}
+        >
+          <Typography variant="h3">
+            {TokenVars.chartHeading}
+          </Typography>
+        </Grid>
+        <Grid
+          item
+          container
+          alignItems="flex-start"
+          xs={4}
+        >
+          <Typography variant="h3">
+            &nbsp;
+          </Typography>
+        </Grid>
+        <Grid
+          item
+          container
+          alignItems="flex-start"
+          xs={4}
+        >
+          <Grid
+            item
+            container
+            alignItems="flex-start"
+            xs={1}
+          >
+            <Typography variant="h3">
+              &nbsp;
+            </Typography>
+          </Grid>
+          <Grid
+            item
+            container
+            alignItems="flex-start"
+            xs={1}
+          >
+            <Typography variant="h3">
+              &nbsp;
+            </Typography>
+          </Grid>
+          <Grid
+            item
+            container
+            alignItems="flex-start"
+            xs={1}
+          >
+            <Typography variant="h3">
+              &nbsp;
+            </Typography>
+          </Grid>
+          <Grid
+            item
+            container
+            alignItems="flex-start"
+            xs={1}
+          >
+            <NavLink to={Local.chartTokens}>
+              <IconButton
+                aria-label="Tokens"
+              >
+                <img className={classes.footerIcon} src={token}/>
+              </IconButton>
+            </NavLink>
+          </Grid>
+
+        </Grid>
+
+        { props.isFullScreen ?
+          <>
+            <Grid item container justify="flex-start" xs={12}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 4000 20"
+              >
+                <line x2="4000" stroke="#001C32" width="100%" height="100%"/>
+              </svg>
+            </Grid>
+
+            <Grid
+              item
+              container
+              alignItems="flex-start"
+              xs={12}
+            >
+              <Typography variant="h3">
+                {TokenVars.totals} = {total}
+              </Typography>
+            </Grid>
+
+            <Grid item container justify="flex-start" xs={12}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 4000 20"
+              >
+                <line x2="4000" stroke="#001C32" width="100%" height="100%"/>
+              </svg>
+            </Grid>
+          </> :
+          null
+        }
 
         <Grid
           item
@@ -196,7 +312,7 @@ const chart = (props: Props) => {
           style={{
             marginTop: theme.spacing(1),
             width: '100%',
-            maxHeight: '300px',
+            maxHeight: screenHeight,
             overflow: 'auto',
           }}
           xs={12}
