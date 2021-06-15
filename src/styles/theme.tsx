@@ -170,6 +170,10 @@ const themeStyles = makeStyles({
     '& .MuiButton-root': {
       minWidth: '100%',
     },
+    '& .MuiPaper-rounded': {
+      borderRadius: '20px',
+      backgroundColor: 'white',
+    },
   },
   header: {
     background: 'linear-gradient(#001C32, #001C32)',
@@ -219,6 +223,30 @@ const themeStyles = makeStyles({
       paddingLeft: theme.spacing(2),
       paddingRight: theme.spacing(2),
     },
+  },
+  dashboardToken: {
+    marginTop: theme.spacing(2),
+    marginRight: theme.spacing(2),
+    width: '100%',
+    height: '300px',
+  },
+  dashboardStatus: {
+    marginTop: theme.spacing(2),
+    marginLeft: theme.spacing(2),
+    width: '100%',
+    height: '300px',
+  },
+  dashboardChartLeft: {
+    marginTop: theme.spacing(4),
+    marginRight: theme.spacing(2),
+    width: '100%',
+    height: '400px',
+  },
+  dashboardChartRight: {
+    marginTop: theme.spacing(4),
+    marginLeft: theme.spacing(2),
+    width: '100%',
+    height: '400px',
   },
   select: {
     'border': '2px solid #C8C8D4',

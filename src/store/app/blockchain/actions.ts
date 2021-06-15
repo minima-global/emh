@@ -3,8 +3,6 @@ import {Minima} from 'minima';
 import {
   AppDispatch,
   ActionTypes,
-  TokenActionTypes,
-  TokenProps,
   LogInfo,
   TxActionTypes,
   CmdActionTypes,
@@ -29,7 +27,6 @@ export const init = () => {
     Minima.init( function(msg: any) {
       if (msg.event == 'connected') {
         dispatch(getBalance());
-        dispatch(getTokens());
         dispatch(getStatus());
         dispatch(getDbaseEntries(Dbase.tables.log.name, 'DATE', 'DESC'));
 
@@ -39,7 +36,6 @@ export const init = () => {
         });
       } else if ( msg.event == 'newbalance' ) {
         dispatch(getBalance());
-        dispatch(getTokens());
         dispatch(getStatus());
         dispatch(getDbaseEntries(Dbase.tables.log.name, 'DATE', 'DESC'));
       }
@@ -84,28 +80,6 @@ export const command = (endpoint: string, cmd: string) => {
       };
       dispatch(doLog(Dbase.extraLogTypes.COMMAND, logData));
       dispatch(write({data: msg.response})(successAction));
-    });
-  };
-};
-
-
-export const getTokens = () => {
-  return async (dispatch: AppDispatch) => {
-    // Find all known tokens
-    Minima.cmd('tokens;', function(respJSON: any) {
-      if ( Minima.util.checkAllResponses(respJSON) ) {
-        const tokenData: TokenProps = {
-          data: [],
-        };
-        const tokens = respJSON[0].response.tokens;
-        for ( let i=0; i < tokens.length; i++ ) {
-          const thisToken = tokens[i];
-          tokenData.data.push(thisToken);
-        }
-        dispatch(write({data: tokenData.data})(TokenActionTypes.TOKEN_SUCCESS));
-      } else {
-        Minima.log('tokens failed');
-      }
     });
   };
 };

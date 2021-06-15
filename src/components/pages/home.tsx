@@ -8,6 +8,8 @@ import {
   Home as HomeVars,
 } from '../../config';
 
+import {themeStyles} from '../../styles';
+
 import {ListBalances} from '../listBalances';
 import {ListStatus} from '../listStatus';
 import {ChartTokens} from '../chartTokens';
@@ -16,8 +18,9 @@ import {ChartAPICalls} from '../chartAPICalls';
 import {theme} from '../../styles';
 
 export const Home = () => {
-  return (
+  const classes = themeStyles();
 
+  return (
 
     <Grid
       item
@@ -48,13 +51,7 @@ export const Home = () => {
         >
           <Paper
             elevation={5}
-            style={{
-              marginTop: theme.spacing(1),
-              marginRight: theme.spacing(1),
-              width: '100%',
-              height: '30vh',
-              background: 'white',
-            }}
+            className={classes.dashboardToken}
           >
             { <ListBalances /> }
           </Paper>
@@ -69,62 +66,55 @@ export const Home = () => {
         >
           <Paper
             elevation={5}
-            style={{
-              marginTop: theme.spacing(1),
-              marginLeft: theme.spacing(1),
-              width: '100%',
-              height: '30vh',
-              background: 'white',
-            }}
+            className={classes.dashboardStatus}
           >
             { <ListStatus /> }
           </Paper>
 
         </Grid>
 
-        <Grid item container justify="flex-start" xs={6}>
+
+        <Grid
+          item
+          container
+          justify="flex-start"
+          alignItems='flex-start'
+          xs={6}>
+
           <Paper
             elevation={5}
-            style={{
-              marginTop: theme.spacing(1),
-              marginRight: theme.spacing(1),
-              width: '100%',
-              height: '45vh',
-              overflow: 'auto',
-              background: 'white',
-            }}
+            className={classes.dashboardChartLeft}
           >
             { <ChartTokens /> }
           </Paper>
         </Grid>
 
-        <Grid item container justify="flex-start" xs={6}>
+
+        <Grid
+          item
+          container
+          justify="flex-start"
+          alignItems='flex-start'
+          xs={6}>
+
           <Paper
             elevation={5}
-            style={{
-              marginTop: theme.spacing(1),
-              marginLeft: theme.spacing(1),
-              width: '100%',
-              height: '45vh',
-              overflow: 'auto',
-              background: 'white',
-            }}
+            className={classes.dashboardChartRight}
           >
             { <ChartAddresses /> }
           </Paper>
         </Grid>
 
-        <Grid item container justify="flex-start" xs={6}>
+
+        <Grid
+          item
+          container
+          justify="flex-start"
+          xs={6}>
+
           <Paper
             elevation={5}
-            style={{
-              marginTop: theme.spacing(1),
-              marginRight: theme.spacing(1),
-              width: '100%',
-              height: '45vh',
-              overflow: 'auto',
-              background: 'white',
-            }}
+            className={classes.dashboardChartLeft}
           >
             { <ChartAPICalls /> }
           </Paper>

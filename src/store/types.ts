@@ -10,7 +10,6 @@ import {Token as Balance, NetworkStatus as Status} from 'minima';
 export interface ApplicationState {
   balanceData: BalanceProps,
   statusData: StatusProps,
-  tokensData: TokenProps,
   logsData: LogsProps
   addressData: AddressProps,
   tokenIdsData: TokenIdProps,
@@ -62,18 +61,16 @@ export interface CmdProps extends PayloadProps {
   data: Array<object>
 }
 
+/**
+ * Balance stuff
+*/
 export interface BalanceProps extends PayloadProps {
   data: Array<Balance>
 }
 
 /**
- * Minima token info
+ * Minima status
  */
-
-export interface TokenProps extends PayloadProps {
-  data: Array<Balance>
-}
-
 export interface StatusProps extends PayloadProps {
   data: Array<Status>
 }
@@ -208,12 +205,6 @@ export const enum TokenIdActionTypes {
   TOKENID_FAILURE = '@@TokenIdActionTypes/TOKENID_FAILURE'
 }
 
-export const enum TokenActionTypes {
-  TOKEN_INIT = '@@TokenActionTypes/TOKEN_INIT',
-  TOKEN_SUCCESS = '@@TokenActionTypes/TOKEN_SUCCESS',
-  TOKEN_FAILURE = '@@TokenActionTypes/TOKEN_FAILURE'
-}
-
 export const enum TriggerActionTypes {
   TRIGGER_INIT = '@@TriggerActionTypes/TRIGGER_INIT',
   TRIGGER_SUCCESS = '@@TriggerActionTypes/TRIGGER_SUCCESS',
@@ -239,7 +230,6 @@ export type ActionTypes =
   LogsActionTypes |
   AddressActionTypes |
   TokenIdActionTypes |
-  TokenActionTypes |
   TriggerActionTypes |
   BalanceActionTypes |
   StatusActionTypes;

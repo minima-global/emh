@@ -1,6 +1,8 @@
 import React, {useEffect, useState, useRef} from 'react';
 import {connect} from 'react-redux';
 
+import {Token as Balance} from 'minima';
+
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 // import Button from '@material-ui/core/Button';
@@ -14,8 +16,7 @@ import {
   AppDispatch,
   LogsProps,
   Logs as LogsType,
-  TokenProps,
-  Token,
+  BalanceProps,
   ChartValues,
   ChartData,
 } from '../store/types';
@@ -30,7 +31,7 @@ import {
 
 interface StateProps {
   logsData: LogsProps
-  tokensData: TokenProps
+  balanceData: BalanceProps
 }
 
 interface DispatchProps {
@@ -70,25 +71,32 @@ const chart = (props: Props) => {
           'DATE',
           'DESC');
     } else {
-      if ( props.logsData?.data.length && props.tokensData?.data.length ) {
+      if ( props.logsData?.data.length && props.balanceData?.data.length ) {
         props.logsData.data.map( ( log: LogsType, index: number ) => {
           if (!index) {
             tokens = {};
           }
           // const thisDate = new Date(+log.DATE);
-          const thisData = log.DATA;
+          console.log(log.DATA);
+          const dataJSON = JSON.parse(log.DATA);
+          console.log('here?');
+          // console.log(dataJSON);
+          const thisAction = dataJSON.action;
+          const thisData = dataJSON.data;
           const thisType = log.LOGGINGTYPE;
-          const tokenInsertString = 'insert 0x';
+          const tokenInsertString = Dbase.tables.txpow.name + ' 0x';
           if ( thisType === Dbase.tables.txpow.name &&
-             thisData.includes(tokenInsertString, 0)) {
+               thisAction === 'insert' &&
+               thisData.includes(tokenInsertString, 0)) {
             const thisTokenId = '0x' + thisData.slice(
                 tokenInsertString.length,
                 thisData.indexOf(' ', tokenInsertString.length));
-            // console.log('token id', thisTokenId);
+            console.log('token id', thisTokenId);
             let tokenName = 'Minima';
-            props.tokensData.data.forEach((token: Token) => {
+            props.balanceData.data.forEach((token: Balance) => {
               if ( token.tokenid == thisTokenId ) {
                 tokenName = token.token;
+                // console.log('token name', tokenName);
               }
             });
             // console.log('token name', tokenName);
@@ -102,8 +110,11 @@ const chart = (props: Props) => {
             } else {
               tokens[tokenName].count += 1;
             }
+            console.log('tokens', tokens);
           }
         });
+
+        console.log('egaswdefasdf', tokens);
 
         setChartHeight(Object.keys(tokens).length * ChartVars.gridHeight);
         const ctx = tokenCtx.current;
@@ -160,7 +171,7 @@ const chart = (props: Props) => {
     return () => {
       chart ? chart.destroy() : null;
     };
-  }, [props.logsData, props.tokensData]);
+  }, [props.logsData, props.balanceData]);
 
   return (
 
@@ -169,41 +180,40 @@ const chart = (props: Props) => {
         item
         container
         alignItems="flex-start"
-        justify='flex-start'
         style={{
-          paddingLeft: theme.spacing(2),
-          paddingRight: theme.spacing(2),
-          paddingTop: theme.spacing(2),
+          padding: theme.spacing(2),
         }}
         xs={12}
       >
         <Typography variant="h3">
           {TokenVars.chartHeading}
         </Typography>
-      </Grid>
-      <Grid
-        item
-        container
-        alignItems="flex-start"
-        justify='flex-start'
-        style={{
-          paddingLeft: theme.spacing(2),
-          paddingRight: theme.spacing(2),
-          paddingBottom: theme.spacing(2),
-        }}
-        xs={12}
-      >
-        <div
+
+        <Grid
+          item
+          container
+          alignItems="flex-start"
           style={{
-            height: chartHeight,
+            marginTop: theme.spacing(1),
             width: '100%',
+            maxHeight: '300px',
+            overflow: 'auto',
           }}
+          xs={12}
         >
-          <canvas
-            id='chartToken'
-            ref={tokenCtx}
-          />
-        </div>
+          <div
+            style={{
+              height: chartHeight,
+              width: '100%',
+              paddingRight: theme.spacing(1),
+            }}
+          >
+            <canvas
+              id='chartToken'
+              ref={tokenCtx}
+            />
+          </div>
+        </Grid>
       </Grid>
     </>
   );
@@ -212,7 +222,7 @@ const chart = (props: Props) => {
 const mapStateToProps = (state: ApplicationState): StateProps => {
   return {
     logsData: state.logsData as LogsProps,
-    tokensData: state.tokensData as TokenProps,
+    balanceData: state.balanceData as BalanceProps,
   };
 };
 

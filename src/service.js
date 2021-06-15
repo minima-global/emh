@@ -982,7 +982,7 @@ function processApiCall(qParams, replyId) {
                   id: defaultActions.run,
                   info: {
                     action: endpoint,
-                    data: command,
+                    data: encodeURI(command),
                   },
                 };
                 doLog(extraLogTypes.API, logData);

@@ -46,9 +46,9 @@ const display = (props: Props) => {
           container
           alignItems="flex-start"
           style={{
-            paddingTop: theme.spacing(1),
+            marginTop: theme.spacing(1),
             width: '100%',
-            maxHeight: '22vh',
+            maxHeight: '220px',
             overflow: 'auto',
           }}
           xs={12}
