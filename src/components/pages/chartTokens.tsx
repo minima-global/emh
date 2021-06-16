@@ -1,6 +1,8 @@
 import React, {useEffect, useState, useRef} from 'react';
 import {connect} from 'react-redux';
 
+import Grid from '@material-ui/core/Grid';
+
 import {Token as Balance} from 'minima';
 
 import {
@@ -8,6 +10,7 @@ import {
   AppDispatch,
   LogsProps,
   BalanceProps,
+  ChartSummary,
   ChartData,
 } from '../../store/types';
 
@@ -44,8 +47,7 @@ type Props = ChartProps & StateProps & DispatchProps
 
 const chart = (props: Props) => {
   const isFirstRun = useRef(true);
-  const [data, setData] = useState({} as ChartData);
-  const [total, setTotal] = useState(0);
+  const [data, setData] = useState({} as ChartSummary);
   const screenHeight = props.isFullScreen ? '800px' : '250px';
 
   useEffect(() => {
@@ -73,17 +75,25 @@ const chart = (props: Props) => {
             tokens[tokenName] = chartData.data[token.tokenid];
           }
         });
-        setData(tokens);
-        setTotal(chartData.total);
+        const thisData: ChartSummary = {
+          data: tokens,
+          total: chartData.total,
+        };
+        setData(thisData);
       }
     }
   }, [props.logsData, props.balanceData]);
 
   return (
-    <>
+    <Grid
+      item
+      container
+      alignItems="flex-start"
+      xs={12}
+    >
       <DataSummary
         heading={props.heading}
-        total={total}
+        chartData={data}
         isFullScreen={props.isFullScreen}
         navLink={props.navLink} />
 
@@ -91,7 +101,7 @@ const chart = (props: Props) => {
         title={props.heading}
         chartData={data}
         viewport={screenHeight} />
-    </>
+    </Grid>
   );
 };
 

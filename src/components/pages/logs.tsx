@@ -12,7 +12,7 @@ import {ListLogs} from '../listLogs';
 export const Logs = () => {
   return (
 
-    <Grid item container alignItems='flex-start' xs={12}>
+    <Grid container alignItems='flex-start'>
 
       <Grid item container xs={12}>
 

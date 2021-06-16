@@ -68,7 +68,7 @@ const display = (props: Props) => {
 
   return (
 
-    <Grid item container alignItems='flex-start' xs={12}>
+    <Grid container alignItems='flex-start'>
 
       <Grid item container xs={12}>
 

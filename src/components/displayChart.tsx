@@ -8,7 +8,7 @@ import {theme} from '../styles';
 
 import {
   ChartValues,
-  ChartData,
+  ChartSummary,
 } from '../store/types';
 
 import {
@@ -17,7 +17,7 @@ import {
 
 interface ChartProps {
   title: string
-  chartData: ChartData
+  chartData: ChartSummary
   viewport: string
 }
 
@@ -31,9 +31,10 @@ export const DisplayChart = (props: Props) => {
 
   useEffect(() => {
     let chart: any;
-    const keys = Object.keys(props.chartData);
+    const data = props.chartData?.data;
+    const keys = data ? Object.keys(props.chartData.data) : [];
     if ( keys.length ) {
-      const values = Object.values(props.chartData);
+      const values = Object.values(props.chartData.data);
       setChartHeight(ChartVars.axisOffset + keys.length * ChartVars.gridHeight);
       const ctx: HTMLCanvasElement | null = dataCtx.current;
       if ( ctx ) {
@@ -86,45 +87,39 @@ export const DisplayChart = (props: Props) => {
   }, [props.chartData]);
 
   return (
+    <Grid
+      container
+      style={{
+        padding: theme.spacing(2),
+      }}
+    >
 
-    <>
       <Grid
         item
         container
         alignItems="flex-start"
         style={{
-          padding: theme.spacing(2),
+          marginTop: theme.spacing(1),
+          width: '100%',
+          maxHeight: props.viewport,
+          overflow: 'auto',
         }}
         xs={12}
       >
-
-        <Grid
-          item
-          container
-          alignItems="flex-start"
+        <div
           style={{
-            marginTop: theme.spacing(1),
+            height: chartHeight,
             width: '100%',
-            maxHeight: props.viewport,
-            overflow: 'auto',
+            paddingRight: theme.spacing(1),
           }}
-          xs={12}
         >
-          <div
-            style={{
-              height: chartHeight,
-              width: '100%',
-              paddingRight: theme.spacing(1),
-            }}
-          >
-            <canvas
-              id={props.title}
-              ref={dataCtx}
-            />
-          </div>
-        </Grid>
+          <canvas
+            id={props.title}
+            ref={dataCtx}
+          />
+        </div>
       </Grid>
-    </>
+    </Grid>
   );
 };
 

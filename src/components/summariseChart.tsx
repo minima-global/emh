@@ -15,6 +15,7 @@ import {theme, themeStyles} from '../styles';
 import {
   ApplicationState,
   AppDispatch,
+  ChartSummary,
 } from '../store/types';
 
 import {getDbaseEntries} from '../store/app/dbase/actions';
@@ -26,7 +27,7 @@ import {
 
 interface SummaryProps {
   heading: string
-  total: number
+  chartData: ChartSummary
   isFullScreen: boolean
   navLink: string
 }
@@ -56,108 +57,104 @@ const summary = (props: Props) => {
   };
 
   return (
+    <Grid
+      container
+      alignItems="flex-start"
+      style={{
+        padding: theme.spacing(2),
+      }}
+    >
 
-    <>
       <Grid
         item
         container
         alignItems="flex-start"
-        style={{
-          padding: theme.spacing(2),
-        }}
-        xs={12}
+        xs={4}
       >
+        <Typography variant="h3">
+          {props.heading}
+        </Typography>
+      </Grid>
+      <Grid
+        item
+        container
+        alignItems="flex-start"
+        xs={4}
+      >
+        <Grid item container xs={12}>
 
+          <TextField
+            fullWidth
+            placeholder={Search.placeHolder}
+            size="small"
+            name="search"
+            type="text"
+            onChange={(e) => {
+              doSetSearchTerm(e);
+            }}
+            onKeyPress= {(e) => {
+              if (e.key === 'Enter') {
+                doSearch();
+              }
+            }}
+            InputProps={{disableUnderline: true}}
+          />
+        </Grid>
+      </Grid>
+      <Grid
+        item
+        container
+        alignItems="flex-start"
+        xs={4}
+      >
         <Grid
           item
           container
           alignItems="flex-start"
-          xs={4}
+          xs={1}
         >
           <Typography variant="h3">
-            {props.heading}
+              &nbsp;
           </Typography>
         </Grid>
         <Grid
           item
           container
           alignItems="flex-start"
-          xs={4}
+          xs={1}
         >
-          <Grid item container xs={12}>
-
-            <TextField
-              fullWidth
-              placeholder={Search.placeHolder}
-              size="small"
-              name="search"
-              type="text"
-              onChange={(e) => {
-                doSetSearchTerm(e);
-              }}
-              onKeyPress= {(e) => {
-                if (e.key === 'Enter') {
-                  doSearch();
-                }
-              }}
-              InputProps={{disableUnderline: true}}
-            />
-          </Grid>
+          <Typography variant="h3">
+              &nbsp;
+          </Typography>
         </Grid>
         <Grid
           item
           container
           alignItems="flex-start"
-          xs={4}
+          xs={1}
         >
-          <Grid
-            item
-            container
-            alignItems="flex-start"
-            xs={1}
-          >
-            <Typography variant="h3">
+          <Typography variant="h3">
               &nbsp;
-            </Typography>
-          </Grid>
-          <Grid
-            item
-            container
-            alignItems="flex-start"
-            xs={1}
-          >
-            <Typography variant="h3">
-              &nbsp;
-            </Typography>
-          </Grid>
-          <Grid
-            item
-            container
-            alignItems="flex-start"
-            xs={1}
-          >
-            <Typography variant="h3">
-              &nbsp;
-            </Typography>
-          </Grid>
-          <Grid
-            item
-            container
-            alignItems="flex-start"
-            xs={1}
-          >
-            <NavLink to={props.navLink}>
-              <IconButton
-                aria-label="Tokens"
-              >
-                <img className={classes.footerIcon} src={token}/>
-              </IconButton>
-            </NavLink>
-          </Grid>
-
+          </Typography>
+        </Grid>
+        <Grid
+          item
+          container
+          alignItems="flex-start"
+          xs={1}
+        >
+          <NavLink to={props.navLink}>
+            <IconButton
+              aria-label="Tokens"
+            >
+              <img className={classes.footerIcon} src={token}/>
+            </IconButton>
+          </NavLink>
         </Grid>
 
-        { props.isFullScreen ?
+      </Grid>
+
+      { props.isFullScreen ?
           <>
             <Grid item container justify="flex-start" xs={12}>
               <svg
@@ -175,7 +172,7 @@ const summary = (props: Props) => {
               xs={12}
             >
               <Typography variant="h3">
-                {Chart.totals} {props.heading} = {props.total}
+                {Chart.totals} {props.heading} = {props.chartData.total}
               </Typography>
             </Grid>
 
@@ -189,9 +186,8 @@ const summary = (props: Props) => {
             </Grid>
           </> :
           null
-        }
-      </Grid>
-    </>
+      }
+    </Grid>
   );
 };
 

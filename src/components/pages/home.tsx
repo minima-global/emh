@@ -29,14 +29,12 @@ export const Home = () => {
   return (
 
     <Grid
-      item
       container
       alignItems='flex-start'
       style={{
         marginLeft: theme.spacing(8),
         marginRight: theme.spacing(8),
-      }}
-      xs={12}>
+      }}>
 
       <Grid item container xs={12}>
 

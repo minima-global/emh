@@ -280,9 +280,9 @@ class Tokens {
 
 /** @class Triggers */
 class Triggers {
-  static readonly heading = 'Triggers'
+  static readonly heading = 'API'
 
-  static readonly endpoint = 'Trigger'
+  static readonly endpoint = 'Endpoint'
   static readonly command = 'Command'
   static readonly format = 'Format'
   static readonly setParams = 'Set Params'
