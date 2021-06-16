@@ -11,9 +11,7 @@ import {
 import {getDbaseEntries} from '../../store/app/dbase/actions';
 
 import {
-  Local,
   Dbase,
-  Addresses as AddressVars,
 } from '../../config';
 
 import {getChartData} from '../../utils/getChartData';
@@ -22,6 +20,8 @@ import {DataSummary} from '../summariseChart';
 
 interface ChartProps {
   isFullScreen: boolean
+  navLink: string
+  heading: string
 }
 
 interface StateProps {
@@ -42,12 +42,7 @@ const chart = (props: Props) => {
   const isFirstRun = useRef(true);
   const [data, setData] = useState({} as ChartData);
   const [total, setTotal] = useState(0);
-  let screenHeight = '250px';
-  let navLink = Local.chartAddresses;
-  if ( props.isFullScreen ) {
-    screenHeight = '800px';
-    navLink = Local.home;
-  }
+  const screenHeight = props.isFullScreen ? '800px' : '250px';
 
   useEffect(() => {
     if ( isFirstRun.current ) {
@@ -63,7 +58,7 @@ const chart = (props: Props) => {
             getChartData(
                 props.logsData,
                 Dbase.tables.txpow.name,
-                'insert',
+                Dbase.defaultActions.insert,
                 ' Mx[A-Z0-9]*',
             );
         setData(chartData.data);
@@ -76,13 +71,13 @@ const chart = (props: Props) => {
   return (
     <>
       <DataSummary
-        heading={AddressVars.chartHeading}
+        heading={props.heading}
         total={total}
         isFullScreen={props.isFullScreen}
-        navLink={navLink} />
+        navLink={props.navLink} />
 
       <DisplayChart
-        title='Addresses'
+        title={props.heading}
         chartData={data}
         viewport={screenHeight} />
     </>

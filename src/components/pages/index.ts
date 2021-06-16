@@ -6,6 +6,7 @@ export * from './tokens';
 export * from './chartTokens';
 export * from './chartAddresses';
 export * from './chartAPI';
+export * from './chartCommands';
 export * from './triggers';
 export * from './cmd';
 export * from './staticInfo';

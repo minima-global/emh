@@ -11,6 +11,7 @@ class Local {
   static readonly chartTokens = '/chartTokens'
   static readonly chartAddresses = '/chartAddresses'
   static readonly chartAPI = '/chartAPI'
+  static readonly chartCmds = '/chartCommands'
   static readonly triggers = '/triggers'
   static readonly cmd = '/cmd'
   static readonly apiBase = 'api/EMH/?command='

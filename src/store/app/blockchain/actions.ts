@@ -72,10 +72,10 @@ export const command = (endpoint: string, cmd: string) => {
     Minima.cmd(cmd, function(msg: any) {
       // console.log('Command?: ', msg);
       const logData: LogInfo = {
-        id: Dbase.defaultActions.run,
+        id: endpoint,
         info: {
-          action: endpoint,
-          data: cmd,
+          action: Dbase.defaultActions.run,
+          data: endpoint + ' ' + cmd,
         },
       };
       dispatch(doLog(Dbase.extraLogTypes.COMMAND, logData));

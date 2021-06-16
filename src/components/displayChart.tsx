@@ -34,8 +34,7 @@ export const DisplayChart = (props: Props) => {
     const keys = Object.keys(props.chartData);
     if ( keys.length ) {
       const values = Object.values(props.chartData);
-      setChartHeight(
-          Object.keys(props.chartData).length * ChartVars.gridHeight);
+      setChartHeight(keys.length * ChartVars.gridHeight);
       const ctx: HTMLCanvasElement | null = dataCtx.current;
       if ( ctx ) {
         chart = new Chart(ctx, {

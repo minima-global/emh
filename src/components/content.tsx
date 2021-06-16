@@ -14,9 +14,16 @@ import {
   ChartTokens,
   ChartAddresses,
   ChartAPI,
+  ChartCmds,
 } from '../components/pages';
 
-import {Local} from '../config';
+import {
+  Local,
+  Cmd as CmdVars,
+  Tokens as TokensVars,
+  Addresses as AddressVars,
+  API as APIVars,
+} from '../config';
 
 export const Content = () => {
   return (
@@ -58,15 +65,35 @@ export const Content = () => {
       />
       <Route
         exact path={Local.chartTokens}
-        render= {() => <ChartTokens isFullScreen={true} />}
+        render= {() =>
+          <ChartTokens
+            isFullScreen={true}
+            heading={TokensVars.chartHeading}
+            navLink={Local.home}/> }
       />
       <Route
         exact path={Local.chartAddresses}
-        render= {() => <ChartAddresses isFullScreen={true} />}
+        render= {() =>
+          <ChartAddresses
+            isFullScreen={true}
+            heading={AddressVars.chartHeading}
+            navLink={Local.home}/> }
       />
       <Route
         exact path={Local.chartAPI}
-        render= {() => <ChartAPI isFullScreen={true} />}
+        render= {() =>
+          <ChartAPI
+            isFullScreen={true}
+            heading={APIVars.chartHeading}
+            navLink={Local.home} /> }
+      />
+      <Route
+        exact path={Local.chartAPI}
+        render= {() =>
+          <ChartCmds
+            isFullScreen={true}
+            heading={CmdVars.chartHeading}
+            navLink={Local.home} />}
       />
 
       <Route

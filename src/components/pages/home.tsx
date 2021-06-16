@@ -5,7 +5,12 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 
 import {
+  Local,
   Home as HomeVars,
+  Cmd as CmdVars,
+  Tokens as TokensVars,
+  Addresses as AddressVars,
+  API as APIVars,
 } from '../../config';
 
 import {themeStyles} from '../../styles';
@@ -15,6 +20,7 @@ import {ListStatus} from '../listStatus';
 import {ChartTokens} from './chartTokens';
 import {ChartAddresses} from './chartAddresses';
 import {ChartAPI} from './chartAPI';
+import {ChartCmds} from './chartCommands';
 import {theme} from '../../styles';
 
 export const Home = () => {
@@ -85,7 +91,10 @@ export const Home = () => {
             elevation={5}
             className={classes.dashboardChartLeft}
           >
-            { <ChartTokens isFullScreen={false} /> }
+            { <ChartTokens
+              isFullScreen={false}
+              heading={TokensVars.chartHeading}
+              navLink={Local.chartTokens}/> }
           </Paper>
         </Grid>
 
@@ -101,10 +110,12 @@ export const Home = () => {
             elevation={5}
             className={classes.dashboardChartRight}
           >
-            { <ChartAddresses isFullScreen={false} /> }
+            { <ChartAddresses
+              isFullScreen={false}
+              heading={AddressVars.chartHeading}
+              navLink={Local.chartAddresses}/> }
           </Paper>
         </Grid>
-
 
         <Grid
           item
@@ -116,9 +127,30 @@ export const Home = () => {
             elevation={5}
             className={classes.dashboardChartLeft}
           >
-            { <ChartAPI isFullScreen={false} /> }
+            { <ChartAPI
+              isFullScreen={false}
+              heading={APIVars.chartHeading}
+              navLink={Local.chartAPI} /> }
           </Paper>
         </Grid>
+
+        <Grid
+          item
+          container
+          justify="flex-start"
+          xs={6}>
+
+          <Paper
+            elevation={5}
+            className={classes.dashboardChartRight}
+          >
+            { <ChartCmds
+              isFullScreen={false}
+              heading={CmdVars.chartHeading}
+              navLink={Local.chartCmds} /> }
+          </Paper>
+        </Grid>
+
 
         <Grid item container justify="flex-start" xs={6}>
           &nbsp;

@@ -230,7 +230,8 @@ class Contact {
 
 /** @class Cmd */
 class Cmd {
-  static readonly heading = 'Run Trigger'
+  static readonly heading = 'Run API Command'
+  static readonly chartHeading = 'Commands'
 
   static readonly trigger = 'Trigger'
   static readonly params = 'Params'
@@ -368,10 +369,14 @@ class Post {
 /** @class Chart */
 class Chart {
   static readonly barThickness = 30;
+  static readonly axisOffset = 20;
   static readonly labelOffset = 20;
   static readonly labelFontsize = 16;
   static readonly gridHeight =
-    Chart.barThickness + Chart.labelOffset + Chart.labelFontsize + 15;
+    Chart.barThickness +
+    Chart.labelOffset +
+    Chart.labelFontsize +
+    Chart.axisOffset;
   static readonly totals = 'Total';
 }
 

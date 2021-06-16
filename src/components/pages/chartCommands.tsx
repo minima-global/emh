@@ -1,13 +1,10 @@
 import React, {useEffect, useState, useRef} from 'react';
 import {connect} from 'react-redux';
 
-import {Token as Balance} from 'minima';
-
 import {
   ApplicationState,
   AppDispatch,
   LogsProps,
-  BalanceProps,
   ChartData,
 } from '../../store/types';
 
@@ -29,7 +26,6 @@ interface ChartProps {
 
 interface StateProps {
   logsData: LogsProps
-  balanceData: BalanceProps
 }
 
 interface DispatchProps {
@@ -57,27 +53,19 @@ const chart = (props: Props) => {
           'DATE',
           'DESC');
     } else {
-      if ( props.logsData?.data.length && props.balanceData?.data.length ) {
+      if ( props.logsData?.data.length ) {
         const chartData =
             getChartData(
                 props.logsData,
-                Dbase.tables.txpow.name,
-                Dbase.defaultActions.insert,
-                ' 0x[A-Z0-9]*',
+                Dbase.extraLogTypes.COMMAND,
+                Dbase.defaultActions.run,
+                '^[a-zA-Z0-9]* ',
             );
-        const tokens: ChartData = {};
-        props.balanceData.data.forEach((token: Balance) => {
-          // console.log(thisTokenId);
-          if ( token.tokenid in chartData.data) {
-            const tokenName = token.token;
-            tokens[tokenName] = chartData.data[token.tokenid];
-          }
-        });
-        setData(tokens);
+        setData(chartData.data);
         setTotal(chartData.total);
       }
     }
-  }, [props.logsData, props.balanceData]);
+  }, [props.logsData]);
 
   return (
     <>
@@ -98,7 +86,6 @@ const chart = (props: Props) => {
 const mapStateToProps = (state: ApplicationState): StateProps => {
   return {
     logsData: state.logsData as LogsProps,
-    balanceData: state.balanceData as BalanceProps,
   };
 };
 
@@ -116,9 +103,9 @@ const mapDispatchToProps = (dispatch: AppDispatch): DispatchProps => {
   };
 };
 
-const ChartTokens = connect<StateProps, DispatchProps, {}, ApplicationState>(
+const ChartCmds = connect<StateProps, DispatchProps, {}, ApplicationState>(
     mapStateToProps,
     mapDispatchToProps,
 )(chart);
 
-export {ChartTokens};
+export {ChartCmds};
