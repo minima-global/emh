@@ -43,7 +43,7 @@ const chart = (props: Props) => {
   const [data, setData] = useState({} as ChartData);
   const [total, setTotal] = useState(0);
   let screenHeight = '250px';
-  let navLink = Local.chartTokens;
+  let navLink = Local.chartAddresses;
   if ( props.isFullScreen ) {
     screenHeight = '800px';
     navLink = Local.home;
@@ -68,7 +68,7 @@ const chart = (props: Props) => {
             );
         setData(chartData.data);
         setTotal(chartData.total);
-        console.log('Addresses data: ', chartData.data);
+        // console.log('Addresses data: ', chartData.data);
       }
     }
   }, [props.logsData]);
