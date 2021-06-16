@@ -58,6 +58,10 @@ export const Content = () => {
         exact path={Local.chartTokens}
         render= {() => <ChartTokens isFullScreen={true} />}
       />
+      <Route
+        exact path={Local.chartAddresses}
+        render= {() => <ChartTokens isFullScreen={true} />}
+      />
 
       <Route
         path={Local.home}

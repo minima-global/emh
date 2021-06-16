@@ -1,13 +1,10 @@
 import React, {useEffect, useState, useRef} from 'react';
 import {connect} from 'react-redux';
 
-import {Token as Balance} from 'minima';
-
 import {
   ApplicationState,
   AppDispatch,
   LogsProps,
-  BalanceProps,
   ChartData,
 } from '../../store/types';
 
@@ -16,7 +13,7 @@ import {getDbaseEntries} from '../../store/app/dbase/actions';
 import {
   Local,
   Dbase,
-  Tokens as TokenVars,
+  Addresses as AddressVars,
 } from '../../config';
 
 import {getChartData} from '../../utils/getChartData';
@@ -29,7 +26,6 @@ interface ChartProps {
 
 interface StateProps {
   logsData: LogsProps
-  balanceData: BalanceProps
 }
 
 interface DispatchProps {
@@ -62,40 +58,32 @@ const chart = (props: Props) => {
           'DATE',
           'DESC');
     } else {
-      if ( props.logsData?.data.length && props.balanceData?.data.length ) {
+      if ( props.logsData?.data.length ) {
         const chartData =
             getChartData(
                 props.logsData,
                 Dbase.tables.txpow.name,
                 'insert',
-                ' 0x',
-                131,
+                ' Mx',
+                35,
             );
-        console.log('token data: ', chartData);
-        const tokens: ChartData = {};
-        props.balanceData.data.forEach((token: Balance) => {
-          // console.log(thisTokenId);
-          if ( token.tokenid in chartData.data) {
-            const tokenName = token.token;
-            tokens[tokenName] = chartData.data[token.tokenid];
-          }
-        });
-        setData(tokens);
+        setData(chartData.data);
         setTotal(chartData.total);
+        console.log('Addresses data: ', chartData.data);
       }
     }
-  }, [props.logsData, props.balanceData]);
+  }, [props.logsData]);
 
   return (
     <>
       <DataSummary
-        heading={TokenVars.chartHeading}
+        heading={AddressVars.chartHeading}
         total={total}
         isFullScreen={props.isFullScreen}
         navLink={navLink} />
 
       <DisplayChart
-        title='Tokens'
+        title='Addresses'
         chartData={data}
         viewport={screenHeight} />
     </>
@@ -105,7 +93,6 @@ const chart = (props: Props) => {
 const mapStateToProps = (state: ApplicationState): StateProps => {
   return {
     logsData: state.logsData as LogsProps,
-    balanceData: state.balanceData as BalanceProps,
   };
 };
 
@@ -123,9 +110,9 @@ const mapDispatchToProps = (dispatch: AppDispatch): DispatchProps => {
   };
 };
 
-const ChartTokens = connect<StateProps, DispatchProps, {}, ApplicationState>(
+const ChartAddresses = connect<StateProps, DispatchProps, {}, ApplicationState>(
     mapStateToProps,
     mapDispatchToProps,
 )(chart);
 
-export {ChartTokens};
+export {ChartAddresses};

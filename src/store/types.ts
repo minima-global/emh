@@ -46,6 +46,11 @@ export type ChartData = {
   [address: string]: ChartValues
 }
 
+export type ChartSummary = {
+  data: ChartData,
+  total: number
+}
+
 /**
  * Static info props
  */
