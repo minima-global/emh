@@ -372,7 +372,7 @@ class Chart {
   static readonly labelFontsize = 16;
   static readonly gridHeight =
     Chart.barThickness + Chart.labelOffset + Chart.labelFontsize + 15;
-  static readonly totals = 'Total transactions';
+  static readonly totals = 'Total';
 }
 
 /** @class Search */

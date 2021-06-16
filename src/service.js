@@ -54,7 +54,6 @@ const tables = {
 const extraLogTypes = {
   SYSTEM: 'SYSTEM',
   COMMAND: 'COMMAND',
-  API: 'APICALL',
   URL: 'URLCALL',
 };
 
@@ -979,13 +978,13 @@ function processApiCall(qParams, replyId) {
             Minima.cmd(command, function(msg) {
               if ( msg.status ) {
                 const logData = {
-                  id: defaultActions.run,
+                  id: endpoint,
                   info: {
-                    action: endpoint,
-                    data: encodeURI(command),
+                    action: defaultActions.run,
+                    data: endpoint + ' ' + encodeURI(command),
                   },
                 };
-                doLog(extraLogTypes.API, logData);
+                doLog(tables.trigger.name, logData);
                 // eslint-disable-next-line max-len
                 // Minima.log(app + ' Command response ' + JSON.stringify(msg.response));
                 Minima.minidapps.reply(replyId, JSON.stringify(msg.response));

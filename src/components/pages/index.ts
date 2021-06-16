@@ -4,6 +4,8 @@ export * from './logs';
 export * from './addresses';
 export * from './tokens';
 export * from './chartTokens';
+export * from './chartAddresses';
+export * from './chartAPI';
 export * from './triggers';
 export * from './cmd';
 export * from './staticInfo';

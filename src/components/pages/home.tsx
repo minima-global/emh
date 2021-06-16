@@ -14,7 +14,7 @@ import {ListBalances} from '../listBalances';
 import {ListStatus} from '../listStatus';
 import {ChartTokens} from './chartTokens';
 import {ChartAddresses} from './chartAddresses';
-import {ChartAPICalls} from '../chartAPICalls';
+import {ChartAPI} from './chartAPI';
 import {theme} from '../../styles';
 
 export const Home = () => {
@@ -116,7 +116,7 @@ export const Home = () => {
             elevation={5}
             className={classes.dashboardChartLeft}
           >
-            { <ChartAPICalls /> }
+            { <ChartAPI isFullScreen={false} /> }
           </Paper>
         </Grid>
 

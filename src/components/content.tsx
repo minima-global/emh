@@ -10,8 +10,10 @@ import {
   Info,
   Addresses,
   Tokens,
-  ChartTokens,
   Triggers,
+  ChartTokens,
+  ChartAddresses,
+  ChartAPI,
 } from '../components/pages';
 
 import {Local} from '../config';
@@ -60,7 +62,11 @@ export const Content = () => {
       />
       <Route
         exact path={Local.chartAddresses}
-        render= {() => <ChartTokens isFullScreen={true} />}
+        render= {() => <ChartAddresses isFullScreen={true} />}
+      />
+      <Route
+        exact path={Local.chartAPI}
+        render= {() => <ChartAPI isFullScreen={true} />}
       />
 
       <Route
