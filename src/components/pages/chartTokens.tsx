@@ -68,10 +68,8 @@ const chart = (props: Props) => {
                 props.logsData,
                 Dbase.tables.txpow.name,
                 'insert',
-                ' 0x',
-                131,
+                ' 0x[A-Z0-9]*',
             );
-        console.log('token data: ', chartData);
         const tokens: ChartData = {};
         props.balanceData.data.forEach((token: Balance) => {
           // console.log(thisTokenId);

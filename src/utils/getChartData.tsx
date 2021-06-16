@@ -13,8 +13,7 @@ export const getChartData =
         logs: LogsProps,
         logType: string,
         action: string,
-        searchString: string,
-        searchStringLength: number): ChartSummary => {
+        searchRegex: string): ChartSummary => {
       let total = 0;
       const data: ChartData = {};
       logs.data.map( ( log: Logs, index: number ) => {
@@ -23,24 +22,25 @@ export const getChartData =
         const thisAction = dataJSON.action;
         const thisData = dataJSON.data;
         const thisType = log.LOGGINGTYPE;
+        const regex = new RegExp(searchRegex, 'g');
         if ( thisType === logType &&
-               thisAction === action &&
-               thisData.includes(searchString, 0)) {
-          let id =
-              thisData.substr(
-                  thisData.indexOf(searchString),
-                  searchStringLength,
-              ).trim();
-          if (!data[id]) {
-            const chartValues: ChartValues = {
-              count: 1,
-              colour: getRandomColour(),
-            };
-            data[id] = chartValues;
-          } else {
-            data[id].count += 1;
+               thisAction === action ) {
+          const thisMatch = thisData.match(regex);
+          const thisMatchString = thisMatch ? thisMatch.toString().trim() : '';
+          if ( thisMatchString.length ) {
+            // console.log('Matched! ', thisMatchString);
+            const id = thisMatch.toString().trim();
+            if (!data[id]) {
+              const chartValues: ChartValues = {
+                count: 1,
+                colour: getRandomColour(),
+              };
+              data[id] = chartValues;
+            } else {
+              data[id].count += 1;
+            }
+            total = total + 1;
           }
-          total = total + 1;
         }
       });
       const summary: ChartSummary = {

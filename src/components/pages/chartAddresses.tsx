@@ -64,8 +64,7 @@ const chart = (props: Props) => {
                 props.logsData,
                 Dbase.tables.txpow.name,
                 'insert',
-                ' Mx',
-                35,
+                ' Mx[A-Z0-9]*',
             );
         setData(chartData.data);
         setTotal(chartData.total);
