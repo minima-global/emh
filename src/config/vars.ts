@@ -369,14 +369,13 @@ class Post {
 /** @class Chart */
 class Chart {
   static readonly barThickness = 30;
-  static readonly axisOffset = 20;
+  static readonly axisOffset = 50;
   static readonly labelOffset = 20;
   static readonly labelFontsize = 16;
   static readonly gridHeight =
     Chart.barThickness +
     Chart.labelOffset +
-    Chart.labelFontsize +
-    Chart.axisOffset;
+    Chart.labelFontsize;
   static readonly totals = 'Total';
 }
 
