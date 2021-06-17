@@ -11,8 +11,10 @@ import TextField from '@material-ui/core/TextField';
 import logIcon from '../images/log.svg';
 import expandIcon from '../images/expand.svg';
 import closeIcon from '../images/closeDelete.svg';
+import zoomInIcon from '../images/zoomIn.svg';
+import zoomOutIcon from '../images/zoomOut.svg';
 
-import {theme, themeStyles} from '../styles';
+import {themeStyles} from '../styles';
 
 import {
   ApplicationState,
@@ -64,12 +66,7 @@ const summary = (props: Props) => {
   return (
     <Grid
       container
-      alignItems="flex-start"
-      style={{
-        padding: theme.spacing(2),
-      }}
     >
-
       <Grid
         item
         container
@@ -84,6 +81,7 @@ const summary = (props: Props) => {
         item
         container
         alignItems="flex-start"
+        justify="flex-start"
         xs={4}
       >
         <Grid item container xs={12}>
@@ -106,38 +104,22 @@ const summary = (props: Props) => {
           />
         </Grid>
       </Grid>
-      <Grid
-        item
-        container
-        alignItems="flex-start"
-        xs={4}
-      >
-        <Grid
-          item
-          container
-          alignItems="flex-start"
-          xs={1}
-        >
-          <Typography variant="h3">
-              &nbsp;
-          </Typography>
+      <Grid item container justify='flex-end' xs={4}>
+        <Grid item container justify='flex-end' xs={3}>
+          <IconButton
+            aria-label="Zoom In"
+          >
+            <img className={classes.footerIcon} src={zoomInIcon}/>
+          </IconButton>
         </Grid>
-        <Grid
-          item
-          container
-          alignItems="flex-start"
-          xs={1}
-        >
-          <Typography variant="h3">
-              &nbsp;
-          </Typography>
+        <Grid item container justify='flex-end' xs={3}>
+          <IconButton
+            aria-label="Zoom Out"
+          >
+            <img className={classes.footerIcon} src={zoomOutIcon}/>
+          </IconButton>
         </Grid>
-        <Grid
-          item
-          container
-          alignItems="flex-start"
-          xs={1}
-        >
+        <Grid item container justify='flex-end' xs={3}>
           <NavLink to={props.logNavLink}>
             <IconButton
               aria-label="Logs"
@@ -146,12 +128,7 @@ const summary = (props: Props) => {
             </IconButton>
           </NavLink>
         </Grid>
-        <Grid
-          item
-          container
-          alignItems="flex-start"
-          xs={1}
-        >
+        <Grid item container justify='flex-end' xs={3}>
           <NavLink to={props.navLink}>
             <IconButton
               aria-label="chartOrHome"
@@ -160,7 +137,6 @@ const summary = (props: Props) => {
             </IconButton>
           </NavLink>
         </Grid>
-
       </Grid>
 
       { props.isFullScreen ?

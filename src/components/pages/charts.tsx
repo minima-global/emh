@@ -5,6 +5,8 @@ import Grid from '@material-ui/core/Grid';
 
 import {Token as Balance} from 'minima';
 
+import {theme} from '../../styles';
+
 import {
   ApplicationState,
   AppDispatch,
@@ -98,6 +100,9 @@ const chart = (props: Props) => {
       item
       container
       alignItems="flex-start"
+      style={{
+        padding: theme.spacing(2),
+      }}
       xs={12}
     >
       <Grid container>

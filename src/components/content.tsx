@@ -116,7 +116,7 @@ export const Content = () => {
       />
 
       <Route
-        exact path={Local.chartAPI}
+        exact path={Local.chartCmds}
         render= {() =>
           <Chart
             isFullScreen={true}

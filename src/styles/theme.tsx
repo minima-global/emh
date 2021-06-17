@@ -170,6 +170,9 @@ const themeStyles = makeStyles({
     '& .MuiButton-root': {
       minWidth: '100%',
     },
+    '& .MuiIconButton-root': {
+      padding: '4px',
+    },
     '& .MuiPaper-rounded': {
       borderRadius: '20px',
       backgroundColor: 'white',
