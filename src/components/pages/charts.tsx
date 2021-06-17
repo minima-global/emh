@@ -23,7 +23,7 @@ import {
 
 import {getChartData} from '../../utils/getChartData';
 import {DisplayChart} from '../displayChart';
-import {DisplaySummary} from '../displayChartSummary';
+import {DisplayChartSummary} from '../displayChartSummary';
 
 interface ThisProps {
   heading: string
@@ -99,7 +99,7 @@ const chart = (props: Props) => {
       alignItems="flex-start"
       xs={12}
     >
-      <DisplaySummary
+      <DisplayChartSummary
         heading={props.heading}
         chartData={data}
         isFullScreen={props.isFullScreen}

@@ -15,7 +15,7 @@ import {
 
 import {Dbase} from '../../../config';
 
-import {doLog, getDbaseEntries} from '../dbase/actions';
+import {doLog} from '../dbase/actions';
 import {write} from '../../actions';
 
 /**
@@ -28,7 +28,6 @@ export const init = () => {
       if (msg.event == 'connected') {
         dispatch(getBalance());
         dispatch(getStatus());
-        dispatch(getDbaseEntries(Dbase.tables.log.name, 'DATE', 'DESC'));
 
         // need this empty listener, apparently...
         Minima.minidapps.listen(function(msg) {
@@ -37,7 +36,6 @@ export const init = () => {
       } else if ( msg.event == 'newbalance' ) {
         dispatch(getBalance());
         dispatch(getStatus());
-        dispatch(getDbaseEntries(Dbase.tables.log.name, 'DATE', 'DESC'));
       }
     });
   };

@@ -268,7 +268,6 @@ export const deleteRow = (
   };
 };
 
-
 /**
  * Gets rows from the database
  * @param {string} table - the table to which to add

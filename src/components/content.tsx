@@ -17,6 +17,7 @@ import {
 import {
   Dbase,
   Local,
+  Log as LogVars,
   Cmd as CmdVars,
   Tokens as TokensVars,
   Addresses as AddressVars,
@@ -43,7 +44,11 @@ export const Content = () => {
 
       <Route
         path={Local.logs}
-        render= {() => <Logs />}
+        render= {() =>
+          <Logs
+            heading={LogVars.heading}
+            limitLow={0}
+            offset={Dbase.pageLimit} /> }
       />
       <Route
         exact path={Local.addresses}

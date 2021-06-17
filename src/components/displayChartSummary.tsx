@@ -205,9 +205,9 @@ const mapDispatchToProps = (dispatch: AppDispatch): DispatchProps => {
   };
 };
 
-const DisplaySummary = connect<{}, DispatchProps, {}, ApplicationState>(
+const DisplayChartSummary = connect<{}, DispatchProps, {}, ApplicationState>(
     null,
     mapDispatchToProps,
 )(summary);
 
-export {DisplaySummary};
+export {DisplayChartSummary};

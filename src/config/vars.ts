@@ -341,6 +341,8 @@ class Status {
 class Log {
   static readonly heading = 'Logs'
 
+  static readonly total = 'Total Entries'
+
   static readonly dateCreated = 'Created'
   static readonly filter = 'Filter for User'
   static readonly user = 'User'
