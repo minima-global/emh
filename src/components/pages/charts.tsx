@@ -100,17 +100,19 @@ const chart = (props: Props) => {
       alignItems="flex-start"
       xs={12}
     >
-      <DisplayChartSummary
-        heading={props.heading}
-        chartData={data}
-        isFullScreen={props.isFullScreen}
-        navLink={props.navLink}
-        logNavLink={props.logNavLink} />
+      <Grid container>
+        <DisplayChartSummary
+          heading={props.heading}
+          chartData={data}
+          isFullScreen={props.isFullScreen}
+          navLink={props.navLink}
+          logNavLink={props.logNavLink} />
 
-      <DisplayChart
-        title={props.heading}
-        chartData={data}
-        viewport={screenHeight} />
+        <DisplayChart
+          title={props.heading}
+          chartData={data}
+          viewport={screenHeight} />
+      </Grid>
     </Grid>
   );
 };
