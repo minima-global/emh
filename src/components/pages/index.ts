@@ -3,6 +3,7 @@ export * from './home';
 export * from './logs';
 export * from './addresses';
 export * from './tokens';
+export * from './charts';
 export * from './chartTokens';
 export * from './chartAddresses';
 export * from './chartAPI';

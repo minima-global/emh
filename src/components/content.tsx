@@ -11,13 +11,11 @@ import {
   Addresses,
   Tokens,
   Triggers,
-  ChartTokens,
-  ChartAddresses,
-  ChartAPI,
-  ChartCmds,
+  Chart,
 } from '../components/pages';
 
 import {
+  Dbase,
   Local,
   Cmd as CmdVars,
   Tokens as TokensVars,
@@ -66,34 +64,46 @@ export const Content = () => {
       <Route
         exact path={Local.chartTokens}
         render= {() =>
-          <ChartTokens
+          <Chart
             isFullScreen={true}
             heading={TokensVars.chartHeading}
-            navLink={Local.home}/> }
+            navLink={Local.home}
+            filterType={Dbase.tables.txpow.name}
+            filterAction={Dbase.defaultActions.insert}
+            filterRegex={TokensVars.regex} /> }
       />
       <Route
         exact path={Local.chartAddresses}
         render= {() =>
-          <ChartAddresses
+          <Chart
             isFullScreen={true}
             heading={AddressVars.chartHeading}
-            navLink={Local.home}/> }
+            navLink={Local.home}
+            filterType={Dbase.tables.txpow.name}
+            filterAction={Dbase.defaultActions.insert}
+            filterRegex={AddressVars.regex} /> }
       />
       <Route
         exact path={Local.chartAPI}
         render= {() =>
-          <ChartAPI
+          <Chart
             isFullScreen={true}
             heading={APIVars.chartHeading}
-            navLink={Local.home} /> }
+            navLink={Local.home}
+            filterType={Dbase.tables.trigger.name}
+            filterAction={Dbase.defaultActions.run}
+            filterRegex={APIVars.regex} /> }
       />
       <Route
         exact path={Local.chartAPI}
         render= {() =>
-          <ChartCmds
+          <Chart
             isFullScreen={true}
             heading={CmdVars.chartHeading}
-            navLink={Local.home} />}
+            navLink={Local.home}
+            filterType={Dbase.extraLogTypes.COMMAND}
+            filterAction={Dbase.defaultActions.run}
+            filterRegex={CmdVars.regex} /> }
       />
 
       <Route

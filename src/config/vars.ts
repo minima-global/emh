@@ -233,6 +233,8 @@ class Cmd {
   static readonly heading = 'Run API Command'
   static readonly chartHeading = 'Commands'
 
+  static readonly regex = '^[a-zA-Z0-9]* '
+
   static readonly trigger = 'Trigger'
   static readonly params = 'Params'
   static readonly cmdButton = 'Run'
@@ -242,6 +244,8 @@ class Cmd {
 class Addresses {
   static readonly heading = 'Addresses to URLs'
   static readonly chartHeading = 'Address Transactions'
+
+  static readonly regex = ' Mx[A-Z0-9]*'
 
   static readonly address = 'Mx Address'
   static readonly url = 'URL'
@@ -262,6 +266,8 @@ class Addresses {
 class Tokens {
   static readonly heading = 'Tokens to URLs'
   static readonly chartHeading = 'Token Transactions'
+
+  static readonly regex = ' 0x[A-Z0-9]*'
 
   static readonly tokenId = 'Token ID'
   static readonly url = 'URL'
@@ -318,6 +324,8 @@ class Balances {
 class API {
   static readonly heading = 'API'
   static readonly chartHeading = 'API Calls'
+
+  static readonly regex = '^[a-zA-Z0-9]* '
 }
 
 /** @class Status */

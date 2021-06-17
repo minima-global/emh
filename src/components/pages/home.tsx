@@ -5,6 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 
 import {
+  Dbase,
   Local,
   Home as HomeVars,
   Cmd as CmdVars,
@@ -17,10 +18,7 @@ import {themeStyles} from '../../styles';
 
 import {ListBalances} from '../listBalances';
 import {ListStatus} from '../listStatus';
-import {ChartTokens} from './chartTokens';
-import {ChartAddresses} from './chartAddresses';
-import {ChartAPI} from './chartAPI';
-import {ChartCmds} from './chartCommands';
+import {Chart} from './charts';
 import {theme} from '../../styles';
 
 export const Home = () => {
@@ -89,10 +87,13 @@ export const Home = () => {
             elevation={5}
             className={classes.dashboardChartLeft}
           >
-            { <ChartTokens
+            { <Chart
               isFullScreen={false}
               heading={TokensVars.chartHeading}
-              navLink={Local.chartTokens}/> }
+              navLink={Local.chartTokens}
+              filterType={Dbase.tables.txpow.name}
+              filterAction={Dbase.defaultActions.insert}
+              filterRegex={TokensVars.regex} /> }
           </Paper>
         </Grid>
 
@@ -108,10 +109,13 @@ export const Home = () => {
             elevation={5}
             className={classes.dashboardChartRight}
           >
-            { <ChartAddresses
+            { <Chart
               isFullScreen={false}
               heading={AddressVars.chartHeading}
-              navLink={Local.chartAddresses}/> }
+              navLink={Local.chartAddresses}
+              filterType={Dbase.tables.txpow.name}
+              filterAction={Dbase.defaultActions.insert}
+              filterRegex={AddressVars.regex} /> }
           </Paper>
         </Grid>
 
@@ -125,10 +129,13 @@ export const Home = () => {
             elevation={5}
             className={classes.dashboardChartLeft}
           >
-            { <ChartAPI
+            { <Chart
               isFullScreen={false}
               heading={APIVars.chartHeading}
-              navLink={Local.chartAPI} /> }
+              navLink={Local.chartAPI}
+              filterType={Dbase.tables.trigger.name}
+              filterAction={Dbase.defaultActions.run}
+              filterRegex={APIVars.regex} /> }
           </Paper>
         </Grid>
 
@@ -142,10 +149,13 @@ export const Home = () => {
             elevation={5}
             className={classes.dashboardChartRight}
           >
-            { <ChartCmds
+            { <Chart
               isFullScreen={false}
               heading={CmdVars.chartHeading}
-              navLink={Local.chartCmds} /> }
+              navLink={Local.chartCmds}
+              filterType={Dbase.extraLogTypes.COMMAND}
+              filterAction={Dbase.defaultActions.run}
+              filterRegex={CmdVars.regex} /> }
           </Paper>
         </Grid>
 

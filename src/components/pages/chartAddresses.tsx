@@ -18,7 +18,7 @@ import {
 
 import {getChartData} from '../../utils/getChartData';
 import {DisplayChart} from '../displayChart';
-import {DataSummary} from '../summariseChart';
+import {DisplaySummary} from '../displayChartSummary';
 
 interface ChartProps {
   isFullScreen: boolean
@@ -75,7 +75,7 @@ const chart = (props: Props) => {
       alignItems="flex-start"
       xs={12}
     >
-      <DataSummary
+      <DisplaySummary
         heading={props.heading}
         chartData={data}
         isFullScreen={props.isFullScreen}

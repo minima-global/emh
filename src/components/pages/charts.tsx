@@ -18,16 +18,20 @@ import {getDbaseEntries} from '../../store/app/dbase/actions';
 
 import {
   Dbase,
+  Tokens as TokensVars,
 } from '../../config';
 
 import {getChartData} from '../../utils/getChartData';
 import {DisplayChart} from '../displayChart';
 import {DisplaySummary} from '../displayChartSummary';
 
-interface ChartProps {
+interface ThisProps {
+  heading: string
   isFullScreen: boolean
   navLink: string
-  heading: string
+  filterType: string,
+  filterAction: string,
+  filterRegex: string,
 }
 
 interface StateProps {
@@ -43,7 +47,7 @@ interface DispatchProps {
   ) => void
 }
 
-type Props = ChartProps & StateProps & DispatchProps
+type Props = ThisProps & StateProps & DispatchProps
 
 const chart = (props: Props) => {
   const isFirstRun = useRef(true);
@@ -63,23 +67,27 @@ const chart = (props: Props) => {
         const chartData =
             getChartData(
                 props.logsData,
-                Dbase.tables.txpow.name,
-                Dbase.defaultActions.insert,
-                ' 0x[A-Z0-9]*',
+                props.filterType,
+                props.filterAction,
+                props.filterRegex,
             );
-        const tokens: ChartData = {};
-        props.balanceData.data.forEach((token: Balance) => {
-          // console.log(thisTokenId);
-          if ( token.tokenid in chartData.data) {
-            const tokenName = token.token;
-            tokens[tokenName] = chartData.data[token.tokenid];
-          }
-        });
-        const thisData: ChartSummary = {
-          data: tokens,
-          total: chartData.total,
-        };
-        setData(thisData);
+        if ( props. heading === TokensVars.chartHeading) {
+          const tokens: ChartData = {};
+          props.balanceData.data.forEach((token: Balance) => {
+            // console.log(thisTokenId);
+            if ( token.tokenid in chartData.data) {
+              const tokenName = token.token;
+              tokens[tokenName] = chartData.data[token.tokenid];
+            }
+          });
+          const thisData: ChartSummary = {
+            data: tokens,
+            total: chartData.total,
+          };
+          setData(thisData);
+        } else {
+          setData(chartData);
+        }
       }
     }
   }, [props.logsData, props.balanceData]);
@@ -126,9 +134,9 @@ const mapDispatchToProps = (dispatch: AppDispatch): DispatchProps => {
   };
 };
 
-const ChartTokens = connect<StateProps, DispatchProps, {}, ApplicationState>(
+const Chart = connect<StateProps, DispatchProps, {}, ApplicationState>(
     mapStateToProps,
     mapDispatchToProps,
 )(chart);
 
-export {ChartTokens};
+export {Chart};
