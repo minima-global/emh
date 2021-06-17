@@ -91,6 +91,7 @@ export const Home = () => {
               isFullScreen={false}
               heading={TokensVars.chartHeading}
               navLink={Local.chartTokens}
+              logNavLink={Local.logTokens}
               filterType={Dbase.tables.txpow.name}
               filterAction={Dbase.defaultActions.insert}
               filterRegex={TokensVars.regex} /> }
@@ -113,6 +114,7 @@ export const Home = () => {
               isFullScreen={false}
               heading={AddressVars.chartHeading}
               navLink={Local.chartAddresses}
+              logNavLink={Local.logAddresses}
               filterType={Dbase.tables.txpow.name}
               filterAction={Dbase.defaultActions.insert}
               filterRegex={AddressVars.regex} /> }
@@ -133,6 +135,7 @@ export const Home = () => {
               isFullScreen={false}
               heading={APIVars.chartHeading}
               navLink={Local.chartAPI}
+              logNavLink={Local.logAPI}
               filterType={Dbase.tables.trigger.name}
               filterAction={Dbase.defaultActions.run}
               filterRegex={APIVars.regex} /> }
@@ -153,6 +156,7 @@ export const Home = () => {
               isFullScreen={false}
               heading={CmdVars.chartHeading}
               navLink={Local.chartCmds}
+              logNavLink={Local.logCmds}
               filterType={Dbase.extraLogTypes.COMMAND}
               filterAction={Dbase.defaultActions.run}
               filterRegex={CmdVars.regex} /> }

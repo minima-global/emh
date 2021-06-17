@@ -8,7 +8,9 @@ import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
 // import Button from '@material-ui/core/Button';
 
-import token from '../images/token.png';
+import logIcon from '../images/log.svg';
+import expandIcon from '../images/expand.svg';
+import closeIcon from '../images/closeDelete.svg';
 
 import {theme, themeStyles} from '../styles';
 
@@ -30,6 +32,7 @@ interface SummaryProps {
   chartData: ChartSummary
   isFullScreen: boolean
   navLink: string
+  logNavLink: string
 }
 
 interface DispatchProps {
@@ -46,6 +49,8 @@ const summary = (props: Props) => {
   const [searchTerm, setSearchTerm] = useState('');
 
   const classes = themeStyles();
+
+  const navLinkIcon = props.isFullScreen ? closeIcon : expandIcon;
 
   const doSetSearchTerm =
       (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -133,9 +138,13 @@ const summary = (props: Props) => {
           alignItems="flex-start"
           xs={1}
         >
-          <Typography variant="h3">
-              &nbsp;
-          </Typography>
+          <NavLink to={props.logNavLink}>
+            <IconButton
+              aria-label="Logs"
+            >
+              <img className={classes.footerIcon} src={logIcon}/>
+            </IconButton>
+          </NavLink>
         </Grid>
         <Grid
           item
@@ -145,9 +154,9 @@ const summary = (props: Props) => {
         >
           <NavLink to={props.navLink}>
             <IconButton
-              aria-label="Tokens"
+              aria-label="chartOrHome"
             >
-              <img className={classes.footerIcon} src={token}/>
+              <img className={classes.footerIcon} src={navLinkIcon}/>
             </IconButton>
           </NavLink>
         </Grid>

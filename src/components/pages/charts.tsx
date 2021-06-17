@@ -29,6 +29,7 @@ interface ThisProps {
   heading: string
   isFullScreen: boolean
   navLink: string
+  logNavLink: string
   filterType: string,
   filterAction: string,
   filterRegex: string,
@@ -103,7 +104,8 @@ const chart = (props: Props) => {
         heading={props.heading}
         chartData={data}
         isFullScreen={props.isFullScreen}
-        navLink={props.navLink} />
+        navLink={props.navLink}
+        logNavLink={props.logNavLink} />
 
       <DisplayChart
         title={props.heading}

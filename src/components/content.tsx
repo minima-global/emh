@@ -73,6 +73,7 @@ export const Content = () => {
             isFullScreen={true}
             heading={TokensVars.chartHeading}
             navLink={Local.home}
+            logNavLink={Local.logTokens}
             filterType={Dbase.tables.txpow.name}
             filterAction={Dbase.defaultActions.insert}
             filterRegex={TokensVars.regex} /> }
@@ -84,6 +85,7 @@ export const Content = () => {
             isFullScreen={true}
             heading={AddressVars.chartHeading}
             navLink={Local.home}
+            logNavLink={Local.logAddresses}
             filterType={Dbase.tables.txpow.name}
             filterAction={Dbase.defaultActions.insert}
             filterRegex={AddressVars.regex} /> }
@@ -95,6 +97,7 @@ export const Content = () => {
             isFullScreen={true}
             heading={APIVars.chartHeading}
             navLink={Local.home}
+            logNavLink={Local.logAPI}
             filterType={Dbase.tables.trigger.name}
             filterAction={Dbase.defaultActions.run}
             filterRegex={APIVars.regex} /> }
@@ -106,6 +109,68 @@ export const Content = () => {
             isFullScreen={true}
             heading={CmdVars.chartHeading}
             navLink={Local.home}
+            logNavLink={Local.logCmds}
+            filterType={Dbase.extraLogTypes.COMMAND}
+            filterAction={Dbase.defaultActions.run}
+            filterRegex={CmdVars.regex} /> }
+      />
+
+      <Route
+        exact path={Local.chartAPI}
+        render= {() =>
+          <Chart
+            isFullScreen={true}
+            heading={CmdVars.chartHeading}
+            navLink={Local.home}
+            logNavLink={Local.logCmds}
+            filterType={Dbase.extraLogTypes.COMMAND}
+            filterAction={Dbase.defaultActions.run}
+            filterRegex={CmdVars.regex} /> }
+      />
+
+      <Route
+        path={Local.logTokens}
+        render= {() =>
+          <Logs
+            heading={LogVars.heading}
+            limitLow={0}
+            offset={Dbase.maxLimit}
+            filterType={Dbase.tables.txpow.name}
+            filterAction={Dbase.defaultActions.insert}
+            filterRegex={TokensVars.regex} /> }
+      />
+
+      <Route
+        path={Local.logAddresses}
+        render= {() =>
+          <Logs
+            heading={LogVars.heading}
+            limitLow={0}
+            offset={Dbase.maxLimit}
+            filterType={Dbase.tables.txpow.name}
+            filterAction={Dbase.defaultActions.insert}
+            filterRegex={AddressVars.regex} /> }
+      />
+
+      <Route
+        path={Local.logAPI}
+        render= {() =>
+          <Logs
+            heading={LogVars.heading}
+            limitLow={0}
+            offset={Dbase.maxLimit}
+            filterType={Dbase.tables.trigger.name}
+            filterAction={Dbase.defaultActions.run}
+            filterRegex={APIVars.regex} /> }
+      />
+
+      <Route
+        path={Local.logCmds}
+        render= {() =>
+          <Logs
+            heading={LogVars.heading}
+            limitLow={0}
+            offset={Dbase.maxLimit}
             filterType={Dbase.extraLogTypes.COMMAND}
             filterAction={Dbase.defaultActions.run}
             filterRegex={CmdVars.regex} /> }
