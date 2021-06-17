@@ -54,6 +54,7 @@ const list = (props: Props) => {
     if ( isFirstRun.current ) {
       isFirstRun.current = false;
       props.initTx();
+      // SELECT * FROM ADDRESS LIMIT 0, 2147483647
       props.getDbaseEntries(Dbase.tables.address.name);
     } else {
       if ( props.addressData.data.length != isDisabled.length ) {

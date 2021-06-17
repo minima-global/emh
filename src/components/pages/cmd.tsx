@@ -143,6 +143,7 @@ const display = (props: Props) => {
   useEffect(() => {
     if ( isFirstRun.current ) {
       isFirstRun.current = false;
+      // SELECT * FROM API LIMIT 0, 2147483647
       props.getDbaseEntries(Dbase.tables.trigger.name);
     } else {
       props.triggersData.data.forEach((trigger, index) => {

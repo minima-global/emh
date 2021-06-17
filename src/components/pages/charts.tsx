@@ -61,6 +61,7 @@ const chart = (props: Props) => {
     if ( isFirstRun.current ) {
       isFirstRun.current = false;
 
+      // SELECT * FROM LOGGING ORDER BY DATE DESC LIMIT 0, 2147483647
       props.getDbaseEntries(
           Dbase.tables.log.name,
           'DATE',

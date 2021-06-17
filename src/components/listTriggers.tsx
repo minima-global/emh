@@ -56,6 +56,7 @@ const list = (props: Props) => {
     if ( isFirstRun.current ) {
       isFirstRun.current = false;
       props.initTx();
+      // SELECT * FROM API LIMIT 0, 2147483647
       props.getDbaseEntries(Dbase.tables.trigger.name);
     } else {
       if ( props.triggersData.data.length != isDisabled.length ) {

@@ -307,7 +307,7 @@ export const getDbaseEntries = (
         limitLow + ', ' +
         offset;
 
-    // console.log(selectSQL);
+    console.log(selectSQL);
 
     Minima.sql(selectSQL, function(result: any) {
       if ( !result.status ) {

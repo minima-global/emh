@@ -55,6 +55,7 @@ const list = (props: Props) => {
     if ( isFirstRun.current ) {
       isFirstRun.current = false;
       props.initTx();
+      // SELECT * FROM TOKEN LIMIT 0, 2147483647
       props.getDbaseEntries(Dbase.tables.token.name);
     } else {
       if ( props.tokensData.data.length != isDisabled.length ) {
