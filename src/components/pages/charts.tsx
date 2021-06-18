@@ -59,53 +59,16 @@ const chart = (props: Props) => {
   const isFirstRun = useRef(true);
   const [data, setData] = useState({} as ChartSummary);
 
-  /*
-  const thisAction = log.ACTION;
-        const thisData = log.DATA;
-        const thisType = log.LOGGINGTYPE;
-        const regex = new RegExp(searchRegex, 'g');
-        if ( thisType === logType &&
-               thisAction === action ) {
-          const thisMatch = thisData.match(regex);
-          const thisMatchString = thisMatch ? thisMatch.toString().trim() : '';
-          if ( thisMatchString.length ) {
-            // console.log('Matched! ', thisMatchString);
-            if (!data[thisMatchString]) {
-              const chartValues: ChartValues = {
-                count: 1,
-                colour: getRandomColour(),
-              };
-              data[thisMatchString] = chartValues;
-            } else {
-              data[thisMatchString].count += 1;
-            }
-            total = total + 1;
-          }
-    */
-
-  /*
-   const query =
-    'SELECT * FROM ' +
-    Dbase.tables.log.name +
-    ' WHERE ' + Dbase.tables.log.columns[2] + ' = ' + props.filterType +
-    ' AND ' + Dbase.tables.log.columns[3] + ' = ' + props.filterAction +
-    ' WHERE ' + Dbase.tables.log.columns[4] + ' REGEXP \'' + props.filterRegex +
-    '\'';
-  */
-
-  /*
-  const query =
-    'SELECT * FROM ' +
-    Dbase.tables.log.name +
-    ' WHERE ' + Dbase.tables.log.columns[2] + ' = ' + props.filterType +
-    ' AND ' + Dbase.tables.log.columns[3] + ' = ' + props.filterAction;
-  */
-
   const query =
     'SELECT * FROM ' +
     Dbase.tables.log.name +
     ' WHERE ' + Dbase.tables.log.columns[2] +
-    ' IN (\'' + props.filterType + '\')';
+    ' IN (\'' + props.filterType + '\')' +
+    ' AND ' + Dbase.tables.log.columns[3] +
+    ' IN (\'' + props.filterAction + '\')' +
+    ' And ' + Dbase.tables.log.columns[4] +
+    ' REGEXP \'' + props.filterRegex +
+    '\'';
 
   const screenHeight = props.isFullScreen ? '800px' : '250px';
 
