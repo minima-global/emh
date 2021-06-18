@@ -46,9 +46,7 @@ export const Content = () => {
         path={Local.logs}
         render= {() =>
           <Logs
-            heading={LogVars.heading}
-            limitLow={0}
-            offset={Dbase.pageLimit} /> }
+            heading={LogVars.heading} /> }
       />
       <Route
         exact path={Local.addresses}
@@ -133,8 +131,6 @@ export const Content = () => {
         render= {() =>
           <Logs
             heading={LogVars.heading}
-            limitLow={0}
-            offset={Dbase.maxLimit}
             filterType={Dbase.tables.txpow.name}
             filterAction={Dbase.defaultActions.insert}
             filterRegex={TokensVars.regex} /> }
@@ -145,8 +141,6 @@ export const Content = () => {
         render= {() =>
           <Logs
             heading={LogVars.heading}
-            limitLow={0}
-            offset={Dbase.maxLimit}
             filterType={Dbase.tables.txpow.name}
             filterAction={Dbase.defaultActions.insert}
             filterRegex={AddressVars.regex} /> }
@@ -157,8 +151,6 @@ export const Content = () => {
         render= {() =>
           <Logs
             heading={LogVars.heading}
-            limitLow={0}
-            offset={Dbase.maxLimit}
             filterType={Dbase.tables.trigger.name}
             filterAction={Dbase.defaultActions.run}
             filterRegex={APIVars.regex} /> }
@@ -169,8 +161,6 @@ export const Content = () => {
         render= {() =>
           <Logs
             heading={LogVars.heading}
-            limitLow={0}
-            offset={Dbase.maxLimit}
             filterType={Dbase.extraLogTypes.COMMAND}
             filterAction={Dbase.defaultActions.run}
             filterRegex={CmdVars.regex} /> }

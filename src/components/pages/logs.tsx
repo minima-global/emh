@@ -26,8 +26,6 @@ import {
 
 interface ThisProps {
   heading: string
-  limitLow?: number,
-  offset?: number,
   filterType?: string,
   filterAction?: string,
   filterRegex?: string,
@@ -49,8 +47,6 @@ type Props = ThisProps & StateProps & DispatchProps
 export const list = (props: Props) => {
   const {
     heading,
-    limitLow = 0,
-    offset = Dbase.maxLimit,
     filterType = '',
     filterAction = '',
     filterRegex = '',
@@ -58,7 +54,7 @@ export const list = (props: Props) => {
     getTableEntries,
   } = props;
   const isFirstRun = useRef(true);
-  const [low, setLimitLow] = useState(limitLow);
+  const [low, setLimitLow] = useState(0);
   const [numRecords, setNumRecords] = useState(Dbase.pageLimit);
   const [nextDisabled, setNextDisabled] = useState(true);
   const [backDisabled, setBackDisabled] = useState(true);
@@ -68,8 +64,8 @@ export const list = (props: Props) => {
     'SELECT * FROM ' +
     Dbase.tables.log.name +
     ' ORDER BY DATE DESC ' +
-    ' LIMIT ' + limitLow + ', ' +
-    offset;
+    ' LIMIT ' + low + ', ' +
+    numRecords;
   if ( filterType ) {
     query =
       'SELECT * FROM ' +
@@ -81,8 +77,8 @@ export const list = (props: Props) => {
       ' And ' + Dbase.tables.log.columns[4] +
       ' REGEXP \'' + filterRegex + '\'' +
       ' ORDER BY DATE DESC ' +
-      ' LIMIT ' + limitLow + ', ' +
-      offset;
+      ' LIMIT ' + low + ', ' +
+      numRecords;
   }
 
   const classes = themeStyles();
