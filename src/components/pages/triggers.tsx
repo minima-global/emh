@@ -52,7 +52,6 @@ interface DispatchProps {
   addRow: (
     table: string,
     columns: Array<string>,
-    key: Array<string>,
     values: Array<string>,
   ) => void
 }
@@ -80,7 +79,6 @@ const display = (props: Props) => {
       props.addRow(
           Dbase.tables.trigger.name,
           Dbase.tables.trigger.columns,
-          [values.endpoint],
           [
             values.endpoint,
             values.command,
@@ -417,9 +415,8 @@ const mapDispatchToProps = (dispatch: AppDispatch): DispatchProps => {
     addRow: (
         table: string,
         columns: Array<string>,
-        key: Array<string>,
         values: Array<string>,
-    ) => dispatch(addRow(table, columns, key, values)),
+    ) => dispatch(addRow(table, columns, values)),
   };
 };
 

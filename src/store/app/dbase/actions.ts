@@ -154,14 +154,12 @@ const stringifyValues = (values: Array<string>): string => {
  * Adds a row to the database
  * @param {string} table - the table to which to add
  * @param {Array} columns - the table columns
- * @param {string} key - the table primary key
  * @param {Array} values - the table values
  * @return {function}
  */
 export const addRow = (
     table: string,
     columns: Array<string>,
-    key: Array<string>,
     values: Array<string>,
 ) => {
   return async (dispatch: AppDispatch) => {
