@@ -3,7 +3,6 @@ import {Minima} from 'minima';
 import {
   AppDispatch,
   ActionTypes,
-  LogInfo,
   TxActionTypes,
   CmdActionTypes,
   BalanceProps,
@@ -69,14 +68,12 @@ export const command = (endpoint: string, cmd: string) => {
     const successAction: ActionTypes = CmdActionTypes.CMD_SUCCESS;
     Minima.cmd(cmd, function(msg: any) {
       // console.log('Command?: ', msg);
-      const logData: LogInfo = {
-        id: endpoint,
-        info: {
-          action: Dbase.defaultActions.run,
-          data: endpoint + ' ' + cmd,
-        },
-      };
-      dispatch(doLog(Dbase.extraLogTypes.COMMAND, logData));
+      dispatch(
+          doLog(
+              Dbase.extraLogTypes.COMMAND,
+              Dbase.defaultActions.run,
+              endpoint + ' ' + cmd),
+      );
       dispatch(write({data: msg.response})(successAction));
     });
   };

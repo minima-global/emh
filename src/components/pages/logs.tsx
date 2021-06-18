@@ -198,22 +198,7 @@ export const list = (props: Props) => {
               item
               container
               justify="flex-start"
-              xs={3}
-              lg={5}
-            >
-              <Typography
-                variant="h6"
-                noWrap={true}
-              >
-                {LogVars.loggingTypeId}
-              </Typography>
-            </Grid>
-
-            <Grid
-              item
-              container
-              justify="flex-start"
-              xs={3}
+              xs={2}
               lg={1}
             >
               <Typography variant="h6">
@@ -225,8 +210,23 @@ export const list = (props: Props) => {
               item
               container
               justify="flex-start"
-              xs={3}
-              lg={4}
+              xs={2}
+              lg={1}
+            >
+              <Typography
+                variant="h6"
+                noWrap={true}
+              >
+                {LogVars.action}
+              </Typography>
+            </Grid>
+
+            <Grid
+              item
+              container
+              justify="flex-start"
+              xs={5}
+              lg={8}
             >
               <Typography variant="h6">
                 {LogVars.data}
@@ -255,8 +255,8 @@ export const list = (props: Props) => {
               const thisDate = new Date(+log.DATE);
               const dateCreated = thisDate.toString().replace(/ GMT.*$/g, '');
               const loggingType = log.LOGGINGTYPE;
+              const action = log.ACTION;
               const thisData = log.DATA;
-              const loggingTypeId = log.LOGGINGTYPEID;
 
               const rowclass = index % 2 ? classes.evenRow : classes.oddRow;
 
@@ -280,25 +280,13 @@ export const list = (props: Props) => {
                       item
                       container
                       justify="flex-start"
-                      xs={3}
-                      lg={5}
+                      xs={2}
+                      lg={1}
                     >
                       <Typography
                         variant="body1"
                         noWrap={true}
                       >
-                        {loggingTypeId}
-                      </Typography>
-                    </Grid>
-
-                    <Grid
-                      item
-                      container
-                      justify="flex-start"
-                      xs={3}
-                      lg={1}
-                    >
-                      <Typography variant="body1">
                         {loggingType}
                       </Typography>
                     </Grid>
@@ -307,8 +295,20 @@ export const list = (props: Props) => {
                       item
                       container
                       justify="flex-start"
-                      xs={3}
-                      lg={4}
+                      xs={2}
+                      lg={1}
+                    >
+                      <Typography variant="body1">
+                        {action}
+                      </Typography>
+                    </Grid>
+
+                    <Grid
+                      item
+                      container
+                      justify="flex-start"
+                      xs={5}
+                      lg={8}
                     >
                       <Typography
                         variant="body1"

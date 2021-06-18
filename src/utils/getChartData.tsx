@@ -18,9 +18,8 @@ export const getChartData =
       const data: ChartData = {};
       logs.data.map( ( log: Logs, index: number ) => {
         // const thisDate = new Date(+log.DATE);
-        const dataJSON = JSON.parse(log.DATA);
-        const thisAction = dataJSON.action;
-        const thisData = dataJSON.data;
+        const thisAction = log.ACTION;
+        const thisData = log.DATA;
         const thisType = log.LOGGINGTYPE;
         const regex = new RegExp(searchRegex, 'g');
         if ( thisType === logType &&
@@ -29,15 +28,14 @@ export const getChartData =
           const thisMatchString = thisMatch ? thisMatch.toString().trim() : '';
           if ( thisMatchString.length ) {
             // console.log('Matched! ', thisMatchString);
-            const id = thisMatch.toString().trim();
-            if (!data[id]) {
+            if (!data[thisMatchString]) {
               const chartValues: ChartValues = {
                 count: 1,
                 colour: getRandomColour(),
               };
-              data[id] = chartValues;
+              data[thisMatchString] = chartValues;
             } else {
-              data[id].count += 1;
+              data[thisMatchString].count += 1;
             }
             total = total + 1;
           }

@@ -29,21 +29,13 @@ export interface ActionProps extends Action {
 
 export type AppDispatch = ThunkDispatch<ApplicationState, any, ActionProps>
 
-export interface LogInfo {
-  id: string
-  info: {
-    action: string
-    data: string
-  }
-}
-
 export type ChartValues = {
   count: number
   colour: string
 }
 
 export type ChartData = {
-  [address: string]: ChartValues
+  [key: string]: ChartValues
 }
 
 export type ChartSummary = {
@@ -107,8 +99,8 @@ export interface Logs {
   ID: number
   DATE: string
   LOGGINGTYPE: string
+  ACTION: string
   DATA: string
-  LOGGINGTYPEID: string
 }
 
 export interface LogsProps extends PayloadProps {

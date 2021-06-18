@@ -64,7 +64,7 @@ class Dbase {
         name: ['ID'],
         isAuto: true,
       },
-      columns: ['ID', 'LOGGINGTYPEID', 'LOGGINGTYPE', 'DATE', 'DATA'],
+      columns: ['ID', 'DATE', 'LOGGINGTYPE', 'ACTION', 'DATA'],
     },
     trigger: {
       name: 'API',
@@ -348,7 +348,7 @@ class Log {
   static readonly user = 'User'
   static readonly loggingType = 'Type'
   static readonly data = 'Data'
-  static readonly loggingTypeId = 'iD'
+  static readonly action = 'Action'
   static readonly records = 'Page'
 
   static readonly nextButton = 'Next'

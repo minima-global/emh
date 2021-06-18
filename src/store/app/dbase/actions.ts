@@ -3,7 +3,6 @@ import {Minima} from 'minima';
 import {
   AppDispatch,
   ActionTypes,
-  LogInfo,
   SuccessAndFailType,
   TxPoWActionTypes,
   AddressActionTypes,
@@ -24,30 +23,30 @@ import {write} from '../../actions';
 /**
  * Logs stuff going into the database
  * @param {string} type - the type of the log entry
- * @param {object} logInfo - relevant data for the log entry
+ * @param {string} action - the action the log entry performed
+ * @param {string} data - the data pertaining to the action
  * @return {function}
  */
-export const doLog = (type: string, logInfo: LogInfo) => {
+export const doLog = (type: string, action: string, data: string) => {
   return async (dispatch: AppDispatch) => {
     const table = Dbase.tables.log.name;
-    const thisData = JSON.stringify(logInfo.info);
     const date = Date.now();
     const insertSQL = 'INSERT INTO ' +
         table +
-        ' (LOGGINGTYPEID, LOGGINGTYPE, DATE, DATA) ' +
+        ' (DATE, LOGGINGTYPE, ACTION, DATA) ' +
         'VALUES (' +
-        '\'' + logInfo.id + '\', ' +
-        '\'' + type + '\', ' +
         '\'' + date + '\', ' +
-        '\'' + thisData + '\'' +
+        '\'' + type + '\', ' +
+        '\'' + action + '\', ' +
+        '\'' + data + '\'' +
       ')';
     Minima.sql(insertSQL, function(result: any) {
       if ( !result.status ) {
         Minima.log(App.appName +
           ' Error logging ' +
-          logInfo.id + ' ' +
           type + ' ' +
-          thisData,
+          action + ' ' +
+          data,
         );
       }
     });
@@ -178,7 +177,6 @@ export const addRow = (
 
     const thisColumns = stringifyColumns(columns);
     const thisValues = stringifyValues(values);
-    const thisKey = key.join(' ');
 
     const insertSQL = 'INSERT INTO ' +
       table + ' ' +
@@ -197,14 +195,12 @@ export const addRow = (
         };
         dispatch(write({data: txData})(txFailAction));
       } else {
-        const logData: LogInfo = {
-          id: thisKey,
-          info: {
-            action: Dbase.defaultActions.insert,
-            data: values.toString(),
-          },
-        };
-        dispatch(doLog(table, logData));
+        dispatch(
+            doLog(
+                table,
+                Dbase.defaultActions.insert,
+                values.toString().replace(/,/g, ' ')),
+        );
         dispatch(write({data: txData})(txSuccessAction));
       }
     });
@@ -254,14 +250,7 @@ export const deleteRow = (
         };
         dispatch(write({data: txData})(txFailAction));
       } else {
-        const logData: LogInfo = {
-          id: thisKey,
-          info: {
-            action: Dbase.defaultActions.delete,
-            data: table,
-          },
-        };
-        dispatch(doLog(table, logData));
+        dispatch(doLog(table, Dbase.defaultActions.delete, thisKey));
         dispatch(write({data: txData})(txSuccessAction));
       }
     });

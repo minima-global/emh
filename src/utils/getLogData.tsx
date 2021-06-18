@@ -14,9 +14,8 @@ export const getLogData =
       };
       logs.data.map( ( log: Logs, index: number ) => {
         // const thisDate = new Date(+log.DATE);
-        const dataJSON = JSON.parse(log.DATA);
-        const thisAction = dataJSON.action;
-        const thisData = dataJSON.data;
+        const thisAction = log.ACTION;
+        const thisData = log.DATA;
         const thisType = log.LOGGINGTYPE;
         const regex = new RegExp(searchRegex, 'g');
         if ( thisType === logType &&
