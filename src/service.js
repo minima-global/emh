@@ -55,7 +55,7 @@ const tables = {
 const extraLogTypes = {
   SYSTEM: 'SYSTEM',
   COMMAND: 'COMMAND',
-  URL: 'URLCALL',
+  URL: 'URL',
 };
 
 const defaultAPI = {
@@ -135,9 +135,7 @@ const defaultAPI = {
 
 const defaultActions = {
   init: 'bootstrap',
-  setURL: 'url',
   run: 'run',
-  get: 'get',
   insert: 'insert',
   delete: 'delete',
   update: 'update',
@@ -462,7 +460,7 @@ function setDefaultURL(qParamsJSON, replyId) {
 
   if ( endpoint == defaultAPI.url.endpoint ) {
     defaultURL=qParamsJSON.url;
-    doLog(extraLogTypes.API, defaultActions.setURL, url);
+    doLog(extraLogTypes.SYSTEM, defaultActions.insert, url);
     Minima.minidapps.reply(replyId, 'OK');
   } else {
     Minima.minidapps.reply(replyId, '');
@@ -557,7 +555,7 @@ function getDbase(qParamsJSON, replyId) {
       if ( result.status ) {
         Minima.minidapps.reply(replyId,
             JSON.stringify(result.response.rows.slice()));
-        doLog(extraLogTypes.API, defaultActions.get, JSON.stringify(qParamsJSON));
+        doLog(tables.trigger.name, defaultActions.run, defaultAPI.dbase.endpoint + ' ' + JSON.stringify(qParamsJSON));
       } else {
         Minima.minidapps.reply(replyId, '');
       }

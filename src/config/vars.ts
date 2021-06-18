@@ -144,9 +144,7 @@ class Dbase {
 
   static readonly defaultActions = {
     init: 'bootstrap',
-    setURL: 'url',
     run: 'run',
-    get: 'get',
     insert: 'insert',
     delete: 'delete',
     update: 'update',
@@ -245,7 +243,7 @@ class Addresses {
   static readonly heading = 'Addresses to URLs'
   static readonly chartHeading = 'Address Transactions'
 
-  static readonly regex = ' Mx[A-Z0-9]*'
+  static readonly regex = '^Mx[A-Z0-9]*'
 
   static readonly address = 'Mx Address'
   static readonly url = 'URL'
@@ -267,7 +265,7 @@ class Tokens {
   static readonly heading = 'Tokens to URLs'
   static readonly chartHeading = 'Token Transactions'
 
-  static readonly regex = ' 0x[A-Z0-9]*'
+  static readonly regex = '^0x[A-Z0-9]*'
 
   static readonly tokenId = 'Token ID'
   static readonly url = 'URL'
