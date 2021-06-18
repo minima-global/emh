@@ -61,7 +61,7 @@ const list = (props: Props) => {
       isFirstRun.current = false;
       props.initTx();
       // SELECT * FROM TOKEN LIMIT 0, 2147483647
-      props.getTableEntries(Dbase.tables.address.name, query);
+      props.getTableEntries(Dbase.tables.token.name, query);
     } else {
       if ( props.tokensData.data.length != isDisabled.length ) {
         for (let i = 0; i < props.tokensData.data.length; i++ ) {
@@ -75,7 +75,7 @@ const list = (props: Props) => {
 
         if ( (txSummary === SQL.insertSuccess ) ||
              (txSummary === SQL.deleteSuccess ) ) {
-          props.getTableEntries(Dbase.tables.address.name, query);
+          props.getTableEntries(Dbase.tables.token.name, query);
         }
       }
     }
