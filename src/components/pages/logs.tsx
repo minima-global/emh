@@ -12,7 +12,6 @@ import {
   Logs as LogsType,
 } from '../../store/types';
 
-import {getLogData} from '../../utils/getLogData';
 import {getTableEntries} from '../../store/app/dbase/actions';
 
 import {theme, themeStyles} from '../../styles';
@@ -63,15 +62,28 @@ export const list = (props: Props) => {
   const [numRecords, setNumRecords] = useState(Dbase.pageLimit);
   const [nextDisabled, setNextDisabled] = useState(true);
   const [backDisabled, setBackDisabled] = useState(true);
-  const [data, setData] = useState({} as LogsProps);
 
   // SELECT * FROM LOGGING ORDER BY DATE DESC LIMIT 0, 2147483647
-  const query =
+  let query =
     'SELECT * FROM ' +
     Dbase.tables.log.name +
     ' ORDER BY DATE DESC ' +
     ' LIMIT ' + limitLow + ', ' +
     offset;
+  if ( filterType ) {
+    query =
+      'SELECT * FROM ' +
+      Dbase.tables.log.name +
+      ' WHERE ' + Dbase.tables.log.columns[2] +
+      ' IN (\'' + props.filterType + '\')' +
+      ' AND ' + Dbase.tables.log.columns[3] +
+      ' IN (\'' + filterAction + '\')' +
+      ' And ' + Dbase.tables.log.columns[4] +
+      ' REGEXP \'' + filterRegex + '\'' +
+      ' ORDER BY DATE DESC ' +
+      ' LIMIT ' + limitLow + ', ' +
+      offset;
+  }
 
   const classes = themeStyles();
 
@@ -85,20 +97,6 @@ export const list = (props: Props) => {
         const thisData: LogsProps = {
           data: [],
         };
-        if ( filterType ) {
-          const thisLogsData =
-            getLogData(
-                logsData,
-                filterType,
-                filterAction,
-                filterRegex,
-            );
-          thisData.data = thisLogsData.data;
-          setData(thisData);
-        } else {
-          thisData.data = logsData.data;
-          setData(logsData);
-        }
 
         if ( thisData.data.length < Dbase.pageLimit - 1 ) {
           setNextDisabled(true);
@@ -121,9 +119,7 @@ export const list = (props: Props) => {
   const getRecords = (lowLimit: number) => {
     setLimitLow(lowLimit);
     setNumRecords(lowLimit + Dbase.pageLimit);
-    if ( !filterType ) {
-      getTableEntries(Dbase.tables.log.name, query);
-    }
+    getTableEntries(Dbase.tables.log.name, query);
   };
 
   return (
@@ -246,7 +242,7 @@ export const list = (props: Props) => {
           </Grid>
 
           <Grid item container className={classes.formSummary} xs={12}>
-            { data?.data?.map( ( log: LogsType, index: number ) => {
+            { logsData?.data?.map( ( log: LogsType, index: number ) => {
               const thisDate = new Date(+log.DATE);
               const dateCreated = thisDate.toString().replace(/ GMT.*$/g, '');
               const loggingType = log.LOGGINGTYPE;
