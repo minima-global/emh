@@ -276,19 +276,10 @@ export const getTableEntries = (table: string, query: string) => {
       time: dateText,
     };
 
-    /* let selectSQL = 'SELECT * FROM ' + table;
-    if ( sortField ) {
-      selectSQL += ' ORDER BY ' +
-          sortField + ' ' +
-          sortOrder;
-    }
-    selectSQL += ' LIMIT ' +
-        limitLow + ', ' +
-        offset;
-
-    console.log(selectSQL);*/
+    console.log(query);
 
     Minima.sql(query, function(result: any) {
+      console.log('got result, ', result);
       if ( !result.status ) {
         txData = {
           code: '503',
