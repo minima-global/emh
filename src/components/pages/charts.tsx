@@ -16,7 +16,7 @@ import {
   ChartData,
 } from '../../store/types';
 
-import {getDbaseEntries} from '../../store/app/dbase/actions';
+import {getTableEntries} from '../../store/app/dbase/actions';
 
 import {
   Dbase,
@@ -43,10 +43,9 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  getDbaseEntries: (
-    dbase: string,
-    sortField: string,
-    sortOrder: string
+  getTableEntries: (
+    table: string,
+    query: string,
   ) => void
 }
 
@@ -55,6 +54,13 @@ type Props = ThisProps & StateProps & DispatchProps
 const chart = (props: Props) => {
   const isFirstRun = useRef(true);
   const [data, setData] = useState({} as ChartSummary);
+
+  const query =
+    'SELECT * FROM ' +
+    Dbase.tables.log.name +
+    ' ORDER BY DATE DESC ' +
+    ' LIMIT 0, ' + Dbase.maxLimit;
+
   const screenHeight = props.isFullScreen ? '800px' : '250px';
 
   useEffect(() => {
@@ -62,10 +68,7 @@ const chart = (props: Props) => {
       isFirstRun.current = false;
 
       // SELECT * FROM LOGGING ORDER BY DATE DESC LIMIT 0, 2147483647
-      props.getDbaseEntries(
-          Dbase.tables.log.name,
-          'DATE',
-          'DESC');
+      props.getTableEntries(Dbase.tables.log.name, query);
     } else {
       if ( props.logsData?.data.length && props.balanceData?.data.length ) {
         const chartData =
@@ -132,14 +135,13 @@ const mapStateToProps = (state: ApplicationState): StateProps => {
 
 const mapDispatchToProps = (dispatch: AppDispatch): DispatchProps => {
   return {
-    getDbaseEntries: (
-        dbase: string,
-        sortField: string,
-        sortOrder: string) =>
-      dispatch(getDbaseEntries(
-          dbase,
-          sortField,
-          sortOrder),
+    getTableEntries: (
+        table: string,
+        query: string,
+    ) =>
+      dispatch(getTableEntries(
+          table,
+          query),
       ),
   };
 };

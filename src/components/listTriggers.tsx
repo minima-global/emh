@@ -17,7 +17,7 @@ import {
 } from '../store/types';
 
 import {initTx} from '../store/app/blockchain/actions';
-import {deleteRow, getDbaseEntries} from '../store/app/dbase/actions';
+import {deleteRow, getTableEntries} from '../store/app/dbase/actions';
 
 import {
   Local,
@@ -37,7 +37,10 @@ interface DispatchProps {
     table: string,
     columns: Array<string>,
     values: Array<string>) => void
-  getDbaseEntries: (dbase: string) => void
+  getTableEntries: (
+    table: string,
+    query: string,
+  ) => void
 }
 
 type Props = StateProps & DispatchProps
@@ -49,6 +52,8 @@ const list = (props: Props) => {
   // eslint-disable-next-line no-unused-vars
   const [isDisabled, setIsDisabled] = useState([] as boolean[]);
 
+  const query = 'SELECT * FROM ' + Dbase.tables.trigger.name;
+
   const classes = themeStyles();
   const largeScreen = useMediaQuery(theme.breakpoints.up('lg'));
 
@@ -57,7 +62,7 @@ const list = (props: Props) => {
       isFirstRun.current = false;
       props.initTx();
       // SELECT * FROM API LIMIT 0, 2147483647
-      props.getDbaseEntries(Dbase.tables.trigger.name);
+      props.getTableEntries(Dbase.tables.trigger.name, query);
     } else {
       if ( props.triggersData.data.length != isDisabled.length ) {
         for (let i = 0; i < props.triggersData.data.length; i++ ) {
@@ -69,7 +74,7 @@ const list = (props: Props) => {
         setSummary(txSummary);
         if ( (txSummary === SQL.insertSuccess ) ||
              (txSummary === SQL.deleteSuccess ) ) {
-          props.getDbaseEntries(Dbase.tables.trigger.name);
+          props.getTableEntries(Dbase.tables.trigger.name, query);
         }
       }
     }
@@ -357,7 +362,10 @@ const mapDispatchToProps = (dispatch: AppDispatch): DispatchProps => {
         table: string,
         columns: Array<string>,
         values: Array<string>) => dispatch(deleteRow(table, columns, values)),
-    getDbaseEntries: (dbase: string) => dispatch(getDbaseEntries(dbase)),
+    getTableEntries: (
+        table: string,
+        query: string,
+    ) => dispatch(getTableEntries(table, query)),
   };
 };
 

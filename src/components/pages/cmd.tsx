@@ -20,7 +20,7 @@ import {
 } from '../../store/types';
 
 import {command} from '../../store/app/blockchain/actions';
-import {getDbaseEntries} from '../../store/app/dbase/actions';
+import {getTableEntries} from '../../store/app/dbase/actions';
 
 import {
   Dbase,
@@ -42,7 +42,10 @@ interface StateProps {
 
 interface DispatchProps {
   command: (endpoint: string, cmd: string) => void
-  getDbaseEntries: (dbase: string) => void,
+  getTableEntries: (
+    table: string,
+    query: string,
+  ) => void
 }
 
 type Props = StateProps & DispatchProps
@@ -59,6 +62,8 @@ const display = (props: Props) => {
   const [thisTrigger, setThisTrigger] = useState({} as SelectOptionType);
   const [paramsDisabled, setParamsDisabled] = useState(false);
   const [params, setParams] = useState('');
+
+  const query = 'SELECT * FROM ' + Dbase.tables.trigger.name;
 
   const classes = themeStyles();
   const formik = useFormik({
@@ -144,7 +149,7 @@ const display = (props: Props) => {
     if ( isFirstRun.current ) {
       isFirstRun.current = false;
       // SELECT * FROM API LIMIT 0, 2147483647
-      props.getDbaseEntries(Dbase.tables.trigger.name);
+      props.getTableEntries(Dbase.tables.trigger.name, query);
     } else {
       props.triggersData.data.forEach((trigger, index) => {
         const thisTrigger: SelectOptionType = {
@@ -350,7 +355,10 @@ const mapDispatchToProps = (dispatch: AppDispatch): DispatchProps => {
     command: (
         endpoint: string,
         cmd: string) => dispatch(command(endpoint, cmd)),
-    getDbaseEntries: (dbase: string) => dispatch(getDbaseEntries(dbase)),
+    getTableEntries: (
+        table: string,
+        query: string,
+    ) => dispatch(getTableEntries(table, query)),
   };
 };
 

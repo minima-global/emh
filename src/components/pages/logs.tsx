@@ -13,7 +13,7 @@ import {
 } from '../../store/types';
 
 import {getLogData} from '../../utils/getLogData';
-import {getDbaseEntries} from '../../store/app/dbase/actions';
+import {getTableEntries} from '../../store/app/dbase/actions';
 
 import {theme, themeStyles} from '../../styles';
 
@@ -39,12 +39,9 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  getDbaseEntries: (
-    dbase: string,
-    sortField: string,
-    sortOrder: string,
-    limitLow: number,
-    offset: number
+  getTableEntries: (
+    table: string,
+    query: string,
   ) => void
 }
 
@@ -59,7 +56,7 @@ export const list = (props: Props) => {
     filterAction = '',
     filterRegex = '',
     logsData,
-    getDbaseEntries,
+    getTableEntries,
   } = props;
   const isFirstRun = useRef(true);
   const [low, setLimitLow] = useState(limitLow);
@@ -68,18 +65,21 @@ export const list = (props: Props) => {
   const [backDisabled, setBackDisabled] = useState(true);
   const [data, setData] = useState({} as LogsProps);
 
+  // SELECT * FROM LOGGING ORDER BY DATE DESC LIMIT 0, 2147483647
+  const query =
+    'SELECT * FROM ' +
+    Dbase.tables.log.name +
+    ' ORDER BY DATE DESC ' +
+    ' LIMIT ' + limitLow + ', ' +
+    offset;
+
   const classes = themeStyles();
 
   useEffect(() => {
     if ( isFirstRun.current ) {
       isFirstRun.current = false;
 
-      getDbaseEntries(
-          Dbase.tables.log.name,
-          'DATE',
-          'DESC',
-          limitLow,
-          offset);
+      getTableEntries(Dbase.tables.log.name, query);
     } else {
       if ( logsData?.data.length ) {
         const thisData: LogsProps = {
@@ -122,12 +122,7 @@ export const list = (props: Props) => {
     setLimitLow(lowLimit);
     setNumRecords(lowLimit + Dbase.pageLimit);
     if ( !filterType ) {
-      props.getDbaseEntries(
-          Dbase.tables.log.name,
-          'DATE',
-          'DESC',
-          lowLimit,
-          offset);
+      getTableEntries(Dbase.tables.log.name, query);
     }
   };
 
@@ -339,19 +334,13 @@ const mapStateToProps = (state: ApplicationState): StateProps => {
 
 const mapDispatchToProps = (dispatch: AppDispatch): DispatchProps => {
   return {
-    getDbaseEntries: (
-        dbase: string,
-        sortField: string,
-        sortOrder: string,
-        limitLow: number,
-        offset: number,
-    ) => dispatch(getDbaseEntries(
-        dbase,
-        sortField,
-        sortOrder,
-        limitLow,
-        offset),
-    ),
+    getTableEntries: (
+        table: string,
+        query: string,
+    ) => dispatch(getTableEntries(
+        table,
+        query,
+    )),
   };
 };
 

@@ -17,7 +17,7 @@ import {
 } from '../store/types';
 
 import {initTx} from '../store/app/blockchain/actions';
-import {deleteRow, getDbaseEntries} from '../store/app/dbase/actions';
+import {deleteRow, getTableEntries} from '../store/app/dbase/actions';
 
 import {
   Dbase,
@@ -36,7 +36,10 @@ interface DispatchProps {
     table: string,
     columns: Array<string>,
     key: Array<string>) => void
-    getDbaseEntries: (dbase: string) => void
+  getTableEntries: (
+    table: string,
+    query: string,
+  ) => void
 }
 
 type Props = StateProps & DispatchProps
@@ -48,6 +51,8 @@ const list = (props: Props) => {
   // eslint-disable-next-line no-unused-vars
   const [isDisabled, setIsDisabled] = useState([] as boolean[]);
 
+  const query = 'SELECT * FROM ' + Dbase.tables.token.name;
+
   const classes = themeStyles();
   const largeScreen = useMediaQuery(theme.breakpoints.up('lg'));
 
@@ -56,7 +61,7 @@ const list = (props: Props) => {
       isFirstRun.current = false;
       props.initTx();
       // SELECT * FROM TOKEN LIMIT 0, 2147483647
-      props.getDbaseEntries(Dbase.tables.token.name);
+      props.getTableEntries(Dbase.tables.address.name, query);
     } else {
       if ( props.tokensData.data.length != isDisabled.length ) {
         for (let i = 0; i < props.tokensData.data.length; i++ ) {
@@ -70,7 +75,7 @@ const list = (props: Props) => {
 
         if ( (txSummary === SQL.insertSuccess ) ||
              (txSummary === SQL.deleteSuccess ) ) {
-          props.getDbaseEntries(Dbase.tables.token.name);
+          props.getTableEntries(Dbase.tables.address.name, query);
         }
       }
     }
@@ -192,7 +197,10 @@ const mapDispatchToProps = (dispatch: AppDispatch): DispatchProps => {
         table: string,
         columns: Array<string>,
         key: Array<string>) => dispatch(deleteRow(table, columns, key)),
-    getDbaseEntries: (dbase: string) => dispatch(getDbaseEntries(dbase)),
+    getTableEntries: (
+        table: string,
+        query: string,
+    ) => dispatch(getTableEntries(table, query)),
   };
 };
 

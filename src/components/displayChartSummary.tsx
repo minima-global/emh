@@ -22,7 +22,7 @@ import {
   ChartSummary,
 } from '../store/types';
 
-import {getDbaseEntries} from '../store/app/dbase/actions';
+import {getTableEntries} from '../store/app/dbase/actions';
 
 import {
   Chart,
@@ -38,10 +38,9 @@ interface SummaryProps {
 }
 
 interface DispatchProps {
-  getDbaseEntries: (
-    dbase: string,
-    sortField: string,
-    sortOrder: string
+  getTableEntries: (
+    table: string,
+    query: string,
   ) => void
 }
 
@@ -178,14 +177,13 @@ const summary = (props: Props) => {
 
 const mapDispatchToProps = (dispatch: AppDispatch): DispatchProps => {
   return {
-    getDbaseEntries: (
-        dbase: string,
-        sortField: string,
-        sortOrder: string) =>
-      dispatch(getDbaseEntries(
-          dbase,
-          sortField,
-          sortOrder),
+    getTableEntries: (
+        table: string,
+        query: string,
+    ) =>
+      dispatch(getTableEntries(
+          table,
+          query),
       ),
   };
 };

@@ -256,20 +256,12 @@ export const deleteRow = (
 };
 
 /**
- * Gets rows from the database
- * @param {string} table - the table to which to add
- * @param {string} sortField - e.g ID
- * @param {string} sortOrder - e.g DESC
- * @param {string} limitLow - first row to return
- * @param {string} offset - row offset
+ * Gets rows from tables in the database
+ * @param {string} table - the table to query...
+ * @param {string} query - SELECT * FROM LOGGING etc...
  * @return {function}
  */
-export const getDbaseEntries = (
-    table: string,
-    sortField: string = '',
-    sortOrder: string = 'DESC',
-    limitLow: number = 0,
-    offset: number = Dbase.maxLimit) => {
+export const getTableEntries = (table: string, query: string) => {
   return async (dispatch: AppDispatch) => {
     const successFailType = getActionTypes(table);
     const successAction = successFailType.success;
@@ -284,7 +276,7 @@ export const getDbaseEntries = (
       time: dateText,
     };
 
-    let selectSQL = 'SELECT * FROM ' + table;
+    /* let selectSQL = 'SELECT * FROM ' + table;
     if ( sortField ) {
       selectSQL += ' ORDER BY ' +
           sortField + ' ' +
@@ -294,9 +286,9 @@ export const getDbaseEntries = (
         limitLow + ', ' +
         offset;
 
-    console.log(selectSQL);
+    console.log(selectSQL);*/
 
-    Minima.sql(selectSQL, function(result: any) {
+    Minima.sql(query, function(result: any) {
       if ( !result.status ) {
         txData = {
           code: '503',
