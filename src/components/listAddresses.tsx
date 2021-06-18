@@ -17,7 +17,7 @@ import {
 } from '../store/types';
 
 import {initTx} from '../store/app/blockchain/actions';
-import {deleteRow, getDbaseEntries} from '../store/app/dbase/actions';
+import {deleteRow, getTableEntries} from '../store/app/dbase/actions';
 
 import {
   Dbase,
@@ -36,7 +36,10 @@ interface DispatchProps {
     table: string,
     columns: Array<string>,
     key: Array<string>) => void
-  getDbaseEntries: (dbase: string) => void
+  getTableEntries: (
+    table: string,
+    query: string,
+  ) => void
 }
 
 type Props = StateProps & DispatchProps
@@ -50,12 +53,14 @@ const list = (props: Props) => {
   const classes = themeStyles();
   const largeScreen = useMediaQuery(theme.breakpoints.up('lg'));
 
+  const query = 'SELECT * FROM ' + Dbase.tables.address.name;
+
   useEffect(() => {
     if ( isFirstRun.current ) {
       isFirstRun.current = false;
       props.initTx();
       // SELECT * FROM ADDRESS LIMIT 0, 2147483647
-      props.getDbaseEntries(Dbase.tables.address.name);
+      props.getTableEntries(Dbase.tables.address.name, query);
     } else {
       if ( props.addressData.data.length != isDisabled.length ) {
         for (let i = 0; i < props.addressData.data.length; i++ ) {
@@ -68,7 +73,7 @@ const list = (props: Props) => {
         setSummary(txSummary);
         if ( (txSummary === SQL.insertSuccess ) ||
              (txSummary === SQL.deleteSuccess ) ) {
-          props.getDbaseEntries(Dbase.tables.address.name);
+          props.getTableEntries(Dbase.tables.address.name, query);
         }
       }
     }
@@ -191,7 +196,10 @@ const mapDispatchToProps = (dispatch: AppDispatch): DispatchProps => {
         table: string,
         columns: Array<string>,
         key: Array<string>) => dispatch(deleteRow(table, columns, key)),
-    getDbaseEntries: (dbase: string) => dispatch(getDbaseEntries(dbase)),
+    getTableEntries: (
+        table: string,
+        query: string,
+    ) => dispatch(getTableEntries(table, query)),
   };
 };
 
