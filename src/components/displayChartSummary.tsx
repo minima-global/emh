@@ -19,7 +19,7 @@ import {themeStyles} from '../styles';
 import {
   ApplicationState,
   AppDispatch,
-  ChartSummary,
+  ChartData,
   SuccessAndFailType,
 } from '../store/types';
 
@@ -32,7 +32,7 @@ import {
 
 interface SummaryProps {
   heading: string
-  chartData: ChartSummary
+  chartData: ChartData
   isFullScreen: boolean
   navLink: string
   logNavLink: string

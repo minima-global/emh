@@ -1,17 +1,26 @@
-import {Minima} from 'minima';
+import {Minima, Token as Balance} from 'minima';
 
 import {
   AppDispatch,
   ActionTypes,
   SuccessAndFailType,
   TxActionTypes,
+  ChartsActionTypes,
+  ChartUpdateData,
+  ChartData,
+  ChartValues,
+  Logs,
 } from '../../types';
 
 import {
   App,
   Dbase,
   SQL,
+  Chart,
+  Tokens as TokensVars,
 } from '../../../config';
+
+import {getRandomColour} from '../../../utils/colourGenererator';
 
 import {write} from '../../actions';
 
@@ -47,64 +56,6 @@ export const doLog = (type: string, action: string, data: string) => {
     });
   };
 };
-
-/*
-const sortLogs = (logsData: LogsProps): Logs[] => {
-  return logsData.data.sort((a: Logs, b: Logs) =>
-    b.DATE.localeCompare(a.DATE));
-};
-*/
-
-/**
- * Gets the Dbase action type
- * @param {string} table - the table for which to get the action type
- * @return {object}
- */
-/*
-const getActionTypes = (table: string): SuccessAndFailType => {
-  let actionType: SuccessAndFailType = {
-    success: AddressActionTypes.ADDRESS_SUCCESS,
-    fail: AddressActionTypes.ADDRESS_FAILURE,
-  };
-
-  switch (table) {
-    case Dbase.tables.address.name:
-      actionType = {
-        success: AddressActionTypes.ADDRESS_SUCCESS,
-        fail: AddressActionTypes.ADDRESS_FAILURE,
-      };
-      break;
-    case Dbase.tables.token.name:
-      actionType = {
-        success: TokenIdActionTypes.TOKENID_SUCCESS,
-        fail: TokenIdActionTypes.TOKENID_FAILURE,
-      };
-      break;
-    case Dbase.tables.trigger.name:
-      actionType = {
-        success: TriggerActionTypes.TRIGGER_SUCCESS,
-        fail: TriggerActionTypes.TRIGGER_FAILURE,
-      };
-      break;
-    case Dbase.tables.log.name:
-      actionType = {
-        success: LogsActionTypes.LOGS_SUCCESS,
-        fail: LogsActionTypes.LOGS_FAILURE,
-      };
-      break;
-    case Dbase.tables.txpow.name:
-      actionType = {
-        success: TxPoWActionTypes.TXPOW_SUCCESS,
-        fail: TxPoWActionTypes.TXPOW_FAILURE,
-      };
-      break;
-    default:
-      break;
-  }
-
-  return actionType;
-};
-*/
 
 /**
  * Turns table values into a string that can be used in an INSERT
@@ -292,5 +243,96 @@ export const getTableEntries =
           dispatch(write({data: txData})(txSuccessAction));
         }
       });
+    };
+  };
+
+/**
+ * Queries the database and dispatches chart data
+ * @param {string} query - SELECT * FROM LOGGING etc...
+ * @param {string} chartName - the chart for which we're getting data *
+ * @param {string} filterRegex - the regex used to filter data
+ * @return {function}
+ */
+export const getChartEntries =
+  (query: string, chartName: string, filterRegex: string) => {
+    return async (dispatch: AppDispatch, getState: Function) => {
+      const state = getState();
+      const successAction = ChartsActionTypes.CHARTS_SUCCESS;
+      const failAction = ChartsActionTypes.CHARTS_FAILURE;
+      const txSuccessAction: ActionTypes = TxActionTypes.TX_SUCCESS;
+      const txFailAction: ActionTypes = TxActionTypes.TX_FAILURE;
+      const d = new Date(Date.now());
+      const dateText = d.toString();
+      let txData = {
+        code: '200',
+        summary: SQL.selectSuccess,
+        time: dateText,
+      };
+      const chartIndex = Chart.chartInfo.indexOf(chartName);
+      if ( chartIndex != -1 ) {
+        console.log('got query', query);
+        Minima.sql(query, function(result: any) {
+          console.log('got result', result);
+          if ( !result.status ) {
+            txData = {
+              code: '503',
+              summary: SQL.selectFailure,
+              time: dateText,
+            };
+            dispatch(write({data: []})(failAction));
+            dispatch(write({data: txData})(txFailAction));
+          } else {
+            const data: Array<Logs> = result.response.rows.slice();
+            const updateData: ChartUpdateData = {
+              data: {},
+              index: chartIndex,
+            };
+            const chartData: ChartData = {};
+            data.map( ( log: Logs, index: number ) => {
+              // const thisDate = new Date(+log.DATE);
+              const thisData = log.DATA;
+              const thisMatch = thisData.match(filterRegex);
+              const thisMatchString =
+                thisMatch ? thisMatch.toString().trim() : '';
+              if ( thisMatchString.length ) {
+                console.log('Matched! ', thisMatchString);
+                if (!chartData[thisMatchString]) {
+                  const chartValues: ChartValues = {
+                    count: 1,
+                    colour: getRandomColour(),
+                  };
+                  chartData[thisMatchString] = chartValues;
+                } else {
+                  chartData[thisMatchString].count += 1;
+                }
+              }
+
+              if ( chartName === TokensVars.chartHeading) {
+                const tokens: ChartData = {};
+                state.balanceData.data.forEach((token: Balance) => {
+                  if ( token.tokenid in chartData) {
+                    const tokenName = token.token;
+                    tokens[tokenName] = chartData[token.tokenid];
+                  }
+                });
+                updateData.data = tokens;
+              } else {
+                updateData.data = chartData;
+              }
+            });
+            console.log('chart stuff!', updateData);
+            dispatch(write({data: updateData})(successAction));
+            dispatch(write({data: txData})(txSuccessAction));
+          }
+        });
+      } else {
+        txData = {
+          code: '503',
+          summary: SQL.selectFailure,
+          time: dateText,
+        };
+        dispatch(write({data: []})(failAction));
+        dispatch(write({data: txData})(txFailAction));
+      }
     };
   };

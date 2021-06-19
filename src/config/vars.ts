@@ -385,6 +385,11 @@ class Chart {
     Chart.labelOffset +
     Chart.labelFontsize;
   static readonly totals = 'Total';
+  static readonly chartInfo = [
+    Tokens.chartHeading,
+    Addresses.chartHeading,
+    API.chartHeading,
+    Cmd.chartHeading];
 }
 
 /** @class Search */

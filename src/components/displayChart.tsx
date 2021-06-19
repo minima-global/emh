@@ -8,7 +8,7 @@ import {theme} from '../styles';
 
 import {
   ChartValues,
-  ChartSummary,
+  ChartData,
 } from '../store/types';
 
 import {
@@ -17,7 +17,7 @@ import {
 
 interface ChartProps {
   title: string
-  chartData: ChartSummary
+  chartData: ChartData
   viewport: string
 }
 
@@ -31,10 +31,10 @@ export const DisplayChart = (props: Props) => {
 
   useEffect(() => {
     let chart: any;
-    const data = props.chartData?.data;
-    const keys = data ? Object.keys(props.chartData.data) : [];
+    console.log('got data: ', props.chartData);
+    const keys = props.chartData ? Object.keys(props.chartData) : [];
     if ( keys.length ) {
-      const values = Object.values(props.chartData.data);
+      const values = Object.values(props.chartData);
       setChartHeight(ChartVars.axisOffset + keys.length * ChartVars.gridHeight);
       const ctx: HTMLCanvasElement | null = dataCtx.current;
       if ( ctx ) {

@@ -3,30 +3,24 @@ import {connect} from 'react-redux';
 
 import Grid from '@material-ui/core/Grid';
 
-import {Token as Balance} from 'minima';
-
 import {theme} from '../../styles';
 
 import {
   ApplicationState,
   AppDispatch,
-  LogsProps,
-  Logs,
   BalanceProps,
-  ChartSummary,
+  ChartProps,
   ChartData,
-  ChartValues,
-  SuccessAndFailType,
-  ChartsActionTypes,
 } from '../../store/types';
 
-import {getTableEntries} from '../../store/app/dbase/actions';
+import {
+  Chart as ChartVars,
+} from '../../config';
 
-import {getRandomColour} from '../../utils/colourGenererator';
+import {getChartEntries} from '../../store/app/dbase/actions';
 
 import {
   Dbase,
-  Tokens as TokensVars,
 } from '../../config';
 
 // import {getChartData} from '../../utils/getChartData';
@@ -44,14 +38,15 @@ interface ThisProps {
 }
 
 interface StateProps {
-  logsData: LogsProps
+  chartsData: ChartProps
   balanceData: BalanceProps
 }
 
 interface DispatchProps {
-  getTableEntries: (
+  getChartEntries: (
     query: string,
-    actionType: SuccessAndFailType,
+    chartName: string,
+    filterRegex: string
   ) => void
 }
 
@@ -59,12 +54,7 @@ type Props = ThisProps & StateProps & DispatchProps
 
 const chart = (props: Props) => {
   const isFirstRun = useRef(true);
-  const [data, setData] = useState({} as ChartSummary);
-
-  const actionType: SuccessAndFailType = {
-    success: ChartsActionTypes.CHARTS_SUCCESS,
-    fail: ChartsActionTypes.CHARTS_FAILURE,
-  };
+  const [data, setData] = useState({} as ChartData);
 
   const query =
     'SELECT * FROM ' +
@@ -84,49 +74,14 @@ const chart = (props: Props) => {
       isFirstRun.current = false;
 
       // SELECT * FROM LOGGING ORDER BY DATE DESC LIMIT 0, 2147483647
-      props.getTableEntries(query, actionType);
+      props.getChartEntries(query, props.heading, props.filterRegex);
     } else {
-      if ( props.logsData?.data.length && props.balanceData?.data.length ) {
-        let total = 0;
-        const chartData: ChartData = {};
-        props.logsData.data.map( ( log: Logs, index: number ) => {
-          // const thisDate = new Date(+log.DATE);
-          const thisData = log.DATA;
-          const thisMatch = thisData.match(props.filterRegex);
-          const thisMatchString = thisMatch ? thisMatch.toString().trim() : '';
-          if ( thisMatchString.length ) {
-            // console.log('Matched! ', thisMatchString);
-            if (!chartData[thisMatchString]) {
-              const chartValues: ChartValues = {
-                count: 1,
-                colour: getRandomColour(),
-              };
-              chartData[thisMatchString] = chartValues;
-            } else {
-              chartData[thisMatchString].count += 1;
-            }
-            total = total + 1;
-          }
-        });
-        const summary: ChartSummary = {
-          data: chartData,
-          total: total,
-        };
-        if ( props. heading === TokensVars.chartHeading) {
-          const tokens: ChartData = {};
-          props.balanceData.data.forEach((token: Balance) => {
-            // console.log(thisTokenId);
-            if ( token.tokenid in summary.data) {
-              const tokenName = token.token;
-              tokens[tokenName] = summary.data[token.tokenid];
-            }
-          });
-          summary.data = tokens;
-        }
-        setData(summary);
+      const chartIndex = ChartVars.chartInfo.indexOf(props.heading);
+      if ( chartIndex != -1 ) {
+        setData(props.chartsData.data[chartIndex]);
       }
     }
-  }, [props.logsData, props.balanceData]);
+  }, [props.chartsData, props.balanceData]);
 
   return (
     <Grid
@@ -157,19 +112,19 @@ const chart = (props: Props) => {
 
 const mapStateToProps = (state: ApplicationState): StateProps => {
   return {
-    logsData: state.logsData as LogsProps,
+    chartsData: state.chartsData as ChartProps,
     balanceData: state.balanceData as BalanceProps,
   };
 };
 
 const mapDispatchToProps = (dispatch: AppDispatch): DispatchProps => {
   return {
-    getTableEntries: (
+    getChartEntries: (
         query: string,
-        actionType: SuccessAndFailType,
+        chartName: string,
+        filterRegex: string,
     ) =>
-      dispatch(getTableEntries(query, actionType),
-      ),
+      dispatch(getChartEntries(query, chartName, filterRegex)),
   };
 };
 

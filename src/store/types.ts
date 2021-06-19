@@ -39,13 +39,18 @@ export type ChartData = {
   [key: string]: ChartValues
 }
 
+export interface ChartProps extends PayloadProps {
+  data: Array<ChartData>
+}
+
 export type ChartSummary = {
   data: ChartData,
   total: number
 }
 
-export interface ChartProps extends PayloadProps {
-  data: Array<ChartSummary>
+export type ChartUpdateData = {
+  data: ChartData
+  index: number
 }
 
 /**
