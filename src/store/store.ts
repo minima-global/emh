@@ -9,6 +9,7 @@ import ReduxThunk from 'redux-thunk';
 
 import {ApplicationState, ActionProps} from './types';
 
+import {reducer as chartsReducer} from './app/reducers/charts/reducer';
 import {reducer as balanceReducer} from './app/reducers/balance/reducer';
 import {reducer as statusReducer} from './app/reducers/status/reducer';
 import {reducer as logsReducer} from './app/reducers/logs/reducer';
@@ -20,6 +21,7 @@ import {reducer as txReducer} from './app/reducers/tx/reducer';
 
 export const rootReducer: Reducer<ApplicationState, ActionProps> =
 combineReducers<ApplicationState, ActionProps>({
+  chartsData: chartsReducer,
   balanceData: balanceReducer,
   statusData: statusReducer,
   logsData: logsReducer,

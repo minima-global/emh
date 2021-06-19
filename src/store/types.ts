@@ -8,6 +8,7 @@ import {Token as Balance, NetworkStatus as Status} from 'minima';
  * Store stuff
 */
 export interface ApplicationState {
+  chartsData: ChartProps,
   balanceData: BalanceProps,
   statusData: StatusProps,
   logsData: LogsProps
@@ -41,6 +42,10 @@ export type ChartData = {
 export type ChartSummary = {
   data: ChartData,
   total: number
+}
+
+export interface ChartProps extends PayloadProps {
+  data: Array<ChartSummary>
 }
 
 /**
@@ -159,6 +164,12 @@ export const enum PageTypes {
 /**
  * Action Types
  */
+export const enum ChartsActionTypes {
+  CHARTS_INIT = '@@ChartsActionTypes/CHARTS_INIT',
+  CHARTS_SUCCESS = '@@ChartsActionTypes/CHARTS_SUCCESS',
+  CHARTS_FAILURE = '@@ChartsActionTypes/CHARTS_FAILURE'
+}
+
 export const enum AppDataActionTypes {
   APPDATA_INIT = '@@AppDataActionTypes/APPDATA_INIT',
   APPDATA_SUCCESS = '@@AppDataActionTypes/APPDATA_SUCCESS',

@@ -555,7 +555,7 @@ function getDbase(qParamsJSON, replyId) {
       if ( result.status ) {
         Minima.minidapps.reply(replyId,
             JSON.stringify(result.response.rows.slice()));
-        doLog(tables.trigger.name, defaultActions.run, defaultAPI.dbase.endpoint + ' ' + JSON.stringify(qParamsJSON));
+        doLog(tables.trigger.name, defaultActions.run, defaultAPI.dbase.endpoint + ' ' + querySQL);
       } else {
         Minima.minidapps.reply(replyId, '');
       }
