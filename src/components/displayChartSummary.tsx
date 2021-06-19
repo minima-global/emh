@@ -20,6 +20,7 @@ import {
   ApplicationState,
   AppDispatch,
   ChartSummary,
+  SuccessAndFailType,
 } from '../store/types';
 
 import {getTableEntries} from '../store/app/dbase/actions';
@@ -39,8 +40,8 @@ interface SummaryProps {
 
 interface DispatchProps {
   getTableEntries: (
-    table: string,
     query: string,
+    actionType: SuccessAndFailType,
   ) => void
 }
 
@@ -178,12 +179,10 @@ const summary = (props: Props) => {
 const mapDispatchToProps = (dispatch: AppDispatch): DispatchProps => {
   return {
     getTableEntries: (
-        table: string,
         query: string,
+        actionType: SuccessAndFailType,
     ) =>
-      dispatch(getTableEntries(
-          table,
-          query),
+      dispatch(getTableEntries(query, actionType),
       ),
   };
 };

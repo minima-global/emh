@@ -10,6 +10,8 @@ import {
   AppDispatch,
   LogsProps,
   Logs as LogsType,
+  LogsActionTypes,
+  SuccessAndFailType,
 } from '../../store/types';
 
 import {getTableEntries} from '../../store/app/dbase/actions';
@@ -37,8 +39,8 @@ interface StateProps {
 
 interface DispatchProps {
   getTableEntries: (
-    table: string,
     query: string,
+    actionType: SuccessAndFailType,
   ) => void
 }
 
@@ -58,6 +60,11 @@ export const list = (props: Props) => {
   const [numRecords, setNumRecords] = useState(Dbase.pageLimit);
   const [nextDisabled, setNextDisabled] = useState(true);
   const [backDisabled, setBackDisabled] = useState(true);
+
+  const actionType: SuccessAndFailType = {
+    success: LogsActionTypes.LOGS_SUCCESS,
+    fail: LogsActionTypes.LOGS_FAILURE,
+  };
 
   // SELECT * FROM LOGGING ORDER BY DATE DESC LIMIT 0, 2147483647
   let query =
@@ -87,7 +94,7 @@ export const list = (props: Props) => {
     if ( isFirstRun.current ) {
       isFirstRun.current = false;
 
-      getTableEntries(Dbase.tables.log.name, query);
+      getTableEntries(query, actionType);
     } else {
       if ( logsData?.data.length ) {
         const thisData: LogsProps = {
@@ -115,7 +122,7 @@ export const list = (props: Props) => {
   const getRecords = (lowLimit: number) => {
     setLimitLow(lowLimit);
     setNumRecords(lowLimit + Dbase.pageLimit);
-    getTableEntries(Dbase.tables.log.name, query);
+    getTableEntries(query, actionType);
   };
 
   return (
@@ -327,11 +334,11 @@ const mapStateToProps = (state: ApplicationState): StateProps => {
 const mapDispatchToProps = (dispatch: AppDispatch): DispatchProps => {
   return {
     getTableEntries: (
-        table: string,
         query: string,
+        actionType: SuccessAndFailType,
     ) => dispatch(getTableEntries(
-        table,
         query,
+        actionType,
     )),
   };
 };

@@ -16,6 +16,8 @@ import {
   ChartSummary,
   ChartData,
   ChartValues,
+  SuccessAndFailType,
+  ChartsActionTypes,
 } from '../../store/types';
 
 import {getTableEntries} from '../../store/app/dbase/actions';
@@ -48,8 +50,8 @@ interface StateProps {
 
 interface DispatchProps {
   getTableEntries: (
-    table: string,
     query: string,
+    actionType: SuccessAndFailType,
   ) => void
 }
 
@@ -58,6 +60,11 @@ type Props = ThisProps & StateProps & DispatchProps
 const chart = (props: Props) => {
   const isFirstRun = useRef(true);
   const [data, setData] = useState({} as ChartSummary);
+
+  const actionType: SuccessAndFailType = {
+    success: ChartsActionTypes.CHARTS_SUCCESS,
+    fail: ChartsActionTypes.CHARTS_FAILURE,
+  };
 
   const query =
     'SELECT * FROM ' +
@@ -77,7 +84,7 @@ const chart = (props: Props) => {
       isFirstRun.current = false;
 
       // SELECT * FROM LOGGING ORDER BY DATE DESC LIMIT 0, 2147483647
-      props.getTableEntries(Dbase.tables.log.name, query);
+      props.getTableEntries(query, actionType);
     } else {
       if ( props.logsData?.data.length && props.balanceData?.data.length ) {
         let total = 0;
@@ -158,12 +165,10 @@ const mapStateToProps = (state: ApplicationState): StateProps => {
 const mapDispatchToProps = (dispatch: AppDispatch): DispatchProps => {
   return {
     getTableEntries: (
-        table: string,
         query: string,
+        actionType: SuccessAndFailType,
     ) =>
-      dispatch(getTableEntries(
-          table,
-          query),
+      dispatch(getTableEntries(query, actionType),
       ),
   };
 };

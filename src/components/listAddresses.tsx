@@ -13,7 +13,9 @@ import {
   AppDispatch,
   AddressProps,
   Address as AddressType,
+  AddressActionTypes,
   TxData,
+  SuccessAndFailType,
 } from '../store/types';
 
 import {initTx} from '../store/app/blockchain/actions';
@@ -37,8 +39,8 @@ interface DispatchProps {
     columns: Array<string>,
     key: Array<string>) => void
   getTableEntries: (
-    table: string,
     query: string,
+    actionType: SuccessAndFailType,
   ) => void
 }
 
@@ -53,6 +55,11 @@ const list = (props: Props) => {
   const classes = themeStyles();
   const largeScreen = useMediaQuery(theme.breakpoints.up('lg'));
 
+  const actionType: SuccessAndFailType = {
+    success: AddressActionTypes.ADDRESS_SUCCESS,
+    fail: AddressActionTypes.ADDRESS_FAILURE,
+  };
+
   const query = 'SELECT * FROM ' + Dbase.tables.address.name;
 
   useEffect(() => {
@@ -60,7 +67,7 @@ const list = (props: Props) => {
       isFirstRun.current = false;
       props.initTx();
       // SELECT * FROM ADDRESS LIMIT 0, 2147483647
-      props.getTableEntries(Dbase.tables.address.name, query);
+      props.getTableEntries(query, actionType);
     } else {
       if ( props.addressData.data.length != isDisabled.length ) {
         for (let i = 0; i < props.addressData.data.length; i++ ) {
@@ -73,7 +80,7 @@ const list = (props: Props) => {
         setSummary(txSummary);
         if ( (txSummary === SQL.insertSuccess ) ||
              (txSummary === SQL.deleteSuccess ) ) {
-          props.getTableEntries(Dbase.tables.address.name, query);
+          props.getTableEntries(query, actionType);
         }
       }
     }
@@ -197,9 +204,9 @@ const mapDispatchToProps = (dispatch: AppDispatch): DispatchProps => {
         columns: Array<string>,
         key: Array<string>) => dispatch(deleteRow(table, columns, key)),
     getTableEntries: (
-        table: string,
         query: string,
-    ) => dispatch(getTableEntries(table, query)),
+        actionType: SuccessAndFailType,
+    ) => dispatch(getTableEntries(query, actionType)),
   };
 };
 

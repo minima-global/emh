@@ -17,6 +17,8 @@ import {
   AppDispatch,
   CmdProps,
   TriggersProps,
+  TriggerActionTypes,
+  SuccessAndFailType,
 } from '../../store/types';
 
 import {command} from '../../store/app/blockchain/actions';
@@ -43,8 +45,8 @@ interface StateProps {
 interface DispatchProps {
   command: (endpoint: string, cmd: string) => void
   getTableEntries: (
-    table: string,
     query: string,
+    actionType: SuccessAndFailType,
   ) => void
 }
 
@@ -62,6 +64,11 @@ const display = (props: Props) => {
   const [thisTrigger, setThisTrigger] = useState({} as SelectOptionType);
   const [paramsDisabled, setParamsDisabled] = useState(false);
   const [params, setParams] = useState('');
+
+  const actionType: SuccessAndFailType = {
+    success: TriggerActionTypes.TRIGGER_SUCCESS,
+    fail: TriggerActionTypes.TRIGGER_FAILURE,
+  };
 
   const query = 'SELECT * FROM ' + Dbase.tables.trigger.name;
 
@@ -149,7 +156,7 @@ const display = (props: Props) => {
     if ( isFirstRun.current ) {
       isFirstRun.current = false;
       // SELECT * FROM API LIMIT 0, 2147483647
-      props.getTableEntries(Dbase.tables.trigger.name, query);
+      props.getTableEntries(query, actionType);
     } else {
       props.triggersData.data.forEach((trigger, index) => {
         const thisTrigger: SelectOptionType = {
@@ -356,9 +363,9 @@ const mapDispatchToProps = (dispatch: AppDispatch): DispatchProps => {
         endpoint: string,
         cmd: string) => dispatch(command(endpoint, cmd)),
     getTableEntries: (
-        table: string,
         query: string,
-    ) => dispatch(getTableEntries(table, query)),
+        actionType: SuccessAndFailType,
+    ) => dispatch(getTableEntries(query, actionType)),
   };
 };
 

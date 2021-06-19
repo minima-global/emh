@@ -231,6 +231,7 @@ export const enum StatusActionTypes {
   STATUS_FAILURE = '@@StatusActionTypes/STATUS_FAILURE'
 }
 export type ActionTypes =
+  ChartsActionTypes |
   AppDataActionTypes |
   TxActionTypes |
   TxPoWActionTypes |

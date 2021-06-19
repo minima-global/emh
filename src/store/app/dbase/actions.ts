@@ -4,11 +4,6 @@ import {
   AppDispatch,
   ActionTypes,
   SuccessAndFailType,
-  TxPoWActionTypes,
-  AddressActionTypes,
-  TokenIdActionTypes,
-  TriggerActionTypes,
-  LogsActionTypes,
   TxActionTypes,
 } from '../../types';
 
@@ -65,6 +60,7 @@ const sortLogs = (logsData: LogsProps): Logs[] => {
  * @param {string} table - the table for which to get the action type
  * @return {object}
  */
+/*
 const getActionTypes = (table: string): SuccessAndFailType => {
   let actionType: SuccessAndFailType = {
     success: AddressActionTypes.ADDRESS_SUCCESS,
@@ -108,6 +104,7 @@ const getActionTypes = (table: string): SuccessAndFailType => {
 
   return actionType;
 };
+*/
 
 /**
  * Turns table values into a string that can be used in an INSERT
@@ -256,43 +253,44 @@ export const deleteRow = (
 };
 
 /**
- * Gets rows from tables in the database
- * @param {string} table - the table to query...
+ * Queries the database
  * @param {string} query - SELECT * FROM LOGGING etc...
+ * @param {object} actionType -
+ * Defines the action to take on completion of the query
  * @return {function}
  */
-export const getTableEntries = (table: string, query: string) => {
-  return async (dispatch: AppDispatch) => {
-    const successFailType = getActionTypes(table);
-    const successAction = successFailType.success;
-    const failAction = successFailType.fail;
-    const txSuccessAction: ActionTypes = TxActionTypes.TX_SUCCESS;
-    const txFailAction: ActionTypes = TxActionTypes.TX_FAILURE;
-    const d = new Date(Date.now());
-    const dateText = d.toString();
-    let txData = {
-      code: '200',
-      summary: SQL.selectSuccess,
-      time: dateText,
+export const getTableEntries =
+  (query: string, actionType: SuccessAndFailType) => {
+    return async (dispatch: AppDispatch) => {
+      const successAction = actionType.success;
+      const failAction = actionType.fail;
+      const txSuccessAction: ActionTypes = TxActionTypes.TX_SUCCESS;
+      const txFailAction: ActionTypes = TxActionTypes.TX_FAILURE;
+      const d = new Date(Date.now());
+      const dateText = d.toString();
+      let txData = {
+        code: '200',
+        summary: SQL.selectSuccess,
+        time: dateText,
+      };
+
+      // console.log(query);
+
+      Minima.sql(query, function(result: any) {
+        // console.log('got result, ', result);
+        if ( !result.status ) {
+          txData = {
+            code: '503',
+            summary: SQL.selectFailure,
+            time: dateText,
+          };
+          dispatch(write({data: []})(failAction));
+          dispatch(write({data: txData})(txFailAction));
+        } else {
+          const data = result.response.rows.slice();
+          dispatch(write({data: data})(successAction));
+          dispatch(write({data: txData})(txSuccessAction));
+        }
+      });
     };
-
-    console.log(query);
-
-    Minima.sql(query, function(result: any) {
-      console.log('got result, ', result);
-      if ( !result.status ) {
-        txData = {
-          code: '503',
-          summary: SQL.selectFailure,
-          time: dateText,
-        };
-        dispatch(write({data: []})(failAction));
-        dispatch(write({data: txData})(txFailAction));
-      } else {
-        const data = result.response.rows.slice();
-        dispatch(write({data: data})(successAction));
-        dispatch(write({data: txData})(txSuccessAction));
-      }
-    });
   };
-};

@@ -13,7 +13,9 @@ import {
   AppDispatch,
   TriggersProps,
   Triggers as TriggersType,
+  TriggerActionTypes,
   TxData,
+  SuccessAndFailType,
 } from '../store/types';
 
 import {initTx} from '../store/app/blockchain/actions';
@@ -38,8 +40,8 @@ interface DispatchProps {
     columns: Array<string>,
     values: Array<string>) => void
   getTableEntries: (
-    table: string,
     query: string,
+    actionType: SuccessAndFailType,
   ) => void
 }
 
@@ -52,6 +54,11 @@ const list = (props: Props) => {
   // eslint-disable-next-line no-unused-vars
   const [isDisabled, setIsDisabled] = useState([] as boolean[]);
 
+  const actionType: SuccessAndFailType = {
+    success: TriggerActionTypes.TRIGGER_SUCCESS,
+    fail: TriggerActionTypes.TRIGGER_FAILURE,
+  };
+
   const query = 'SELECT * FROM ' + Dbase.tables.trigger.name;
 
   const classes = themeStyles();
@@ -62,7 +69,7 @@ const list = (props: Props) => {
       isFirstRun.current = false;
       props.initTx();
       // SELECT * FROM API LIMIT 0, 2147483647
-      props.getTableEntries(Dbase.tables.trigger.name, query);
+      props.getTableEntries(query, actionType);
     } else {
       if ( props.triggersData.data.length != isDisabled.length ) {
         for (let i = 0; i < props.triggersData.data.length; i++ ) {
@@ -74,7 +81,7 @@ const list = (props: Props) => {
         setSummary(txSummary);
         if ( (txSummary === SQL.insertSuccess ) ||
              (txSummary === SQL.deleteSuccess ) ) {
-          props.getTableEntries(Dbase.tables.trigger.name, query);
+          props.getTableEntries(query, actionType);
         }
       }
     }
@@ -363,9 +370,9 @@ const mapDispatchToProps = (dispatch: AppDispatch): DispatchProps => {
         columns: Array<string>,
         values: Array<string>) => dispatch(deleteRow(table, columns, values)),
     getTableEntries: (
-        table: string,
         query: string,
-    ) => dispatch(getTableEntries(table, query)),
+        actionType: SuccessAndFailType,
+    ) => dispatch(getTableEntries(query, actionType)),
   };
 };
 
