@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef} from 'react';
+import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 
 import Grid from '@material-ui/core/Grid';
@@ -8,7 +8,6 @@ import {theme} from '../../styles';
 import {
   ApplicationState,
   AppDispatch,
-  BalanceProps,
   ChartProps,
   ChartData,
 } from '../../store/types';
@@ -39,7 +38,6 @@ interface ThisProps {
 
 interface StateProps {
   chartsData: ChartProps
-  balanceData: BalanceProps
 }
 
 interface DispatchProps {
@@ -53,7 +51,6 @@ interface DispatchProps {
 type Props = ThisProps & StateProps & DispatchProps
 
 const chart = (props: Props) => {
-  const isFirstRun = useRef(true);
   const [data, setData] = useState({} as ChartData);
 
   const query =
@@ -68,21 +65,19 @@ const chart = (props: Props) => {
     '\'';
 
   const screenHeight = props.isFullScreen ? '800px' : '250px';
+  const chartIndex = ChartVars.chartInfo.indexOf(props.heading);
 
   useEffect(() => {
-    if ( isFirstRun.current ) {
-      isFirstRun.current = false;
-
-      // SELECT * FROM LOGGING ORDER BY DATE DESC LIMIT 0, 2147483647
-      props.getChartEntries(query, props.heading, props.filterRegex);
-    } else {
-      const chartIndex = ChartVars.chartInfo.indexOf(props.heading);
-      if ( chartIndex != -1 ) {
-        // console.log(props.chartsData.data[chartIndex]);
+    if ( chartIndex != -1 ) {
+      if ( props.chartsData.data[chartIndex] ) {
         setData(props.chartsData.data[chartIndex]);
+      } else {
+        // SELECT * FROM LOGGING ORDER BY DATE DESC LIMIT 0, 2147483647
+        // console.log('runnig charts query', query);
+        props.getChartEntries(query, props.heading, props.filterRegex);
       }
     }
-  }, [props.chartsData, props.balanceData]);
+  }, [props.chartsData]);
 
   return (
     <Grid
@@ -114,7 +109,6 @@ const chart = (props: Props) => {
 const mapStateToProps = (state: ApplicationState): StateProps => {
   return {
     chartsData: state.chartsData as ChartProps,
-    balanceData: state.balanceData as BalanceProps,
   };
 };
 

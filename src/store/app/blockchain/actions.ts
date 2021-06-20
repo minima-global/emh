@@ -10,6 +10,7 @@ import {
   StatusProps,
   StatusActionTypes,
   TxData,
+  ChartsActionTypes,
 } from '../../types';
 
 import {Dbase} from '../../../config';
@@ -27,13 +28,16 @@ export const init = () => {
       if (msg.event == 'connected') {
         dispatch(getBalance());
         dispatch(getStatus());
-
         // need this empty listener, apparently...
         Minima.minidapps.listen(function(msg) {
           null;
         });
       } else if ( msg.event == 'newbalance' ) {
         dispatch(getBalance());
+      } else if (msg.event == 'newtxpow') {
+        // force the charts to reload as we may have new tx/address entries
+        // in the database
+        dispatch(write({data: []})(ChartsActionTypes.CHARTS_INIT));
         dispatch(getStatus());
       }
     });
