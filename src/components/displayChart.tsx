@@ -31,7 +31,6 @@ export const DisplayChart = (props: Props) => {
 
   useEffect(() => {
     let chart: any;
-    console.log('got data: ', props.chartData);
     const keys = props.chartData ? Object.keys(props.chartData) : [];
     if ( keys.length ) {
       const values = Object.values(props.chartData);

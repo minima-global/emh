@@ -270,9 +270,8 @@ export const getChartEntries =
       };
       const chartIndex = Chart.chartInfo.indexOf(chartName);
       if ( chartIndex != -1 ) {
-        console.log('got query', query);
+        // console.log('got query', query);
         Minima.sql(query, function(result: any) {
-          console.log('got result', result);
           if ( !result.status ) {
             txData = {
               code: '503',
@@ -295,7 +294,6 @@ export const getChartEntries =
               const thisMatchString =
                 thisMatch ? thisMatch.toString().trim() : '';
               if ( thisMatchString.length ) {
-                console.log('Matched! ', thisMatchString);
                 if (!chartData[thisMatchString]) {
                   const chartValues: ChartValues = {
                     count: 1,
@@ -320,7 +318,6 @@ export const getChartEntries =
                 updateData.data = chartData;
               }
             });
-            console.log('chart stuff!', updateData);
             dispatch(write({data: updateData})(successAction));
             dispatch(write({data: txData})(txSuccessAction));
           }

@@ -17,10 +17,9 @@ export const reducer =
 (state: ChartProps = initialState, action: ActionProps): ChartProps => {
   if ( action.type == ChartsActionTypes.CHARTS_SUCCESS ) {
     const myChartData: ChartUpdateData = action.payload.data as ChartUpdateData;
-    console.log('New chart Data!', myChartData);
     const thisData = myChartData.data;
     const index = myChartData.index;
-    const newData = state.data;
+    const newData = [...state.data];
     newData[index] = thisData;
     return {
       ...state,

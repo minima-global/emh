@@ -43,11 +43,6 @@ export interface ChartProps extends PayloadProps {
   data: Array<ChartData>
 }
 
-export type ChartSummary = {
-  data: ChartData,
-  total: number
-}
-
 export type ChartUpdateData = {
   data: ChartData
   index: number

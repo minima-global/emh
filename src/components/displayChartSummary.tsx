@@ -20,6 +20,7 @@ import {
   ApplicationState,
   AppDispatch,
   ChartData,
+  ChartValues,
   SuccessAndFailType,
 } from '../store/types';
 
@@ -157,7 +158,12 @@ const summary = (props: Props) => {
               xs={12}
             >
               <Typography variant="h3">
-                {Chart.totals} {props.heading} = {props.chartData.total}
+                {Chart.totals} {props.heading} = {
+                  Object.values(props.chartData)
+                      .reduce( function(acc: number, chartData: ChartValues) {
+                        return acc + chartData.count;
+                      }, 0)
+                }
               </Typography>
             </Grid>
 

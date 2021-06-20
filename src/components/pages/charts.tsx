@@ -78,6 +78,7 @@ const chart = (props: Props) => {
     } else {
       const chartIndex = ChartVars.chartInfo.indexOf(props.heading);
       if ( chartIndex != -1 ) {
+        // console.log(props.chartsData.data[chartIndex]);
         setData(props.chartsData.data[chartIndex]);
       }
     }
