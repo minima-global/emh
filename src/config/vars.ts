@@ -3,6 +3,8 @@ import {
   LogType,
 } from '../store/types';
 
+import {colours} from './colours';
+
 /** @class App */
 class App {
   static readonly title = 'Minima'
@@ -31,7 +33,7 @@ class Misc {
   static readonly sendableDecimals = 4
 
   static readonly barThickness = 30;
-  static readonly labelOffset = 20;
+  static readonly labelOffset = -20;
 }
 
 /** @class Smtp */
@@ -273,7 +275,7 @@ class Cmd {
             display: false,
           },
           ticks: {
-            color: '#000000',
+            color: colours,
             mirror: true,
             labelOffset: Misc.labelOffset,
             z: 1,
@@ -292,7 +294,7 @@ class Cmd {
   static readonly logType: LogType = {
     name: Cmd.logHeading,
     regex: Cmd.regex,
-    query: Cmd.query,
+    query: Cmd.query + ' ORDER BY DATE DESC',
   }
 
   static readonly trigger = 'Trigger'
@@ -358,7 +360,7 @@ class Addresses {
   static readonly logType: LogType = {
     name: Addresses.logHeading,
     regex: Addresses.regex,
-    query: Addresses.query,
+    query: Addresses.query + ' ORDER BY DATE DESC',
   }
 
   static readonly address = 'Mx Address'
@@ -435,7 +437,7 @@ class Tokens {
   static readonly logType: LogType = {
     name: Tokens.logHeading,
     regex: Tokens.regex,
-    query: Tokens.query,
+    query: Tokens.query + ' ORDER BY DATE DESC',
   }
 
   static readonly tokenId = 'Token ID'
@@ -548,7 +550,7 @@ class API {
   static readonly logType: LogType = {
     name: API.logHeading,
     regex: API.regex,
-    query: API.query,
+    query: API.query + ' ORDER BY DATE DESC',
   }
 }
 
@@ -564,6 +566,11 @@ class Status {
 /** @class Log */
 class Log {
   static readonly heading = 'Logs'
+
+  static readonly query =
+    'SELECT * FROM ' +
+    Dbase.tables.log.name +
+    ' ORDER BY DATE DESC';
 
   static readonly total = 'Total Entries'
 
@@ -604,7 +611,7 @@ class Post {
 class Chart {
   static readonly barThickness = Misc.barThickness;
   static readonly axisOffset = 50;
-  static readonly labelOffset = Misc.barThickness * -1;
+  static readonly labelOffset = Misc.barThickness;
   static readonly labelFontsize = 16;
 
   static readonly gridHeight =
