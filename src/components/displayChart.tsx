@@ -44,8 +44,6 @@ export const DisplayChart = (props: Props) => {
             datasets: [{
               data: values.map((value: ChartValues) => value.count),
               backgroundColor: values.map((value: ChartValues) => value.colour),
-              barThickness: ChartVars.barThickness,
-              maxBarThickness: ChartVars.barThickness + 2,
             }],
           },
           options: {
@@ -57,6 +55,8 @@ export const DisplayChart = (props: Props) => {
             responsive: true,
             maintainAspectRatio: false,
             indexAxis: 'y',
+            barThickness: ChartVars.barThickness,
+            maxBarThickness: ChartVars.barThickness + 2,
             scales: {
               y: {
                 grid: {

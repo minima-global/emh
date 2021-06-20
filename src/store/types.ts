@@ -48,6 +48,14 @@ export type ChartUpdateData = {
   index: number
 }
 
+export type ChartType = {
+  name: string
+  regex: string
+  query: string
+  chartType: string
+  chartOptions: object
+}
+
 /**
  * Static info props
  */
@@ -110,6 +118,12 @@ export interface Logs {
 
 export interface LogsProps extends PayloadProps {
   data: Array<Logs>
+}
+
+export type LogType = {
+  name: string
+  regex: string
+  query: string
 }
 
 /**

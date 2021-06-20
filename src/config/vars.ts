@@ -1,3 +1,8 @@
+import {
+  ChartType,
+  LogType,
+} from '../store/types';
+
 /** @class App */
 class App {
   static readonly title = 'Minima'
@@ -24,6 +29,9 @@ class Misc {
   static readonly unconfirmedDecimals = 2
   static readonly confirmedDecimals = 4
   static readonly sendableDecimals = 4
+
+  static readonly barThickness = 30;
+  static readonly labelOffset = 20;
 }
 
 /** @class Smtp */
@@ -230,8 +238,62 @@ class Contact {
 class Cmd {
   static readonly heading = 'Run API Command'
   static readonly chartHeading = 'Commands'
+  static readonly logHeading = 'Commands'
 
-  static readonly regex = '^[a-zA-Z0-9]* '
+  static readonly regex = '^[a-zA-Z0-9]* ';
+  static readonly query = 'SELECT * FROM ' +
+  Dbase.tables.log.name +
+  ' WHERE ' + Dbase.tables.log.columns[2] +
+  ' IN (\'' + Dbase.extraLogTypes.COMMAND + '\')' +
+  ' AND ' + Dbase.tables.log.columns[3] +
+  ' IN (\'' + Dbase.defaultActions.run + '\')' +
+  ' And ' + Dbase.tables.log.columns[4] +
+  ' REGEXP \'' + Cmd.regex +
+  '\'';
+
+  static readonly chartType: ChartType = {
+    name: Cmd.chartHeading,
+    regex: Cmd.regex,
+    query: Cmd.query,
+    chartType: 'bar',
+    chartOptions: {
+      plugins: {
+        legend: {
+          display: false,
+        },
+      },
+      responsive: true,
+      maintainAspectRatio: false,
+      indexAxis: 'y',
+      barThickness: Misc.barThickness,
+      maxBarThickness: Misc.barThickness + 2,
+      scales: {
+        y: {
+          grid: {
+            display: false,
+          },
+          ticks: {
+            color: '#000000',
+            mirror: true,
+            labelOffset: Misc.labelOffset,
+            z: 1,
+          },
+        },
+        x: {
+          position: 'top',
+          grid: {
+            display: false,
+          },
+        },
+      },
+    },
+  }
+
+  static readonly logType: LogType = {
+    name: Cmd.logHeading,
+    regex: Cmd.regex,
+    query: Cmd.query,
+  }
 
   static readonly trigger = 'Trigger'
   static readonly params = 'Params'
@@ -242,8 +304,62 @@ class Cmd {
 class Addresses {
   static readonly heading = 'Addresses to URLs'
   static readonly chartHeading = 'Address Transactions'
+  static readonly logHeading = 'Address Transactions'
 
   static readonly regex = '^Mx[A-Z0-9]*'
+  static readonly query = 'SELECT * FROM ' +
+      Dbase.tables.log.name +
+      ' WHERE ' + Dbase.tables.log.columns[2] +
+      ' IN (\'' + Dbase.tables.txpow.name + '\')' +
+      ' AND ' + Dbase.tables.log.columns[3] +
+      ' IN (\'' + Dbase.defaultActions.insert + '\')' +
+      ' And ' + Dbase.tables.log.columns[4] +
+      ' REGEXP \'' + Addresses.regex +
+      '\'';
+
+  static readonly chartType: ChartType = {
+    name: Addresses.chartHeading,
+    regex: Addresses.regex,
+    query: Addresses.query,
+    chartType: 'bar',
+    chartOptions: {
+      plugins: {
+        legend: {
+          display: false,
+        },
+      },
+      responsive: true,
+      maintainAspectRatio: false,
+      indexAxis: 'y',
+      barThickness: Misc.barThickness,
+      maxBarThickness: Misc.barThickness + 2,
+      scales: {
+        y: {
+          grid: {
+            display: false,
+          },
+          ticks: {
+            color: '#000000',
+            mirror: true,
+            labelOffset: Misc.labelOffset,
+            z: 1,
+          },
+        },
+        x: {
+          position: 'top',
+          grid: {
+            display: false,
+          },
+        },
+      },
+    },
+  }
+
+  static readonly logType: LogType = {
+    name: Addresses.logHeading,
+    regex: Addresses.regex,
+    query: Addresses.query,
+  }
 
   static readonly address = 'Mx Address'
   static readonly url = 'URL'
@@ -263,9 +379,64 @@ class Addresses {
 /** @class Tokens */
 class Tokens {
   static readonly heading = 'Tokens to URLs'
-  static readonly chartHeading = 'Token Transactions'
 
+  static readonly chartHeading = 'Token Transactions'
+  static readonly logHeading = 'Token Transactions'
   static readonly regex = '^0x[A-Z0-9]*'
+
+  static readonly query = 'SELECT * FROM ' +
+      Dbase.tables.log.name +
+      ' WHERE ' + Dbase.tables.log.columns[2] +
+      ' IN (\'' + Dbase.tables.txpow.name + '\')' +
+      ' AND ' + Dbase.tables.log.columns[3] +
+      ' IN (\'' + Dbase.defaultActions.insert + '\')' +
+      ' And ' + Dbase.tables.log.columns[4] +
+      ' REGEXP \'' + Tokens.regex +
+      '\'';
+
+  static readonly chartType: ChartType = {
+    name: Tokens.chartHeading,
+    regex: Tokens.regex,
+    query: Tokens.query,
+    chartType: 'bar',
+    chartOptions: {
+      plugins: {
+        legend: {
+          display: false,
+        },
+      },
+      responsive: true,
+      maintainAspectRatio: false,
+      indexAxis: 'y',
+      barThickness: Misc.barThickness,
+      maxBarThickness: Misc.barThickness + 2,
+      scales: {
+        y: {
+          grid: {
+            display: false,
+          },
+          ticks: {
+            color: '#000000',
+            mirror: true,
+            labelOffset: Misc.labelOffset,
+            z: 1,
+          },
+        },
+        x: {
+          position: 'top',
+          grid: {
+            display: false,
+          },
+        },
+      },
+    },
+  }
+
+  static readonly logType: LogType = {
+    name: Tokens.logHeading,
+    regex: Tokens.regex,
+    query: Tokens.query,
+  }
 
   static readonly tokenId = 'Token ID'
   static readonly url = 'URL'
@@ -321,9 +492,64 @@ class Balances {
 /** @class API */
 class API {
   static readonly heading = 'API'
-  static readonly chartHeading = 'API Calls'
 
+  static readonly chartHeading = 'API Calls'
+  static readonly logHeading = 'API Calls'
   static readonly regex = '^[a-zA-Z0-9]* '
+
+  static readonly query = 'SELECT * FROM ' +
+      Dbase.tables.log.name +
+      ' WHERE ' + Dbase.tables.log.columns[2] +
+      ' IN (\'' + Dbase.tables.trigger.name + '\')' +
+      ' AND ' + Dbase.tables.log.columns[3] +
+      ' IN (\'' + Dbase.defaultActions.run + '\')' +
+      ' And ' + Dbase.tables.log.columns[4] +
+      ' REGEXP \'' + API.regex +
+      '\'';
+
+  static readonly chartType: ChartType = {
+    name: API.chartHeading,
+    regex: API.regex,
+    query: API.query,
+    chartType: 'bar',
+    chartOptions: {
+      plugins: {
+        legend: {
+          display: false,
+        },
+      },
+      responsive: true,
+      maintainAspectRatio: false,
+      indexAxis: 'y',
+      barThickness: Misc.barThickness,
+      maxBarThickness: Misc.barThickness + 2,
+      scales: {
+        y: {
+          grid: {
+            display: false,
+          },
+          ticks: {
+            color: '#000000',
+            mirror: true,
+            labelOffset: Misc.labelOffset,
+            z: 1,
+          },
+        },
+        x: {
+          position: 'top',
+          grid: {
+            display: false,
+          },
+        },
+      },
+    },
+  }
+
+  static readonly logType: LogType = {
+    name: API.logHeading,
+    regex: API.regex,
+    query: API.query,
+  }
 }
 
 /** @class Status */
@@ -376,10 +602,11 @@ class Post {
 
 /** @class Chart */
 class Chart {
-  static readonly barThickness = 30;
+  static readonly barThickness = Misc.barThickness;
   static readonly axisOffset = 50;
-  static readonly labelOffset = 20;
+  static readonly labelOffset = Misc.barThickness * -1;
   static readonly labelFontsize = 16;
+
   static readonly gridHeight =
     Chart.barThickness +
     Chart.labelOffset +
