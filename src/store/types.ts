@@ -30,13 +30,8 @@ export interface ActionProps extends Action {
 
 export type AppDispatch = ThunkDispatch<ApplicationState, any, ActionProps>
 
-export type ChartValues = {
-  count: number
-  colour: string
-}
-
 export type ChartData = {
-  [key: string]: ChartValues
+  [key: string]: number
 }
 
 export interface ChartProps extends PayloadProps {

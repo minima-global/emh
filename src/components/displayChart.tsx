@@ -7,12 +7,12 @@ import Chart from 'chart.js/auto';
 import {theme} from '../styles';
 
 import {
-  ChartValues,
   ChartData,
 } from '../store/types';
 
 import {
   Chart as ChartVars,
+  colours,
 } from '../config';
 
 interface ChartProps {
@@ -42,8 +42,8 @@ export const DisplayChart = (props: Props) => {
           data: {
             labels: keys.map((key: string) => key),
             datasets: [{
-              data: values.map((value: ChartValues) => value.count),
-              backgroundColor: values.map((value: ChartValues) => value.colour),
+              data: values.map((value: number) => value),
+              backgroundColor: colours,
             }],
           },
           options: {
@@ -63,7 +63,7 @@ export const DisplayChart = (props: Props) => {
                   display: false,
                 },
                 ticks: {
-                  color: values.map((value: ChartValues) => value.colour),
+                  color: colours,
                   mirror: true,
                   labelOffset: ChartVars.labelOffset * -1,
                   z: 1,

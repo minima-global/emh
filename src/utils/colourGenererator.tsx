@@ -1,3 +1,14 @@
+
+import {colours} from '../config/colours';
+
+export const getColourForIndex = (index: number): string => {
+  if ( index < colours.length ) {
+    return colours[index];
+  } else {
+    return '#000000';
+  }
+};
+
 export const getRandomColour = () => {
   const letters = '0123456789ABCDEF'.split('');
   let color = '#';

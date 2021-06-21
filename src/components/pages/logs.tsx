@@ -67,12 +67,7 @@ export const list = (props: Props) => {
   };
 
   // SELECT * FROM LOGGING ORDER BY DATE DESC LIMIT 0, 2147483647
-  let query =
-    'SELECT * FROM ' +
-    Dbase.tables.log.name +
-    ' ORDER BY DATE DESC ' +
-    ' LIMIT ' + low + ', ' +
-    numRecords;
+  let query = LogVars.query + ' LIMIT ' + low + ', ' + numRecords;
   if ( filterType ) {
     query =
       'SELECT * FROM ' +

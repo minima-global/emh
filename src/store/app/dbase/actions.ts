@@ -8,7 +8,6 @@ import {
   ChartsActionTypes,
   ChartUpdateData,
   ChartData,
-  ChartValues,
   Logs,
 } from '../../types';
 
@@ -19,8 +18,6 @@ import {
   Chart,
   Tokens as TokensVars,
 } from '../../../config';
-
-import {getRandomColour} from '../../../utils/colourGenererator';
 
 import {write} from '../../actions';
 
@@ -295,13 +292,9 @@ export const getChartEntries =
                 thisMatch ? thisMatch.toString().trim() : '';
               if ( thisMatchString.length ) {
                 if (!chartData[thisMatchString]) {
-                  const chartValues: ChartValues = {
-                    count: 1,
-                    colour: getRandomColour(),
-                  };
-                  chartData[thisMatchString] = chartValues;
+                  chartData[thisMatchString] = 1;
                 } else {
-                  chartData[thisMatchString].count += 1;
+                  chartData[thisMatchString] += 1;
                 }
               }
 
