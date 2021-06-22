@@ -37,6 +37,7 @@ export const init = () => {
       } else if (msg.event == 'newtxpow') {
         // force the charts to reload as we may have new tx/address entries
         // in the database
+        // console.log('newtxpow');
         dispatch(write({data: []})(ChartsActionTypes.CHARTS_INIT));
         dispatch(getStatus());
       }

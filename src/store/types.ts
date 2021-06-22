@@ -47,8 +47,8 @@ export type ChartType = {
   name: string
   regex: string
   query: string
-  chartType: string
-  chartOptions: object
+  type: string
+  options: object
 }
 
 /**
@@ -117,7 +117,6 @@ export interface LogsProps extends PayloadProps {
 
 export type LogType = {
   name: string
-  regex: string
   query: string
 }
 

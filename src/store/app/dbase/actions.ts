@@ -225,7 +225,6 @@ export const getTableEntries =
       // console.log(query);
 
       Minima.sql(query, function(result: any) {
-        // console.log('got result, ', result);
         if ( !result.status ) {
           txData = {
             code: '503',

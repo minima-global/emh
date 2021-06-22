@@ -631,7 +631,7 @@ function processTxPow(blockTime) {
 
         if ((now - txPow.DATE) > deleteAfter) {
           doSQL(deleteSQL, tables.txpow.name);
-          doLog(tables.txpow.name, defaultActions.delete, txId);
+          doLog(tables.txpow.name, defaultActions.delete, txPow.TXID);
         } else {
           const txPowInfo = 'txpowinfo ' + txPow.TXID;
           Minima.cmd(txPowInfo, function(infoResults) {

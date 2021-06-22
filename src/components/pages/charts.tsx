@@ -10,6 +10,7 @@ import {
   AppDispatch,
   ChartProps,
   ChartData,
+  ChartType,
 } from '../../store/types';
 
 import {
@@ -18,22 +19,15 @@ import {
 
 import {getChartEntries} from '../../store/app/dbase/actions';
 
-import {
-  Dbase,
-} from '../../config';
-
 // import {getChartData} from '../../utils/getChartData';
 import {DisplayChart} from '../displayChart';
 import {DisplayChartSummary} from '../displayChartSummary';
 
 interface ThisProps {
-  heading: string
+  chartType: ChartType
   isFullScreen: boolean
   navLink: string
   logNavLink: string
-  filterType: string,
-  filterAction: string,
-  filterRegex: string,
 }
 
 interface StateProps {
@@ -53,19 +47,10 @@ type Props = ThisProps & StateProps & DispatchProps
 const chart = (props: Props) => {
   const [data, setData] = useState({} as ChartData);
 
-  const query =
-    'SELECT * FROM ' +
-    Dbase.tables.log.name +
-    ' WHERE ' + Dbase.tables.log.columns[2] +
-    ' IN (\'' + props.filterType + '\')' +
-    ' AND ' + Dbase.tables.log.columns[3] +
-    ' IN (\'' + props.filterAction + '\')' +
-    ' And ' + Dbase.tables.log.columns[4] +
-    ' REGEXP \'' + props.filterRegex +
-    '\'';
+  // console.log('got chart', props.chartType);
 
   const screenHeight = props.isFullScreen ? '800px' : '250px';
-  const chartIndex = ChartVars.chartInfo.indexOf(props.heading);
+  const chartIndex = ChartVars.chartInfo.indexOf(props.chartType.name);
 
   useEffect(() => {
     if ( chartIndex != -1 ) {
@@ -74,7 +59,8 @@ const chart = (props: Props) => {
       } else {
         // SELECT * FROM LOGGING ORDER BY DATE DESC LIMIT 0, 2147483647
         // console.log('runnig charts query', query);
-        props.getChartEntries(query, props.heading, props.filterRegex);
+        props.getChartEntries(
+            props.chartType.query, props.chartType.name, props.chartType.regex);
       }
     }
   }, [props.chartsData]);
@@ -91,14 +77,14 @@ const chart = (props: Props) => {
     >
       <Grid container>
         <DisplayChartSummary
-          heading={props.heading}
+          heading={props.chartType.name}
           chartData={data}
           isFullScreen={props.isFullScreen}
           navLink={props.navLink}
           logNavLink={props.logNavLink} />
 
         <DisplayChart
-          title={props.heading}
+          chartType={props.chartType}
           chartData={data}
           viewport={screenHeight} />
       </Grid>

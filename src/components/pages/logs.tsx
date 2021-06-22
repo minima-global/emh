@@ -10,6 +10,7 @@ import {
   AppDispatch,
   LogsProps,
   Logs as LogsType,
+  LogType,
   LogsActionTypes,
   SuccessAndFailType,
 } from '../../store/types';
@@ -20,17 +21,11 @@ import {theme, themeStyles} from '../../styles';
 
 import {
   Dbase,
-} from '../../config';
-
-import {
   Log as LogVars,
 } from '../../config';
 
 interface ThisProps {
-  heading: string
-  filterType?: string,
-  filterAction?: string,
-  filterRegex?: string,
+  logType: LogType
 }
 
 interface StateProps {
@@ -47,14 +42,6 @@ interface DispatchProps {
 type Props = ThisProps & StateProps & DispatchProps
 
 export const list = (props: Props) => {
-  const {
-    heading,
-    filterType = '',
-    filterAction = '',
-    filterRegex = '',
-    logsData,
-    getTableEntries,
-  } = props;
   const isFirstRun = useRef(true);
   const [low, setLimitLow] = useState(0);
   const [numRecords, setNumRecords] = useState(Dbase.pageLimit);
@@ -67,21 +54,7 @@ export const list = (props: Props) => {
   };
 
   // SELECT * FROM LOGGING ORDER BY DATE DESC LIMIT 0, 2147483647
-  let query = LogVars.query + ' LIMIT ' + low + ', ' + numRecords;
-  if ( filterType ) {
-    query =
-      'SELECT * FROM ' +
-      Dbase.tables.log.name +
-      ' WHERE ' + Dbase.tables.log.columns[2] +
-      ' IN (\'' + props.filterType + '\')' +
-      ' AND ' + Dbase.tables.log.columns[3] +
-      ' IN (\'' + filterAction + '\')' +
-      ' And ' + Dbase.tables.log.columns[4] +
-      ' REGEXP \'' + filterRegex + '\'' +
-      ' ORDER BY DATE DESC ' +
-      ' LIMIT ' + low + ', ' +
-      numRecords;
-  }
+  const query = props.logType.query + ' LIMIT ' + low + ', ' + numRecords;
 
   const classes = themeStyles();
 
@@ -89,9 +62,9 @@ export const list = (props: Props) => {
     if ( isFirstRun.current ) {
       isFirstRun.current = false;
 
-      getTableEntries(query, actionType);
+      props.getTableEntries(query, actionType);
     } else {
-      if ( logsData?.data.length ) {
+      if ( props.logsData?.data.length ) {
         const thisData: LogsProps = {
           data: [],
         };
@@ -112,12 +85,12 @@ export const list = (props: Props) => {
         }
       }
     }
-  }, [logsData]);
+  }, [props.logsData]);
 
   const getRecords = (lowLimit: number) => {
     setLimitLow(lowLimit);
     setNumRecords(lowLimit + Dbase.pageLimit);
-    getTableEntries(query, actionType);
+    props.getTableEntries(query, actionType);
   };
 
   return (
@@ -133,7 +106,7 @@ export const list = (props: Props) => {
 
         <Grid item container alignItems="flex-start" xs={12}>
           <Typography variant="h2">
-            {heading}
+            {props.logType.name}
           </Typography>
         </Grid>
 
@@ -240,7 +213,7 @@ export const list = (props: Props) => {
           </Grid>
 
           <Grid item container className={classes.formSummary} xs={12}>
-            { logsData?.data?.map( ( log: LogsType, index: number ) => {
+            { props.logsData?.data?.map( ( log: LogsType, index: number ) => {
               const thisDate = new Date(+log.DATE);
               const dateCreated = thisDate.toString().replace(/ GMT.*$/g, '');
               const loggingType = log.LOGGINGTYPE;

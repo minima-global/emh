@@ -8,6 +8,7 @@ import {theme} from '../styles';
 
 import {
   ChartData,
+  ChartType,
 } from '../store/types';
 
 import {
@@ -16,7 +17,7 @@ import {
 } from '../config';
 
 interface ChartProps {
-  title: string
+  chartType: ChartType
   chartData: ChartData
   viewport: string
 }
@@ -38,7 +39,7 @@ export const DisplayChart = (props: Props) => {
       const ctx: HTMLCanvasElement | null = dataCtx.current;
       if ( ctx ) {
         chart = new Chart(ctx, {
-          type: 'bar',
+          type: props.chartType.type,
           data: {
             labels: keys.map((key: string) => key),
             datasets: [{
@@ -46,37 +47,7 @@ export const DisplayChart = (props: Props) => {
               backgroundColor: colours,
             }],
           },
-          options: {
-            plugins: {
-              legend: {
-                display: false,
-              },
-            },
-            responsive: true,
-            maintainAspectRatio: false,
-            indexAxis: 'y',
-            barThickness: ChartVars.barThickness,
-            maxBarThickness: ChartVars.barThickness + 2,
-            scales: {
-              y: {
-                grid: {
-                  display: false,
-                },
-                ticks: {
-                  color: colours,
-                  mirror: true,
-                  labelOffset: ChartVars.labelOffset * -1,
-                  z: 1,
-                },
-              },
-              x: {
-                position: 'top',
-                grid: {
-                  display: false,
-                },
-              },
-            },
-          },
+          options: props.chartType.options,
         });
       }
     }
@@ -113,7 +84,7 @@ export const DisplayChart = (props: Props) => {
           }}
         >
           <canvas
-            id={props.title}
+            id={props.chartType.name}
             ref={dataCtx}
           />
         </div>

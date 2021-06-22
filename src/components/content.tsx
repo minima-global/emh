@@ -15,7 +15,6 @@ import {
 } from '../components/pages';
 
 import {
-  Dbase,
   Local,
   Log as LogVars,
   Cmd as CmdVars,
@@ -45,8 +44,7 @@ export const Content = () => {
       <Route
         path={Local.logs}
         render= {() =>
-          <Logs
-            heading={LogVars.heading} /> }
+          <Logs logType={LogVars.logType} /> }
       />
       <Route
         exact path={Local.addresses}
@@ -68,102 +66,61 @@ export const Content = () => {
         exact path={Local.chartTokens}
         render= {() =>
           <Chart
+            chartType={TokensVars.chartType}
             isFullScreen={true}
-            heading={TokensVars.chartHeading}
             navLink={Local.home}
-            logNavLink={Local.logTokens}
-            filterType={Dbase.tables.txpow.name}
-            filterAction={Dbase.defaultActions.insert}
-            filterRegex={TokensVars.regex} /> }
+            logNavLink={Local.logTokens} /> }
       />
       <Route
         exact path={Local.chartAddresses}
         render= {() =>
           <Chart
+            chartType={AddressVars.chartType}
             isFullScreen={true}
-            heading={AddressVars.chartHeading}
             navLink={Local.home}
-            logNavLink={Local.logAddresses}
-            filterType={Dbase.tables.txpow.name}
-            filterAction={Dbase.defaultActions.insert}
-            filterRegex={AddressVars.regex} /> }
+            logNavLink={Local.logAddresses} /> }
       />
       <Route
         exact path={Local.chartAPI}
         render= {() =>
           <Chart
+            chartType={APIVars.chartType}
             isFullScreen={true}
-            heading={APIVars.chartHeading}
             navLink={Local.home}
-            logNavLink={Local.logAPI}
-            filterType={Dbase.tables.trigger.name}
-            filterAction={Dbase.defaultActions.run}
-            filterRegex={APIVars.regex} /> }
+            logNavLink={Local.logAPI} /> }
       />
-      <Route
-        exact path={Local.chartAPI}
-        render= {() =>
-          <Chart
-            isFullScreen={true}
-            heading={CmdVars.chartHeading}
-            navLink={Local.home}
-            logNavLink={Local.logCmds}
-            filterType={Dbase.extraLogTypes.COMMAND}
-            filterAction={Dbase.defaultActions.run}
-            filterRegex={CmdVars.regex} /> }
-      />
-
       <Route
         exact path={Local.chartCmds}
         render= {() =>
           <Chart
+            chartType={CmdVars.chartType}
             isFullScreen={true}
-            heading={CmdVars.chartHeading}
             navLink={Local.home}
-            logNavLink={Local.logCmds}
-            filterType={Dbase.extraLogTypes.COMMAND}
-            filterAction={Dbase.defaultActions.run}
-            filterRegex={CmdVars.regex} /> }
+            logNavLink={Local.logCmds} /> }
       />
 
       <Route
         path={Local.logTokens}
         render= {() =>
-          <Logs
-            heading={LogVars.heading}
-            filterType={Dbase.tables.txpow.name}
-            filterAction={Dbase.defaultActions.insert}
-            filterRegex={TokensVars.regex} /> }
+          <Logs logType={TokensVars.logType} /> }
       />
 
       <Route
         path={Local.logAddresses}
         render= {() =>
-          <Logs
-            heading={LogVars.heading}
-            filterType={Dbase.tables.txpow.name}
-            filterAction={Dbase.defaultActions.insert}
-            filterRegex={AddressVars.regex} /> }
+          <Logs logType={AddressVars.logType} /> }
       />
 
       <Route
         path={Local.logAPI}
         render= {() =>
-          <Logs
-            heading={LogVars.heading}
-            filterType={Dbase.tables.trigger.name}
-            filterAction={Dbase.defaultActions.run}
-            filterRegex={APIVars.regex} /> }
+          <Logs logType={APIVars.logType} /> }
       />
 
       <Route
         path={Local.logCmds}
         render= {() =>
-          <Logs
-            heading={LogVars.heading}
-            filterType={Dbase.extraLogTypes.COMMAND}
-            filterAction={Dbase.defaultActions.run}
-            filterRegex={CmdVars.regex} /> }
+          <Logs logType={CmdVars.logType} /> }
       />
 
       <Route

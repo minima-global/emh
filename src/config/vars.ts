@@ -257,8 +257,8 @@ class Cmd {
     name: Cmd.chartHeading,
     regex: Cmd.regex,
     query: Cmd.query,
-    chartType: 'bar',
-    chartOptions: {
+    type: 'bar',
+    options: {
       plugins: {
         legend: {
           display: false,
@@ -293,7 +293,6 @@ class Cmd {
 
   static readonly logType: LogType = {
     name: Cmd.logHeading,
-    regex: Cmd.regex,
     query: Cmd.query + ' ORDER BY DATE DESC',
   }
 
@@ -323,8 +322,8 @@ class Addresses {
     name: Addresses.chartHeading,
     regex: Addresses.regex,
     query: Addresses.query,
-    chartType: 'bar',
-    chartOptions: {
+    type: 'bar',
+    options: {
       plugins: {
         legend: {
           display: false,
@@ -359,7 +358,6 @@ class Addresses {
 
   static readonly logType: LogType = {
     name: Addresses.logHeading,
-    regex: Addresses.regex,
     query: Addresses.query + ' ORDER BY DATE DESC',
   }
 
@@ -400,8 +398,8 @@ class Tokens {
     name: Tokens.chartHeading,
     regex: Tokens.regex,
     query: Tokens.query,
-    chartType: 'bar',
-    chartOptions: {
+    type: 'bar',
+    options: {
       plugins: {
         legend: {
           display: false,
@@ -436,7 +434,6 @@ class Tokens {
 
   static readonly logType: LogType = {
     name: Tokens.logHeading,
-    regex: Tokens.regex,
     query: Tokens.query + ' ORDER BY DATE DESC',
   }
 
@@ -513,8 +510,8 @@ class API {
     name: API.chartHeading,
     regex: API.regex,
     query: API.query,
-    chartType: 'bar',
-    chartOptions: {
+    type: 'bar',
+    options: {
       plugins: {
         legend: {
           display: false,
@@ -549,7 +546,6 @@ class API {
 
   static readonly logType: LogType = {
     name: API.logHeading,
-    regex: API.regex,
     query: API.query + ' ORDER BY DATE DESC',
   }
 }
@@ -571,6 +567,11 @@ class Log {
     'SELECT * FROM ' +
     Dbase.tables.log.name +
     ' ORDER BY DATE DESC';
+
+    static readonly logType: LogType = {
+      name: Log.heading,
+      query: Log.query,
+    }
 
   static readonly total = 'Total Entries'
 
