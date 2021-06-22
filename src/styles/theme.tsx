@@ -102,7 +102,7 @@ let theme = createMuiTheme({
     body2: {
       lineHeight: '1.5',
       fontSize: '1em',
-      fontWeight: 500,
+      fontWeight: 700,
       fontFamily: '"Manrope", "Roboto", "Arial", "sans-serif"',
       color: '#91919D',
     },
@@ -339,6 +339,12 @@ const themeStyles = makeStyles({
       width: '50px',
     },
   },
+  pageIcon: {
+    [breakpoints.up('xs')]: {
+      height: '40px',
+      width: '40px',
+    },
+  },
   oddRow: {
     backgroundColor: '#FAFAFF',
     paddingTop: theme.spacing(1),
@@ -346,6 +352,10 @@ const themeStyles = makeStyles({
   },
   evenRow: {
     backgroundColor: '#F5F3F2',
+    paddingTop: theme.spacing(1),
+    paddingBottom: theme.spacing(1),
+  },
+  row: {
     paddingTop: theme.spacing(1),
     paddingBottom: theme.spacing(1),
   },

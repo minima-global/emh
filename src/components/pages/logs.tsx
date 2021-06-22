@@ -1,9 +1,10 @@
-import React, {useEffect, useState, useRef} from 'react';
+import React, {useEffect, useState, ChangeEvent} from 'react';
 import {connect} from 'react-redux';
 
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 
 import {
   ApplicationState,
@@ -22,7 +23,11 @@ import {theme, themeStyles} from '../../styles';
 import {
   Dbase,
   Log as LogVars,
+  Search,
 } from '../../config';
+
+import pageBack from '../../images/pageBack.svg';
+import pageForward from '../../images/pageNext.svg';
 
 interface ThisProps {
   logType: LogType
@@ -42,11 +47,11 @@ interface DispatchProps {
 type Props = ThisProps & StateProps & DispatchProps
 
 export const list = (props: Props) => {
-  const isFirstRun = useRef(true);
+  const [searchTerm, setSearchTerm] = useState('');
   const [low, setLimitLow] = useState(0);
   const [numRecords, setNumRecords] = useState(Dbase.pageLimit);
-  const [nextDisabled, setNextDisabled] = useState(true);
-  const [backDisabled, setBackDisabled] = useState(true);
+  // const [nextDisabled, setNextDisabled] = useState(true);
+  // const [backDisabled, setBackDisabled] = useState(true);
 
   const actionType: SuccessAndFailType = {
     success: LogsActionTypes.LOGS_SUCCESS,
@@ -59,49 +64,38 @@ export const list = (props: Props) => {
   const classes = themeStyles();
 
   useEffect(() => {
-    if ( isFirstRun.current ) {
-      isFirstRun.current = false;
+    props.getTableEntries(query, actionType);
+  }, []);
 
-      props.getTableEntries(query, actionType);
-    } else {
-      if ( props.logsData?.data.length ) {
-        const thisData: LogsProps = {
-          data: [],
-        };
+  const doSetSearchTerm =
+      (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        setSearchTerm(e.target.value);
+      };
 
-        if ( thisData.data.length < Dbase.pageLimit - 1 ) {
-          setNextDisabled(true);
-          if ( low === 0 ) {
-            setBackDisabled(true);
-          } else {
-            setBackDisabled(false);
-          }
-        } else if ( low === 0 ) {
-          setNextDisabled(false);
-          setBackDisabled(true);
-        } else {
-          setNextDisabled(false);
-          setBackDisabled(false);
-        }
-      }
-    }
-  }, [props.logsData]);
+  const doSearch = () => {
+    console.log('seartch term: ', searchTerm);
+  };
 
   const getRecords = (lowLimit: number) => {
-    setLimitLow(lowLimit);
-    setNumRecords(lowLimit + Dbase.pageLimit);
-    props.getTableEntries(query, actionType);
+    console.log('getting records', lowLimit);
+    if ( lowLimit >= 0 ) {
+      setLimitLow(lowLimit);
+      setNumRecords(lowLimit + Dbase.pageLimit);
+      props.getTableEntries(query, actionType);
+    }
   };
 
   return (
 
     <Grid
+      item
       container
       alignItems="flex-start"
       style={{
-        marginLeft: theme.spacing(8),
-        marginRight: theme.spacing(8),
+        paddingLeft: theme.spacing(8),
+        paddingRight: theme.spacing(8),
       }}
+      xs={12}
     >
       <Grid
         container
@@ -115,29 +109,63 @@ export const list = (props: Props) => {
         </Grid>
 
         <Grid item container alignItems="flex-start" xs={12}>
-          <Grid item container justify="flex-start" xs={3}>
+          <Grid item container justify="flex-start" xs={1}>
             <Typography variant="h5">
               {LogVars.records} {numRecords / Dbase.pageLimit}
             </Typography>
           </Grid>
-          <Grid item container justify="flex-end" xs={9}>
-            <Grid item container justify="flex-end" xs={4} lg={1}>
+          <Grid
+            item
+            container
+            alignItems="flex-start"
+            justify="center"
+            xs={10}
+          >
+            <Grid item container xs={12}>
+
+              <TextField
+                fullWidth
+                placeholder={Search.placeHolder}
+                size="small"
+                name="search"
+                type="text"
+                onChange={(e) => {
+                  doSetSearchTerm(e);
+                }}
+                onKeyPress= {(e) => {
+                  if (e.key === 'Enter') {
+                    doSearch();
+                  }
+                }}
+                InputProps={{disableUnderline: true}}
+              />
+            </Grid>
+          </Grid>
+          <Grid item container alignItems='center' justify='flex-end' xs={1}>
+            <Grid item container justify='flex-end' xs={6}>
               <Button
-                onClick={() => getRecords(low + Dbase.pageLimit)}
-                disabled={nextDisabled}
+                aria-label="Page back"
+                onClick={() => getRecords(low - Dbase.pageLimit)}
                 style={{
-                  marginRight: theme.spacing(0.5),
+                  margin: 0,
+                  padding: 0,
+                  background: '#F0F0FA',
                 }}
               >
-                {LogVars.nextButton}
+                <img className={classes.pageIcon} src={pageBack} />
               </Button>
             </Grid>
-            <Grid item container justify="flex-end" xs={4} lg={1}>
+            <Grid item container justify='flex-end' xs={6}>
               <Button
-                onClick={() => getRecords(low - Dbase.pageLimit)}
-                disabled={backDisabled}
+                aria-label="Page forward"
+                onClick={() => getRecords(low + Dbase.pageLimit)}
+                style={{
+                  margin: 0,
+                  padding: 0,
+                  background: '#F0F0FA',
+                }}
               >
-                {LogVars.backButton}
+                <img className={classes.pageIcon} src={pageForward}/>
               </Button>
             </Grid>
           </Grid>
@@ -146,7 +174,6 @@ export const list = (props: Props) => {
         <Grid item container alignItems="flex-start" xs={12}>
 
           <Grid item container xs={12}>
-
 
             <Grid
               item
@@ -224,12 +251,12 @@ export const list = (props: Props) => {
               const action = log.ACTION;
               const thisData = log.DATA;
 
-              const rowclass = index % 2 ? classes.evenRow : classes.oddRow;
+              // const rowclass = index % 2 ? classes.evenRow : classes.oddRow;
 
               return (
                 <React.Fragment key={index}>
 
-                  <Grid className={rowclass} item container xs={12}>
+                  <Grid className={classes.row} item container xs={12}>
                     <Grid
                       item
                       container

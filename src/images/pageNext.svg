@@ -1,1 +1,5 @@
-<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30"><defs><style>.cls-1{fill:#001c32;}</style></defs><g id="Group_1033" data-name="Group 1033"><path id="Ellipse_98" data-name="Ellipse 98" class="cls-1" d="M15,29A14,14,0,1,1,29,15,14,14,0,0,1,15,29m0,1A15,15,0,1,0,0,15,15,15,0,0,0,15,30Z"/><g id="Group_1032" data-name="Group 1032"><polygon class="cls-1" points="15.35 8.77 21.87 15.29 15.35 21.81 14.64 21.1 20.45 15.29 14.64 9.48 15.35 8.77"/><rect class="cls-1" x="8.83" y="14.79" width="12.33" height="1"/></g></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30">
+    <path d="M15 29a14 14 0 1114-14 14 14 0 01-14 14m0 1A15 15 0 100 15a15 15 0 0015 15z" />
+    <path d="M15.35 8.77l6.52 6.52-6.52 6.52-.71-.71 5.81-5.81-5.81-5.81.71-.71z" />
+    <path d="M8.83 14.79h12.33v1H8.83z" />
+</svg>

@@ -28,8 +28,8 @@ export const Home = () => {
       container
       alignItems='flex-start'
       style={{
-        marginLeft: theme.spacing(8),
-        marginRight: theme.spacing(8),
+        paddingLeft: theme.spacing(8),
+        paddingRight: theme.spacing(8),
       }}>
 
       <Grid item container xs={12}>

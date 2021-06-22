@@ -20,7 +20,6 @@ import {
   ApplicationState,
   AppDispatch,
   ChartData,
-  ChartValues,
   SuccessAndFailType,
 } from '../store/types';
 
@@ -160,8 +159,8 @@ const summary = (props: Props) => {
               <Typography variant="h3">
                 {Chart.totals} {props.heading} = {
                   Object.values(props.chartData)
-                      .reduce( function(acc: number, chartData: ChartValues) {
-                        return acc + chartData.count;
+                      .reduce( function(acc: number, chartData: number) {
+                        return acc + chartData;
                       }, 0)
                 }
               </Typography>

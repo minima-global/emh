@@ -9,7 +9,7 @@ import {colours} from './colours';
 class App {
   static readonly title = 'Minima'
   static readonly subTitle = 'The evolution will not be centralised'
-  static readonly appName = 'Enterprise Minima'
+  static readonly appName = 'Minima Enterprise Gateway'
   static readonly catchLine = `Powered by ${App.title}`
   static readonly tagline = ''
   static readonly website = 'http://www.minima.global'

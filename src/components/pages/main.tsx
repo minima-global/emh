@@ -7,6 +7,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 
+import megIcon from '../../images/megLogo.svg';
 import minimaIcon from '../../images/minimaIcon.svg';
 import homeIcon from '../../images/megNavDashboardGrey.svg';
 import terminal from '../../images/megNavRunApiGrey.svg';
@@ -18,7 +19,7 @@ import {Content} from '../content';
 
 import {App} from '../../config/vars';
 
-import {themeStyles} from '../../styles';
+import {theme, themeStyles} from '../../styles';
 
 import {Local, Paths} from '../../config';
 import {AppInit} from '../appInit';
@@ -64,28 +65,38 @@ export const Main = () => {
               <Grid
                 item
                 container
-                alignItems="center"
-                justify="flex-start"
-                xs={6}
+                style={{
+                  paddingLeft: theme.spacing(8),
+                  paddingRight: theme.spacing(8),
+                }}
+                xs={12}
               >
-                <Typography variant="body2">
-                  {App.appName}
-                </Typography>
-              </Grid>
+                <Grid
+                  item
+                  container
+                  alignItems="center"
+                  justify="flex-start"
+                  xs={6}
+                >
+                  <img className={classes.headerIcon} src={megIcon} />
+                  <Typography variant="body2">
+                    &nbsp;&nbsp; {App.appName}
+                  </Typography>
+                </Grid>
 
-              <Grid
-                item
-                container
-                alignItems="center"
-                justify="flex-end"
-                xs={6}
-              >
-                <Typography variant="body2">
-                  {App.catchLine} &nbsp;&nbsp;
-                </Typography>
-                <img className={classes.headerIcon} src={minimaIcon} />
+                <Grid
+                  item
+                  container
+                  alignItems="center"
+                  justify="flex-end"
+                  xs={6}
+                >
+                  <Typography variant="body2">
+                    {App.catchLine} &nbsp;&nbsp;
+                  </Typography>
+                  <img className={classes.headerIcon} src={minimaIcon} />
+                </Grid>
               </Grid>
-
             </Grid>
 
             <Grid className={classes.content} item container xs={12}>

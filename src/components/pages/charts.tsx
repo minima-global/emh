@@ -71,10 +71,8 @@ const chart = (props: Props) => {
       container
       alignItems="flex-start"
       style={{
-        marginLeft: theme.spacing(8),
-        marginRight: theme.spacing(8),
+        padding: theme.spacing(2),
       }}
-      xs={12}
     >
       <Grid container>
         <DisplayChartSummary
