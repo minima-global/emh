@@ -102,7 +102,7 @@ let theme = createMuiTheme({
     body2: {
       lineHeight: '1.5',
       fontSize: '1em',
-      fontWeight: 400,
+      fontWeight: 500,
       fontFamily: '"Manrope", "Roboto", "Arial", "sans-serif"',
       color: '#91919D',
     },
@@ -152,7 +152,7 @@ theme = responsiveFontSizes(theme);
 
 const themeStyles = makeStyles({
   root: {
-    'background': 'linear-gradient(#FAFAFF, #FAFAFF)',
+    'background': 'linear-gradient(#F0F0FA, #F0F0FA)',
     'height': '100vh',
     'width': '100%',
     'position': 'relative',
@@ -193,12 +193,12 @@ const themeStyles = makeStyles({
     },
   },
   content: {
-    background: 'white',
-    position: 'absolute',
-    overflow: 'auto',
-    width: '100%',
-    bottom: '100px',
-    top: '60px',
+    'background': 'linear-gradient(#F0F0FA, #F0F0FA)',
+    'position': 'absolute',
+    'overflow': 'auto',
+    'width': '100%',
+    'bottom': '100px',
+    'top': '60px',
     [breakpoints.up('xs')]: {
       paddingLeft: theme.spacing(1),
       paddingRight: theme.spacing(1),

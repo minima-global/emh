@@ -8,12 +8,11 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 
 import minimaIcon from '../../images/minimaIcon.svg';
-import homeIcon from '../../images/home.png';
-import terminal from '../../images/terminal.png';
-import token from '../../images/token.png';
-import trigger from '../../images/trigger.png';
-import address from '../../images/address.png';
-import info from '../../images/info.png';
+import homeIcon from '../../images/megNavDashboardGrey.svg';
+import terminal from '../../images/megNavRunApiGrey.svg';
+import trigger from '../../images/megNavApiGrey.svg';
+import url from '../../images/megNavMinimaGrey.svg';
+import info from '../../images/megNavLogGrey.svg';
 
 import {Content} from '../content';
 
@@ -21,7 +20,7 @@ import {App} from '../../config/vars';
 
 import {themeStyles} from '../../styles';
 
-import {Local} from '../../config';
+import {Local, Paths} from '../../config';
 import {AppInit} from '../appInit';
 
 export const Main = () => {
@@ -69,7 +68,7 @@ export const Main = () => {
                 justify="flex-start"
                 xs={6}
               >
-                <Typography variant="h1">
+                <Typography variant="body2">
                   {App.appName}
                 </Typography>
               </Grid>
@@ -81,7 +80,7 @@ export const Main = () => {
                 justify="flex-end"
                 xs={6}
               >
-                <Typography variant="h1">
+                <Typography variant="body2">
                   {App.catchLine} &nbsp;&nbsp;
                 </Typography>
                 <img className={classes.headerIcon} src={minimaIcon} />
@@ -101,18 +100,12 @@ export const Main = () => {
                   item
                   container
                   alignItems="center"
-                  justify="center"
-                  xs={2}
+                  justify="flex-end"
+                  xs={1}
                 >
-
-                  <NavLink to={Local.home} className={classes.iconLink}>
-                    <IconButton
-                      aria-label="Home"
-                    >
-                      <img className={classes.footerIcon} src={homeIcon}/>
-                    </IconButton>
-                  </NavLink>
-
+                  <Typography variant="body2">
+                    &nbsp;
+                  </Typography>
                 </Grid>
 
                 <Grid
@@ -122,15 +115,32 @@ export const Main = () => {
                   justify="center"
                   xs={2}
                 >
-
-                  <NavLink to={Local.logs} className={classes.iconLink}>
-                    <IconButton
-                      aria-label="Logs"
-                    >
-                      <img className={classes.footerIcon} src={info}/>
-                    </IconButton>
-                  </NavLink>
-
+                  <Grid
+                    item
+                    container
+                    alignItems="center"
+                    justify="center"
+                    xs={12}
+                  >
+                    <NavLink to={Local.home} className={classes.iconLink}>
+                      <IconButton
+                        aria-label="Home"
+                      >
+                        <img className={classes.footerIcon} src={homeIcon}/>
+                      </IconButton>
+                    </NavLink>
+                  </Grid>
+                  <Grid
+                    item
+                    container
+                    alignItems="center"
+                    justify="center"
+                    xs={12}
+                  >
+                    <Typography variant="body2">
+                      {Paths.home}
+                    </Typography>
+                  </Grid>
                 </Grid>
 
                 <Grid
@@ -140,15 +150,32 @@ export const Main = () => {
                   justify="center"
                   xs={2}
                 >
-
-                  <NavLink to={Local.addresses} className={classes.iconLink}>
-                    <IconButton
-                      aria-label="Address"
-                    >
-                      <img className={classes.footerIcon} src={address}/>
-                    </IconButton>
-                  </NavLink>
-
+                  <Grid
+                    item
+                    container
+                    alignItems="center"
+                    justify="center"
+                    xs={12}
+                  >
+                    <NavLink to={Local.logs} className={classes.iconLink}>
+                      <IconButton
+                        aria-label="Logs"
+                      >
+                        <img className={classes.footerIcon} src={info}/>
+                      </IconButton>
+                    </NavLink>
+                  </Grid>
+                  <Grid
+                    item
+                    container
+                    alignItems="center"
+                    justify="center"
+                    xs={12}
+                  >
+                    <Typography variant="body2">
+                      {Paths.logs}
+                    </Typography>
+                  </Grid>
                 </Grid>
 
                 <Grid
@@ -158,15 +185,32 @@ export const Main = () => {
                   justify="center"
                   xs={2}
                 >
-
-                  <NavLink to={Local.tokens} className={classes.iconLink}>
-                    <IconButton
-                      aria-label="Tokens"
-                    >
-                      <img className={classes.footerIcon} src={token}/>
-                    </IconButton>
-                  </NavLink>
-
+                  <Grid
+                    item
+                    container
+                    alignItems="center"
+                    justify="center"
+                    xs={12}
+                  >
+                    <NavLink to={Local.urls} className={classes.iconLink}>
+                      <IconButton
+                        aria-label="Address"
+                      >
+                        <img className={classes.footerIcon} src={url}/>
+                      </IconButton>
+                    </NavLink>
+                  </Grid>
+                  <Grid
+                    item
+                    container
+                    alignItems="center"
+                    justify="center"
+                    xs={12}
+                  >
+                    <Typography variant="body2">
+                      {Paths.urls}
+                    </Typography>
+                  </Grid>
                 </Grid>
 
                 <Grid
@@ -176,15 +220,32 @@ export const Main = () => {
                   justify="center"
                   xs={2}
                 >
-
-                  <NavLink to={Local.triggers} className={classes.iconLink}>
-                    <IconButton
-                      aria-label="Triggers"
-                    >
-                      <img className={classes.footerIcon} src={trigger}/>
-                    </IconButton>
-                  </NavLink>
-
+                  <Grid
+                    item
+                    container
+                    alignItems="center"
+                    justify="center"
+                    xs={12}
+                  >
+                    <NavLink to={Local.triggers} className={classes.iconLink}>
+                      <IconButton
+                        aria-label="Triggers"
+                      >
+                        <img className={classes.footerIcon} src={trigger}/>
+                      </IconButton>
+                    </NavLink>
+                  </Grid>
+                  <Grid
+                    item
+                    container
+                    alignItems="center"
+                    justify="center"
+                    xs={12}
+                  >
+                    <Typography variant="body2">
+                      {Paths.triggers}
+                    </Typography>
+                  </Grid>
                 </Grid>
 
                 <Grid
@@ -194,29 +255,45 @@ export const Main = () => {
                   justify="center"
                   xs={2}
                 >
-
-                  <NavLink to={Local.cmd} className={classes.iconLink}>
-                    <IconButton
-                      aria-label="Cmd"
-                    >
-                      <img className={classes.footerIcon} src={terminal}/>
-                    </IconButton>
-                  </NavLink>
-
+                  <Grid
+                    item
+                    container
+                    alignItems="center"
+                    justify="center"
+                    xs={12}
+                  >
+                    <NavLink to={Local.cmd} className={classes.iconLink}>
+                      <IconButton
+                        aria-label="Cmd"
+                      >
+                        <img className={classes.footerIcon} src={terminal}/>
+                      </IconButton>
+                    </NavLink>
+                  </Grid>
+                  <Grid
+                    item
+                    container
+                    alignItems="center"
+                    justify="center"
+                    xs={12}
+                  >
+                    <Typography variant="body2">
+                      {Paths.cmd}
+                    </Typography>
+                  </Grid>
                 </Grid>
 
-              </Grid>
-
-              <Grid
-                item
-                container
-                alignItems="center"
-                justify="center"
-                xs={12}
-              >
-                <Typography variant="caption">
-                  {App.copyright}
-                </Typography>
+                <Grid
+                  item
+                  container
+                  alignItems="center"
+                  justify="flex-end"
+                  xs={1}
+                >
+                  <Typography variant="body2">
+                    &nbsp;
+                  </Typography>
+                </Grid>
 
               </Grid>
 

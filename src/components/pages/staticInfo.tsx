@@ -8,7 +8,7 @@ import {
   PageTypes,
 } from '../../store/types';
 
-import {themeStyles} from '../../styles';
+import {theme, themeStyles} from '../../styles';
 
 import {About, Help, Contact} from '../../config/vars';
 
@@ -53,7 +53,13 @@ export const Info = (props: Props) => {
   }, [props.page]);
 
   return (
-    <Grid container>
+    <Grid
+      container
+      alignItems="flex-start"
+      style={{
+        marginLeft: theme.spacing(8),
+        marginRight: theme.spacing(8),
+      }}>
 
       <Grid item container xs={12}>
 

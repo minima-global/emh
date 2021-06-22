@@ -9,7 +9,7 @@ import TextField from '@material-ui/core/TextField';
 import * as Yup from 'yup';
 import {useFormik} from 'formik';
 
-import {themeStyles} from '../../styles';
+import {theme, themeStyles} from '../../styles';
 
 import {
   Dbase,
@@ -66,26 +66,15 @@ const display = (props: Props) => {
 
   return (
 
-    <Grid container alignItems='flex-start'>
+    <Grid
+      container
+      alignItems='flex-start'
+      style={{
+        marginLeft: theme.spacing(8),
+        marginRight: theme.spacing(8),
+      }}>
 
       <Grid item container xs={12}>
-
-        <Grid item container justify="flex-start" xs={12}>
-
-          <Typography variant="h2">
-            {TokenVars.heading}
-          </Typography>
-
-        </Grid>
-
-        <Grid item container justify="flex-start" xs={12}>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 4000 20"
-          >
-            <line x2="4000" stroke="#001C32" width="100%" height="100%"/>
-          </svg>
-        </Grid>
 
         <form onSubmit={formik.handleSubmit} className={classes.formSubmit}>
           <Grid item container xs={12}>
@@ -198,15 +187,6 @@ const display = (props: Props) => {
           </Grid>
 
         </form>
-
-        <Grid item container justify="flex-start" xs={12}>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 4000 20"
-          >
-            <line x2="4000" stroke="#001C32" width="100%" height="100%"/>
-          </svg>
-        </Grid>
 
         { <ListTokens /> }
 

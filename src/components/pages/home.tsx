@@ -13,12 +13,11 @@ import {
   API as APIVars,
 } from '../../config';
 
-import {themeStyles} from '../../styles';
+import {theme, themeStyles} from '../../styles';
 
 import {ListBalances} from '../listBalances';
 import {ListStatus} from '../listStatus';
 import {Chart} from './charts';
-import {theme} from '../../styles';
 
 export const Home = () => {
   const classes = themeStyles();

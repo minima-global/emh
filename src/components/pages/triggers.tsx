@@ -10,7 +10,7 @@ import Switch from '@material-ui/core/Switch';
 import * as Yup from 'yup';
 import {useFormik} from 'formik';
 
-import {themeStyles} from '../../styles';
+import {theme, themeStyles} from '../../styles';
 
 import {
   Dbase,
@@ -95,7 +95,13 @@ const display = (props: Props) => {
 
   return (
 
-    <Grid container alignItems='flex-start'>
+    <Grid
+      container
+      alignItems='flex-start'
+      style={{
+        marginLeft: theme.spacing(8),
+        marginRight: theme.spacing(8),
+      }}>
 
       <Grid item container xs={12}>
 

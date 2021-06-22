@@ -98,6 +98,10 @@ export const list = (props: Props) => {
     <Grid
       container
       alignItems="flex-start"
+      style={{
+        marginLeft: theme.spacing(8),
+        marginRight: theme.spacing(8),
+      }}
     >
       <Grid
         container

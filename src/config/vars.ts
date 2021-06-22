@@ -169,18 +169,17 @@ class Dbase {
 
 /** @class Paths */
 class Paths {
-  static readonly home = 'Home'
+  static readonly home = 'Dashboard'
   static readonly about = 'About'
   static readonly help = 'Help'
   static readonly contact = 'Contact'
-  static readonly welcome = 'Welcome'
 
   static readonly logs = 'Logs'
+  static readonly urls = 'Minima to URL'
   static readonly addresses = 'Addresses'
   static readonly tokens = 'Tokens'
-  static readonly triggers = 'Triggers'
-  static readonly urls = 'URLs'
-  static readonly cmd = 'Console'
+  static readonly triggers = 'API'
+  static readonly cmd = 'Run API'
 }
 
 /** @class GeneralError */
@@ -632,6 +631,18 @@ class Search {
   static readonly placeHolder = 'Search';
 }
 
+
+/** @class URL */
+class URL {
+  static readonly heading = 'Minima to URL';
+
+  static readonly addressButton = 'Addresses to URLs';
+  static readonly tokenButton = 'Tokens to URLs';
+
+  static readonly liveColour = '#317AFF';
+  static readonly notLiveColour = '#FAFAFF';
+}
+
 export {
   App,
   Misc,
@@ -656,4 +667,5 @@ export {
   Post,
   Chart,
   Search,
+  URL,
 };

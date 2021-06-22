@@ -10,7 +10,7 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Select from 'react-select';
 
-import {themeStyles} from '../../styles';
+import {theme, themeStyles} from '../../styles';
 
 import {
   ApplicationState,
@@ -182,7 +182,13 @@ const display = (props: Props) => {
   };
 
   return (
-    <Grid container alignItems='flex-start'>
+    <Grid
+      container
+      alignItems='flex-start'
+      style={{
+        marginLeft: theme.spacing(8),
+        marginRight: theme.spacing(8),
+      }}>
 
       <Grid item container xs={12}>
 

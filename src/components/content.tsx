@@ -8,6 +8,7 @@ import {
   Logs,
   Cmd,
   Info,
+  URLs,
   Addresses,
   Tokens,
   Triggers,
@@ -45,6 +46,10 @@ export const Content = () => {
         path={Local.logs}
         render= {() =>
           <Logs logType={LogVars.logType} /> }
+      />
+      <Route
+        exact path={Local.urls}
+        render= {() => <URLs />}
       />
       <Route
         exact path={Local.addresses}

@@ -71,7 +71,8 @@ const chart = (props: Props) => {
       container
       alignItems="flex-start"
       style={{
-        padding: theme.spacing(2),
+        marginLeft: theme.spacing(8),
+        marginRight: theme.spacing(8),
       }}
       xs={12}
     >
