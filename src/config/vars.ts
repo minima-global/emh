@@ -295,7 +295,7 @@ class Cmd {
     query: Cmd.query + ' ORDER BY DATE DESC',
   }
 
-  static readonly trigger = 'Trigger'
+  static readonly trigger = 'API'
   static readonly params = 'Params'
   static readonly cmdButton = 'Run'
 }

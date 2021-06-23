@@ -108,7 +108,7 @@ export const list = (props: Props) => {
           </Typography>
         </Grid>
 
-        <Grid item container alignItems="flex-start" xs={12}>
+        <Grid item container alignItems="center" xs={12}>
           <Grid item container justify="flex-start" xs={1}>
             <Typography variant="h5">
               {LogVars.records} {numRecords / Dbase.pageLimit}
@@ -121,7 +121,7 @@ export const list = (props: Props) => {
             justify="center"
             xs={10}
           >
-            <Grid item container xs={12}>
+            <Grid item container alignItems="center" xs={12}>
 
               <TextField
                 fullWidth

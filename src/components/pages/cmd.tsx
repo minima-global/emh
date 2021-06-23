@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import Paper from '@material-ui/core/Paper';
 
 import * as Yup from 'yup';
 import {useFormik} from 'formik';
@@ -200,139 +201,131 @@ const display = (props: Props) => {
 
         </Grid>
 
-        <Grid item container justify="flex-start" xs={12}>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 4000 20"
-          >
-            <line x2="4000" stroke="#001C32" width="100%" height="100%"/>
-          </svg>
-        </Grid>
+        <Paper elevation={5} className={classes.urlForm}>
 
-        <form onSubmit={formik.handleSubmit} className={classes.formSubmit}>
-          <Grid item container xs={12}>
+          <form onSubmit={formik.handleSubmit} className={classes.formSubmit}>
+            <Grid item container xs={12}>
 
-            <Grid
-              item
-              container
-              className={classes.formLabel}
-              justify="flex-start"
-              alignItems="center"
-              xs={4}
-              lg={2}
-            >
-              <label htmlFor="trigger">{CmdVars.trigger}</label>
-            </Grid>
-            <Grid item container xs={8} lg={10}>
-              <div style={{width: '100%'}}>
-                <Select
-                  className={classes.select}
-                  size="small"
-                  value={thisTrigger}
-                  onChange={(selectedOption) => {
-                    doSetTrigger(selectedOption);
-                    const thisValue = selectedOption ? selectedOption : {};
-                    formik.setFieldValue('trigger', thisValue);
-                  }}
-                  options={triggers}
-                  name='trigger'
-                />
-              </div>
-            </Grid>
-            {formik.errors.trigger && formik.touched.trigger ? (
-              <>
-                <Grid item container xs={2}>
-                  <Typography variant="body1">
-                    &nbsp;
-                  </Typography>
-                </Grid>
-                <Grid
-                  className={classes.formError}
-                  item container
-                  xs={10}
-                >
-                  {formik.errors.trigger}
-                </Grid>
-              </>
-                ) : null
-            }
-          </Grid>
-
-          <Grid item container xs={12}>
-
-            <Grid
-              item
-              container
-              className={classes.formLabel}
-              justify="flex-start"
-              alignItems="center"
-              xs={4}
-              lg={2}
-            >
-              <label htmlFor="params">{CmdVars.params}</label>
-            </Grid>
-            <Grid item container xs={8} lg={10}>
-              <TextField
-                fullWidth
-                disabled={paramsDisabled}
-                size="small"
-                name="params"
-                type="text"
-                value={formik.values.params}
-                onChange={formik.handleChange}
-                InputProps={{disableUnderline: true}}
-              />
-            </Grid>
-            {formik.errors.params && formik.touched.params ? (
-              <>
-                <Grid item container xs={2}>
-                  <Typography variant="body1">
-                    &nbsp;
-                  </Typography>
-                </Grid>
-                <Grid
-                  className={classes.formError}
-                  item container
-                  xs={10}
-                >
-                  {formik.errors.params}
-                </Grid>
-              </>
-                ) : null
-            }
-          </Grid>
-
-          <Grid item container xs={12}>
-
-            <Grid item container xs={4} lg={2}>
-              <Typography variant="h2">
-                &nbsp;
-              </Typography>
-            </Grid>
-
-            <Grid className={classes.formButton} item container xs={2}>
-              <Button
-                type='submit'
-                color="primary"
-                size='medium'
-                variant="contained"
+              <Grid
+                item
+                container
+                className={classes.formLabel}
+                justify="flex-start"
+                alignItems="center"
+                xs={4}
+                lg={2}
               >
-                {CmdVars.cmdButton}
-              </Button>
+                <label htmlFor="trigger">{CmdVars.trigger}</label>
+              </Grid>
+              <Grid item container xs={8} lg={10}>
+                <div style={{width: '100%'}}>
+                  <Select
+                    className={classes.select}
+                    size="small"
+                    value={thisTrigger}
+                    onChange={(selectedOption) => {
+                      doSetTrigger(selectedOption);
+                      const thisValue = selectedOption ? selectedOption : {};
+                      formik.setFieldValue('trigger', thisValue);
+                    }}
+                    options={triggers}
+                    name='trigger'
+                  />
+                </div>
+              </Grid>
+              {formik.errors.trigger && formik.touched.trigger ? (
+                <>
+                  <Grid item container xs={2}>
+                    <Typography variant="body1">
+                      &nbsp;
+                    </Typography>
+                  </Grid>
+                  <Grid
+                    className={classes.formError}
+                    item container
+                    xs={10}
+                  >
+                    {formik.errors.trigger}
+                  </Grid>
+                </>
+                  ) : null
+              }
             </Grid>
 
-          </Grid>
+            <Grid item container xs={12}>
 
-        </form>
+              <Grid
+                item
+                container
+                className={classes.formLabel}
+                justify="flex-start"
+                alignItems="center"
+                xs={4}
+                lg={2}
+              >
+                <label htmlFor="params">{CmdVars.params}</label>
+              </Grid>
+              <Grid item container xs={8} lg={10}>
+                <TextField
+                  fullWidth
+                  disabled={paramsDisabled}
+                  size="small"
+                  name="params"
+                  type="text"
+                  value={formik.values.params}
+                  onChange={formik.handleChange}
+                  InputProps={{disableUnderline: true}}
+                />
+              </Grid>
+              {formik.errors.params && formik.touched.params ? (
+                <>
+                  <Grid item container xs={2}>
+                    <Typography variant="body1">
+                      &nbsp;
+                    </Typography>
+                  </Grid>
+                  <Grid
+                    className={classes.formError}
+                    item container
+                    xs={10}
+                  >
+                    {formik.errors.params}
+                  </Grid>
+                </>
+                  ) : null
+              }
+            </Grid>
 
-        <Grid item container justify="flex-start" xs={12}>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 4000 20"
-          >
-            <line x2="4000" stroke="#001C32" width="100%" height="100%"/>
-          </svg>
-        </Grid>
+            <Grid item container xs={12}>
+
+              <Grid item container xs={10}>
+                <Typography variant="h2">
+                  &nbsp;
+                </Typography>
+              </Grid>
+
+              <Grid
+                className={classes.formButton}
+                item
+                container
+                justify='flex-end'
+                xs={2}
+              >
+                <Button
+                  type='submit'
+                  color="primary"
+                  size='medium'
+                  variant="contained"
+                >
+                  {CmdVars.cmdButton}
+                </Button>
+              </Grid>
+
+            </Grid>
+
+          </form>
+
+        </Paper>
 
         <div>
           <pre>
