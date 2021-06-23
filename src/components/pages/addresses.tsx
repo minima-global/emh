@@ -9,7 +9,7 @@ import TextField from '@material-ui/core/TextField';
 import * as Yup from 'yup';
 import {useFormik} from 'formik';
 
-import {theme, themeStyles} from '../../styles';
+import {themeStyles} from '../../styles';
 
 import {
   GeneralError,
@@ -74,11 +74,7 @@ const display = (props: Props) => {
     <Grid
       container
       alignItems='flex-start'
-      style={{
-        marginLeft: theme.spacing(8),
-        marginRight: theme.spacing(8),
-      }}>
-
+    >
       <Grid item container xs={12}>
 
         <form onSubmit={formik.handleSubmit} className={classes.formSubmit}>

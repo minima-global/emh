@@ -144,6 +144,7 @@ export const list = (props: Props) => {
           <Grid item container alignItems='center' justify='flex-end' xs={1}>
             <Grid item container justify='flex-end' xs={6}>
               <Button
+                disableRipple
                 aria-label="Page back"
                 onClick={() => getRecords(low - Dbase.pageLimit)}
                 style={{
@@ -157,6 +158,7 @@ export const list = (props: Props) => {
             </Grid>
             <Grid item container justify='flex-end' xs={6}>
               <Button
+                disableRipple
                 aria-label="Page forward"
                 onClick={() => getRecords(low + Dbase.pageLimit)}
                 style={{
