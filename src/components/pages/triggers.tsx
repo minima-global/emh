@@ -5,6 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import Paper from '@material-ui/core/Paper';
 import Switch from '@material-ui/core/Switch';
 
 import * as Yup from 'yup';
@@ -113,294 +114,276 @@ const display = (props: Props) => {
 
         </Grid>
 
-        <Grid item container justify="flex-start" xs={12}>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 4000 20"
-          >
-            <line x2="4000" stroke="#001C32" width="100%" height="100%"/>
-          </svg>
-        </Grid>
+        <Paper elevation={5} className={classes.triggerForm}>
 
-        <form onSubmit={formik.handleSubmit} className={classes.formSubmit}>
-          <Grid item container xs={12}>
+          <form onSubmit={formik.handleSubmit} className={classes.formSubmit}>
+            <Grid item container xs={12}>
 
-            <Grid
-              item
-              container
-              className={classes.formLabel}
-              justify="flex-start"
-              alignItems="center"
-              xs={4}
-              lg={2}
-            >
-              <label htmlFor="endpoint">{TriggerVars.endpoint}</label>
-            </Grid>
-            <Grid item container xs={8} lg={10}>
-              <TextField
-                fullWidth
-                size="small"
-                name="endpoint"
-                type="text"
-                value={formik.values.endpoint}
-                onChange={formik.handleChange}
-                InputProps={{disableUnderline: true}}
-              />
-            </Grid>
-            {formik.errors.endpoint && formik.touched.endpoint ? (
-              <>
-                <Grid item container xs={4} lg={2}>
-                  <Typography variant="body1">
-                    &nbsp;
-                  </Typography>
-                </Grid>
-                <Grid
-                  className={classes.formError}
-                  item container
-                  xs={8}
-                  lg={10}
-                >
-                  {formik.errors.endpoint}
-                </Grid>
-              </>
-              ) : null
-            }
-          </Grid>
-
-          <Grid item container xs={12}>
-
-            <Grid
-              item
-              container
-              className={classes.formLabel}
-              justify="flex-start"
-              alignItems="center"
-              xs={4}
-              lg={2}
-            >
-              <label htmlFor="command">{TriggerVars.command}</label>
-            </Grid>
-            <Grid item container xs={8} lg={10}>
-              <TextField
-                fullWidth
-                size="small"
-                name="command"
-                type="text"
-                value={formik.values.command}
-                onChange={formik.handleChange}
-                InputProps={{disableUnderline: true}}
-              />
-            </Grid>
-            {formik.errors.command && formik.touched.command ? (
-              <>
-                <Grid item container xs={4} lg={2}>
-                  <Typography variant="body1">
-                    &nbsp;
-                  </Typography>
-                </Grid>
-                <Grid
-                  className={classes.formError}
-                  item container
-                  xs={8}
-                  lg={10}
-                >
-                  {formik.errors.command}
-                </Grid>
-              </>
-              ) : null
-            }
-          </Grid>
-
-          <Grid item container xs={12}>
-
-            <Grid
-              item
-              container
-              className={classes.formLabel}
-              justify="flex-start"
-              alignItems="center"
-              xs={4}
-              lg={2}
-            >
-              <label htmlFor="format">{TriggerVars.format}</label>
-            </Grid>
-            <Grid item container xs={8} lg={10}>
-              <TextField
-                fullWidth
-                size="small"
-                name="format"
-                type="text"
-                value={formik.values.format}
-                onChange={formik.handleChange}
-                InputProps={{disableUnderline: true}}
-              />
-            </Grid>
-            {formik.errors.format && formik.touched.format ? (
-              <>
-                <Grid item container xs={4} lg={2}>
-                  <Typography variant="body1">
-                    &nbsp;
-                  </Typography>
-                </Grid>
-                <Grid
-                  className={classes.formError}
-                  item container
-                  xs={8}
-                  lg={10}
-                >
-                  {formik.errors.format}
-                </Grid>
-              </>
-              ) : null
-            }
-          </Grid>
-
-          <Grid item container xs={12}>
-
-            <Grid
-              item
-              container
-              className={classes.formLabel}
-              justify="flex-start"
-              alignItems="center"
-              xs={4}
-              lg={2}
-            >
-              <label htmlFor="setParams">{TriggerVars.setParams}</label>
-            </Grid>
-            <Grid item container xs={8} lg={10}>
-              <TextField
-                fullWidth
-                size="small"
-                name="setParams"
-                type="text"
-                value={formik.values.setParams}
-                onChange={formik.handleChange}
-                InputProps={{disableUnderline: true}}
-              />
-            </Grid>
-            {formik.errors.setParams && formik.touched.setParams ? (
-              <>
-                <Grid item container xs={4} lg={2}>
-                  <Typography variant="body1">
-                    &nbsp;
-                  </Typography>
-                </Grid>
-                <Grid
-                  className={classes.formError}
-                  item container
-                  xs={8}
-                  lg={10}
-                >
-                  {formik.errors.setParams}
-                </Grid>
-              </>
-              ) : null
-            }
-          </Grid>
-
-          <Grid item container xs={12}>
-
-            <Grid
-              item
-              container
-              className={classes.formLabel}
-              justify="flex-start"
-              alignItems="center"
-              xs={4}
-              lg={2}
-            >
-              <label htmlFor="params">{TriggerVars.params}</label>
-            </Grid>
-            <Grid item container xs={8} lg={10}>
-              <TextField
-                fullWidth
-                size="small"
-                name="params"
-                type="text"
-                value={formik.values.params}
-                onChange={formik.handleChange}
-                InputProps={{disableUnderline: true}}
-              />
-            </Grid>
-            {formik.errors.params && formik.touched.params ? (
-              <>
-                <Grid item container xs={4} lg={2}>
-                  <Typography variant="body1">
-                    &nbsp;
-                  </Typography>
-                </Grid>
-                <Grid
-                  className={classes.formError}
-                  item container
-                  xs={8}
-                  lg={10}
-                >
-                  {formik.errors.params}
-                </Grid>
-              </>
-              ) : null
-            }
-          </Grid>
-
-          <Grid item container xs={12}>
-            <Grid
-              item
-              container
-              className={classes.formLabel}
-              justify="flex-start"
-              alignItems="center"
-              xs={4}
-              lg={2}
-            >
-              <label htmlFor="public">{TriggerVars.public}</label>
-            </Grid>
-            <Grid item container xs={8} lg={10}>
-              <Switch
-                size='medium'
-                color="primary"
-                name="public"
-                checked={iterateChecked}
-                onChange={(event: ChangeEvent<HTMLInputElement>) => {
-                  handleIterate(event);
-                  formik.handleChange(event);
-                }}
-                inputProps={{'aria-label': 'primary checkbox'}}
-              />
-            </Grid>
-          </Grid>
-
-          <Grid item container xs={12}>
-
-            <Grid item container xs={4} lg={2}>
-              <Typography variant="h2">
-                &nbsp;
-              </Typography>
-            </Grid>
-
-            <Grid className={classes.formButton} item container xs={2}>
-              <Button
-                type='submit'
-                color="primary"
-                size='medium'
-                variant="contained"
+              <Grid
+                item
+                container
+                className={classes.formLabel}
+                justify="flex-start"
+                alignItems="center"
+                xs={4}
+                lg={2}
               >
-                {TriggerVars.triggerButton}
-              </Button>
+                <label htmlFor="endpoint">{TriggerVars.endpoint}</label>
+              </Grid>
+              <Grid item container xs={8} lg={10}>
+                <TextField
+                  fullWidth
+                  size="small"
+                  name="endpoint"
+                  type="text"
+                  value={formik.values.endpoint}
+                  onChange={formik.handleChange}
+                  InputProps={{disableUnderline: true}}
+                />
+              </Grid>
+              {formik.errors.endpoint && formik.touched.endpoint ? (
+                <>
+                  <Grid item container xs={4} lg={2}>
+                    <Typography variant="body1">
+                      &nbsp;
+                    </Typography>
+                  </Grid>
+                  <Grid
+                    className={classes.formError}
+                    item container
+                    xs={8}
+                    lg={10}
+                  >
+                    {formik.errors.endpoint}
+                  </Grid>
+                </>
+                ) : null
+              }
             </Grid>
 
-          </Grid>
+            <Grid item container xs={12}>
 
-        </form>
+              <Grid
+                item
+                container
+                className={classes.formLabel}
+                justify="flex-start"
+                alignItems="center"
+                xs={4}
+                lg={2}
+              >
+                <label htmlFor="command">{TriggerVars.command}</label>
+              </Grid>
+              <Grid item container xs={8} lg={10}>
+                <TextField
+                  fullWidth
+                  size="small"
+                  name="command"
+                  type="text"
+                  value={formik.values.command}
+                  onChange={formik.handleChange}
+                  InputProps={{disableUnderline: true}}
+                />
+              </Grid>
+              {formik.errors.command && formik.touched.command ? (
+                <>
+                  <Grid item container xs={4} lg={2}>
+                    <Typography variant="body1">
+                      &nbsp;
+                    </Typography>
+                  </Grid>
+                  <Grid
+                    className={classes.formError}
+                    item container
+                    xs={8}
+                    lg={10}
+                  >
+                    {formik.errors.command}
+                  </Grid>
+                </>
+                ) : null
+              }
+            </Grid>
 
-        <Grid item container justify="flex-start" xs={12}>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 4000 20"
-          >
-            <line x2="4000" stroke="#001C32" width="100%" height="100%"/>
-          </svg>
-        </Grid>
+            <Grid item container xs={12}>
+
+              <Grid
+                item
+                container
+                className={classes.formLabel}
+                justify="flex-start"
+                alignItems="center"
+                xs={4}
+                lg={2}
+              >
+                <label htmlFor="format">{TriggerVars.format}</label>
+              </Grid>
+              <Grid item container xs={8} lg={10}>
+                <TextField
+                  fullWidth
+                  size="small"
+                  name="format"
+                  type="text"
+                  value={formik.values.format}
+                  onChange={formik.handleChange}
+                  InputProps={{disableUnderline: true}}
+                />
+              </Grid>
+              {formik.errors.format && formik.touched.format ? (
+                <>
+                  <Grid item container xs={4} lg={2}>
+                    <Typography variant="body1">
+                      &nbsp;
+                    </Typography>
+                  </Grid>
+                  <Grid
+                    className={classes.formError}
+                    item container
+                    xs={8}
+                    lg={10}
+                  >
+                    {formik.errors.format}
+                  </Grid>
+                </>
+                ) : null
+              }
+            </Grid>
+
+            <Grid item container xs={12}>
+
+              <Grid
+                item
+                container
+                className={classes.formLabel}
+                justify="flex-start"
+                alignItems="center"
+                xs={4}
+                lg={2}
+              >
+                <label htmlFor="setParams">{TriggerVars.setParams}</label>
+              </Grid>
+              <Grid item container xs={8} lg={10}>
+                <TextField
+                  fullWidth
+                  size="small"
+                  name="setParams"
+                  type="text"
+                  value={formik.values.setParams}
+                  onChange={formik.handleChange}
+                  InputProps={{disableUnderline: true}}
+                />
+              </Grid>
+              {formik.errors.setParams && formik.touched.setParams ? (
+                <>
+                  <Grid item container xs={4} lg={2}>
+                    <Typography variant="body1">
+                      &nbsp;
+                    </Typography>
+                  </Grid>
+                  <Grid
+                    className={classes.formError}
+                    item container
+                    xs={8}
+                    lg={10}
+                  >
+                    {formik.errors.setParams}
+                  </Grid>
+                </>
+                ) : null
+              }
+            </Grid>
+
+            <Grid item container xs={12}>
+
+              <Grid
+                item
+                container
+                className={classes.formLabel}
+                justify="flex-start"
+                alignItems="center"
+                xs={4}
+                lg={2}
+              >
+                <label htmlFor="params">{TriggerVars.params}</label>
+              </Grid>
+              <Grid item container xs={8} lg={10}>
+                <TextField
+                  fullWidth
+                  size="small"
+                  name="params"
+                  type="text"
+                  value={formik.values.params}
+                  onChange={formik.handleChange}
+                  InputProps={{disableUnderline: true}}
+                />
+              </Grid>
+              {formik.errors.params && formik.touched.params ? (
+                <>
+                  <Grid item container xs={4} lg={2}>
+                    <Typography variant="body1">
+                      &nbsp;
+                    </Typography>
+                  </Grid>
+                  <Grid
+                    className={classes.formError}
+                    item container
+                    xs={8}
+                    lg={10}
+                  >
+                    {formik.errors.params}
+                  </Grid>
+                </>
+                ) : null
+              }
+            </Grid>
+
+            <Grid item container xs={12}>
+              <Grid
+                item
+                container
+                className={classes.formLabel}
+                justify="flex-start"
+                alignItems="center"
+                xs={4}
+                lg={2}
+              >
+                <label htmlFor="public">{TriggerVars.public}</label>
+              </Grid>
+              <Grid item container xs={6} lg={8}>
+                <Switch
+                  size='medium'
+                  color="primary"
+                  name="public"
+                  checked={iterateChecked}
+                  onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                    handleIterate(event);
+                    formik.handleChange(event);
+                  }}
+                  inputProps={{'aria-label': 'primary checkbox'}}
+                />
+              </Grid>
+              <Grid
+                className={classes.formButton}
+                item
+                container
+                justify='flex-end'
+                xs={2}
+              >
+                <Button
+                  type='submit'
+                  color="primary"
+                  size='medium'
+                  variant="contained"
+                >
+                  {TriggerVars.triggerButton}
+                </Button>
+
+              </Grid>
+            </Grid>
+
+          </form>
+
+        </Paper>
 
         { <ListTriggers /> }
 

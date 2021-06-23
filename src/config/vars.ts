@@ -455,7 +455,7 @@ class Tokens {
 class Triggers {
   static readonly heading = 'API'
 
-  static readonly endpoint = 'Endpoint'
+  static readonly endpoint = 'API'
   static readonly command = 'Command'
   static readonly format = 'Format'
   static readonly setParams = 'Set Params'
@@ -471,7 +471,7 @@ class Triggers {
   static readonly smallPublic = 'P?'
   static readonly smallUrl = 'URL'
 
-  static readonly triggerButton = 'Submit'
+  static readonly triggerButton = 'Create'
   static readonly deleteButton = 'Delete'
   static readonly smallDeleteButton = 'Del'
 }

@@ -28,6 +28,8 @@ import {
   Triggers as TriggerVars,
 } from '../config';
 
+import closeDelete from '../images/closeDelete.png';
+
 interface StateProps {
   tx: TxData
   triggersData: TriggersProps
@@ -108,7 +110,7 @@ const list = (props: Props) => {
             item
             container
             justify="flex-start"
-            xs={1}
+            xs={2}
           >
             <Typography variant="h5" noWrap={true}>
               { largeScreen ?
@@ -216,7 +218,7 @@ const list = (props: Props) => {
                 const format = trigger.FORMAT;
                 const setParams = trigger.SETPARAMS;
                 const params = trigger.PARAMS;
-                const isPublic = trigger.ISPUBLIC === 'true' ? '✓': '✕';
+                const isPublic = trigger.ISPUBLIC === 'true' ? 'Yes': 'No';
 
                 // eslint-disable-next-line max-len
                 // const rowclass = index % 2 ? classes.evenRow : classes.oddRow;
@@ -231,7 +233,7 @@ const list = (props: Props) => {
                         container
                         alignItems='center'
                         justify="flex-start"
-                        xs={1}
+                        xs={2}
                       >
                         <Typography
                           variant="body1"
@@ -332,16 +334,17 @@ const list = (props: Props) => {
                       >
                         <Button
                           onClick={() => deleteTrigger(trigger, index)}
-                          disabled={isDisabled[index]}
                           style={{
-                            marginTop: theme.spacing(0.5),
-                            background: 'linear-gradient(#FF0000, #FF0000)',
+                            margin: 0,
+                            padding: 0,
+                            background: '#F0F0FA',
+                            justifyContent: 'flex-end',
                           }}
                         >
-                          { largeScreen ?
-                            TriggerVars.deleteButton:
-                            TriggerVars.smallDeleteButton
-                          }
+                          <img
+                            className={classes.deleteIcon}
+                            src={closeDelete}
+                          />
                         </Button>
                       </Grid>
 

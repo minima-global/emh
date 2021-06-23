@@ -260,6 +260,12 @@ const themeStyles = makeStyles({
     padding: theme.spacing(2),
     width: '100%',
   },
+  triggerForm: {
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(2),
+    padding: theme.spacing(2),
+    width: '100%',
+  },
   select: {
     'border': '2px solid #C8C8D4',
     'borderRadius': '5px',
