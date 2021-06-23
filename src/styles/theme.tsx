@@ -162,6 +162,8 @@ const themeStyles = makeStyles({
       background: 'linear-gradient(#FFFFFF, #FFFFFF)',
       color: '#001C32',
       padding: theme.spacing(1),
+      marginTop: theme.spacing(1),
+      marginBottom: theme.spacing(1),
     },
     '& .MuiInputBase-input:focus': {
       border: '2px solid #317AFF',
@@ -352,6 +354,12 @@ const themeStyles = makeStyles({
       width: '40px',
     },
   },
+  deleteIcon: {
+    [breakpoints.up('xs')]: {
+      height: '30px',
+      width: '30px',
+    },
+  },
   pageButton: {
     paddingBottom: theme.spacing(1),
     paddingTop: theme.spacing(1),
@@ -378,7 +386,8 @@ const themeStyles = makeStyles({
   formLabel: {
     paddingBottom: theme.spacing(1),
     paddingTop: theme.spacing(1),
-    color: '#AAAABE',
+    color: '#001C32',
+    fontWeight: 400,
   },
   formError: {
     color: 'red',

@@ -4,9 +4,10 @@ import {connect} from 'react-redux';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
+// import useMediaQuery from '@material-ui/core/useMediaQuery';
 
-import {theme, themeStyles} from '../styles';
+// import {theme, themeStyles} from '../styles';
+import {themeStyles} from '../styles';
 
 import {
   ApplicationState,
@@ -20,6 +21,8 @@ import {
 
 import {initTx} from '../store/app/blockchain/actions';
 import {deleteRow, getTableEntries} from '../store/app/dbase/actions';
+
+import closeDelete from '../images/closeDelete.png';
 
 import {
   Dbase,
@@ -49,11 +52,8 @@ type Props = StateProps & DispatchProps
 const list = (props: Props) => {
   const [summary, setSummary] = useState('');
   const isFirstRun = useRef(true);
-  // eslint-disable-next-line no-unused-vars
-  const [isDisabled, setIsDisabled] = useState([] as boolean[]);
 
   const classes = themeStyles();
-  const largeScreen = useMediaQuery(theme.breakpoints.up('lg'));
 
   const actionType: SuccessAndFailType = {
     success: AddressActionTypes.ADDRESS_SUCCESS,
@@ -69,12 +69,6 @@ const list = (props: Props) => {
       // SELECT * FROM ADDRESS LIMIT 0, 2147483647
       props.getTableEntries(query, actionType);
     } else {
-      if ( props.addressData.data.length != isDisabled.length ) {
-        for (let i = 0; i < props.addressData.data.length; i++ ) {
-          isDisabled[i] = false;
-        }
-      }
-
       const txSummary: string = props.tx.summary;
       if ( txSummary != summary ) {
         setSummary(txSummary);
@@ -87,7 +81,6 @@ const list = (props: Props) => {
   }, [props.addressData, props.tx]);
 
   const deleteAddress = (address: AddressType, index: number) => {
-    isDisabled[index] = true;
     props.initTx();
     props.deleteRow(
         Dbase.tables.address.name,
@@ -103,17 +96,17 @@ const list = (props: Props) => {
 
         <Grid item container xs={12}>
 
-          <Grid item container justify="flex-start" xs={5}>
+          <Grid item container justify="flex-start" xs={7}>
             <Typography variant="h5">
               {AddressVars.address}
             </Typography>
           </Grid>
-          <Grid item container justify="flex-start" xs={5}>
+          <Grid item container justify="flex-start" xs={4}>
             <Typography variant="h5">
               {AddressVars.url}
             </Typography>
           </Grid>
-          <Grid item container justify="flex-end" xs={2}>
+          <Grid item container justify="flex-end" xs={1}>
             <Typography variant="h5">
               &nbsp;
             </Typography>
@@ -140,7 +133,7 @@ const list = (props: Props) => {
                         container
                         alignItems='center'
                         justify="flex-start"
-                        xs={5}
+                        xs={7}
                       >
                         <Typography
                           variant="body1"
@@ -154,7 +147,7 @@ const list = (props: Props) => {
                         container
                         alignItems='center'
                         justify="flex-start"
-                        xs={5}
+                        xs={4}
                       >
                         <Typography
                           variant="body1"
@@ -163,19 +156,20 @@ const list = (props: Props) => {
                           {url}
                         </Typography>
                       </Grid>
-                      <Grid item container justify="flex-end" xs={2}>
+                      <Grid item container justify="flex-end" xs={1}>
                         <Button
                           onClick={() => deleteAddress(call, index)}
-                          disabled={isDisabled[index]}
                           style={{
-                            marginTop: theme.spacing(0.5),
-                            background: 'linear-gradient(#FF0000, #FF0000)',
+                            margin: 0,
+                            padding: 0,
+                            background: '#F0F0FA',
+                            justifyContent: 'flex-end',
                           }}
                         >
-                          { largeScreen ?
-                            AddressVars.deleteButton:
-                            AddressVars.smallDeleteButton
-                          }
+                          <img
+                            className={classes.deleteIcon}
+                            src={closeDelete}
+                          />
                         </Button>
                       </Grid>
 

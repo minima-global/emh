@@ -436,7 +436,7 @@ class Tokens {
     query: Tokens.query + ' ORDER BY DATE DESC',
   }
 
-  static readonly tokenId = 'Token ID'
+  static readonly tokenId = 'Token iD'
   static readonly url = 'URL'
 
   static readonly tokenLengthError =
@@ -447,7 +447,7 @@ class Tokens {
   static readonly deleteButton = 'Delete'
   static readonly smallDeleteButton = 'Del'
 
-  static readonly idError = 'Please input a valid Token ID'
+  static readonly idError = 'Please input a valid Token iD'
   static readonly urlError = 'Please input a valid URL'
 }
 
