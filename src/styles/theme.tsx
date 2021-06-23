@@ -169,6 +169,7 @@ const themeStyles = makeStyles({
     },
     '& .MuiButton-root': {
       minWidth: '100%',
+      background: 'linear-gradient(#317AFF, #317AFF)',
     },
     '& .MuiIconButton-root': {
       padding: '4px',
@@ -250,6 +251,12 @@ const themeStyles = makeStyles({
     marginLeft: theme.spacing(2),
     width: '100%',
     height: '400px',
+  },
+  urlForm: {
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2),
+    padding: theme.spacing(2),
+    width: '100%',
   },
   select: {
     'border': '2px solid #C8C8D4',
@@ -344,6 +351,11 @@ const themeStyles = makeStyles({
       height: '40px',
       width: '40px',
     },
+  },
+  pageButton: {
+    paddingBottom: theme.spacing(1),
+    paddingTop: theme.spacing(1),
+    color: '#AAAABE',
   },
   oddRow: {
     backgroundColor: '#FAFAFF',

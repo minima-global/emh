@@ -218,12 +218,13 @@ const list = (props: Props) => {
                 const params = trigger.PARAMS;
                 const isPublic = trigger.ISPUBLIC === 'true' ? '✓': '✕';
 
-                const rowclass = index % 2 ? classes.evenRow : classes.oddRow;
+                // eslint-disable-next-line max-len
+                // const rowclass = index % 2 ? classes.evenRow : classes.oddRow;
 
                 return (
                   <React.Fragment key={index}>
 
-                    <Grid className={rowclass} item container xs={12}>
+                    <Grid className={classes.row} item container xs={12}>
 
                       <Grid
                         item

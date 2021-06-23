@@ -367,7 +367,7 @@ class Addresses {
     'Minima addresses should be 34 characters, of the form Mx...'
   static readonly mxFormatError = 'Not a Minima address'
 
-  static readonly callButton = 'Submit'
+  static readonly callButton = 'Create'
   static readonly deleteButton = 'Delete'
   static readonly smallDeleteButton = 'Del'
 
@@ -443,7 +443,7 @@ class Tokens {
     'Tokens should be 4 or 130 characters, of the form 0x...'
   static readonly tokenFormatError = 'Not a Minima token'
 
-  static readonly tokenButton = 'Submit'
+  static readonly tokenButton = 'Create'
   static readonly deleteButton = 'Delete'
   static readonly smallDeleteButton = 'Del'
 
@@ -641,6 +641,9 @@ class URL {
 
   static readonly liveColour = '#317AFF';
   static readonly notLiveColour = '#FAFAFF';
+
+  static readonly liveTextColour = 'white'
+  static readonly notLiveTextColour = '#317AFF'
 }
 
 export {

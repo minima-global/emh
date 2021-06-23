@@ -127,12 +127,13 @@ const list = (props: Props) => {
                 const address = call.ADDRESS;
                 const url = call.URL;
 
-                const rowclass = index % 2 ? classes.evenRow : classes.oddRow;
+                // eslint-disable-next-line max-len
+                // const rowclass = index % 2 ? classes.evenRow : classes.oddRow;
 
                 return (
                   <React.Fragment key={index}>
 
-                    <Grid className={rowclass} item container xs={12}>
+                    <Grid className={classes.row} item container xs={12}>
 
                       <Grid
                         item

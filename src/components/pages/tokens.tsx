@@ -163,13 +163,18 @@ const display = (props: Props) => {
 
           <Grid item container xs={12}>
 
-            <Grid item container xs={4} lg={2}>
+            <Grid item container xs={10}>
               <Typography variant="h2">
                 &nbsp;
               </Typography>
             </Grid>
 
-            <Grid className={classes.formButton} item container xs={2}>
+            <Grid
+              className={classes.formButton}
+              item
+              container
+              xs={2}
+            >
               <Button
                 type='submit'
                 color="primary"

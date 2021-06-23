@@ -17,16 +17,23 @@ export const URLs = () => {
   const [isAddress, setIsAddress] = useState(true);
   const [addressColour, setAddressColour] = useState(URL.liveColour);
   const [tokenColour, setTokenColour] = useState(URL.notLiveColour);
+  const [addressTextColour, setAddressTextColour] =
+    useState(URL.liveTextColour);
+  const [tokenTextColour, setTokenTextColour] = useState(URL.notLiveTextColour);
 
   const setPage = (isAddress: boolean) => {
     if ( isAddress ) {
       setIsAddress(true);
       setAddressColour(URL.liveColour);
+      setAddressTextColour(URL.liveTextColour);
       setTokenColour(URL.notLiveColour);
+      setTokenTextColour(URL.notLiveTextColour);
     } else {
       setIsAddress(false);
       setAddressColour(URL.notLiveColour);
+      setAddressTextColour(URL.notLiveTextColour);
       setTokenColour(URL.liveColour);
+      setTokenTextColour(URL.liveTextColour);
     }
   };
 
@@ -51,38 +58,52 @@ export const URLs = () => {
 
         </Grid>
 
-        <Grid item container className={classes.formLabel} xs={6}>
+        <Grid
+          item
+          container
+          style={{
+            paddingRight: theme.spacing(1),
+          }}
+          xs={6}>
           <Button
             onClick={() => setPage(true)}
-            color="primary"
             size='medium'
             variant="contained"
-            disableElevation={true}
             style={{
+              padding: theme.spacing(2),
               textTransform: 'none',
+              color: addressTextColour,
+              background: 'white',
               backgroundColor: addressColour,
               width: '100%',
-              borderRadius: 0,
-              justifyContent: 'flex-start',
+              borderRadius: '10px',
+              justifyContent: 'center',
             }}
           >
             {URL.addressButton}
           </Button>
         </Grid>
 
-        <Grid item container className={classes.formLabel} xs={6}>
+        <Grid
+          item
+          container
+          style={{
+            paddingLeft: theme.spacing(1),
+          }}
+          xs={6}>
           <Button
             onClick={() => setPage(false)}
-            color="primary"
             size='medium'
             variant="contained"
-            disableElevation={true}
             style={{
+              padding: theme.spacing(2),
               textTransform: 'none',
+              color: tokenTextColour,
+              background: 'white',
               backgroundColor: tokenColour,
               width: '100%',
-              borderRadius: 0,
-              justifyContent: 'flex-end',
+              borderRadius: '10px',
+              justifyContent: 'center',
             }}
           >
             {URL.tokenButton}
