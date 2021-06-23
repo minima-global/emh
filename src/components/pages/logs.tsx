@@ -1,4 +1,4 @@
-import React, {useEffect, useState, ChangeEvent} from 'react';
+import React, {useEffect, useState, useRef, ChangeEvent} from 'react';
 import {connect} from 'react-redux';
 
 import Grid from '@material-ui/core/Grid';
@@ -9,6 +9,7 @@ import TextField from '@material-ui/core/TextField';
 import {
   ApplicationState,
   AppDispatch,
+  CountProps,
   LogsProps,
   Logs as LogsType,
   LogType,
@@ -16,7 +17,10 @@ import {
   SuccessAndFailType,
 } from '../../store/types';
 
-import {getTableEntries} from '../../store/app/dbase/actions';
+import {
+  countTableEntries,
+  getTableEntries,
+} from '../../store/app/dbase/actions';
 
 import {theme, themeStyles} from '../../styles';
 
@@ -34,10 +38,14 @@ interface ThisProps {
 }
 
 interface StateProps {
+  countData: CountProps,
   logsData: LogsProps
 }
 
 interface DispatchProps {
+  countTableEntries: (
+    query: string
+  ) => void
   getTableEntries: (
     query: string,
     actionType: SuccessAndFailType,
@@ -47,9 +55,11 @@ interface DispatchProps {
 type Props = ThisProps & StateProps & DispatchProps
 
 export const list = (props: Props) => {
+  const isFirstRun = useRef(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [low, setLimitLow] = useState(0);
-  const [numRecords, setNumRecords] = useState(Dbase.pageLimit);
+  const [offset, setOffset] = useState(Dbase.pageLimit);
+  const [totalRecords, setTotalRecords] = useState(0);
   // const [nextDisabled, setNextDisabled] = useState(true);
   // const [backDisabled, setBackDisabled] = useState(true);
 
@@ -59,13 +69,21 @@ export const list = (props: Props) => {
   };
 
   // SELECT * FROM LOGGING ORDER BY DATE DESC LIMIT 0, 2147483647
-  const query = props.logType.query + ' LIMIT ' + low + ', ' + numRecords;
+  const query = props.logType.query + ' LIMIT ' + low + ', ' + offset;
 
   const classes = themeStyles();
 
   useEffect(() => {
-    props.getTableEntries(query, actionType);
-  }, []);
+    if ( isFirstRun.current ) {
+      isFirstRun.current = false;
+      props.countTableEntries(props.logType.countQuery);
+      props.getTableEntries(query, actionType);
+    } else {
+      if (props.countData.data[props.logType.countQuery]) {
+        setTotalRecords(props.countData.data[props.logType.countQuery]);
+      }
+    }
+  }, [props.countData, props.logsData]);
 
   const doSetSearchTerm =
       (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -77,10 +95,15 @@ export const list = (props: Props) => {
   };
 
   const getRecords = (lowLimit: number) => {
-    console.log('getting records', lowLimit);
+    // console.log('getting records', lowLimit);
+    const highLimit =
+      (lowLimit + Dbase.pageLimit) > totalRecords ?
+        totalRecords :
+        lowLimit + Dbase.pageLimit;
     if ( lowLimit >= 0 ) {
+      console.log('getting records', lowLimit, highLimit);
       setLimitLow(lowLimit);
-      setNumRecords(lowLimit + Dbase.pageLimit);
+      setOffset(highLimit);
       props.getTableEntries(query, actionType);
     }
   };
@@ -111,7 +134,7 @@ export const list = (props: Props) => {
         <Grid item container alignItems="center" xs={12}>
           <Grid item container justify="flex-start" xs={1}>
             <Typography variant="h5">
-              {LogVars.records} {numRecords / Dbase.pageLimit}
+              {LogVars.records} {offset / Dbase.pageLimit}
             </Typography>
           </Grid>
           <Grid
@@ -326,12 +349,18 @@ export const list = (props: Props) => {
 
 const mapStateToProps = (state: ApplicationState): StateProps => {
   return {
+    countData: state.countData as CountProps,
     logsData: state.logsData as LogsProps,
   };
 };
 
 const mapDispatchToProps = (dispatch: AppDispatch): DispatchProps => {
   return {
+    countTableEntries: (
+        query: string,
+    ) => dispatch(countTableEntries(
+        query,
+    )),
     getTableEntries: (
         query: string,
         actionType: SuccessAndFailType,

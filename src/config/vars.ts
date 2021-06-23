@@ -242,15 +242,18 @@ class Cmd {
   static readonly logHeading = 'Commands'
 
   static readonly regex = '^[a-zA-Z0-9]* ';
-  static readonly query = 'SELECT * FROM ' +
-  Dbase.tables.log.name +
-  ' WHERE ' + Dbase.tables.log.columns[2] +
-  ' IN (\'' + Dbase.extraLogTypes.COMMAND + '\')' +
-  ' AND ' + Dbase.tables.log.columns[3] +
-  ' IN (\'' + Dbase.defaultActions.run + '\')' +
-  ' And ' + Dbase.tables.log.columns[4] +
-  ' REGEXP \'' + Cmd.regex +
-  '\'';
+
+  static readonly queryDetails = Dbase.tables.log.name +
+    ' WHERE ' + Dbase.tables.log.columns[2] +
+    ' IN (\'' + Dbase.extraLogTypes.COMMAND + '\')' +
+    ' AND ' + Dbase.tables.log.columns[3] +
+    ' IN (\'' + Dbase.defaultActions.run + '\')' +
+    ' And ' + Dbase.tables.log.columns[4] +
+    ' REGEXP \'' + Cmd.regex +
+    '\'';
+
+  static readonly query = 'SELECT * FROM ' + Cmd.queryDetails;
+  static readonly countQuery = 'SELECT COUNT(*) FROM ' + Cmd.queryDetails;
 
   static readonly chartType: ChartType = {
     name: Cmd.chartHeading,
@@ -293,6 +296,7 @@ class Cmd {
   static readonly logType: LogType = {
     name: Cmd.logHeading,
     query: Cmd.query + ' ORDER BY DATE DESC',
+    countQuery: Cmd.countQuery,
   }
 
   static readonly trigger = 'API'
@@ -307,15 +311,18 @@ class Addresses {
   static readonly logHeading = 'Address Transactions'
 
   static readonly regex = '^Mx[A-Z0-9]*'
-  static readonly query = 'SELECT * FROM ' +
-      Dbase.tables.log.name +
-      ' WHERE ' + Dbase.tables.log.columns[2] +
-      ' IN (\'' + Dbase.tables.txpow.name + '\')' +
-      ' AND ' + Dbase.tables.log.columns[3] +
-      ' IN (\'' + Dbase.defaultActions.insert + '\')' +
-      ' And ' + Dbase.tables.log.columns[4] +
-      ' REGEXP \'' + Addresses.regex +
-      '\'';
+
+  static readonly queryDetails = Dbase.tables.log.name +
+    ' WHERE ' + Dbase.tables.log.columns[2] +
+    ' IN (\'' + Dbase.tables.txpow.name + '\')' +
+    ' AND ' + Dbase.tables.log.columns[3] +
+    ' IN (\'' + Dbase.defaultActions.insert + '\')' +
+    ' And ' + Dbase.tables.log.columns[4] +
+    ' REGEXP \'' + Addresses.regex +
+    '\'';
+
+  static readonly query = 'SELECT * FROM ' + Addresses.queryDetails;
+  static readonly countQuery = 'SELECT COUNT(*) FROM ' + Addresses.queryDetails;
 
   static readonly chartType: ChartType = {
     name: Addresses.chartHeading,
@@ -358,6 +365,7 @@ class Addresses {
   static readonly logType: LogType = {
     name: Addresses.logHeading,
     query: Addresses.query + ' ORDER BY DATE DESC',
+    countQuery: Addresses.countQuery,
   }
 
   static readonly address = 'Mx Address'
@@ -383,15 +391,17 @@ class Tokens {
   static readonly logHeading = 'Token Transactions'
   static readonly regex = '^0x[A-Z0-9]*'
 
-  static readonly query = 'SELECT * FROM ' +
-      Dbase.tables.log.name +
-      ' WHERE ' + Dbase.tables.log.columns[2] +
-      ' IN (\'' + Dbase.tables.txpow.name + '\')' +
-      ' AND ' + Dbase.tables.log.columns[3] +
-      ' IN (\'' + Dbase.defaultActions.insert + '\')' +
-      ' And ' + Dbase.tables.log.columns[4] +
-      ' REGEXP \'' + Tokens.regex +
-      '\'';
+  static readonly queryDetails = Dbase.tables.log.name +
+    ' WHERE ' + Dbase.tables.log.columns[2] +
+    ' IN (\'' + Dbase.tables.txpow.name + '\')' +
+    ' AND ' + Dbase.tables.log.columns[3] +
+    ' IN (\'' + Dbase.defaultActions.insert + '\')' +
+    ' And ' + Dbase.tables.log.columns[4] +
+    ' REGEXP \'' + Tokens.regex +
+    '\'';
+
+  static readonly query = 'SELECT * FROM ' + Tokens.queryDetails;
+  static readonly countQuery = 'SELECT COUNT(*) FROM ' + Tokens.queryDetails;
 
   static readonly chartType: ChartType = {
     name: Tokens.chartHeading,
@@ -434,6 +444,7 @@ class Tokens {
   static readonly logType: LogType = {
     name: Tokens.logHeading,
     query: Tokens.query + ' ORDER BY DATE DESC',
+    countQuery: Tokens.countQuery,
   }
 
   static readonly tokenId = 'Token iD'
@@ -495,15 +506,17 @@ class API {
   static readonly logHeading = 'API Calls'
   static readonly regex = '^[a-zA-Z0-9]* '
 
-  static readonly query = 'SELECT * FROM ' +
-      Dbase.tables.log.name +
-      ' WHERE ' + Dbase.tables.log.columns[2] +
-      ' IN (\'' + Dbase.tables.trigger.name + '\')' +
-      ' AND ' + Dbase.tables.log.columns[3] +
-      ' IN (\'' + Dbase.defaultActions.run + '\')' +
-      ' And ' + Dbase.tables.log.columns[4] +
-      ' REGEXP \'' + API.regex +
-      '\'';
+  static readonly queryDetails = Dbase.tables.log.name +
+    ' WHERE ' + Dbase.tables.log.columns[2] +
+    ' IN (\'' + Dbase.tables.trigger.name + '\')' +
+    ' AND ' + Dbase.tables.log.columns[3] +
+    ' IN (\'' + Dbase.defaultActions.run + '\')' +
+    ' And ' + Dbase.tables.log.columns[4] +
+    ' REGEXP \'' + API.regex +
+    '\'';
+
+  static readonly query = 'SELECT * FROM ' + API.queryDetails;
+  static readonly countQuery = 'SELECT COUNT(*) FROM ' + API.queryDetails;
 
   static readonly chartType: ChartType = {
     name: API.chartHeading,
@@ -546,6 +559,7 @@ class API {
   static readonly logType: LogType = {
     name: API.logHeading,
     query: API.query + ' ORDER BY DATE DESC',
+    countQuery: API.countQuery,
   }
 }
 
@@ -562,14 +576,17 @@ class Status {
 class Log {
   static readonly heading = 'Logs'
 
-  static readonly query =
-    'SELECT * FROM ' +
+  static readonly query = 'SELECT * FROM ' +
     Dbase.tables.log.name +
     ' ORDER BY DATE DESC';
+
+  static readonly countQuery = 'SELECT COUNT(*) FROM ' +
+    Dbase.tables.log.name;
 
     static readonly logType: LogType = {
       name: Log.heading,
       query: Log.query,
+      countQuery: Log.countQuery,
     }
 
   static readonly total = 'Total Entries'

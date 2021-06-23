@@ -17,6 +17,7 @@ import {reducer as addressReducer} from './app/reducers/addresses/reducer';
 import {reducer as tokenIdsReducer} from './app/reducers/tokenIds/reducer';
 import {reducer as triggersReducer} from './app/reducers/triggers/reducer';
 import {reducer as cmdReducer} from './app/reducers/cmd/reducer';
+import {reducer as countReducer} from './app/reducers/counts/reducer';
 import {reducer as txReducer} from './app/reducers/tx/reducer';
 
 export const rootReducer: Reducer<ApplicationState, ActionProps> =
@@ -29,6 +30,7 @@ combineReducers<ApplicationState, ActionProps>({
   tokenIdsData: tokenIdsReducer,
   triggersData: triggersReducer,
   cmdData: cmdReducer,
+  countData: countReducer,
   tx: txReducer,
 });
 

@@ -8,6 +8,8 @@ import {
   ChartsActionTypes,
   ChartUpdateData,
   ChartData,
+  CountActionTypes,
+  CountUpdateData,
   Logs,
 } from '../../types';
 
@@ -241,6 +243,51 @@ export const getTableEntries =
       });
     };
   };
+
+/**
+ * Counts rows in the database
+ * @param {string} query - SELECT COUNT(*) FROM LOGGING etc...
+ * @return {function}
+ */
+export const countTableEntries =
+ (query: string) => {
+   return async (dispatch: AppDispatch) => {
+     const successAction = CountActionTypes.COUNT_SUCCESS;
+     const failAction = CountActionTypes.COUNT_FAILURE;
+     const txSuccessAction: ActionTypes = TxActionTypes.TX_SUCCESS;
+     const txFailAction: ActionTypes = TxActionTypes.TX_FAILURE;
+     const d = new Date(Date.now());
+     const dateText = d.toString();
+     let txData = {
+       code: '200',
+       summary: SQL.selectSuccess,
+       time: dateText,
+     };
+
+     // console.log(query);
+
+     Minima.sql(query, function(result: any) {
+       if ( !result.status ) {
+         txData = {
+           code: '503',
+           summary: SQL.selectFailure,
+           time: dateText,
+         };
+         dispatch(write({data: []})(failAction));
+         dispatch(write({data: txData})(txFailAction));
+       } else {
+         const count = result.response.rows[0]['COUNT(*)'];
+         // console.log('Got count!', count);
+         const updateData: CountUpdateData = {
+           count: count,
+           key: query,
+         };
+         dispatch(write({data: updateData})(successAction));
+         dispatch(write({data: txData})(txSuccessAction));
+       }
+     });
+   };
+ };
 
 /**
  * Queries the database and dispatches chart data

@@ -16,6 +16,7 @@ export interface ApplicationState {
   tokenIdsData: TokenIdProps,
   triggersData: TriggersProps,
   cmdData: CmdProps,
+  countData: CountProps,
   tx: TxProps
 }
 
@@ -30,6 +31,10 @@ export interface ActionProps extends Action {
 
 export type AppDispatch = ThunkDispatch<ApplicationState, any, ActionProps>
 
+
+/**
+ * Chart types
+ */
 export type ChartData = {
   [key: string]: number
 }
@@ -93,11 +98,6 @@ export interface TxProps extends PayloadProps {
   data: TxData
 }
 
-export type SelectOptionType = {
-  value: string
-  label: string
-}
-
 // Database definitions
 
 /**
@@ -118,6 +118,7 @@ export interface LogsProps extends PayloadProps {
 export type LogType = {
   name: string
   query: string
+  countQuery: string
 }
 
 /**
@@ -170,6 +171,28 @@ export const enum PageTypes {
 }
 
 /**
+ * Misc
+ */
+export type SelectOptionType = {
+  value: string
+  label: string
+}
+
+// Keep a count of rows returned by a query
+export type CountData = {
+  [key: string]: number
+}
+
+export interface CountProps extends PayloadProps {
+  data: CountData
+}
+
+export type CountUpdateData = {
+  count: number
+  key: string
+}
+
+/**
  * Action Types
  */
 export const enum ChartsActionTypes {
@@ -182,6 +205,12 @@ export const enum AppDataActionTypes {
   APPDATA_INIT = '@@AppDataActionTypes/APPDATA_INIT',
   APPDATA_SUCCESS = '@@AppDataActionTypes/APPDATA_SUCCESS',
   APPDATA_FAILURE = '@@AppDataActionTypes/APPDATA_FAILURE'
+}
+
+export const enum CountActionTypes {
+  COUNT_INIT = '@@CountActionTypes/COUNT_INIT',
+  COUNT_SUCCESS = '@@CountActionTypes/COUNT_SUCCESS',
+  COUNT_FAILURE = '@@CountActionTypes/COUNT_FAILURE'
 }
 
 export const enum TxActionTypes {
@@ -241,6 +270,7 @@ export const enum StatusActionTypes {
 export type ActionTypes =
   ChartsActionTypes |
   AppDataActionTypes |
+  CountActionTypes |
   TxActionTypes |
   TxPoWActionTypes |
   CmdActionTypes |
