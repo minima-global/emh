@@ -349,7 +349,7 @@ const display = (props: Props) => {
               >
                 <label htmlFor="public">{TriggerVars.public}</label>
               </Grid>
-              <Grid item container xs={6} lg={8}>
+              <Grid item container xs={7} lg={9}>
                 <Switch
                   size='medium'
                   color="primary"
@@ -367,7 +367,7 @@ const display = (props: Props) => {
                 item
                 container
                 justify='flex-end'
-                xs={2}
+                xs={1}
               >
                 <Button
                   type='submit'

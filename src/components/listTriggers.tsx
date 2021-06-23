@@ -136,6 +136,19 @@ const list = (props: Props) => {
             item
             container
             justify="flex-start"
+            xs={2}
+          >
+            <Typography variant="h5" noWrap={true}>
+              { largeScreen ?
+                TriggerVars.url:
+                TriggerVars.smallUrl
+              }
+            </Typography>
+          </Grid>
+          <Grid
+            item
+            container
+            justify="flex-start"
             xs={1}
           >
             <Typography variant="h5" noWrap={true}>
@@ -187,19 +200,6 @@ const list = (props: Props) => {
           <Grid
             item
             container
-            justify="flex-start"
-            xs={2}
-          >
-            <Typography variant="h5" noWrap={true}>
-              { largeScreen ?
-                TriggerVars.url:
-                TriggerVars.smallUrl
-              }
-            </Typography>
-          </Grid>
-          <Grid
-            item
-            container
             justify="flex-end"
             xs={1}
           >
@@ -208,6 +208,21 @@ const list = (props: Props) => {
             </Typography>
           </Grid>
 
+        </Grid>
+
+        <Grid
+          className={classes.formSummary}
+          item
+          container
+          justify="flex-start"
+          xs={12}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 4000 20"
+          >
+            <line x2="4000" stroke="#001C32" width="100%" height="100%"/>
+          </svg>
         </Grid>
 
         <Grid item container className={classes.formSummary} xs={12}>
@@ -254,6 +269,20 @@ const list = (props: Props) => {
                           noWrap={true}
                         >
                           {isPublic}
+                        </Typography>
+                      </Grid>
+                      <Grid
+                        item
+                        container
+                        alignItems='center'
+                        justify="flex-start"
+                        xs={2}
+                      >
+                        <Typography
+                          variant="body1"
+                          noWrap={true}
+                        >
+                          {`${Local.base}${Local.apiBase}${endpoint}`}
                         </Typography>
                       </Grid>
                       <Grid
@@ -310,20 +339,6 @@ const list = (props: Props) => {
                           noWrap={true}
                         >
                           {params}
-                        </Typography>
-                      </Grid>
-                      <Grid
-                        item
-                        container
-                        alignItems='center'
-                        justify="flex-start"
-                        xs={2}
-                      >
-                        <Typography
-                          variant="body1"
-                          noWrap={true}
-                        >
-                          {`${Local.base}${Local.apiBase}${endpoint}`}
                         </Typography>
                       </Grid>
                       <Grid

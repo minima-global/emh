@@ -176,6 +176,11 @@ const themeStyles = makeStyles({
     '& .MuiIconButton-root': {
       padding: '4px',
     },
+    '& .MuiButton-label': {
+      lineHeight: '1',
+      fontSize: '1em',
+      fontWeight: 700,
+    },
     '& .MuiPaper-rounded': {
       borderRadius: '20px',
       backgroundColor: 'white',
@@ -403,6 +408,9 @@ const themeStyles = makeStyles({
   formButton: {
     paddingTop: theme.spacing(1),
     paddingBottom: theme.spacing(1),
+    lineHeight: '1',
+    fontSize: '1.4em',
+    fontWeight: 700,
   },
   formSummary: {
     paddingTop: theme.spacing(1),

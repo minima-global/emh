@@ -4,7 +4,8 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
-import {theme, themeStyles} from '../../styles';
+// import {theme, themeStyles} from '../../styles';
+import {theme} from '../../styles';
 
 import {Addresses} from './addresses';
 import {Tokens} from './tokens';
@@ -37,7 +38,7 @@ export const URLs = () => {
     }
   };
 
-  const classes = themeStyles();
+  // const classes = themeStyles();
   return (
 
     <Grid

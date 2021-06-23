@@ -460,7 +460,7 @@ class Triggers {
   static readonly format = 'Format'
   static readonly setParams = 'Set Params'
   static readonly params = 'Params'
-  static readonly public = 'Public?'
+  static readonly public = 'Public'
   static readonly url = 'URL'
 
   static readonly smallEndpoint = 'Trg'

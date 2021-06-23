@@ -166,7 +166,7 @@ const display = (props: Props) => {
 
             <Grid item container xs={12}>
 
-              <Grid item container xs={10}>
+              <Grid item container xs={11}>
                 <Typography variant="h2">
                   &nbsp;
                 </Typography>
@@ -176,7 +176,7 @@ const display = (props: Props) => {
                 className={classes.formButton}
                 item
                 container
-                xs={2}
+                xs={1}
               >
                 <Button
                   type='submit'

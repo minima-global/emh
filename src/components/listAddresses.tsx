@@ -114,6 +114,21 @@ const list = (props: Props) => {
 
         </Grid>
 
+        <Grid
+          className={classes.formSummary}
+          item
+          container
+          justify="flex-start"
+          xs={12}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 4000 20"
+          >
+            <line x2="4000" stroke="#001C32" width="100%" height="100%"/>
+          </svg>
+        </Grid>
+
         <Grid item container className={classes.formSummary} xs={12}>
           { props.addressData?.data.map(
               ( call: AddressType, index: number ) => {
