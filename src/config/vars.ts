@@ -481,17 +481,11 @@ class Triggers {
   static readonly public = 'Public'
   static readonly url = 'URL'
 
-  static readonly smallEndpoint = 'Trg'
-  static readonly smallCommand = 'Cmd'
-  static readonly smallFormat = 'Fmt'
-  static readonly smallSetParams = 'Set'
-  static readonly smallParams = 'Params'
-  static readonly smallPublic = 'P?'
-  static readonly smallUrl = 'URL'
-
   static readonly triggerButton = 'Create'
   static readonly deleteButton = 'Delete'
-  static readonly smallDeleteButton = 'Del'
+
+  static readonly showTrigger = 'Show Trigger'
+  static readonly closeTrigger = 'Ok'
 }
 
 /** @class Balances */

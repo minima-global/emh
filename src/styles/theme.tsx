@@ -300,6 +300,16 @@ const themeStyles = makeStyles({
       width: '30%',
     },
   },
+  showModalSub: {
+    [breakpoints.up('xs')]: {
+      backgroundColor: theme.palette.background.default,
+      boxShadow: theme.shadows[3],
+      padding: theme.spacing(1),
+      borderRadius: '10px',
+      outline: 'none',
+      width: '30%',
+    },
+  },
   modalSubIcons: {
     textAlign: 'center',
   },

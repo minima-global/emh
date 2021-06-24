@@ -4,7 +4,12 @@ import {connect} from 'react-redux';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
+
+import Modal from '@material-ui/core/Modal';
+import Backdrop from '@material-ui/core/Backdrop';
+import Fade from '@material-ui/core/Fade';
+
+// import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 import {theme, themeStyles} from '../styles';
 
@@ -55,6 +60,8 @@ const list = (props: Props) => {
   const isFirstRun = useRef(true);
   // eslint-disable-next-line no-unused-vars
   const [isDisabled, setIsDisabled] = useState([] as boolean[]);
+  const [showTrigger, setShowTrigger] = useState({} as TriggersType);
+  const [showDialogue, setShowDialogue] = useState(false);
 
   const actionType: SuccessAndFailType = {
     success: TriggerActionTypes.TRIGGER_SUCCESS,
@@ -64,7 +71,7 @@ const list = (props: Props) => {
   const query = 'SELECT * FROM ' + Dbase.tables.trigger.name;
 
   const classes = themeStyles();
-  const largeScreen = useMediaQuery(theme.breakpoints.up('lg'));
+  // const largeScreen = useMediaQuery(theme.breakpoints.up('lg'));
 
   useEffect(() => {
     if ( isFirstRun.current ) {
@@ -99,6 +106,15 @@ const list = (props: Props) => {
     );
   };
 
+  const showInfo = (trigger: TriggersType) => {
+    setShowTrigger(trigger);
+    setShowDialogue(true);
+  };
+
+  const showDialogueClose = () => {
+    setShowDialogue(false);
+  };
+
   return (
 
     <>
@@ -110,13 +126,10 @@ const list = (props: Props) => {
             item
             container
             justify="flex-start"
-            xs={2}
+            xs={3}
           >
             <Typography variant="h5" noWrap={true}>
-              { largeScreen ?
-                TriggerVars.endpoint:
-                TriggerVars.smallEndpoint
-              }
+              {TriggerVars.endpoint}
             </Typography>
           </Grid>
           <Grid
@@ -126,23 +139,17 @@ const list = (props: Props) => {
             xs={1}
           >
             <Typography variant="h5" noWrap={true}>
-              { largeScreen ?
-                TriggerVars.public:
-                TriggerVars.smallPublic
-              }
+              {TriggerVars.public}
             </Typography>
           </Grid>
           <Grid
             item
             container
             justify="flex-start"
-            xs={2}
+            xs={7}
           >
             <Typography variant="h5" noWrap={true}>
-              { largeScreen ?
-                TriggerVars.url:
-                TriggerVars.smallUrl
-              }
+              {TriggerVars.url}
             </Typography>
           </Grid>
           <Grid
@@ -152,58 +159,6 @@ const list = (props: Props) => {
             xs={1}
           >
             <Typography variant="h5" noWrap={true}>
-              { largeScreen ?
-                TriggerVars.command:
-                TriggerVars.smallCommand
-              }
-            </Typography>
-          </Grid>
-          <Grid
-            item
-            container
-            justify="flex-start"
-            xs={2}
-          >
-            <Typography variant="h5" noWrap={true}>
-              { largeScreen ?
-                TriggerVars.format:
-                TriggerVars.smallFormat
-              }
-            </Typography>
-          </Grid>
-          <Grid
-            item
-            container
-            justify="flex-start"
-            xs={1}
-          >
-            <Typography variant="h5" noWrap={true}>
-              { largeScreen ?
-                TriggerVars.setParams:
-                TriggerVars.smallSetParams
-              }
-            </Typography>
-          </Grid>
-          <Grid
-            item
-            container
-            justify="flex-start"
-            xs={2}
-          >
-            <Typography variant="h5" noWrap={true}>
-              { largeScreen ?
-                TriggerVars.params:
-                TriggerVars.smallParams
-              }
-            </Typography>
-          </Grid>
-          <Grid
-            item
-            container
-            justify="flex-end"
-            xs={1}
-          >
-            <Typography variant="h5">
               &nbsp;
             </Typography>
           </Grid>
@@ -229,10 +184,6 @@ const list = (props: Props) => {
           { props.triggersData?.data.map(
               ( trigger: TriggersType, index: number ) => {
                 const endpoint = trigger.ENDPOINT;
-                const command = trigger.CMD;
-                const format = trigger.FORMAT;
-                const setParams = trigger.SETPARAMS;
-                const params = trigger.PARAMS;
                 const isPublic = trigger.ISPUBLIC === 'true' ? 'Yes': 'No';
 
                 // eslint-disable-next-line max-len
@@ -248,14 +199,26 @@ const list = (props: Props) => {
                         container
                         alignItems='center'
                         justify="flex-start"
-                        xs={2}
+                        xs={3}
                       >
-                        <Typography
-                          variant="body1"
-                          noWrap={true}
+                        <Button
+                          onClick={() => showInfo(trigger)}
+                          size='medium'
+                          variant='outlined'
+                          style={{
+                            margin: 0,
+                            paddingLeft: 0,
+                            paddingRight: 0,
+                            paddingTop: theme.spacing(1),
+                            paddingBottom: theme.spacing(1),
+                            color: '#001C32',
+                            background: '#F0F0FA',
+                            backgroundColor: '#F0F0FA',
+                            justifyContent: 'flex-start',
+                          }}
                         >
                           {endpoint}
-                        </Typography>
+                        </Button>
                       </Grid>
                       <Grid
                         item
@@ -276,69 +239,13 @@ const list = (props: Props) => {
                         container
                         alignItems='center'
                         justify="flex-start"
-                        xs={2}
+                        xs={7}
                       >
                         <Typography
                           variant="body1"
                           noWrap={true}
                         >
                           {`${Local.base}${Local.apiBase}${endpoint}`}
-                        </Typography>
-                      </Grid>
-                      <Grid
-                        item
-                        container
-                        alignItems='center'
-                        justify="flex-start"
-                        xs={1}
-                      >
-                        <Typography
-                          variant="body1"
-                          noWrap={true}
-                        >
-                          {command}
-                        </Typography>
-                      </Grid>
-                      <Grid
-                        item
-                        container
-                        alignItems='center'
-                        justify="flex-start"
-                        xs={2}
-                      >
-                        <Typography
-                          variant="body1"
-                          noWrap={true}
-                        >
-                          {format}
-                        </Typography>
-                      </Grid>
-                      <Grid
-                        item
-                        container
-                        alignItems='center'
-                        justify="flex-start"
-                        xs={1}
-                      >
-                        <Typography
-                          variant="body1"
-                          noWrap={true}
-                        >
-                          {setParams}
-                        </Typography>
-                      </Grid>
-                      <Grid
-                        item
-                        container
-                        alignItems='center'
-                        justify="flex-start"
-                        xs={2}
-                      >
-                        <Typography
-                          variant="body1"
-                          noWrap={true}
-                        >
-                          {params}
                         </Typography>
                       </Grid>
                       <Grid
@@ -370,6 +277,93 @@ const list = (props: Props) => {
               })}
         </Grid>
       </Grid>
+
+      <Modal
+        aria-labelledby={TriggerVars.showTrigger}
+        aria-describedby={TriggerVars.showTrigger}
+        open={showDialogue}
+        onClose={showDialogueClose}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <Fade in={showDialogue}>
+          <div className={classes.showModalSub}>
+            <Typography
+              variant="body1"
+            >
+              {TriggerVars.endpoint}: {showTrigger.ENDPOINT}
+            </Typography>
+            <br/>
+            <Typography
+              variant="body1"
+            >
+              {TriggerVars.public}:
+              {showTrigger.ISPUBLIC === 'true' ? 'Yes': 'No'}
+            </Typography>
+            <br/>
+            <Typography
+              variant="body1"
+            >
+              {TriggerVars.url}: &nbsp;
+              {`${Local.base}${Local.apiBase}${showTrigger.ENDPOINT}`}
+            </Typography>
+            <br/>
+            <Typography
+              variant="body1"
+            >
+              {TriggerVars.command}: &nbsp;
+              {showTrigger.CMD ? showTrigger.CMD : 'None'}
+            </Typography>
+            <br/>
+            <Typography
+              variant="body1"
+            >
+              {TriggerVars.format}: &nbsp;
+              {showTrigger.FORMAT ? showTrigger.FORMAT : 'None'}
+            </Typography>
+            <br/>
+            <Typography
+              variant="body1"
+            >
+              {TriggerVars.setParams}: &nbsp;
+              {showTrigger.SETPARAMS ? showTrigger.SETPARAMS : 'None'}
+            </Typography>
+            <br/>
+            <Typography
+              variant="body1"
+            >
+              {TriggerVars.params}: &nbsp;
+              {showTrigger.PARAMS ? showTrigger.PARAMS : 'None'}
+            </Typography>
+            <br/>
+            <div className={classes.modalSubIcons}>
+              <Button
+                onClick={showDialogueClose}
+                size='medium'
+                variant='outlined'
+                color='primary'
+                style={{
+                  color: 'white',
+                  background: '#317AFF',
+                  backgroundColor: '#317AFF',
+                  borderRadius: '10px',
+                  justifyContent: 'center',
+                }}
+              >
+                {TriggerVars.closeTrigger}
+              </Button>
+            </div>
+          </div>
+        </Fade>
+      </Modal>
     </>
   );
 };

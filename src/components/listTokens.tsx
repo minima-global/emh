@@ -98,12 +98,12 @@ const list = (props: Props) => {
 
         <Grid item container xs={12}>
 
-          <Grid item container justify="flex-start" xs={7}>
+          <Grid item container justify="flex-start" xs={8}>
             <Typography variant="h5">
               {TokenVars.tokenId}
             </Typography>
           </Grid>
-          <Grid item container justify="flex-start" xs={4}>
+          <Grid item container justify="flex-start" xs={3}>
             <Typography variant="h5">
               {TokenVars.url}
             </Typography>
@@ -150,7 +150,7 @@ const list = (props: Props) => {
                         container
                         alignItems='center'
                         justify="flex-start"
-                        xs={7}
+                        xs={8}
                       >
                         <Typography
                           variant="body1"
@@ -164,7 +164,7 @@ const list = (props: Props) => {
                         container
                         alignItems='center'
                         justify="flex-start"
-                        xs={4}
+                        xs={3}
                       >
                         <Typography
                           variant="body1"
