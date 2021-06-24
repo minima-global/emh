@@ -62,6 +62,16 @@ export const initTx = () => {
 };
 
 /**
+ * Initialises command data
+ * @return {function}
+ */
+export const initCmd = () => {
+  return async (dispatch: AppDispatch) => {
+    dispatch(write({data: []})(CmdActionTypes.CMD_INIT));
+  };
+};
+
+/**
  * Runs a Minima command
  * @param {string} endpoint - the endpoint called
  * @param {string} cmd - the command to run

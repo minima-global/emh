@@ -69,7 +69,8 @@ export const URLs = () => {
           <Button
             onClick={() => setPage(true)}
             size='medium'
-            variant="contained"
+            variant='outlined'
+            color='secondary'
             style={{
               padding: theme.spacing(2),
               textTransform: 'none',
@@ -95,7 +96,8 @@ export const URLs = () => {
           <Button
             onClick={() => setPage(false)}
             size='medium'
-            variant="contained"
+            variant='outlined'
+            color='secondary'
             style={{
               padding: theme.spacing(2),
               textTransform: 'none',

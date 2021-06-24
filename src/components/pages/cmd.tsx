@@ -11,6 +11,12 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Select from 'react-select';
 
+import Spinner from 'react-spinner-material';
+
+import Modal from '@material-ui/core/Modal';
+import Backdrop from '@material-ui/core/Backdrop';
+import Fade from '@material-ui/core/Fade';
+
 import {theme, themeStyles} from '../../styles';
 
 import {
@@ -22,7 +28,7 @@ import {
   SuccessAndFailType,
 } from '../../store/types';
 
-import {command} from '../../store/app/blockchain/actions';
+import {initCmd, command} from '../../store/app/blockchain/actions';
 import {getTableEntries} from '../../store/app/dbase/actions';
 
 import {
@@ -44,6 +50,7 @@ interface StateProps {
 }
 
 interface DispatchProps {
+  initCmd: () => void
   command: (endpoint: string, cmd: string) => void
   getTableEntries: (
     query: string,
@@ -65,6 +72,10 @@ const display = (props: Props) => {
   const [thisTrigger, setThisTrigger] = useState({} as SelectOptionType);
   const [paramsDisabled, setParamsDisabled] = useState(false);
   const [params, setParams] = useState('');
+
+  const [thisCommand, setThisCommand] = useState([] as string[]);
+  const [runDialogue, setRunDialogue] = useState(false);
+  const [running, setRunning] = useState(false);
 
   const actionType: SuccessAndFailType = {
     success: TriggerActionTypes.TRIGGER_SUCCESS,
@@ -149,7 +160,9 @@ const display = (props: Props) => {
       }
 
       // console.log(endpoint, ' this command: ', command);
-      props.command(endpoint, command.trim());
+      // props.command(endpoint, command.trim());
+      setThisCommand([endpoint, command.trim()]);
+      setRunDialogue(true);
     },
   });
 
@@ -166,8 +179,12 @@ const display = (props: Props) => {
         };
         triggers.push(thisTrigger);
       });
+
+      if (props.cmd?.data ) {
+        setRunning(false);
+      }
     }
-  }, [props.triggersData]);
+  }, [props.triggersData, props.cmd]);
 
   const doSetTrigger = (trigger: SelectOptionType | null | undefined) => {
     if ( trigger ) {
@@ -182,163 +199,312 @@ const display = (props: Props) => {
     }
   };
 
+  const runCommand = () => {
+    setRunDialogue(false);
+    setRunning(true);
+    props.command(thisCommand[0], thisCommand[1]);
+  };
+
+  const runDialogueClose = () => {
+    setRunDialogue(false);
+  };
+
+  const clear = () => {
+    // do something
+    setThisTrigger({} as SelectOptionType);
+    setParams('');
+    props.initCmd();
+  };
+
   return (
-    <Grid
-      container
-      alignItems='flex-start'
-      style={{
-        marginLeft: theme.spacing(8),
-        marginRight: theme.spacing(8),
-      }}>
+    <>
+      <Grid
+        container
+        alignItems='flex-start'
+        style={{
+          marginLeft: theme.spacing(8),
+          marginRight: theme.spacing(8),
+        }}>
 
-      <Grid item container xs={12}>
+        <Grid item container xs={12}>
 
-        <Grid item container justify="flex-start" xs={12}>
+          <Grid item container justify="flex-start" xs={12}>
 
-          <Typography variant="h2">
-            {CmdVars.heading}
-          </Typography>
+            <Typography variant="h2">
+              {CmdVars.heading}
+            </Typography>
+
+          </Grid>
+
+          <Paper elevation={5} className={classes.urlForm}>
+
+            <form onSubmit={formik.handleSubmit} className={classes.formSubmit}>
+              <Grid item container xs={12}>
+
+                <Grid
+                  item
+                  container
+                  className={classes.formLabel}
+                  justify="flex-start"
+                  alignItems="center"
+                  xs={4}
+                  lg={2}
+                >
+                  <label htmlFor="trigger">{CmdVars.trigger}</label>
+                </Grid>
+                <Grid item container xs={8} lg={10}>
+                  <div style={{width: '100%'}}>
+                    <Select
+                      className={classes.select}
+                      size="small"
+                      value={thisTrigger}
+                      onChange={(selectedOption) => {
+                        doSetTrigger(selectedOption);
+                        const thisValue = selectedOption ? selectedOption : {};
+                        formik.setFieldValue('trigger', thisValue);
+                      }}
+                      options={triggers}
+                      name='trigger'
+                    />
+                  </div>
+                </Grid>
+                {formik.errors.trigger && formik.touched.trigger ? (
+                  <>
+                    <Grid item container xs={2}>
+                      <Typography variant="body1">
+                        &nbsp;
+                      </Typography>
+                    </Grid>
+                    <Grid
+                      className={classes.formError}
+                      item container
+                      xs={10}
+                    >
+                      {formik.errors.trigger}
+                    </Grid>
+                  </>
+                    ) : null
+                }
+              </Grid>
+
+              <Grid item container xs={12}>
+
+                <Grid
+                  item
+                  container
+                  className={classes.formLabel}
+                  justify="flex-start"
+                  alignItems="center"
+                  xs={4}
+                  lg={2}
+                >
+                  <label htmlFor="params">{CmdVars.params}</label>
+                </Grid>
+                <Grid item container xs={8} lg={10}>
+                  <TextField
+                    fullWidth
+                    disabled={paramsDisabled}
+                    size="small"
+                    name="params"
+                    type="text"
+                    value={formik.values.params}
+                    onChange={formik.handleChange}
+                    InputProps={{disableUnderline: true}}
+                  />
+                </Grid>
+                {formik.errors.params && formik.touched.params ? (
+                  <>
+                    <Grid item container xs={2}>
+                      <Typography variant="body1">
+                        &nbsp;
+                      </Typography>
+                    </Grid>
+                    <Grid
+                      className={classes.formError}
+                      item container
+                      xs={10}
+                    >
+                      {formik.errors.params}
+                    </Grid>
+                  </>
+                    ) : null
+                }
+              </Grid>
+
+              <Grid item container xs={12}>
+
+                <Grid item container xs={10}>
+                  <Typography variant="h2">
+                    &nbsp;
+                  </Typography>
+                </Grid>
+
+                <Grid
+                  className={classes.formButton}
+                  item
+                  container
+                  justify='flex-end'
+                  xs={1}
+                >
+                  <Button
+                    onClick={() => clear()}
+                    size='medium'
+                    variant='outlined'
+                    color='primary'
+                    disabled={running}
+                    style={{
+                      marginRight: theme.spacing(1),
+                      color: '#C8C8D4',
+                      borderColor: '#C8C8D4',
+                      background: 'white',
+                      backgroundColor: 'white',
+                    }}
+                  >
+                    {CmdVars.clearButton}
+                  </Button>
+                </Grid>
+
+                <Grid
+                  className={classes.formButton}
+                  item
+                  container
+                  justify='flex-end'
+                  xs={1}
+                >
+                  <Button
+                    type='submit'
+                    size='medium'
+                    variant='outlined'
+                    color='secondary'
+                    disabled={running}
+                    style={{
+                      color: 'white',
+                    }}
+                  >
+                    {CmdVars.cmdButton}
+                  </Button>
+                </Grid>
+
+              </Grid>
+
+            </form>
+
+          </Paper>
 
         </Grid>
 
-        <Paper elevation={5} className={classes.urlForm}>
-
-          <form onSubmit={formik.handleSubmit} className={classes.formSubmit}>
-            <Grid item container xs={12}>
-
-              <Grid
-                item
-                container
-                className={classes.formLabel}
-                justify="flex-start"
-                alignItems="center"
-                xs={4}
-                lg={2}
-              >
-                <label htmlFor="trigger">{CmdVars.trigger}</label>
-              </Grid>
-              <Grid item container xs={8} lg={10}>
-                <div style={{width: '100%'}}>
-                  <Select
-                    className={classes.select}
-                    size="small"
-                    value={thisTrigger}
-                    onChange={(selectedOption) => {
-                      doSetTrigger(selectedOption);
-                      const thisValue = selectedOption ? selectedOption : {};
-                      formik.setFieldValue('trigger', thisValue);
-                    }}
-                    options={triggers}
-                    name='trigger'
-                  />
-                </div>
-              </Grid>
-              {formik.errors.trigger && formik.touched.trigger ? (
-                <>
-                  <Grid item container xs={2}>
-                    <Typography variant="body1">
-                      &nbsp;
-                    </Typography>
-                  </Grid>
-                  <Grid
-                    className={classes.formError}
-                    item container
-                    xs={10}
-                  >
-                    {formik.errors.trigger}
-                  </Grid>
-                </>
-                  ) : null
-              }
-            </Grid>
-
-            <Grid item container xs={12}>
-
-              <Grid
-                item
-                container
-                className={classes.formLabel}
-                justify="flex-start"
-                alignItems="center"
-                xs={4}
-                lg={2}
-              >
-                <label htmlFor="params">{CmdVars.params}</label>
-              </Grid>
-              <Grid item container xs={8} lg={10}>
-                <TextField
-                  fullWidth
-                  disabled={paramsDisabled}
-                  size="small"
-                  name="params"
-                  type="text"
-                  value={formik.values.params}
-                  onChange={formik.handleChange}
-                  InputProps={{disableUnderline: true}}
-                />
-              </Grid>
-              {formik.errors.params && formik.touched.params ? (
-                <>
-                  <Grid item container xs={2}>
-                    <Typography variant="body1">
-                      &nbsp;
-                    </Typography>
-                  </Grid>
-                  <Grid
-                    className={classes.formError}
-                    item container
-                    xs={10}
-                  >
-                    {formik.errors.params}
-                  </Grid>
-                </>
-                  ) : null
-              }
-            </Grid>
-
-            <Grid item container xs={12}>
-
-              <Grid item container xs={11}>
-                <Typography variant="h2">
-                  &nbsp;
-                </Typography>
-              </Grid>
-
-              <Grid
-                className={classes.formButton}
-                item
-                container
-                justify='flex-end'
-                xs={1}
-              >
-                <Button
-                  type='submit'
-                  color="primary"
-                  size='medium'
-                  variant="contained"
-                >
-                  {CmdVars.cmdButton}
-                </Button>
-              </Grid>
-
-            </Grid>
-
-          </form>
-
-        </Paper>
-
-        <div>
-          <pre>
-            {(((JSON.stringify(props.cmd.data, undefined, 2))
-                .slice(1, -1))
-                .replace(/(^[ \t]*\n)/gm, ''))
-                .replace(/\\n/g, '\n')
-            }
-          </pre>
-        </div>
-
       </Grid>
-    </Grid>
+
+      <Grid
+        container
+        alignItems='flex-start'
+        style={{
+          marginLeft: theme.spacing(8),
+          marginRight: theme.spacing(8),
+        }}
+      >
+
+        { running ?
+
+          <Grid item container justify="center">
+            <Spinner
+              radius={40}
+              color={'#001C32'}
+              stroke={5}
+              visible={running}
+            />
+          </Grid> : (
+
+            <Grid
+              item
+              container
+              alignItems='flex-start'
+              justify='flex-start'
+              xs={12}
+              style={{
+                width: '800px',
+                maxHeight: '500px',
+                overflow: 'auto',
+              }}
+            >
+              <pre>
+                {(((JSON.stringify(props.cmd.data, undefined, 2))
+                    .slice(1, -1))
+                    .replace(/(^[ \t]*\n)/gm, ''))
+                    .replace(/\\n/g, '\n')
+                }
+              </pre>
+            </Grid>
+          )
+        }
+      </Grid>
+
+      <Modal
+        aria-labelledby={CmdVars.confirmRun}
+        aria-describedby={CmdVars.confirmRun}
+        open={runDialogue}
+        onClose={runDialogueClose}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <Fade in={runDialogue}>
+          <div className={classes.modalSub}>
+            <Typography
+              variant="body1"
+              style={{
+                textAlign: 'center',
+              }}>
+              {CmdVars.confirmRun}
+            </Typography>
+            <br/>
+            <div className={classes.modalSubIcons}>
+              <Button
+                onClick={runDialogueClose}
+                size='medium'
+                variant='outlined'
+                color='primary'
+                style={{
+                  marginRight: theme.spacing(1),
+                  color: '#C8C8D4',
+                  borderColor: '#C8C8D4',
+                  background: 'white',
+                  backgroundColor: 'white',
+                  borderRadius: '10px',
+                  justifyContent: 'center',
+                }}
+              >
+                {CmdVars.noRun}
+              </Button>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <Button
+                onClick={() => runCommand()}
+                size='medium'
+                variant='outlined'
+                color='secondary'
+                style={{
+                  color: 'white',
+                  background: '#317AFF',
+                  backgroundColor: '#317AFF',
+                  borderRadius: '10px',
+                  justifyContent: 'center',
+                }}
+              >
+                {CmdVars.yesRun}
+              </Button>
+            </div>
+          </div>
+        </Fade>
+      </Modal>
+    </>
   );
 };
 
@@ -358,6 +524,7 @@ const mapStateToProps = (state: ApplicationState): StateProps => {
 
 const mapDispatchToProps = (dispatch: AppDispatch): DispatchProps => {
   return {
+    initCmd: () => dispatch(initCmd()),
     command: (
         endpoint: string,
         cmd: string) => dispatch(command(endpoint, cmd)),

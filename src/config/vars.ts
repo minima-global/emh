@@ -302,6 +302,13 @@ class Cmd {
   static readonly trigger = 'API'
   static readonly params = 'Params'
   static readonly cmdButton = 'Run'
+  static readonly clearButton = 'Clear'
+
+  static readonly confirmRun = 'Are you sure you want to run the API command?'
+  static readonly noRun = 'No'
+  static readonly yesRun = 'Yes'
+  static readonly runSuccess = 'You have run your API successfully'
+  static readonly cancelRun = 'Cancel API Command'
 }
 
 /** @class Addresses */

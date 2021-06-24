@@ -139,7 +139,7 @@ let theme = createMuiTheme({
       main: '#001C32',
     },
     secondary: {
-      main: '#929396',
+      main: '#317AFF',
     },
     error: red,
     warning: orange,
@@ -290,6 +290,19 @@ const themeStyles = makeStyles({
       fontSize: '1em',
     },
   },
+  modalSub: {
+    [breakpoints.up('xs')]: {
+      backgroundColor: theme.palette.background.default,
+      boxShadow: theme.shadows[3],
+      padding: theme.spacing(1),
+      borderRadius: '10px',
+      outline: 'none',
+      width: '30%',
+    },
+  },
+  modalSubIcons: {
+    textAlign: 'center',
+  },
   active: {
     color: 'red',
   },
@@ -353,10 +366,16 @@ const themeStyles = makeStyles({
       width: '30px',
     },
   },
-  headerIcon: {
+  minimaIcon: {
     [breakpoints.up('xs')]: {
-      height: '50px',
-      width: '50px',
+      height: '40px',
+      width: '40px',
+    },
+  },
+  megIcon: {
+    [breakpoints.up('xs')]: {
+      height: '60px',
+      width: '60px',
     },
   },
   pageIcon: {

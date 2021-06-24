@@ -371,9 +371,12 @@ const display = (props: Props) => {
               >
                 <Button
                   type='submit'
-                  color="primary"
                   size='medium'
-                  variant="contained"
+                  variant='outlined'
+                  color='secondary'
+                  style={{
+                    color: 'white',
+                  }}
                 >
                   {TriggerVars.triggerButton}
                 </Button>

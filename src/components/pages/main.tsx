@@ -7,7 +7,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 
-import megIcon from '../../images/megLogo.svg';
+import megIcon from '../../images/megLogoLockupWhite.svg';
 import minimaIcon from '../../images/minimaIcon.svg';
 import homeIcon from '../../images/megNavDashboardGrey.svg';
 import terminal from '../../images/megNavRunApiGrey.svg';
@@ -78,7 +78,7 @@ export const Main = () => {
                   justify="flex-start"
                   xs={6}
                 >
-                  <img className={classes.headerIcon} src={megIcon} />
+                  <img className={classes.megIcon} src={megIcon} />
                   <Typography variant="body2">
                     &nbsp;&nbsp; {App.appName}
                   </Typography>
@@ -94,7 +94,7 @@ export const Main = () => {
                   <Typography variant="body2">
                     {App.catchLine} &nbsp;&nbsp;
                   </Typography>
-                  <img className={classes.headerIcon} src={minimaIcon} />
+                  <img className={classes.minimaIcon} src={minimaIcon} />
                 </Grid>
               </Grid>
             </Grid>
