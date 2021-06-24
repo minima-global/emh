@@ -57,11 +57,13 @@ type Props = ThisProps & StateProps & DispatchProps
 export const list = (props: Props) => {
   const isFirstRun = useRef(true);
   const [searchTerm, setSearchTerm] = useState('');
+  // eslint-disable-next-line no-unused-vars
   const [low, setLimitLow] = useState(0);
+  // eslint-disable-next-line no-unused-vars
   const [offset, setOffset] = useState(Dbase.pageLimit);
   const [totalRecords, setTotalRecords] = useState(0);
-  // const [nextDisabled, setNextDisabled] = useState(true);
-  // const [backDisabled, setBackDisabled] = useState(true);
+  const [nextDisabled, setNextDisabled] = useState(true);
+  const [backDisabled, setBackDisabled] = useState(true);
 
   const actionType: SuccessAndFailType = {
     success: LogsActionTypes.LOGS_SUCCESS,
@@ -69,18 +71,32 @@ export const list = (props: Props) => {
   };
 
   // SELECT * FROM LOGGING ORDER BY DATE DESC LIMIT 0, 2147483647
-  const query = props.logType.query + ' LIMIT ' + low + ', ' + offset;
 
   const classes = themeStyles();
 
   useEffect(() => {
     if ( isFirstRun.current ) {
       isFirstRun.current = false;
+      const query = props.logType.query + ' LIMIT ' + low + ', ' + offset;
       props.countTableEntries(props.logType.countQuery);
       props.getTableEntries(query, actionType);
     } else {
       if (props.countData.data[props.logType.countQuery]) {
-        setTotalRecords(props.countData.data[props.logType.countQuery]);
+        const thisCount = props.countData.data[props.logType.countQuery];
+        if ( thisCount != totalRecords ) {
+          setTotalRecords(props.countData.data[props.logType.countQuery]);
+        }
+      }
+
+      if ( (low + offset) >= totalRecords ) {
+        setNextDisabled(true);
+        setBackDisabled(false);
+      } else if ( low === 0 ) {
+        setNextDisabled(false);
+        setBackDisabled(true);
+      } else {
+        setNextDisabled(false);
+        setBackDisabled(false);
       }
     }
   }, [props.countData, props.logsData]);
@@ -96,14 +112,12 @@ export const list = (props: Props) => {
 
   const getRecords = (lowLimit: number) => {
     // console.log('getting records', lowLimit);
-    const highLimit =
-      (lowLimit + Dbase.pageLimit) > totalRecords ?
-        totalRecords :
-        lowLimit + Dbase.pageLimit;
-    if ( lowLimit >= 0 ) {
-      console.log('getting records', lowLimit, highLimit);
+    if ( lowLimit >= 0) {
+      // console.log('getting records', lowLimit, offset, totalRecords);
+      const query =
+        props.logType.query + ' LIMIT ' + lowLimit + ', ' + offset;
       setLimitLow(lowLimit);
-      setOffset(highLimit);
+      // console.log(query);
       props.getTableEntries(query, actionType);
     }
   };
@@ -134,7 +148,8 @@ export const list = (props: Props) => {
         <Grid item container alignItems="center" xs={12}>
           <Grid item container justify="flex-start" xs={1}>
             <Typography variant="h5">
-              {LogVars.records} {offset / Dbase.pageLimit}
+              {LogVars.records} &nbsp;
+              {(low + Dbase.pageLimit) / Dbase.pageLimit}
             </Typography>
           </Grid>
           <Grid
@@ -169,6 +184,7 @@ export const list = (props: Props) => {
               <Button
                 aria-label="Page back"
                 onClick={() => getRecords(low - Dbase.pageLimit)}
+                disabled={backDisabled}
                 style={{
                   margin: 0,
                   padding: 0,
@@ -182,6 +198,7 @@ export const list = (props: Props) => {
               <Button
                 aria-label="Page forward"
                 onClick={() => getRecords(low + Dbase.pageLimit)}
+                disabled={nextDisabled}
                 style={{
                   margin: 0,
                   padding: 0,
