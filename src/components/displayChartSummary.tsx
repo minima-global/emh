@@ -70,7 +70,7 @@ const summary = (props: Props) => {
       <Grid
         item
         container
-        alignItems="flex-start"
+        alignItems="center"
         xs={4}
       >
         <Typography variant="h3">
@@ -80,7 +80,7 @@ const summary = (props: Props) => {
       <Grid
         item
         container
-        alignItems="flex-start"
+        alignItems="center"
         justify="flex-start"
         xs={4}
       >
@@ -104,7 +104,7 @@ const summary = (props: Props) => {
           />
         </Grid>
       </Grid>
-      <Grid item container justify='flex-end' xs={4}>
+      <Grid item container justify='flex-end' alignItems="center" xs={4}>
         <Grid item container justify='flex-end' xs={3}>
           <IconButton
             aria-label="Zoom In"
