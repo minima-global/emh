@@ -63,7 +63,6 @@ export const DisplayChart = (props: Props) => {
         padding: theme.spacing(2),
       }}
     >
-
       <Grid
         item
         container

@@ -53,7 +53,7 @@ const chart = (props: Props) => {
 
   // console.log('got chart', props.chartType);
 
-  const screenHeight = props.isFullScreen ? '500px' : '250px';
+  const screenHeight = props.isFullScreen ? '520px' : '250px';
   const chartIndex = ChartVars.chartInfo.indexOf(props.chartType.name);
 
   const classes = themeStyles();
@@ -78,47 +78,63 @@ const chart = (props: Props) => {
 
         <Grid
           container
+          alignItems='flex-start'
           style={{
             paddingLeft: theme.spacing(8),
             paddingRight: theme.spacing(8),
           }}
         >
-          <Grid item container justify="flex-start" xs={12}>
+          <Grid item container xs={12}>
 
-            <Typography variant="h2">
-              {Home.heading}
-            </Typography>
-
-          </Grid>
-
-          <Paper
-            elevation={5}
-            className={classes.fullscreenChart}
-          >
             <Grid
               item
               container
-              alignItems="flex-start"
-              style={{
-                padding: theme.spacing(2),
-              }}
-            >
-              <Grid container>
-                <DisplayChartSummary
-                  heading={props.chartType.name}
-                  chartData={data}
-                  isFullScreen={props.isFullScreen}
-                  navLink={props.navLink}
-                  logNavLink={props.logNavLink} />
+              justify="flex-start"
+              xs={12}>
 
-                <DisplayChart
-                  chartType={props.chartType}
-                  chartData={data}
-                  viewport={screenHeight} />
-              </Grid>
+              <Typography variant="h2">
+                {Home.heading}
+              </Typography>
+
             </Grid>
 
-          </Paper>
+            <Grid
+              item
+              container
+              justify="flex-start"
+              alignItems='flex-start'
+              xs={12}
+            >
+              <Paper
+                elevation={5}
+                className={classes.fullscreenChart}
+              >
+                <Grid
+                  item
+                  container
+                  alignItems="flex-start"
+                  style={{
+                    padding: theme.spacing(2),
+                  }}
+                >
+                  <Grid container>
+                    <DisplayChartSummary
+                      heading={props.chartType.name}
+                      chartData={data}
+                      isFullScreen={props.isFullScreen}
+                      navLink={props.navLink}
+                      logNavLink={props.logNavLink} />
+
+                    <DisplayChart
+                      chartType={props.chartType}
+                      chartData={data}
+                      viewport={screenHeight} />
+                  </Grid>
+                </Grid>
+
+              </Paper>
+            </Grid>
+          </Grid>
 
         </Grid> :
         <Grid
