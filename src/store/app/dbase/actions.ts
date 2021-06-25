@@ -1,4 +1,5 @@
-import {Minima, Token as Balance} from 'minima';
+// import {Minima, Token as Balance} from 'minima';
+import {Minima} from 'minima';
 
 import {
   AppDispatch,
@@ -18,8 +19,9 @@ import {
   Dbase,
   SQL,
   Chart,
-  Tokens as TokensVars,
 } from '../../../config';
+
+// Tokens as TokensVars,
 
 import {write} from '../../actions';
 
@@ -298,8 +300,9 @@ export const countTableEntries =
  */
 export const getChartEntries =
   (query: string, chartName: string, filterRegex: string) => {
-    return async (dispatch: AppDispatch, getState: Function) => {
-      const state = getState();
+    return async (dispatch: AppDispatch) => {
+      // , getState: Function
+      // const state = getState();
       const successAction = ChartsActionTypes.CHARTS_SUCCESS;
       const failAction = ChartsActionTypes.CHARTS_FAILURE;
       const txSuccessAction: ActionTypes = TxActionTypes.TX_SUCCESS;
@@ -343,20 +346,25 @@ export const getChartEntries =
                   chartData[thisMatchString] += 1;
                 }
               }
-
-              if ( chartName === TokensVars.chartHeading) {
-                const tokens: ChartData = {};
-                state.balanceData.data.forEach((token: Balance) => {
-                  if ( token.tokenid in chartData) {
-                    const tokenName = token.token;
-                    tokens[tokenName] = chartData[token.tokenid];
-                  }
-                });
-                updateData.data = tokens;
-              } else {
-                updateData.data = chartData;
-              }
             });
+            updateData.data = chartData;
+            /* if ( chartName === TokensVars.chartHeading) {
+              console.log('chart keys', Object.keys(chartData));
+              console.log('balance keys', Object.keys(chartData));
+              const tokens: ChartData = {};
+              state.balanceData.data.forEach((token: Balance) => {
+                console.log('balance data', token);
+                if ( token.tokenid in chartData) {
+                  console.log('found key!', token.tokenid, token.token);
+                  const tokenName = token.token;
+                  tokens[tokenName] = chartData[token.tokenid];
+                }
+              });
+            }
+              updateData.data = tokens;
+            } else {
+              updateData.data = chartData;
+            }*/
             dispatch(write({data: updateData})(successAction));
             dispatch(write({data: txData})(txSuccessAction));
           }

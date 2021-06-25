@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 
 import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 
 import {theme} from '../../styles';
@@ -16,6 +17,7 @@ import {
 
 import {
   Chart as ChartVars,
+  Home,
 } from '../../config';
 
 import {getChartEntries} from '../../store/app/dbase/actions';
@@ -81,6 +83,14 @@ const chart = (props: Props) => {
             paddingRight: theme.spacing(8),
           }}
         >
+          <Grid item container justify="flex-start" xs={12}>
+
+            <Typography variant="h2">
+              {Home.heading}
+            </Typography>
+
+          </Grid>
+
           <Paper
             elevation={5}
             className={classes.fullscreenChart}
