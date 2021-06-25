@@ -239,7 +239,7 @@ const themeStyles = makeStyles({
     marginTop: theme.spacing(1),
     marginRight: theme.spacing(2),
     width: '100%',
-    height: '770px',
+    height: '700px',
   },
   dashboardToken: {
     marginTop: theme.spacing(1),

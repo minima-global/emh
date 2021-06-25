@@ -1,7 +1,7 @@
 import {ActionProps, CmdActionTypes, CmdProps} from '../../../types';
 
 const initialState: CmdProps = {
-  data: [],
+  data: {},
 };
 
 export const reducer =

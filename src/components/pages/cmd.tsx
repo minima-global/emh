@@ -181,6 +181,7 @@ const display = (props: Props) => {
       });
 
       if (props.cmd?.data ) {
+        console.log('got data', props.cmd?.data);
         setRunning(false);
       }
     }
@@ -428,10 +429,10 @@ const display = (props: Props) => {
               }}
             >
               <pre>
-                {(((JSON.stringify(props.cmd.data, undefined, 2))
-                    .slice(1, -1))
-                    .replace(/(^[ \t]*\n)/gm, ''))
-                    .replace(/\\n/g, '\n')
+                { Object.keys(props.cmd.data).length ?
+                  (((JSON.stringify(props.cmd.data, undefined, 2)))
+                      .replace(/(^[ \t]*\n)/gm, ''))
+                      .replace(/\\n/g, '\n') : null
                 }
               </pre>
             </Grid>

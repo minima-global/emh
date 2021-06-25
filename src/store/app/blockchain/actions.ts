@@ -89,7 +89,7 @@ export const command = (endpoint: string, cmd: string) => {
               Dbase.defaultActions.run,
               endpoint + ' ' + cmd),
       );
-      dispatch(write({data: msg.response})(successAction));
+      dispatch(write({data: msg})(successAction));
     });
   };
 };

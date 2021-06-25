@@ -53,7 +53,7 @@ const chart = (props: Props) => {
 
   // console.log('got chart', props.chartType);
 
-  const screenHeight = props.isFullScreen ? '560px' : '250px';
+  const screenHeight = props.isFullScreen ? '500px' : '250px';
   const chartIndex = ChartVars.chartInfo.indexOf(props.chartType.name);
 
   const classes = themeStyles();

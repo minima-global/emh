@@ -349,7 +349,7 @@ const list = (props: Props) => {
                 onClick={showDialogueClose}
                 size='medium'
                 variant='outlined'
-                color='primary'
+                color='secondary'
                 style={{
                   color: 'white',
                   background: '#317AFF',

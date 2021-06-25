@@ -68,7 +68,7 @@ export interface InfoProps {
  * cmd stuff
 */
 export interface CmdProps extends PayloadProps {
-  data: Array<object>
+  data: object
 }
 
 /**
