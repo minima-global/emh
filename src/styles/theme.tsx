@@ -235,6 +235,12 @@ const themeStyles = makeStyles({
       paddingRight: theme.spacing(2),
     },
   },
+  fullscreenChart: {
+    marginTop: theme.spacing(2),
+    marginRight: theme.spacing(2),
+    width: '100%',
+    height: '770px',
+  },
   dashboardToken: {
     marginTop: theme.spacing(2),
     marginRight: theme.spacing(2),

@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 
 import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
 
 import {theme} from '../../styles';
 
@@ -19,6 +20,7 @@ import {
 
 import {getChartEntries} from '../../store/app/dbase/actions';
 
+import {themeStyles} from '../../styles';
 // import {getChartData} from '../../utils/getChartData';
 import {DisplayChart} from '../displayChart';
 import {DisplayChartSummary} from '../displayChartSummary';
@@ -49,8 +51,10 @@ const chart = (props: Props) => {
 
   // console.log('got chart', props.chartType);
 
-  const screenHeight = props.isFullScreen ? '800px' : '250px';
+  const screenHeight = props.isFullScreen ? '720px' : '250px';
   const chartIndex = ChartVars.chartInfo.indexOf(props.chartType.name);
+
+  const classes = themeStyles();
 
   useEffect(() => {
     if ( chartIndex != -1 ) {
@@ -66,28 +70,71 @@ const chart = (props: Props) => {
   }, [props.chartsData]);
 
   return (
-    <Grid
-      item
-      container
-      alignItems="flex-start"
-      style={{
-        padding: theme.spacing(2),
-      }}
-    >
-      <Grid container>
-        <DisplayChartSummary
-          heading={props.chartType.name}
-          chartData={data}
-          isFullScreen={props.isFullScreen}
-          navLink={props.navLink}
-          logNavLink={props.logNavLink} />
 
-        <DisplayChart
-          chartType={props.chartType}
-          chartData={data}
-          viewport={screenHeight} />
-      </Grid>
-    </Grid>
+    <>
+      { props.isFullScreen ?
+
+        <Grid
+          container
+          style={{
+            paddingLeft: theme.spacing(8),
+            paddingRight: theme.spacing(8),
+          }}
+        >
+          <Paper
+            elevation={5}
+            className={classes.fullscreenChart}
+          >
+            <Grid
+              item
+              container
+              alignItems="flex-start"
+              style={{
+                padding: theme.spacing(2),
+              }}
+            >
+              <Grid container>
+                <DisplayChartSummary
+                  heading={props.chartType.name}
+                  chartData={data}
+                  isFullScreen={props.isFullScreen}
+                  navLink={props.navLink}
+                  logNavLink={props.logNavLink} />
+
+                <DisplayChart
+                  chartType={props.chartType}
+                  chartData={data}
+                  viewport={screenHeight} />
+              </Grid>
+            </Grid>
+
+          </Paper>
+
+        </Grid> :
+        <Grid
+          item
+          container
+          alignItems="flex-start"
+          style={{
+            padding: theme.spacing(2),
+          }}
+        >
+          <Grid container>
+            <DisplayChartSummary
+              heading={props.chartType.name}
+              chartData={data}
+              isFullScreen={props.isFullScreen}
+              navLink={props.navLink}
+              logNavLink={props.logNavLink} />
+
+            <DisplayChart
+              chartType={props.chartType}
+              chartData={data}
+              viewport={screenHeight} />
+          </Grid>
+        </Grid>
+      }
+    </>
   );
 };
 
