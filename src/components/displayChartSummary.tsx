@@ -70,7 +70,7 @@ const summary = (props: Props) => {
       <Grid
         item
         container
-        alignItems="center"
+        alignItems="flex-start"
         xs={4}
       >
         <Typography variant="h3">
