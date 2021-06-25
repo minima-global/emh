@@ -57,6 +57,8 @@ type Props = ThisProps & StateProps & DispatchProps
 export const list = (props: Props) => {
   const isFirstRun = useRef(true);
   const [searchTerm, setSearchTerm] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchCountQuery, setSearchCountQuery] = useState('');
   // eslint-disable-next-line no-unused-vars
   const [low, setLimitLow] = useState(0);
   // eslint-disable-next-line no-unused-vars
@@ -81,7 +83,18 @@ export const list = (props: Props) => {
       props.countTableEntries(props.logType.countQuery);
       props.getTableEntries(query, actionType);
     } else {
-      if (props.countData.data[props.logType.countQuery]) {
+      if ( searchCountQuery ) {
+        if (props.countData.data[searchCountQuery]) {
+          // eslint-disable-next-line max-len
+          // console.log('got count data: ', props.countData.data[searchCountQuery]);
+          const thisCount = props.countData.data[searchCountQuery];
+          if ( thisCount != totalRecords ) {
+            setTotalRecords(props.countData.data[searchCountQuery]);
+          }
+        }
+      } else if (props.countData.data[props.logType.countQuery]) {
+        // eslint-disable-next-line max-len
+        // console.log('got count data: ', props.countData.data[props.logType.countQuery]);
         const thisCount = props.countData.data[props.logType.countQuery];
         if ( thisCount != totalRecords ) {
           setTotalRecords(props.countData.data[props.logType.countQuery]);
@@ -107,16 +120,52 @@ export const list = (props: Props) => {
       };
 
   const doSearch = () => {
-    console.log('seartch term: ', searchTerm);
+    setLimitLow(0);
+    let countQuery = props.logType.countQuery;
+    let query = props.logType.query + ' LIMIT ' + 0 + ', ' + offset;
+
+    if ( searchTerm ) {
+      const queryDetails = Dbase.tables.log.name +
+      ' WHERE ' + Dbase.tables.log.columns[2] +
+      ' LIKE \'%' + searchTerm + '%\'' +
+      ' OR ' + Dbase.tables.log.columns[3] +
+      ' LIKE \'%' + searchTerm + '%\'' +
+      ' OR ' + Dbase.tables.log.columns[4] +
+      ' LIKE \'%' + searchTerm + '%\'' +
+      ' ORDER BY DATE DESC';
+
+      countQuery = 'SELECT COUNT(*) FROM ' + queryDetails;
+      query = 'SELECT * FROM ' + queryDetails;
+
+      /* console.log('count query: ', countQuery);
+      console.log('query: ', query);*/
+
+      setSearchCountQuery(countQuery);
+      setSearchQuery(query);
+
+      query += ' LIMIT ' + 0 + ', ' + Dbase.pageLimit;
+    } else {
+      setSearchCountQuery('');
+      setSearchQuery('');
+    }
+
+    /* console.log('count query: ', countQuery);
+    console.log('query: ', query);*/
+
+    props.countTableEntries(countQuery);
+    props.getTableEntries(query, actionType);
   };
 
   const getRecords = (lowLimit: number) => {
     // console.log('getting records', lowLimit);
     if ( lowLimit >= 0) {
-      // console.log('getting records', lowLimit, offset, totalRecords);
-      const query =
-        props.logType.query + ' LIMIT ' + lowLimit + ', ' + offset;
       setLimitLow(lowLimit);
+      let query = props.logType.query;
+      if ( searchQuery ) {
+        query = searchQuery;
+      }
+      query += ' LIMIT ' + lowLimit + ', ' + offset;
+      // console.log('getting records', query, totalRecords);
       // console.log(query);
       props.getTableEntries(query, actionType);
     }
