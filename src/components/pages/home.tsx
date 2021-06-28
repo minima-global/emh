@@ -87,7 +87,7 @@ export const Home = () => {
           >
             {
               <Chart
-                chartType={TokensVars.chartType}
+                chartType={TokensVars.tokenChart}
                 isFullScreen={false}
                 navLink={Local.chartTokens}
                 logNavLink={Local.logTokens} /> }
@@ -108,7 +108,7 @@ export const Home = () => {
           >
             {
               <Chart
-                chartType={AddressVars.chartType}
+                chartType={AddressVars.addressChart}
                 isFullScreen={false}
                 navLink={Local.chartAddresses}
                 logNavLink={Local.logAddresses}/> }
@@ -127,7 +127,7 @@ export const Home = () => {
           >
             {
               <Chart
-                chartType={APIVars.chartType}
+                chartType={APIVars.apiChart}
                 isFullScreen={false}
                 navLink={Local.chartAPI}
                 logNavLink={Local.logAPI} /> }
@@ -146,7 +146,7 @@ export const Home = () => {
           >
             {
               <Chart
-                chartType={CmdVars.chartType}
+                chartType={CmdVars.cmdChart}
                 isFullScreen={false}
                 navLink={Local.chartCmds}
                 logNavLink={Local.logCmds} /> }

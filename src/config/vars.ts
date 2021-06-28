@@ -263,7 +263,7 @@ class Cmd {
   ' And ' + Dbase.tables.log.columns[4] +
   ' LIKE \'%<searchTerm>%\'';
 
-  static readonly chartType: ChartType = {
+  static readonly cmdChart: ChartType = {
     name: Cmd.chartHeading,
     regex: Cmd.regex,
     query: Cmd.query,
@@ -304,7 +304,7 @@ class Cmd {
     },
   }
 
-  static readonly logType: LogType = {
+  static readonly cmdLog: LogType = {
     name: Cmd.logHeading,
     query: Cmd.query + ' ORDER BY DATE DESC',
     countQuery: Cmd.countQuery,
@@ -352,7 +352,7 @@ class Addresses {
   ' And ' + Dbase.tables.log.columns[4] +
   ' LIKE \'%<searchTerm>%\'';
 
-  static readonly chartType: ChartType = {
+  static readonly addressChart: ChartType = {
     name: Addresses.chartHeading,
     regex: Addresses.regex,
     query: Addresses.query,
@@ -393,7 +393,7 @@ class Addresses {
     },
   }
 
-  static readonly logType: LogType = {
+  static readonly addressLog: LogType = {
     name: Addresses.logHeading,
     query: Addresses.query + ' ORDER BY DATE DESC',
     countQuery: Addresses.countQuery,
@@ -444,7 +444,7 @@ class Tokens {
   ' And ' + Dbase.tables.log.columns[4] +
   ' LIKE \'%<searchTerm>%\'';
 
-  static readonly chartType: ChartType = {
+  static readonly tokenChart: ChartType = {
     name: Tokens.chartHeading,
     regex: Tokens.regex,
     query: Tokens.query,
@@ -485,7 +485,7 @@ class Tokens {
     },
   }
 
-  static readonly logType: LogType = {
+  static readonly tokenLog: LogType = {
     name: Tokens.logHeading,
     query: Tokens.query + ' ORDER BY DATE DESC',
     countQuery: Tokens.countQuery,
@@ -566,7 +566,7 @@ class API {
   ' And ' + Dbase.tables.log.columns[4] +
   ' LIKE \'%<searchTerm>%\'';
 
-  static readonly chartType: ChartType = {
+  static readonly apiChart: ChartType = {
     name: API.chartHeading,
     regex: API.regex,
     query: API.query,
@@ -607,7 +607,7 @@ class API {
     },
   }
 
-  static readonly logType: LogType = {
+  static readonly apiLog: LogType = {
     name: API.logHeading,
     query: API.query + ' ORDER BY DATE DESC',
     countQuery: API.countQuery,
@@ -650,7 +650,7 @@ class Log {
   static readonly searchCountQuery =
     'SELECT COUNT(*) FROM ' + Log.searchQueryDetails;
 
-    static readonly logType: LogType = {
+    static readonly log: LogType = {
       name: Log.heading,
       query: Log.query,
       countQuery: Log.countQuery,

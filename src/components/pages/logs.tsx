@@ -64,7 +64,7 @@ export const list = (props: Props) => {
   // eslint-disable-next-line no-unused-vars
   const [offset, setOffset] = useState(Dbase.pageLimit);
   const [totalRecords, setTotalRecords] = useState(0);
-  const [nextDisabled, setNextDisabled] = useState(true);
+  const [nextDisabled, setNextDisabled] = useState(false);
   const [backDisabled, setBackDisabled] = useState(true);
 
   const actionType: SuccessAndFailType = {
@@ -112,7 +112,7 @@ export const list = (props: Props) => {
         setBackDisabled(false);
       }
     }
-  }, [props.countData]);
+  }, [props.countData, props.logsData]);
 
   const doSetSearchTerm =
       (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -151,7 +151,7 @@ export const list = (props: Props) => {
   };
 
   const getRecords = (lowLimit: number) => {
-    // console.log('getting records', lowLimit);
+    // console.log('getting records', lowLimit, offset, totalRecords);
     if ( lowLimit >= 0) {
       setLimitLow(lowLimit);
       let query = props.logType.query;

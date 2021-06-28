@@ -45,7 +45,7 @@ export const Content = () => {
       <Route
         path={Local.logs}
         render= {() =>
-          <Logs logType={LogVars.logType} /> }
+          <Logs logType={LogVars.log} /> }
       />
       <Route
         exact path={Local.urls}
@@ -71,7 +71,7 @@ export const Content = () => {
         exact path={Local.chartTokens}
         render= {() =>
           <Chart
-            chartType={TokensVars.chartType}
+            chartType={TokensVars.tokenChart}
             isFullScreen={true}
             navLink={Local.home}
             logNavLink={Local.logTokens} /> }
@@ -80,7 +80,7 @@ export const Content = () => {
         exact path={Local.chartAddresses}
         render= {() =>
           <Chart
-            chartType={AddressVars.chartType}
+            chartType={AddressVars.addressChart}
             isFullScreen={true}
             navLink={Local.home}
             logNavLink={Local.logAddresses} /> }
@@ -89,7 +89,7 @@ export const Content = () => {
         exact path={Local.chartAPI}
         render= {() =>
           <Chart
-            chartType={APIVars.chartType}
+            chartType={APIVars.apiChart}
             isFullScreen={true}
             navLink={Local.home}
             logNavLink={Local.logAPI} /> }
@@ -98,7 +98,7 @@ export const Content = () => {
         exact path={Local.chartCmds}
         render= {() =>
           <Chart
-            chartType={CmdVars.chartType}
+            chartType={CmdVars.cmdChart}
             isFullScreen={true}
             navLink={Local.home}
             logNavLink={Local.logCmds} /> }
@@ -107,25 +107,25 @@ export const Content = () => {
       <Route
         path={Local.logTokens}
         render= {() =>
-          <Logs logType={TokensVars.logType} /> }
+          <Logs logType={TokensVars.tokenLog} /> }
       />
 
       <Route
         path={Local.logAddresses}
         render= {() =>
-          <Logs logType={AddressVars.logType} /> }
+          <Logs logType={AddressVars.addressLog} /> }
       />
 
       <Route
         path={Local.logAPI}
         render= {() =>
-          <Logs logType={APIVars.logType} /> }
+          <Logs logType={APIVars.apiLog} /> }
       />
 
       <Route
         path={Local.logCmds}
         render= {() =>
-          <Logs logType={CmdVars.logType} /> }
+          <Logs logType={CmdVars.cmdLog} /> }
       />
 
       <Route

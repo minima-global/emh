@@ -55,7 +55,6 @@ export const chart = (props: Props) => {
 
   useEffect(() => {
     let chart: any;
-    console.log('in here!', props.chartData);
     if ( chartIndex != -1 ) {
       if ( props.chartData.data[chartIndex] ) {
         const keys = Object.keys(props.chartData.data[chartIndex]);
