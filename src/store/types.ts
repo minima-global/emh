@@ -52,6 +52,9 @@ export type ChartType = {
   name: string
   regex: string
   query: string
+  countQuery: string
+  searchQuery: string
+  searchCountQuery: string
   type: string
   options: object
 }

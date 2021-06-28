@@ -1,4 +1,4 @@
-import React, {useState, ChangeEvent} from 'react';
+import React, {useState, useEffect, useRef, ChangeEvent} from 'react';
 import {connect} from 'react-redux';
 import {NavLink} from 'react-router-dom';
 
@@ -19,11 +19,12 @@ import {themeStyles} from '../styles';
 import {
   ApplicationState,
   AppDispatch,
-  ChartData,
-  SuccessAndFailType,
+  ChartProps,
+  ChartType,
+  CountProps,
 } from '../store/types';
 
-import {getTableEntries} from '../store/app/dbase/actions';
+import {countTableEntries, getChartEntries} from '../store/app/dbase/actions';
 
 import {
   Chart,
@@ -31,26 +32,66 @@ import {
 } from '../config';
 
 interface SummaryProps {
-  heading: string
-  chartData: ChartData
+  chartType: ChartType
   isFullScreen: boolean
   navLink: string
   logNavLink: string
 }
 
+interface StateProps {
+  countData: CountProps,
+  chartsData: ChartProps
+}
+
 interface DispatchProps {
-  getTableEntries: (
+  countTableEntries: (
+    query: string
+  ) => void
+  getChartEntries: (
     query: string,
-    actionType: SuccessAndFailType,
+    chartName: string,
+    filterRegex: string
   ) => void
 }
 
-type Props = SummaryProps & DispatchProps
+type Props = SummaryProps & StateProps & DispatchProps
 
 const summary = (props: Props) => {
+  const isFirstRun = useRef(true);
   const [searchTerm, setSearchTerm] = useState('');
+  // eslint-disable-next-line no-unused-vars
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchCountQuery, setSearchCountQuery] = useState('');
+  const [totalRecords, setTotalRecords] = useState(0);
 
   const classes = themeStyles();
+
+  useEffect(() => {
+    if ( isFirstRun.current ) {
+      isFirstRun.current = false;
+      props.countTableEntries(props.chartType.countQuery);
+      props.getChartEntries(
+          props.chartType.query, props.chartType.name, props.chartType.regex);
+    } else {
+      if ( searchCountQuery ) {
+        if (props.countData.data[searchCountQuery]) {
+          // eslint-disable-next-line max-len
+          // console.log('got count data: ', props.countData.data[searchCountQuery]);
+          const thisCount = props.countData.data[searchCountQuery];
+          if ( thisCount != totalRecords ) {
+            setTotalRecords(props.countData.data[searchCountQuery]);
+          }
+        }
+      } else if (props.countData.data[props.chartType.countQuery]) {
+        // eslint-disable-next-line max-len
+        // console.log('got count data: ', props.countData.data[props.chartType.countQuery]);
+        const thisCount = props.countData.data[props.chartType.countQuery];
+        if ( thisCount != totalRecords ) {
+          setTotalRecords(props.countData.data[props.chartType.countQuery]);
+        }
+      }
+    }
+  }, [props.countData]);
 
   const navLinkIcon = props.isFullScreen ? closeIcon : expandIcon;
 
@@ -60,7 +101,32 @@ const summary = (props: Props) => {
       };
 
   const doSearch = () => {
-    console.log('seartch term: ', searchTerm);
+    let countQuery = props.chartType.countQuery;
+    let query = props.chartType.query;
+
+    if ( searchTerm ) {
+      query = props.chartType.searchQuery.replace(/<[^>]*>/g, searchTerm);
+      countQuery =
+        props.chartType.searchCountQuery.replace(/<[^>]*>/g, searchTerm);
+
+      /*
+      console.log('count query:', countQuery, props.chartType.searchCountQuery);
+      console.log('query: ', query, props.chartType.searchQuery);
+      */
+
+      setSearchCountQuery(countQuery);
+      setSearchQuery(query);
+    } else {
+      setSearchCountQuery('');
+      setSearchQuery('');
+    }
+
+    /* console.log('count query: ', countQuery);
+    console.log('query: ', query);*/
+
+    props.countTableEntries(countQuery);
+    props.getChartEntries(
+        query, props.chartType.name, props.chartType.regex);
   };
 
   return (
@@ -74,7 +140,7 @@ const summary = (props: Props) => {
         xs={4}
       >
         <Typography variant="h3">
-          {props.heading}
+          {props.chartType.name}
         </Typography>
       </Grid>
       <Grid
@@ -157,12 +223,7 @@ const summary = (props: Props) => {
               xs={12}
             >
               <Typography variant="h3">
-                {Chart.totals} {props.heading} = {
-                  Object.values(props.chartData)
-                      .reduce( function(acc: number, chartData: number) {
-                        return acc + chartData;
-                      }, 0)
-                }
+                {Chart.totals} {props.chartType.name} = {totalRecords}
               </Typography>
             </Grid>
 
@@ -181,20 +242,42 @@ const summary = (props: Props) => {
   );
 };
 
-const mapDispatchToProps = (dispatch: AppDispatch): DispatchProps => {
+/*
+{Chart.totals} {props.chartType.name} = {
+  Object.values(props.chartData)
+      .reduce( function(acc: number, chartData: number) {
+        return acc + chartData;
+      }, 0)
+}
+*/
+
+const mapStateToProps = (state: ApplicationState): StateProps => {
   return {
-    getTableEntries: (
-        query: string,
-        actionType: SuccessAndFailType,
-    ) =>
-      dispatch(getTableEntries(query, actionType),
-      ),
+    countData: state.countData as CountProps,
+    chartsData: state.chartsData as ChartProps,
   };
 };
 
-const DisplayChartSummary = connect<{}, DispatchProps, {}, ApplicationState>(
-    null,
-    mapDispatchToProps,
-)(summary);
+const mapDispatchToProps = (dispatch: AppDispatch): DispatchProps => {
+  return {
+    countTableEntries: (
+        query: string,
+    ) => dispatch(countTableEntries(
+        query,
+    )),
+    getChartEntries: (
+        query: string,
+        chartName: string,
+        filterRegex: string,
+    ) =>
+      dispatch(getChartEntries(query, chartName, filterRegex)),
+  };
+};
+
+const DisplayChartSummary =
+  connect<StateProps, DispatchProps, {}, ApplicationState>(
+      mapStateToProps,
+      mapDispatchToProps,
+  )(summary);
 
 export {DisplayChartSummary};

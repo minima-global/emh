@@ -1,4 +1,5 @@
 import React, {useEffect, useState, useRef} from 'react';
+import {connect} from 'react-redux';
 
 import Grid from '@material-ui/core/Grid';
 
@@ -7,8 +8,9 @@ import Chart from 'chart.js/auto';
 import {theme} from '../styles';
 
 import {
-  ChartData,
+  ApplicationState,
   ChartType,
+  ChartProps as ChartTypeProps,
 } from '../store/types';
 
 import {
@@ -18,37 +20,62 @@ import {
 
 interface ChartProps {
   chartType: ChartType
-  chartData: ChartData
   viewport: string
 }
 
-type Props = ChartProps
+interface StateProps {
+  chartData: ChartTypeProps
+}
 
-export const DisplayChart = (props: Props) => {
-  // const classes = themeStyles();
+type Props = ChartProps & StateProps
+
+export const chart = (props: Props) => {
   // eslint-disable-next-line no-unused-vars
   const [chartHeight, setChartHeight] = useState(0);
   const dataCtx = useRef<HTMLCanvasElement>(null);
 
+  const chartIndex = ChartVars.chartInfo.indexOf(props.chartType.name);
+
+  /*
+  useEffect(() => {
+
+    const chartIndex = ChartVars.chartInfo.indexOf(props.chartType.name);
+    if ( chartIndex != -1 ) {
+      if ( props.chartsData.data[chartIndex] ) {
+        setData(props.chartsData.data[chartIndex]);
+      } else {
+        // SELECT * FROM LOGGING ORDER BY DATE DESC LIMIT 0, 2147483647
+        // console.log('runnig charts query', query);
+        props.getChartEntries(
+            props.chartType.query, props.chartType.name, props.chartType.regex);
+      }
+    }
+  }, [props.chartsData]);
+  */
+
   useEffect(() => {
     let chart: any;
-    const keys = props.chartData ? Object.keys(props.chartData) : [];
-    if ( keys.length ) {
-      const values = Object.values(props.chartData);
-      setChartHeight(ChartVars.axisOffset + keys.length * ChartVars.gridHeight);
-      const ctx: HTMLCanvasElement | null = dataCtx.current;
-      if ( ctx ) {
-        chart = new Chart(ctx, {
-          type: props.chartType.type,
-          data: {
-            labels: keys.map((key: string) => key),
-            datasets: [{
-              data: values.map((value: number) => value),
-              backgroundColor: colours,
-            }],
-          },
-          options: props.chartType.options,
-        });
+    console.log('in here!', props.chartData);
+    if ( chartIndex != -1 ) {
+      if ( props.chartData.data[chartIndex] ) {
+        const keys = Object.keys(props.chartData.data[chartIndex]);
+        const values = Object.values(props.chartData.data[chartIndex]);
+        setChartHeight(
+            ChartVars.axisOffset + keys.length * ChartVars.gridHeight);
+        const ctx: HTMLCanvasElement | null = dataCtx.current;
+        if ( ctx ) {
+          chart = new Chart(ctx, {
+            type: props.chartType.type,
+            data: {
+              labels: keys.map((key: string) => key),
+              datasets: [{
+                data: values.map((value: number) => value),
+                backgroundColor: colours,
+              }],
+            },
+            options: props.chartType.options,
+          });
+        }
       }
     }
     return () => {
@@ -91,4 +118,17 @@ export const DisplayChart = (props: Props) => {
     </Grid>
   );
 };
+
+const mapStateToProps = (state: ApplicationState): StateProps => {
+  return {
+    chartData: state.chartsData as ChartTypeProps,
+  };
+};
+
+const DisplayChart =
+  connect<StateProps, {}, {}, ApplicationState>(
+      mapStateToProps,
+  )(chart);
+
+export {DisplayChart};
 

@@ -10,7 +10,6 @@ import {
   StatusProps,
   StatusActionTypes,
   TxData,
-  ChartsActionTypes,
 } from '../../types';
 
 import {Dbase} from '../../../config';
@@ -38,7 +37,7 @@ export const init = () => {
         // force the charts to reload as we may have new tx/address entries
         // in the database
         // console.log('newtxpow');
-        dispatch(write({data: []})(ChartsActionTypes.CHARTS_INIT));
+        // dispatch(write({data: []})(ChartsActionTypes.CHARTS_INIT));
         dispatch(getStatus());
       }
     });

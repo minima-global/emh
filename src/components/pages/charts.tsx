@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {connect} from 'react-redux';
 
 import Grid from '@material-ui/core/Grid';
@@ -11,12 +11,10 @@ import {
   ApplicationState,
   AppDispatch,
   ChartProps,
-  ChartData,
   ChartType,
 } from '../../store/types';
 
 import {
-  Chart as ChartVars,
   Home,
 } from '../../config';
 
@@ -49,27 +47,9 @@ interface DispatchProps {
 type Props = ThisProps & StateProps & DispatchProps
 
 const chart = (props: Props) => {
-  const [data, setData] = useState({} as ChartData);
-
-  // console.log('got chart', props.chartType);
-
   const screenHeight = props.isFullScreen ? '520px' : '250px';
-  const chartIndex = ChartVars.chartInfo.indexOf(props.chartType.name);
 
   const classes = themeStyles();
-
-  useEffect(() => {
-    if ( chartIndex != -1 ) {
-      if ( props.chartsData.data[chartIndex] ) {
-        setData(props.chartsData.data[chartIndex]);
-      } else {
-        // SELECT * FROM LOGGING ORDER BY DATE DESC LIMIT 0, 2147483647
-        // console.log('runnig charts query', query);
-        props.getChartEntries(
-            props.chartType.query, props.chartType.name, props.chartType.regex);
-      }
-    }
-  }, [props.chartsData]);
 
   return (
 
@@ -119,15 +99,13 @@ const chart = (props: Props) => {
                 >
                   <Grid container>
                     <DisplayChartSummary
-                      heading={props.chartType.name}
-                      chartData={data}
+                      chartType={props.chartType}
                       isFullScreen={props.isFullScreen}
                       navLink={props.navLink}
                       logNavLink={props.logNavLink} />
 
                     <DisplayChart
                       chartType={props.chartType}
-                      chartData={data}
                       viewport={screenHeight} />
                   </Grid>
                 </Grid>
@@ -147,15 +125,13 @@ const chart = (props: Props) => {
         >
           <Grid container>
             <DisplayChartSummary
-              heading={props.chartType.name}
-              chartData={data}
+              chartType={props.chartType}
               isFullScreen={props.isFullScreen}
               navLink={props.navLink}
               logNavLink={props.logNavLink} />
 
             <DisplayChart
               chartType={props.chartType}
-              chartData={data}
               viewport={screenHeight} />
           </Grid>
         </Grid>

@@ -267,6 +267,9 @@ class Cmd {
     name: Cmd.chartHeading,
     regex: Cmd.regex,
     query: Cmd.query,
+    countQuery: Cmd.countQuery,
+    searchQuery: Cmd.searchQuery,
+    searchCountQuery: Cmd.searchCountQuery,
     type: 'bar',
     options: {
       plugins: {
@@ -353,6 +356,9 @@ class Addresses {
     name: Addresses.chartHeading,
     regex: Addresses.regex,
     query: Addresses.query,
+    countQuery: Addresses.countQuery,
+    searchQuery: Addresses.searchQuery,
+    searchCountQuery: Addresses.searchCountQuery,
     type: 'bar',
     options: {
       plugins: {
@@ -442,6 +448,9 @@ class Tokens {
     name: Tokens.chartHeading,
     regex: Tokens.regex,
     query: Tokens.query,
+    countQuery: Tokens.countQuery,
+    searchQuery: Tokens.searchQuery,
+    searchCountQuery: Tokens.searchCountQuery,
     type: 'bar',
     options: {
       plugins: {
@@ -561,6 +570,9 @@ class API {
     name: API.chartHeading,
     regex: API.regex,
     query: API.query,
+    countQuery: API.countQuery,
+    searchQuery: API.searchQuery,
+    searchCountQuery: API.searchCountQuery,
     type: 'bar',
     options: {
       plugins: {

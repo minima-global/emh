@@ -112,7 +112,7 @@ export const list = (props: Props) => {
         setBackDisabled(false);
       }
     }
-  }, [props.countData, props.logsData]);
+  }, [props.countData]);
 
   const doSetSearchTerm =
       (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
