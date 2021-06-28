@@ -255,6 +255,14 @@ class Cmd {
   static readonly query = 'SELECT * FROM ' + Cmd.queryDetails;
   static readonly countQuery = 'SELECT COUNT(*) FROM ' + Cmd.queryDetails;
 
+  static readonly searchQuery = Cmd.query +
+    ' And ' + Dbase.tables.log.columns[4] +
+    ' LIKE \'%<searchTerm>%\'';
+
+  static readonly searchCountQuery = Cmd.countQuery +
+  ' And ' + Dbase.tables.log.columns[4] +
+  ' LIKE \'%<searchTerm>%\'';
+
   static readonly chartType: ChartType = {
     name: Cmd.chartHeading,
     regex: Cmd.regex,
@@ -297,8 +305,8 @@ class Cmd {
     name: Cmd.logHeading,
     query: Cmd.query + ' ORDER BY DATE DESC',
     countQuery: Cmd.countQuery,
-    searchQuery: '',
-    searchCountQuery: '',
+    searchQuery: Cmd.searchQuery,
+    searchCountQuery: Cmd.searchCountQuery,
   }
 
   static readonly trigger = 'API'
@@ -332,6 +340,14 @@ class Addresses {
 
   static readonly query = 'SELECT * FROM ' + Addresses.queryDetails;
   static readonly countQuery = 'SELECT COUNT(*) FROM ' + Addresses.queryDetails;
+
+  static readonly searchQuery = Addresses.query +
+    ' And ' + Dbase.tables.log.columns[4] +
+    ' LIKE \'%<searchTerm>%\'';
+
+  static readonly searchCountQuery = Addresses.countQuery +
+  ' And ' + Dbase.tables.log.columns[4] +
+  ' LIKE \'%<searchTerm>%\'';
 
   static readonly chartType: ChartType = {
     name: Addresses.chartHeading,
@@ -375,8 +391,8 @@ class Addresses {
     name: Addresses.logHeading,
     query: Addresses.query + ' ORDER BY DATE DESC',
     countQuery: Addresses.countQuery,
-    searchQuery: '',
-    searchCountQuery: '',
+    searchQuery: Addresses.searchQuery,
+    searchCountQuery: Addresses.searchCountQuery,
   }
 
   static readonly address = 'Mx Address'
@@ -413,6 +429,14 @@ class Tokens {
 
   static readonly query = 'SELECT * FROM ' + Tokens.queryDetails;
   static readonly countQuery = 'SELECT COUNT(*) FROM ' + Tokens.queryDetails;
+
+  static readonly searchQuery = Tokens.query +
+    ' And ' + Dbase.tables.log.columns[4] +
+    ' LIKE \'%<searchTerm>%\'';
+
+  static readonly searchCountQuery = Tokens.countQuery +
+  ' And ' + Dbase.tables.log.columns[4] +
+  ' LIKE \'%<searchTerm>%\'';
 
   static readonly chartType: ChartType = {
     name: Tokens.chartHeading,
@@ -456,8 +480,8 @@ class Tokens {
     name: Tokens.logHeading,
     query: Tokens.query + ' ORDER BY DATE DESC',
     countQuery: Tokens.countQuery,
-    searchQuery: '',
-    searchCountQuery: '',
+    searchQuery: Tokens.searchQuery,
+    searchCountQuery: Tokens.searchCountQuery,
   }
 
   static readonly tokenId = 'Token iD'
