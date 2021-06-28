@@ -84,12 +84,27 @@ const display = (props: Props) => {
                         justify="flex-start"
                         xs={10}
                       >
-                        <Grid item container justify="flex-start" xs={12}>
+                        <Grid item container justify="flex-start" xs={3}>
                           <Typography
                             variant="h6"
                             noWrap={true}
                           >
                             {balance.token}
+                          </Typography>
+                        </Grid>
+
+                        <Grid
+                          item
+                          container
+                          alignItems='center'
+                          justify="flex-start"
+                          xs={9}
+                        >
+                          <Typography
+                            variant="body1"
+                            noWrap={true}
+                          >
+                            {balance.tokenid}
                           </Typography>
                         </Grid>
 

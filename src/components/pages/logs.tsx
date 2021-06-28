@@ -125,20 +125,14 @@ export const list = (props: Props) => {
     let query = props.logType.query + ' LIMIT ' + 0 + ', ' + offset;
 
     if ( searchTerm ) {
-      const queryDetails = Dbase.tables.log.name +
-      ' WHERE ' + Dbase.tables.log.columns[2] +
-      ' LIKE \'%' + searchTerm + '%\'' +
-      ' OR ' + Dbase.tables.log.columns[3] +
-      ' LIKE \'%' + searchTerm + '%\'' +
-      ' OR ' + Dbase.tables.log.columns[4] +
-      ' LIKE \'%' + searchTerm + '%\'' +
-      ' ORDER BY DATE DESC';
+      query = props.logType.searchQuery.replace(/<[^>]*>/g, searchTerm);
+      countQuery =
+        props.logType.searchCountQuery.replace(/<[^>]*>/g, searchTerm);
 
-      countQuery = 'SELECT COUNT(*) FROM ' + queryDetails;
-      query = 'SELECT * FROM ' + queryDetails;
-
-      /* console.log('count query: ', countQuery);
-      console.log('query: ', query);*/
+      /*
+      console.log('count query: ', countQuery, props.logType.searchCountQuery);
+      console.log('query: ', query, props.logType.searchQuery);
+      */
 
       setSearchCountQuery(countQuery);
       setSearchQuery(query);

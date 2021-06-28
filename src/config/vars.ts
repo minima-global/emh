@@ -297,6 +297,8 @@ class Cmd {
     name: Cmd.logHeading,
     query: Cmd.query + ' ORDER BY DATE DESC',
     countQuery: Cmd.countQuery,
+    searchQuery: '',
+    searchCountQuery: '',
   }
 
   static readonly trigger = 'API'
@@ -373,6 +375,8 @@ class Addresses {
     name: Addresses.logHeading,
     query: Addresses.query + ' ORDER BY DATE DESC',
     countQuery: Addresses.countQuery,
+    searchQuery: '',
+    searchCountQuery: '',
   }
 
   static readonly address = 'Mx Address'
@@ -452,6 +456,8 @@ class Tokens {
     name: Tokens.logHeading,
     query: Tokens.query + ' ORDER BY DATE DESC',
     countQuery: Tokens.countQuery,
+    searchQuery: '',
+    searchCountQuery: '',
   }
 
   static readonly tokenId = 'Token iD'
@@ -519,6 +525,14 @@ class API {
   static readonly query = 'SELECT * FROM ' + API.queryDetails;
   static readonly countQuery = 'SELECT COUNT(*) FROM ' + API.queryDetails;
 
+  static readonly searchQuery = API.query +
+    ' And ' + Dbase.tables.log.columns[4] +
+    ' LIKE \'%<searchTerm>%\'';
+
+  static readonly searchCountQuery = API.countQuery +
+  ' And ' + Dbase.tables.log.columns[4] +
+  ' LIKE \'%<searchTerm>%\'';
+
   static readonly chartType: ChartType = {
     name: API.chartHeading,
     regex: API.regex,
@@ -561,6 +575,8 @@ class API {
     name: API.logHeading,
     query: API.query + ' ORDER BY DATE DESC',
     countQuery: API.countQuery,
+    searchQuery: API.searchQuery,
+    searchCountQuery: API.searchCountQuery,
   }
 }
 
@@ -584,10 +600,26 @@ class Log {
   static readonly countQuery = 'SELECT COUNT(*) FROM ' +
     Dbase.tables.log.name;
 
+  static readonly searchQueryDetails = Dbase.tables.log.name +
+    ' WHERE ' + Dbase.tables.log.columns[2] +
+    ' LIKE \'%<searchTerm>%\'' +
+    ' OR ' + Dbase.tables.log.columns[3] +
+    ' LIKE \'%<searchTerm>%\'' +
+    ' OR ' + Dbase.tables.log.columns[4] +
+    ' LIKE \'%<searchTerm>%\'';
+
+  static readonly searchQuery =
+    'SELECT * FROM ' + Log.searchQueryDetails + ' ORDER BY DATE DESC';
+
+  static readonly searchCountQuery =
+    'SELECT COUNT(*) FROM ' + Log.searchQueryDetails;
+
     static readonly logType: LogType = {
       name: Log.heading,
       query: Log.query,
       countQuery: Log.countQuery,
+      searchQuery: Log.searchQuery,
+      searchCountQuery: Log.searchCountQuery,
     }
 
   static readonly total = 'Total Entries'

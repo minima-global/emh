@@ -119,6 +119,8 @@ export type LogType = {
   name: string
   query: string
   countQuery: string
+  searchQuery: string
+  searchCountQuery: string
 }
 
 /**
