@@ -241,7 +241,9 @@ class Cmd {
   static readonly chartHeading = 'Commands'
   static readonly logHeading = 'Commands'
 
-  static readonly regex = '^[a-zA-Z0-9]* ';
+  static readonly regex = '^[a-zA-Z0-9]+';
+
+  // 'ID', 'DATE', 'LOGGINGTYPE', 'ACTION', 'DATA'
 
   static readonly queryDetails = Dbase.tables.log.name +
     ' WHERE ' + Dbase.tables.log.columns[2] +
@@ -252,8 +254,18 @@ class Cmd {
     ' REGEXP \'' + Cmd.regex +
     '\'';
 
+  // eslint-disable-next-line max-len
+  // SELECT COUNT(DATA), DATA FROM LOGGING WHERE LOGGINGTYPE IN('COMMAND') AND ACTION IN('run') AND DATA REGEXP '^[a-zA-Z0-9]+' GROUP BY DATA;
   static readonly query = 'SELECT * FROM ' + Cmd.queryDetails;
   static readonly countQuery = 'SELECT COUNT(*) FROM ' + Cmd.queryDetails;
+
+  static readonly chartCountKey = 'COUNT(' + Dbase.tables.log.columns[4] + ')';
+  static readonly chartDataKey = Dbase.tables.log.columns[4];
+  static readonly chartQuery = 'SELECT ' +
+    Cmd.chartCountKey + ', ' +
+    Cmd.chartDataKey +
+    ' FROM ' + Cmd.queryDetails +
+    ' GROUP BY ' + Cmd.chartDataKey;
 
   static readonly searchQuery = Cmd.query +
     ' And ' + Dbase.tables.log.columns[4] +
@@ -266,10 +278,12 @@ class Cmd {
   static readonly cmdChart: ChartType = {
     name: Cmd.chartHeading,
     regex: Cmd.regex,
-    query: Cmd.query,
+    query: Cmd.chartQuery,
     countQuery: Cmd.countQuery,
     searchQuery: Cmd.searchQuery,
     searchCountQuery: Cmd.searchCountQuery,
+    countColumn: Cmd.chartCountKey,
+    dataColumn: Cmd.chartDataKey,
     type: 'bar',
     options: {
       plugins: {
@@ -330,7 +344,7 @@ class Addresses {
   static readonly chartHeading = 'Address Transactions'
   static readonly logHeading = 'Address Transactions'
 
-  static readonly regex = '^Mx[A-Z0-9]*'
+  static readonly regex = '^Mx[A-Z0-9]+'
 
   static readonly queryDetails = Dbase.tables.log.name +
     ' WHERE ' + Dbase.tables.log.columns[2] +
@@ -344,6 +358,16 @@ class Addresses {
   static readonly query = 'SELECT * FROM ' + Addresses.queryDetails;
   static readonly countQuery = 'SELECT COUNT(*) FROM ' + Addresses.queryDetails;
 
+  // eslint-disable-next-line max-len
+  // SELECT COUNT(DATA), DATA FROM LOGGING WHERE LOGGINGTYPE IN('TXPOW') AND ACTION IN('insert') AND DATA REGEXP '^Mx[A-Z0-9]+' GROUP BY DATA;
+  static readonly chartCountKey = 'COUNT(' + Dbase.tables.log.columns[4] + ')';
+  static readonly chartDataKey = Dbase.tables.log.columns[4];
+  static readonly chartQuery = 'SELECT ' +
+    Addresses.chartCountKey + ', ' +
+    Addresses.chartDataKey +
+    ' FROM ' + Addresses.queryDetails +
+    ' GROUP BY ' + Addresses.chartDataKey;
+
   static readonly searchQuery = Addresses.query +
     ' And ' + Dbase.tables.log.columns[4] +
     ' LIKE \'%<searchTerm>%\'';
@@ -355,10 +379,12 @@ class Addresses {
   static readonly addressChart: ChartType = {
     name: Addresses.chartHeading,
     regex: Addresses.regex,
-    query: Addresses.query,
+    query: Addresses.chartQuery,
     countQuery: Addresses.countQuery,
     searchQuery: Addresses.searchQuery,
     searchCountQuery: Addresses.searchCountQuery,
+    countColumn: Addresses.chartCountKey,
+    dataColumn: Addresses.chartDataKey,
     type: 'bar',
     options: {
       plugins: {
@@ -421,8 +447,9 @@ class Tokens {
   static readonly heading = 'Tokens to URLs'
 
   static readonly chartHeading = 'Token Transactions'
+  static readonly tokenDailyChartHeading = 'Daily Token Transactions'
   static readonly logHeading = 'Token Transactions'
-  static readonly regex = '^0x[A-Z0-9]*'
+  static readonly regex = '^0x[A-Z0-9]+'
 
   static readonly queryDetails = Dbase.tables.log.name +
     ' WHERE ' + Dbase.tables.log.columns[2] +
@@ -432,6 +459,18 @@ class Tokens {
     ' And ' + Dbase.tables.log.columns[4] +
     ' REGEXP \'' + Tokens.regex +
     '\'';
+
+  // eslint-disable-next-line max-len
+  // SELECT COUNT(DATA), SUBSTRING(DATA,1,5) FROM LOGGING WHERE LOGGINGTYPE IN('TXPOW') AND ACTION IN('insert') AND DATA REGEXP '^0x00' GROUP BY SUBSTRING(DATA,1,5);
+  // eslint-disable-next-line max-len
+  // SELECT COUNT(DATA), SUBSTRING(DATA,1,130) FROM LOGGING WHERE LOGGINGTYPE IN('TXPOW') AND ACTION IN('insert') AND DATA REGEXP '^0x[A-Z0-9][A-Z0-9][A-Z0-9]+' GROUP BY SUBSTRING(DATA,1,130);
+  static readonly chartCountKey = 'COUNT(' + Dbase.tables.log.columns[4] + ')';
+  static readonly chartDataKey = Dbase.tables.log.columns[4];
+  static readonly chartQuery = 'SELECT ' +
+    Tokens.chartCountKey + ', ' +
+    Tokens.chartDataKey +
+    ' FROM ' + Tokens.queryDetails +
+    ' GROUP BY ' + Tokens.chartDataKey;
 
   static readonly query = 'SELECT * FROM ' + Tokens.queryDetails;
   static readonly countQuery = 'SELECT COUNT(*) FROM ' + Tokens.queryDetails;
@@ -447,10 +486,73 @@ class Tokens {
   static readonly tokenChart: ChartType = {
     name: Tokens.chartHeading,
     regex: Tokens.regex,
-    query: Tokens.query,
+    query: Tokens.chartQuery,
     countQuery: Tokens.countQuery,
     searchQuery: Tokens.searchQuery,
     searchCountQuery: Tokens.searchCountQuery,
+    countColumn: Tokens.chartCountKey,
+    dataColumn: Tokens.chartDataKey,
+    type: 'bar',
+    options: {
+      plugins: {
+        legend: {
+          display: false,
+        },
+      },
+      responsive: true,
+      maintainAspectRatio: false,
+      indexAxis: 'y',
+      barThickness: Misc.barThickness,
+      maxBarThickness: Misc.barThickness + 2,
+      scales: {
+        y: {
+          grid: {
+            display: false,
+          },
+          ticks: {
+            color: '#000000',
+            mirror: true,
+            labelOffset: Misc.labelOffset,
+            z: 1,
+          },
+        },
+        x: {
+          position: 'top',
+          grid: {
+            display: false,
+          },
+        },
+      },
+    },
+  }
+
+  // 'ID', 'DATE', 'LOGGINGTYPE', 'ACTION', 'DATA'
+  // eslint-disable-next-line max-len
+  // SELECT COUNT(FROM_UNIXTIME(DATE/1000)) FROM LOGGING WHERE LOGGINGTYPE IN('TXPOW') AND ACTION IN('insert') AND DATA REGEXP '^0x00' GROUP BY DAY(FROM_UNIXTIME(DATE/1000));
+  // eslint-disable-next-line max-len
+  // SELECT COUNT(FROM_UNIXTIME(DATE/1000)), SUBSTRING(DATA,1,5) FROM LOGGING WHERE LOGGINGTYPE IN('TXPOW') AND ACTION IN('insert') AND DATA REGEXP '^0x00' GROUP BY DAY(FROM_UNIXTIME(DATE/1000)), SUBSTRING(DATA,1,5);
+  // eslint-disable-next-line max-len
+  // SELECT COUNT(FROM_UNIXTIME(DATE/1000)), DATE(FROM_UNIXTIME(DATE/1000)) FROM LOGGING WHERE LOGGINGTYPE IN('TXPOW') AND ACTION IN('insert') AND DATA REGEXP '^0x00' GROUP BY DAY(FROM_UNIXTIME(DATE/1000)), DATE(FROM_UNIXTIME(DATE/1000));
+  static readonly dailyCountKey =
+    'COUNT(FROM_UNIXTIME(' + Dbase.tables.log.columns[1] + '/1000))';
+  static readonly dailyDataKey =
+    'DATE(FROM_UNIXTIME(' + Dbase.tables.log.columns[1] + '/1000))';
+  static readonly tokenDailyQuery = 'SELECT ' +
+    Tokens.dailyCountKey + ', ' +
+    Tokens.dailyDataKey +
+    ' FROM ' + Tokens.queryDetails +
+    ' GROUP BY DAY(FROM_UNIXTIME(' + Dbase.tables.log.columns[1] + '/1000)), ' +
+    Tokens.dailyDataKey;
+
+  static readonly tokenDailyChart: ChartType = {
+    name: Tokens.tokenDailyChartHeading,
+    regex: Tokens.regex,
+    query: Tokens.tokenDailyQuery,
+    countQuery: Tokens.countQuery,
+    searchQuery: Tokens.searchQuery,
+    searchCountQuery: Tokens.searchCountQuery,
+    countColumn: Tokens.dailyCountKey,
+    dataColumn: Tokens.dailyDataKey,
     type: 'bar',
     options: {
       plugins: {
@@ -544,7 +646,7 @@ class API {
 
   static readonly chartHeading = 'API Calls'
   static readonly logHeading = 'API Calls'
-  static readonly regex = '^[a-zA-Z0-9]* '
+  static readonly regex = '^[a-zA-Z0-9]+'
 
   static readonly queryDetails = Dbase.tables.log.name +
     ' WHERE ' + Dbase.tables.log.columns[2] +
@@ -555,8 +657,18 @@ class API {
     ' REGEXP \'' + API.regex +
     '\'';
 
+  // eslint-disable-next-line max-len
+  // SELECT COUNT(DATA), DATA FROM LOGGING WHERE LOGGINGTYPE IN('API') AND ACTION IN('run') AND DATA REGEXP '^[a-zA-Z0-9]* ' GROUP BY DATA;
   static readonly query = 'SELECT * FROM ' + API.queryDetails;
   static readonly countQuery = 'SELECT COUNT(*) FROM ' + API.queryDetails;
+
+  static readonly chartCountKey = 'COUNT(' + Dbase.tables.log.columns[4] + ')';
+  static readonly chartDataKey = Dbase.tables.log.columns[4];
+  static readonly chartQuery = 'SELECT ' +
+    API.chartCountKey + ', ' +
+    API.chartDataKey +
+    ' FROM ' + API.queryDetails +
+    ' GROUP BY ' + API.chartDataKey;
 
   static readonly searchQuery = API.query +
     ' And ' + Dbase.tables.log.columns[4] +
@@ -569,10 +681,12 @@ class API {
   static readonly apiChart: ChartType = {
     name: API.chartHeading,
     regex: API.regex,
-    query: API.query,
+    query: API.chartQuery,
     countQuery: API.countQuery,
     searchQuery: API.searchQuery,
     searchCountQuery: API.searchCountQuery,
+    countColumn: API.chartCountKey,
+    dataColumn: API.chartDataKey,
     type: 'bar',
     options: {
       plugins: {
@@ -628,6 +742,19 @@ class Status {
 /** @class Log */
 class Log {
   static readonly heading = 'Logs'
+  static readonly total = 'Total Entries'
+
+  static readonly dateCreated = 'Created'
+  static readonly filter = 'Filter for User'
+  static readonly user = 'User'
+  static readonly loggingType = 'Type'
+  static readonly data = 'Data'
+  static readonly extra = 'Extra'
+  static readonly action = 'Action'
+  static readonly records = 'Page'
+
+  static readonly nextButton = 'Next'
+  static readonly backButton = 'Back'
 
   static readonly query = 'SELECT * FROM ' +
     Dbase.tables.log.name +
@@ -657,19 +784,6 @@ class Log {
       searchQuery: Log.searchQuery,
       searchCountQuery: Log.searchCountQuery,
     }
-
-  static readonly total = 'Total Entries'
-
-  static readonly dateCreated = 'Created'
-  static readonly filter = 'Filter for User'
-  static readonly user = 'User'
-  static readonly loggingType = 'Type'
-  static readonly data = 'Data'
-  static readonly action = 'Action'
-  static readonly records = 'Page'
-
-  static readonly nextButton = 'Next'
-  static readonly backButton = 'Back'
 }
 
 /** @class SQL */
@@ -709,7 +823,8 @@ class Chart {
     Tokens.chartHeading,
     Addresses.chartHeading,
     API.chartHeading,
-    Cmd.chartHeading];
+    Cmd.chartHeading,
+    Tokens.tokenDailyChartHeading];
 }
 
 /** @class Search */

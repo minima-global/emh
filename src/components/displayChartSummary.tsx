@@ -50,7 +50,8 @@ interface DispatchProps {
   getChartEntries: (
     query: string,
     chartName: string,
-    filterRegex: string
+    countKey: string,
+    dataKey: string
   ) => void
 }
 
@@ -71,7 +72,10 @@ const summary = (props: Props) => {
       isFirstRun.current = false;
       props.countTableEntries(props.chartType.countQuery);
       props.getChartEntries(
-          props.chartType.query, props.chartType.name, props.chartType.regex);
+          props.chartType.query,
+          props.chartType.name,
+          props.chartType.countColumn,
+          props.chartType.dataColumn);
     } else {
       if ( searchCountQuery ) {
         if (props.countData.data[searchCountQuery]) {
@@ -126,7 +130,10 @@ const summary = (props: Props) => {
 
     props.countTableEntries(countQuery);
     props.getChartEntries(
-        query, props.chartType.name, props.chartType.regex);
+        query,
+        props.chartType.name,
+        props.chartType.countColumn,
+        props.chartType.dataColumn);
   };
 
   return (
@@ -268,9 +275,10 @@ const mapDispatchToProps = (dispatch: AppDispatch): DispatchProps => {
     getChartEntries: (
         query: string,
         chartName: string,
-        filterRegex: string,
+        countKey: string,
+        dataKey: string,
     ) =>
-      dispatch(getChartEntries(query, chartName, filterRegex)),
+      dispatch(getChartEntries(query, chartName, countKey, dataKey)),
   };
 };
 

@@ -9,7 +9,6 @@ import {theme} from '../../styles';
 
 import {
   ApplicationState,
-  AppDispatch,
   ChartProps,
   ChartType,
 } from '../../store/types';
@@ -17,8 +16,6 @@ import {
 import {
   Home,
 } from '../../config';
-
-import {getChartEntries} from '../../store/app/dbase/actions';
 
 import {themeStyles} from '../../styles';
 // import {getChartData} from '../../utils/getChartData';
@@ -36,15 +33,7 @@ interface StateProps {
   chartsData: ChartProps
 }
 
-interface DispatchProps {
-  getChartEntries: (
-    query: string,
-    chartName: string,
-    filterRegex: string
-  ) => void
-}
-
-type Props = ThisProps & StateProps & DispatchProps
+type Props = ThisProps & StateProps
 
 const chart = (props: Props) => {
   const screenHeight = props.isFullScreen ? '520px' : '250px';
@@ -146,20 +135,8 @@ const mapStateToProps = (state: ApplicationState): StateProps => {
   };
 };
 
-const mapDispatchToProps = (dispatch: AppDispatch): DispatchProps => {
-  return {
-    getChartEntries: (
-        query: string,
-        chartName: string,
-        filterRegex: string,
-    ) =>
-      dispatch(getChartEntries(query, chartName, filterRegex)),
-  };
-};
-
-const Chart = connect<StateProps, DispatchProps, {}, ApplicationState>(
+const Chart = connect<StateProps, {}, {}, ApplicationState>(
     mapStateToProps,
-    mapDispatchToProps,
 )(chart);
 
 export {Chart};

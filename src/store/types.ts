@@ -31,10 +31,6 @@ export interface ActionProps extends Action {
 
 export type AppDispatch = ThunkDispatch<ApplicationState, any, ActionProps>
 
-
-/**
- * Chart types
- */
 export type ChartData = {
   [key: string]: number
 }
@@ -55,6 +51,8 @@ export type ChartType = {
   countQuery: string
   searchQuery: string
   searchCountQuery: string
+  countColumn: string
+  dataColumn: string
   type: string
   options: object
 }
@@ -112,6 +110,7 @@ export interface Logs {
   LOGGINGTYPE: string
   ACTION: string
   DATA: string
+  EXTRA: string
 }
 
 export interface LogsProps extends PayloadProps {

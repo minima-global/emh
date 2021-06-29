@@ -181,7 +181,6 @@ const display = (props: Props) => {
       });
 
       if (props.cmd?.data ) {
-        console.log('got data', props.cmd?.data);
         setRunning(false);
       }
     }

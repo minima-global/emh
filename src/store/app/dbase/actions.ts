@@ -11,7 +11,6 @@ import {
   ChartData,
   CountActionTypes,
   CountUpdateData,
-  Logs,
 } from '../../types';
 
 import {
@@ -30,33 +29,37 @@ import {write} from '../../actions';
  * @param {string} type - the type of the log entry
  * @param {string} action - the action the log entry performed
  * @param {string} data - the data pertaining to the action
+ * @param {string} extra - any extra data needed to make sense of the call
  * @return {function}
  */
-export const doLog = (type: string, action: string, data: string) => {
-  return async (dispatch: AppDispatch) => {
-    const table = Dbase.tables.log.name;
-    const date = Date.now();
-    const insertSQL = 'INSERT INTO ' +
+export const doLog =
+  (type: string, action: string, data: string, extra: string = '') => {
+    return async (dispatch: AppDispatch) => {
+      const table = Dbase.tables.log.name;
+      const date = Date.now();
+      const insertSQL = 'INSERT INTO ' +
         table +
-        ' (DATE, LOGGINGTYPE, ACTION, DATA) ' +
+        ' (DATE, LOGGINGTYPE, ACTION, DATA, EXTRA) ' +
         'VALUES (' +
         '\'' + date + '\', ' +
         '\'' + type + '\', ' +
         '\'' + action + '\', ' +
-        '\'' + data + '\'' +
+        '\'' + data + '\', ' +
+        '\'' + extra + '\'' +
       ')';
-    Minima.sql(insertSQL, function(result: any) {
-      if ( !result.status ) {
-        Minima.log(App.appName +
-          ' Error logging ' +
-          type + ' ' +
-          action + ' ' +
-          data,
-        );
-      }
-    });
+      Minima.sql(insertSQL, function(result: any) {
+        if ( !result.status ) {
+          Minima.log(App.appName +
+            ' Error logging ' +
+            type + ' ' +
+            action + ' ' +
+            data + ' ' +
+            extra,
+          );
+        }
+      });
+    };
   };
-};
 
 /**
  * Turns table values into a string that can be used in an INSERT
@@ -124,6 +127,8 @@ export const addRow = (
 
     const thisColumns = stringifyColumns(columns);
     const thisValues = stringifyValues(values);
+    const thisData = values[0];
+    const thisExtra = values[1] ? values[1] : '';
 
     const insertSQL = 'INSERT INTO ' +
       table + ' ' +
@@ -146,7 +151,8 @@ export const addRow = (
             doLog(
                 table,
                 Dbase.defaultActions.insert,
-                values.toString().replace(/,/g, ' ')),
+                thisData,
+                thisExtra),
         );
         dispatch(write({data: txData})(txSuccessAction));
       }
@@ -180,7 +186,9 @@ export const deleteRow = (
 
     const thisColumns = stringifyColumns(columns);
     const thisValues = stringifyValues(key);
-    const thisKey = key.join(' ');
+    const thisData = key[0];
+    const thisExtra = key[1] ? key[1] : '';
+
 
     const deleteSQL = 'DELETE FROM ' +
       table +
@@ -197,7 +205,8 @@ export const deleteRow = (
         };
         dispatch(write({data: txData})(txFailAction));
       } else {
-        dispatch(doLog(table, Dbase.defaultActions.delete, thisKey));
+        dispatch(doLog(
+            table, Dbase.defaultActions.delete, thisData, thisExtra));
         dispatch(write({data: txData})(txSuccessAction));
       }
     });
@@ -238,6 +247,7 @@ export const getTableEntries =
           dispatch(write({data: []})(failAction));
           dispatch(write({data: txData})(txFailAction));
         } else {
+          // console.log(query, result);
           const data = result.response.rows.slice();
           dispatch(write({data: data})(successAction));
           dispatch(write({data: txData})(txSuccessAction));
@@ -295,11 +305,12 @@ export const countTableEntries =
  * Queries the database and dispatches chart data
  * @param {string} query - SELECT * FROM LOGGING etc...
  * @param {string} chartName - the chart for which we're getting data *
- * @param {string} filterRegex - the regex used to filter data
+ * @param {string} countKey - the object key of the count returned in the SELECT
+ * @param {string} dataKey - the object key of the data returned in the SELECT
  * @return {function}
  */
 export const getChartEntries =
-  (query: string, chartName: string, filterRegex: string) => {
+  (query: string, chartName: string, countKey: string, dataKey: string) => {
     return async (dispatch: AppDispatch) => {
       // , getState: Function
       // const state = getState();
@@ -315,6 +326,7 @@ export const getChartEntries =
         time: dateText,
       };
       const chartIndex = Chart.chartInfo.indexOf(chartName);
+
       if ( chartIndex != -1 ) {
         // console.log('got query', query);
         Minima.sql(query, function(result: any) {
@@ -327,44 +339,21 @@ export const getChartEntries =
             dispatch(write({data: []})(failAction));
             dispatch(write({data: txData})(txFailAction));
           } else {
-            const data: Array<Logs> = result.response.rows.slice();
+            console.log(query, result);
+            const data: Array<object> = result.response.rows.slice();
             const updateData: ChartUpdateData = {
               data: {},
               index: chartIndex,
             };
             const chartData: ChartData = {};
-            data.map( ( log: Logs, index: number ) => {
-              // const thisDate = new Date(+log.DATE);
-              const thisData = log.DATA;
-              const thisMatch = thisData.match(filterRegex);
-              const thisMatchString =
-                thisMatch ? thisMatch.toString().trim() : '';
-              if ( thisMatchString.length ) {
-                if (!chartData[thisMatchString]) {
-                  chartData[thisMatchString] = 1;
-                } else {
-                  chartData[thisMatchString] += 1;
-                }
-              }
+            data.map( ( row: any ) => {
+              // eslint-disable-next-line max-len
+              // console.log('row', row, dataKey, countKey, row[dataKey], row[countKey], chartIndex);
+              const thisData = row[dataKey];
+              const thisCount = row[countKey];
+              chartData[thisData] = thisCount;
             });
             updateData.data = chartData;
-            /* if ( chartName === TokensVars.chartHeading) {
-              console.log('chart keys', Object.keys(chartData));
-              console.log('balance keys', Object.keys(chartData));
-              const tokens: ChartData = {};
-              state.balanceData.data.forEach((token: Balance) => {
-                console.log('balance data', token);
-                if ( token.tokenid in chartData) {
-                  console.log('found key!', token.tokenid, token.token);
-                  const tokenName = token.token;
-                  tokens[tokenName] = chartData[token.tokenid];
-                }
-              });
-            }
-              updateData.data = tokens;
-            } else {
-              updateData.data = chartData;
-            }*/
             dispatch(write({data: updateData})(successAction));
             dispatch(write({data: txData})(txSuccessAction));
           }

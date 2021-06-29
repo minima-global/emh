@@ -262,8 +262,7 @@ export const list = (props: Props) => {
               item
               container
               justify="flex-start"
-              xs={3}
-              lg={2}
+              xs={2}
             >
               <Typography variant="h6">
                 {LogVars.dateCreated}
@@ -274,8 +273,7 @@ export const list = (props: Props) => {
               item
               container
               justify="flex-start"
-              xs={2}
-              lg={1}
+              xs={1}
             >
               <Typography variant="h6">
                 {LogVars.loggingType}
@@ -286,12 +284,10 @@ export const list = (props: Props) => {
               item
               container
               justify="flex-start"
-              xs={2}
-              lg={1}
+              xs={1}
             >
               <Typography
                 variant="h6"
-                noWrap={true}
               >
                 {LogVars.action}
               </Typography>
@@ -301,11 +297,21 @@ export const list = (props: Props) => {
               item
               container
               justify="flex-start"
-              xs={5}
-              lg={8}
+              xs={3}
             >
               <Typography variant="h6">
                 {LogVars.data}
+              </Typography>
+            </Grid>
+
+            <Grid
+              item
+              container
+              justify="flex-start"
+              xs={5}
+            >
+              <Typography variant="h6">
+                {LogVars.extra}
               </Typography>
             </Grid>
 
@@ -333,6 +339,7 @@ export const list = (props: Props) => {
               const loggingType = log.LOGGINGTYPE;
               const action = log.ACTION;
               const thisData = log.DATA;
+              const thisExtra = log.EXTRA;
 
               // const rowclass = index % 2 ? classes.evenRow : classes.oddRow;
 
@@ -344,8 +351,7 @@ export const list = (props: Props) => {
                       item
                       container
                       justify="flex-start"
-                      xs={3}
-                      lg={2}
+                      xs={2}
                     >
                       <Typography variant="body1">
                         {dateCreated}
@@ -356,8 +362,7 @@ export const list = (props: Props) => {
                       item
                       container
                       justify="flex-start"
-                      xs={2}
-                      lg={1}
+                      xs={1}
                     >
                       <Typography
                         variant="body1"
@@ -371,8 +376,7 @@ export const list = (props: Props) => {
                       item
                       container
                       justify="flex-start"
-                      xs={2}
-                      lg={1}
+                      xs={1}
                     >
                       <Typography variant="body1">
                         {action}
@@ -383,14 +387,27 @@ export const list = (props: Props) => {
                       item
                       container
                       justify="flex-start"
-                      xs={5}
-                      lg={8}
+                      xs={3}
                     >
                       <Typography
                         variant="body1"
                         noWrap={true}
                       >
                         {thisData}
+                      </Typography>
+                    </Grid>
+
+                    <Grid
+                      item
+                      container
+                      justify="flex-start"
+                      xs={5}
+                    >
+                      <Typography
+                        variant="body1"
+                        noWrap={true}
+                      >
+                        {thisExtra}
                       </Typography>
                     </Grid>
 

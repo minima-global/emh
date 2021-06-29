@@ -153,6 +153,25 @@ export const Home = () => {
           </Paper>
         </Grid>
 
+        <Grid
+          item
+          container
+          justify="flex-start"
+          xs={6}>
+
+          <Paper
+            elevation={5}
+            className={classes.dashboardChartLeft}
+          >
+            {
+              <Chart
+                chartType={TokensVars.tokenDailyChart}
+                isFullScreen={false}
+                navLink={Local.chartTokens}
+                logNavLink={Local.logTokens} /> }
+          </Paper>
+        </Grid>
+
 
         <Grid item container justify="flex-start" xs={6}>
           &nbsp;

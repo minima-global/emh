@@ -86,7 +86,8 @@ export const command = (endpoint: string, cmd: string) => {
           doLog(
               Dbase.extraLogTypes.COMMAND,
               Dbase.defaultActions.run,
-              endpoint + ' ' + cmd),
+              endpoint,
+              cmd),
       );
       dispatch(write({data: msg})(successAction));
     });
