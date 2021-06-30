@@ -290,8 +290,10 @@ export const chart = (props: Props) => {
       props.chartType.query.replace(/<firstTime>/g, timeFrom.toString());
     query = query.replace(/<secondTime>/g, timeNow.toString());
 
+    /*
     console.log('time count', countQuery);
     console.log('time', query);
+    */
 
     props.countTableEntries(countQuery);
     props.getChartEntries(

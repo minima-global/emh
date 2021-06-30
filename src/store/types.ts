@@ -46,7 +46,6 @@ export type ChartUpdateData = {
 
 export type ChartType = {
   name: string
-  regex: string
   query: string
   countQuery: string
   searchQuery: string

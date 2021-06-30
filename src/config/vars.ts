@@ -280,6 +280,18 @@ class Cmd {
   static readonly chartHeading = 'Commands'
   static readonly logHeading = 'Commands'
 
+  static readonly trigger = 'API'
+  static readonly params = 'Params'
+  static readonly cmdButton = 'Run'
+  static readonly clearButton = 'Clear'
+
+  static readonly confirmRun = 'Are you sure you want to run the API command?'
+  static readonly noRun = 'No'
+  static readonly yesRun = 'Yes'
+  static readonly runSuccess = 'You have run your API successfully'
+  static readonly cancelRun = 'Cancel API Command'
+
+  // Stuff to make the charts and logs work
   static readonly regex = '^[a-zA-Z0-9]+';
 
   // 'ID', 'DATE', 'LOGGINGTYPE', 'ACTION', 'DATA'
@@ -290,13 +302,15 @@ class Cmd {
     ' AND ' + Dbase.tables.log.columns[3] +
     ' IN (\'' + Dbase.defaultActions.run + '\')' +
     ' AND ' + Dbase.tables.log.columns[4] +
-    ' REGEXP \'' + Cmd.regex + '\'' +
+    ' REGEXP \'' + Cmd.regex + '\'';
+
+  static readonly queryWithDate = Cmd.queryDetails +
     ' AND (DATE BETWEEN <firstTime> AND <secondTime>)';
 
   // eslint-disable-next-line max-len
   // SELECT COUNT(DATA), DATA FROM LOGGING WHERE LOGGINGTYPE IN('COMMAND') AND ACTION IN('run') AND DATA REGEXP '^[a-zA-Z0-9]+' GROUP BY DATA;
-  static readonly query = 'SELECT * FROM ' + Cmd.queryDetails;
-  static readonly countQuery = 'SELECT COUNT(*) FROM ' + Cmd.queryDetails;
+  static readonly query = 'SELECT * FROM ' + Cmd.queryWithDate;
+  static readonly countQuery = 'SELECT COUNT(*) FROM ' + Cmd.queryWithDate;
   static readonly searchQuery = Cmd.query +
   ' AND ' + Dbase.tables.log.columns[4] +
   ' LIKE \'%<searchTerm>%\'';
@@ -310,20 +324,19 @@ class Cmd {
   static readonly chartQuery = 'SELECT ' +
     Cmd.chartCountKey + ', ' +
     Cmd.chartDataKey +
-    ' FROM ' + Cmd.queryDetails +
+    ' FROM ' + Cmd.queryWithDate +
     ' GROUP BY ' + Cmd.chartDataKey;
 
   static readonly chartSearchQuery = 'SELECT ' +
   Cmd.chartCountKey + ', ' +
   Cmd.chartDataKey +
-  ' FROM ' + Cmd.queryDetails +
+  ' FROM ' + Cmd.queryWithDate +
   ' AND ' + Dbase.tables.log.columns[4] +
   ' LIKE \'%<searchTerm>%\'' +
   ' GROUP BY ' + Cmd.chartDataKey;
 
   static readonly cmdChart: ChartType = {
     name: Cmd.chartHeading,
-    regex: Cmd.regex,
     query: Cmd.chartQuery,
     countQuery: Cmd.countQuery,
     searchQuery: Cmd.chartSearchQuery,
@@ -364,24 +377,29 @@ class Cmd {
     },
   }
 
+  static readonly logQuery = 'SELECT * FROM ' +
+    Cmd.queryDetails +
+    ' ORDER BY DATE DESC';
+
+  static readonly logCountQuery = 'SELECT COUNT(*) FROM ' +
+    Cmd.queryDetails;
+
+  static readonly logSearchQuery = Cmd.queryDetails +
+    ' AND ' + Dbase.tables.log.columns[4] +
+    ' LIKE \'%<searchTerm>%\'';
+
+  static readonly logSearchCountQuery = Cmd.logCountQuery +
+    ' AND ' + Dbase.tables.log.columns[4] +
+    ' LIKE \'%<searchTerm>%\'';
+
+
   static readonly cmdLog: LogType = {
     name: Cmd.logHeading,
-    query: Cmd.query + ' ORDER BY DATE DESC',
-    countQuery: Cmd.countQuery,
-    searchQuery: Cmd.searchQuery,
-    searchCountQuery: Cmd.searchCountQuery,
+    query: Cmd.logQuery,
+    countQuery: Cmd.logCountQuery,
+    searchQuery: Cmd.logSearchQuery,
+    searchCountQuery: Cmd.logSearchCountQuery,
   }
-
-  static readonly trigger = 'API'
-  static readonly params = 'Params'
-  static readonly cmdButton = 'Run'
-  static readonly clearButton = 'Clear'
-
-  static readonly confirmRun = 'Are you sure you want to run the API command?'
-  static readonly noRun = 'No'
-  static readonly yesRun = 'Yes'
-  static readonly runSuccess = 'You have run your API successfully'
-  static readonly cancelRun = 'Cancel API Command'
 }
 
 /** @class Addresses */
@@ -390,6 +408,21 @@ class Addresses {
   static readonly chartHeading = 'Address Transactions'
   static readonly logHeading = 'Address Transactions'
 
+  static readonly address = 'Mx Address'
+  static readonly url = 'URL'
+
+  static readonly mxLengthError =
+    'Minima addresses should be 34 characters, of the form Mx...'
+  static readonly mxFormatError = 'Not a Minima address'
+
+  static readonly callButton = 'Create'
+  static readonly deleteButton = 'Delete'
+  static readonly smallDeleteButton = 'Del'
+
+  static readonly addressError = 'Please input a valid Minima address'
+  static readonly urlError = 'Please input a valid URL'
+
+  // Stuff to make the charts and logs work
   static readonly regex = '^Mx[A-Z0-9]+'
 
   static readonly queryDetails = Dbase.tables.log.name +
@@ -398,11 +431,14 @@ class Addresses {
     ' AND ' + Dbase.tables.log.columns[3] +
     ' IN (\'' + Dbase.defaultActions.insert + '\')' +
     ' AND ' + Dbase.tables.log.columns[4] +
-    ' REGEXP \'' + Addresses.regex + '\'' +
+    ' REGEXP \'' + Addresses.regex + '\'';
+
+  static readonly queryWithDate = Addresses.queryDetails +
     ' AND (DATE BETWEEN <firstTime> AND <secondTime>)';
 
-  static readonly query = 'SELECT * FROM ' + Addresses.queryDetails;
-  static readonly countQuery = 'SELECT COUNT(*) FROM ' + Addresses.queryDetails;
+  static readonly query = 'SELECT * FROM ' + Addresses.queryWithDate;
+  static readonly countQuery = 'SELECT COUNT(*) FROM ' +
+    Addresses.queryWithDate;
 
   static readonly searchQuery = Addresses.query +
     ' AND ' + Dbase.tables.log.columns[4] +
@@ -419,20 +455,19 @@ class Addresses {
   static readonly chartQuery = 'SELECT ' +
     Addresses.chartCountKey + ', ' +
     Addresses.chartDataKey +
-    ' FROM ' + Addresses.queryDetails +
+    ' FROM ' + Addresses.queryWithDate +
     ' GROUP BY ' + Addresses.chartDataKey;
 
   static readonly chartSearchQuery = 'SELECT ' +
     Addresses.chartCountKey + ', ' +
     Addresses.chartDataKey +
-    ' FROM ' + Addresses.queryDetails +
+    ' FROM ' + Addresses.queryWithDate +
     ' AND ' + Dbase.tables.log.columns[4] +
     ' LIKE \'%<searchTerm>%\'' +
     ' GROUP BY ' + Addresses.chartDataKey;
 
   static readonly addressChart: ChartType = {
     name: Addresses.chartHeading,
-    regex: Addresses.regex,
     query: Addresses.chartQuery,
     countQuery: Addresses.countQuery,
     searchQuery: Addresses.chartSearchQuery,
@@ -473,27 +508,28 @@ class Addresses {
     },
   }
 
+  static readonly logQuery = 'SELECT * FROM ' +
+    Addresses.queryDetails +
+    ' ORDER BY DATE DESC';
+
+  static readonly logCountQuery = 'SELECT COUNT(*) FROM ' +
+    Addresses.queryDetails;
+
+  static readonly logSearchQuery = Addresses.queryDetails +
+    ' AND ' + Dbase.tables.log.columns[4] +
+    ' LIKE \'%<searchTerm>%\'';
+
+  static readonly logSearchCountQuery = Addresses.logCountQuery +
+    ' AND ' + Dbase.tables.log.columns[4] +
+    ' LIKE \'%<searchTerm>%\'';
+
   static readonly addressLog: LogType = {
     name: Addresses.logHeading,
-    query: Addresses.query + ' ORDER BY DATE DESC',
-    countQuery: Addresses.countQuery,
-    searchQuery: Addresses.searchQuery,
-    searchCountQuery: Addresses.searchCountQuery,
+    query: Addresses.logQuery,
+    countQuery: Addresses.logCountQuery,
+    searchQuery: Addresses.logSearchQuery,
+    searchCountQuery: Addresses.logSearchCountQuery,
   }
-
-  static readonly address = 'Mx Address'
-  static readonly url = 'URL'
-
-  static readonly mxLengthError =
-    'Minima addresses should be 34 characters, of the form Mx...'
-  static readonly mxFormatError = 'Not a Minima address'
-
-  static readonly callButton = 'Create'
-  static readonly deleteButton = 'Delete'
-  static readonly smallDeleteButton = 'Del'
-
-  static readonly addressError = 'Please input a valid Minima address'
-  static readonly urlError = 'Please input a valid URL'
 }
 
 /** @class Tokens */
@@ -503,6 +539,22 @@ class Tokens {
   static readonly chartHeading = 'Token Transactions'
   static readonly tokenDailyChartHeading = 'Daily Token Transactions'
   static readonly logHeading = 'Token Transactions'
+
+  static readonly tokenId = 'Token iD'
+  static readonly url = 'URL'
+
+  static readonly tokenLengthError =
+    'Tokens should be 4 or 130 characters, of the form 0x...'
+  static readonly tokenFormatError = 'Not a Minima token'
+
+  static readonly tokenButton = 'Create'
+  static readonly deleteButton = 'Delete'
+  static readonly smallDeleteButton = 'Del'
+
+  static readonly idError = 'Please input a valid Token iD'
+  static readonly urlError = 'Please input a valid URL'
+
+  // stuff to make the charts and logs work
   static readonly regex = '^0x[A-Z0-9]+'
 
   static readonly queryDetails = Dbase.tables.log.name +
@@ -511,11 +563,13 @@ class Tokens {
     ' AND ' + Dbase.tables.log.columns[3] +
     ' IN (\'' + Dbase.defaultActions.insert + '\')' +
     ' AND ' + Dbase.tables.log.columns[4] +
-    ' REGEXP \'' + Tokens.regex + '\'' +
+    ' REGEXP \'' + Tokens.regex + '\'';
+
+  static readonly queryWithDate = Tokens.queryDetails +
     ' AND (DATE BETWEEN <firstTime> AND <secondTime>)';
 
-  static readonly query = 'SELECT * FROM ' + Tokens.queryDetails;
-  static readonly countQuery = 'SELECT COUNT(*) FROM ' + Tokens.queryDetails;
+  static readonly query = 'SELECT * FROM ' + Tokens.queryWithDate;
+  static readonly countQuery = 'SELECT COUNT(*) FROM ' + Tokens.queryWithDate;
   static readonly searchQuery = Tokens.query +
     ' AND ' + Dbase.tables.log.columns[4] +
     ' LIKE \'%<searchTerm>%\'';
@@ -533,20 +587,19 @@ class Tokens {
   static readonly chartQuery = 'SELECT ' +
     Tokens.chartCountKey + ', ' +
     Tokens.chartDataKey +
-    ' FROM ' + Tokens.queryDetails +
+    ' FROM ' + Tokens.queryWithDate +
     ' GROUP BY ' + Tokens.chartDataKey;
 
   static readonly chartSearchQuery = 'SELECT ' +
     Tokens.chartCountKey + ', ' +
     Tokens.chartDataKey +
-    ' FROM ' + Tokens.queryDetails +
+    ' FROM ' + Tokens.queryWithDate +
     ' AND ' + Dbase.tables.log.columns[4] +
     ' LIKE \'%<searchTerm>%\'' +
     ' GROUP BY ' + Tokens.chartDataKey;
 
   static readonly tokenChart: ChartType = {
     name: Tokens.chartHeading,
-    regex: Tokens.regex,
     query: Tokens.chartQuery,
     countQuery: Tokens.countQuery,
     searchQuery: Tokens.chartSearchQuery,
@@ -601,14 +654,14 @@ class Tokens {
   static readonly tokenDailyQuery = 'SELECT ' +
     Tokens.dailyCountKey + ', ' +
     Tokens.dailyDataKey +
-    ' FROM ' + Tokens.queryDetails +
+    ' FROM ' + Tokens.queryWithDate +
     ' GROUP BY DAY(FROM_UNIXTIME(' + Dbase.tables.log.columns[1] + '/1000)), ' +
     Tokens.dailyDataKey;
 
   static readonly searchDailyQuery = 'SELECT ' +
     Tokens.dailyCountKey + ', ' +
     Tokens.dailyDataKey +
-    ' FROM ' + Tokens.queryDetails +
+    ' FROM ' + Tokens.queryWithDate +
     ' AND ' + Dbase.tables.log.columns[4] +
     ' LIKE \'%<searchTerm>%\'' +
     ' GROUP BY DAY(FROM_UNIXTIME(' + Dbase.tables.log.columns[1] + '/1000)), ' +
@@ -616,7 +669,6 @@ class Tokens {
 
   static readonly tokenDailyChart: ChartType = {
     name: Tokens.tokenDailyChartHeading,
-    regex: Tokens.regex,
     query: Tokens.tokenDailyQuery,
     countQuery: Tokens.countQuery,
     searchQuery: Tokens.searchDailyQuery,
@@ -653,27 +705,27 @@ class Tokens {
     },
   }
 
+  static readonly logQuery = 'SELECT * FROM ' +
+    Tokens.queryDetails +
+    ' ORDER BY DATE DESC';
+
+  static readonly logCountQuery = 'SELECT COUNT(*) FROM ' + Tokens.queryDetails;
+
+  static readonly logSearchQuery = Tokens.queryDetails +
+    ' AND ' + Dbase.tables.log.columns[4] +
+    ' LIKE \'%<searchTerm>%\'';
+
+  static readonly logSearchCountQuery = Tokens.logCountQuery +
+  ' AND ' + Dbase.tables.log.columns[4] +
+  ' LIKE \'%<searchTerm>%\'';
+
   static readonly tokenLog: LogType = {
     name: Tokens.logHeading,
-    query: Tokens.query + ' ORDER BY DATE DESC',
-    countQuery: Tokens.countQuery,
-    searchQuery: Tokens.searchQuery,
-    searchCountQuery: Tokens.searchCountQuery,
+    query: Tokens.logQuery,
+    countQuery: Tokens.logCountQuery,
+    searchQuery: Tokens.logSearchQuery,
+    searchCountQuery: Tokens.logSearchCountQuery,
   }
-
-  static readonly tokenId = 'Token iD'
-  static readonly url = 'URL'
-
-  static readonly tokenLengthError =
-    'Tokens should be 4 or 130 characters, of the form 0x...'
-  static readonly tokenFormatError = 'Not a Minima token'
-
-  static readonly tokenButton = 'Create'
-  static readonly deleteButton = 'Delete'
-  static readonly smallDeleteButton = 'Del'
-
-  static readonly idError = 'Please input a valid Token iD'
-  static readonly urlError = 'Please input a valid URL'
 }
 
 /** @class Triggers */
@@ -712,6 +764,8 @@ class API {
 
   static readonly chartHeading = 'API Calls'
   static readonly logHeading = 'API Calls'
+
+  // Stuff to make the charts and logs work
   static readonly regex = '^[a-zA-Z0-9]+'
 
   static readonly queryDetails = Dbase.tables.log.name +
@@ -720,13 +774,15 @@ class API {
     ' AND ' + Dbase.tables.log.columns[3] +
     ' IN (\'' + Dbase.defaultActions.run + '\')' +
     ' AND ' + Dbase.tables.log.columns[4] +
-    ' REGEXP \'' + API.regex + '\'' +
-    ' AND (DATE BETWEEN <firstTime> AND <secondTime>)';
+    ' REGEXP \'' + API.regex + '\'';
+
+  static readonly queryWithDate =
+    API.queryDetails + ' AND (DATE BETWEEN <firstTime> AND <secondTime>)';
 
   // eslint-disable-next-line max-len
   // SELECT COUNT(DATA), DATA FROM LOGGING WHERE LOGGINGTYPE IN('API') AND ACTION IN('run') AND DATA REGEXP '^[a-zA-Z0-9]+' GROUP BY DATA;
-  static readonly query = 'SELECT * FROM ' + API.queryDetails;
-  static readonly countQuery = 'SELECT COUNT(*) FROM ' + API.queryDetails;
+  static readonly query = 'SELECT * FROM ' + API.queryWithDate;
+  static readonly countQuery = 'SELECT COUNT(*) FROM ' + API.queryWithDate;
 
   static readonly searchQuery = API.query +
     ' AND ' + Dbase.tables.log.columns[4] +
@@ -741,20 +797,19 @@ class API {
   static readonly chartQuery = 'SELECT ' +
     API.chartCountKey + ', ' +
     API.chartDataKey +
-    ' FROM ' + API.queryDetails +
+    ' FROM ' + API.queryWithDate +
     ' GROUP BY ' + API.chartDataKey;
 
   static readonly chartSearchQuery = 'SELECT ' +
     API.chartCountKey + ', ' +
     API.chartDataKey +
-    ' FROM ' + API.queryDetails +
+    ' FROM ' + API.queryWithDate +
     ' AND ' + Dbase.tables.log.columns[4] +
     ' LIKE \'%<searchTerm>%\'' +
     ' GROUP BY ' + API.chartDataKey;
 
   static readonly apiChart: ChartType = {
     name: API.chartHeading,
-    regex: API.regex,
     query: API.chartQuery,
     countQuery: API.countQuery,
     searchQuery: API.chartSearchQuery,
@@ -795,12 +850,26 @@ class API {
     },
   }
 
+  static readonly logQuery = 'SELECT * FROM ' +
+    API.queryDetails +
+    ' ORDER BY DATE DESC';
+
+  static readonly logCountQuery = 'SELECT COUNT(*) FROM ' + API.queryDetails;
+
+  static readonly logSearchQuery = API.queryDetails +
+    ' AND ' + Dbase.tables.log.columns[4] +
+    ' LIKE \'%<searchTerm>%\'';
+
+  static readonly logSearchCountQuery = API.logCountQuery +
+  ' AND ' + Dbase.tables.log.columns[4] +
+  ' LIKE \'%<searchTerm>%\'';
+
   static readonly apiLog: LogType = {
     name: API.logHeading,
-    query: API.query + ' ORDER BY DATE DESC',
-    countQuery: API.countQuery,
-    searchQuery: API.searchQuery,
-    searchCountQuery: API.searchCountQuery,
+    query: API.logQuery,
+    countQuery: API.logCountQuery,
+    searchQuery: API.logSearchQuery,
+    searchCountQuery: API.logSearchCountQuery,
   }
 }
 
@@ -851,13 +920,13 @@ class Log {
   static readonly searchCountQuery =
     'SELECT COUNT(*) FROM ' + Log.searchQueryDetails;
 
-    static readonly log: LogType = {
-      name: Log.heading,
-      query: Log.query,
-      countQuery: Log.countQuery,
-      searchQuery: Log.searchQuery,
-      searchCountQuery: Log.searchCountQuery,
-    }
+  static readonly log: LogType = {
+    name: Log.heading,
+    query: Log.query,
+    countQuery: Log.countQuery,
+    searchQuery: Log.searchQuery,
+    searchCountQuery: Log.searchCountQuery,
+  }
 }
 
 /** @class SQL */
