@@ -1,5 +1,4 @@
 import React from 'react';
-import {connect} from 'react-redux';
 
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -7,11 +6,7 @@ import Paper from '@material-ui/core/Paper';
 
 import {theme} from '../../styles';
 
-import {
-  ApplicationState,
-  ChartProps,
-  ChartType,
-} from '../../store/types';
+import {ChartType} from '../../store/types';
 
 import {
   Home,
@@ -19,8 +14,6 @@ import {
 
 import {themeStyles} from '../../styles';
 import {DisplayChart} from '../displayChart';
-import {DisplayChartSummary} from '../displayChartSummary';
-import {DisplayChartFooter} from '../displayChartFooter';
 
 interface ThisProps {
   chartType: ChartType
@@ -29,15 +22,9 @@ interface ThisProps {
   logNavLink: string
 }
 
-interface StateProps {
-  chartsData: ChartProps
-}
+type Props = ThisProps
 
-type Props = ThisProps & StateProps
-
-const chart = (props: Props) => {
-  const screenHeight = props.isFullScreen ? '510px' : '240px';
-
+export const Chart = (props: Props) => {
   const classes = themeStyles();
 
   return (
@@ -53,103 +40,43 @@ const chart = (props: Props) => {
             paddingRight: theme.spacing(8),
           }}
         >
-          <Grid item container xs={12}>
+          <Grid
+            item
+            container
+            justify="flex-start"
+            xs={12}>
 
-            <Grid
-              item
-              container
-              justify="flex-start"
-              xs={12}>
+            <Typography variant="h2">
+              {Home.heading}
+            </Typography>
 
-              <Typography variant="h2">
-                {Home.heading}
-              </Typography>
+          </Grid>
 
-            </Grid>
-
-            <Grid
-              item
-              container
-              justify="flex-start"
-              alignItems='flex-start'
-              xs={12}
+          <Grid
+            item
+            container
+            justify="flex-start"
+            alignItems='flex-start'
+            xs={12}
+          >
+            <Paper
+              elevation={5}
+              className={classes.fullscreenChart}
             >
-              <Paper
-                elevation={5}
-                className={classes.fullscreenChart}
-              >
-                <Grid
-                  item
-                  container
-                  alignItems="flex-start"
-                  style={{
-                    padding: theme.spacing(2),
-                  }}
-                >
-                  <Grid container>
-                    <DisplayChartSummary
-                      chartType={props.chartType}
-                      isFullScreen={props.isFullScreen}
-                      navLink={props.navLink}
-                      logNavLink={props.logNavLink} />
-
-                    <DisplayChart
-                      chartType={props.chartType}
-                      viewport={screenHeight} />
-                  </Grid>
-                </Grid>
-                <Grid
-                  item
-                  container
-                  alignItems='flex-end'
-                >
-                  <DisplayChartFooter chartType={props.chartType} />
-                </Grid>
-              </Paper>
-            </Grid>
+              <DisplayChart
+                chartType={props.chartType}
+                isFullScreen={props.isFullScreen}
+                navLink={props.navLink}
+                logNavLink={props.logNavLink} />
+            </Paper>
           </Grid>
-
         </Grid> :
-        <Grid container>
-          <Grid
-            item
-            container
-            alignItems="flex-start"
-            style={{
-              padding: theme.spacing(2),
-            }}
-          >
-            <DisplayChartSummary
-              chartType={props.chartType}
-              isFullScreen={props.isFullScreen}
-              navLink={props.navLink}
-              logNavLink={props.logNavLink} />
-
-            <DisplayChart
-              chartType={props.chartType}
-              viewport={screenHeight} />
-          </Grid>
-          <Grid
-            item
-            container
-            alignItems='flex-end'
-          >
-            <DisplayChartFooter chartType={props.chartType} />
-          </Grid>
-        </Grid>
+        <DisplayChart
+          chartType={props.chartType}
+          isFullScreen={props.isFullScreen}
+          navLink={props.navLink}
+          logNavLink={props.logNavLink} />
       }
     </>
   );
 };
-
-const mapStateToProps = (state: ApplicationState): StateProps => {
-  return {
-    chartsData: state.chartsData as ChartProps,
-  };
-};
-
-const Chart = connect<StateProps, {}, {}, ApplicationState>(
-    mapStateToProps,
-)(chart);
-
-export {Chart};

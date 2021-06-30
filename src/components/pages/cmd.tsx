@@ -253,7 +253,12 @@ const display = (props: Props) => {
                   <label htmlFor="trigger">{CmdVars.trigger}</label>
                 </Grid>
                 <Grid item container xs={8} lg={10}>
-                  <div style={{width: '100%'}}>
+                  <div
+                    style={{
+                      width: '100%',
+                      marginBottom: theme.spacing(1),
+                    }}
+                  >
                     <Select
                       className={classes.select}
                       size="small"

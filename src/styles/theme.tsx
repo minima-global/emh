@@ -162,7 +162,6 @@ const themeStyles = makeStyles({
       background: 'linear-gradient(#FFFFFF, #FFFFFF)',
       color: '#001C32',
       padding: theme.spacing(1),
-      marginTop: theme.spacing(1),
       marginBottom: theme.spacing(1),
     },
     '& .MuiInputBase-input:focus': {

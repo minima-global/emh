@@ -34,6 +34,45 @@ class Misc {
 
   static readonly barThickness = 30;
   static readonly labelOffset = -20;
+
+  static readonly time = {
+    anHour: {
+      timeString: 'AN HOUR',
+      timeAmount: 3600000,
+    },
+    sixHours: {
+      timeString: 'SIX HOURS',
+      timeAmount: 21600000,
+    },
+    twelveHours: {
+      timeString: 'TWELVE HOURS',
+      timeAmount: 43200000,
+    },
+    aDay: {
+      timeString: 'ONE DAY',
+      timeAmount: 86400000,
+    },
+    aWeek: {
+      timeString: 'ONE WEEK',
+      timeAmount: 604800000,
+    },
+    aMonth: {
+      timeString: 'ONE MONTH',
+      timeAmount: 2629800000,
+    },
+    threeMonths: {
+      timeString: 'THREE MONTHS',
+      timeAmount: 7889400000,
+    },
+    sixMonths: {
+      timeString: 'SIX MONTHS',
+      timeAmount: 15778800000,
+    },
+    aYear: {
+      timeString: 'ONE YEAR',
+      timeAmount: 31557600000, // 365.25 * aWeek,
+    },
+  };
 }
 
 /** @class Smtp */
