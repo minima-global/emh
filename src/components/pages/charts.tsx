@@ -20,6 +20,7 @@ import {
 import {themeStyles} from '../../styles';
 import {DisplayChart} from '../displayChart';
 import {DisplayChartSummary} from '../displayChartSummary';
+import {DisplayChartFooter} from '../displayChartFooter';
 
 interface ThisProps {
   chartType: ChartType
@@ -35,7 +36,7 @@ interface StateProps {
 type Props = ThisProps & StateProps
 
 const chart = (props: Props) => {
-  const screenHeight = props.isFullScreen ? '520px' : '250px';
+  const screenHeight = props.isFullScreen ? '510px' : '240px';
 
   const classes = themeStyles();
 
@@ -97,21 +98,27 @@ const chart = (props: Props) => {
                       viewport={screenHeight} />
                   </Grid>
                 </Grid>
-
+                <Grid
+                  item
+                  container
+                  alignItems='flex-end'
+                >
+                  <DisplayChartFooter chartType={props.chartType} />
+                </Grid>
               </Paper>
             </Grid>
           </Grid>
 
         </Grid> :
-        <Grid
-          item
-          container
-          alignItems="flex-start"
-          style={{
-            padding: theme.spacing(2),
-          }}
-        >
-          <Grid container>
+        <Grid container>
+          <Grid
+            item
+            container
+            alignItems="flex-start"
+            style={{
+              padding: theme.spacing(2),
+            }}
+          >
             <DisplayChartSummary
               chartType={props.chartType}
               isFullScreen={props.isFullScreen}
@@ -121,6 +128,13 @@ const chart = (props: Props) => {
             <DisplayChart
               chartType={props.chartType}
               viewport={screenHeight} />
+          </Grid>
+          <Grid
+            item
+            container
+            alignItems='flex-end'
+          >
+            <DisplayChartFooter chartType={props.chartType} />
           </Grid>
         </Grid>
       }

@@ -79,7 +79,7 @@ export const chart = (props: Props) => {
         style={{
           marginTop: theme.spacing(1),
           width: '100%',
-          maxHeight: props.viewport,
+          height: props.viewport,
           overflow: 'auto',
         }}
         xs={12}

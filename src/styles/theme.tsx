@@ -243,24 +243,26 @@ const themeStyles = makeStyles({
   },
   dashboardToken: {
     marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(4),
     marginRight: theme.spacing(2),
     width: '100%',
     height: '300px',
   },
   dashboardStatus: {
     marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(4),
     marginLeft: theme.spacing(2),
     width: '100%',
     height: '300px',
   },
   dashboardChartLeft: {
-    marginTop: theme.spacing(4),
+    marginBottom: theme.spacing(4),
     marginRight: theme.spacing(2),
     width: '100%',
     height: '400px',
   },
   dashboardChartRight: {
-    marginTop: theme.spacing(4),
+    marginBottom: theme.spacing(4),
     marginLeft: theme.spacing(2),
     width: '100%',
     height: '400px',

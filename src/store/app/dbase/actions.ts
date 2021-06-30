@@ -290,7 +290,6 @@ export const countTableEntries =
          dispatch(write({data: txData})(txFailAction));
        } else {
          const count = result.response.rows[0]['COUNT(*)'];
-         console.log('Got count!', count);
          const updateData: CountUpdateData = {
            count: count,
            key: query,
