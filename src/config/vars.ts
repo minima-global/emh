@@ -250,14 +250,21 @@ class Cmd {
     ' IN (\'' + Dbase.extraLogTypes.COMMAND + '\')' +
     ' AND ' + Dbase.tables.log.columns[3] +
     ' IN (\'' + Dbase.defaultActions.run + '\')' +
-    ' And ' + Dbase.tables.log.columns[4] +
-    ' REGEXP \'' + Cmd.regex +
-    '\'';
+    ' AND ' + Dbase.tables.log.columns[4] +
+    ' REGEXP \'' + Cmd.regex + '\'' +
+    ' AND (DATE BETWEEN <firstTime> AND <secondTime>)';
 
   // eslint-disable-next-line max-len
   // SELECT COUNT(DATA), DATA FROM LOGGING WHERE LOGGINGTYPE IN('COMMAND') AND ACTION IN('run') AND DATA REGEXP '^[a-zA-Z0-9]+' GROUP BY DATA;
   static readonly query = 'SELECT * FROM ' + Cmd.queryDetails;
   static readonly countQuery = 'SELECT COUNT(*) FROM ' + Cmd.queryDetails;
+  static readonly searchQuery = Cmd.query +
+  ' AND ' + Dbase.tables.log.columns[4] +
+  ' LIKE \'%<searchTerm>%\'';
+
+  static readonly searchCountQuery = Cmd.countQuery +
+  ' AND ' + Dbase.tables.log.columns[4] +
+  ' LIKE \'%<searchTerm>%\'';
 
   static readonly chartCountKey = 'COUNT(' + Dbase.tables.log.columns[4] + ')';
   static readonly chartDataKey = Dbase.tables.log.columns[4];
@@ -267,20 +274,20 @@ class Cmd {
     ' FROM ' + Cmd.queryDetails +
     ' GROUP BY ' + Cmd.chartDataKey;
 
-  static readonly searchQuery = Cmd.query +
-    ' And ' + Dbase.tables.log.columns[4] +
-    ' LIKE \'%<searchTerm>%\'';
-
-  static readonly searchCountQuery = Cmd.countQuery +
-  ' And ' + Dbase.tables.log.columns[4] +
-  ' LIKE \'%<searchTerm>%\'';
+  static readonly chartSearchQuery = 'SELECT ' +
+  Cmd.chartCountKey + ', ' +
+  Cmd.chartDataKey +
+  ' FROM ' + Cmd.queryDetails +
+  ' AND ' + Dbase.tables.log.columns[4] +
+  ' LIKE \'%<searchTerm>%\'' +
+  ' GROUP BY ' + Cmd.chartDataKey;
 
   static readonly cmdChart: ChartType = {
     name: Cmd.chartHeading,
     regex: Cmd.regex,
     query: Cmd.chartQuery,
     countQuery: Cmd.countQuery,
-    searchQuery: Cmd.searchQuery,
+    searchQuery: Cmd.chartSearchQuery,
     searchCountQuery: Cmd.searchCountQuery,
     countColumn: Cmd.chartCountKey,
     dataColumn: Cmd.chartDataKey,
@@ -351,12 +358,20 @@ class Addresses {
     ' IN (\'' + Dbase.tables.txpow.name + '\')' +
     ' AND ' + Dbase.tables.log.columns[3] +
     ' IN (\'' + Dbase.defaultActions.insert + '\')' +
-    ' And ' + Dbase.tables.log.columns[4] +
-    ' REGEXP \'' + Addresses.regex +
-    '\'';
+    ' AND ' + Dbase.tables.log.columns[4] +
+    ' REGEXP \'' + Addresses.regex + '\'' +
+    ' AND (DATE BETWEEN <firstTime> AND <secondTime>)';
 
   static readonly query = 'SELECT * FROM ' + Addresses.queryDetails;
   static readonly countQuery = 'SELECT COUNT(*) FROM ' + Addresses.queryDetails;
+
+  static readonly searchQuery = Addresses.query +
+    ' AND ' + Dbase.tables.log.columns[4] +
+    ' LIKE \'%<searchTerm>%\'';
+
+  static readonly searchCountQuery = Addresses.countQuery +
+  ' AND ' + Dbase.tables.log.columns[4] +
+  ' LIKE \'%<searchTerm>%\'';
 
   // eslint-disable-next-line max-len
   // SELECT COUNT(DATA), DATA FROM LOGGING WHERE LOGGINGTYPE IN('TXPOW') AND ACTION IN('insert') AND DATA REGEXP '^Mx[A-Z0-9]+' GROUP BY DATA;
@@ -368,20 +383,20 @@ class Addresses {
     ' FROM ' + Addresses.queryDetails +
     ' GROUP BY ' + Addresses.chartDataKey;
 
-  static readonly searchQuery = Addresses.query +
-    ' And ' + Dbase.tables.log.columns[4] +
-    ' LIKE \'%<searchTerm>%\'';
-
-  static readonly searchCountQuery = Addresses.countQuery +
-  ' And ' + Dbase.tables.log.columns[4] +
-  ' LIKE \'%<searchTerm>%\'';
+  static readonly chartSearchQuery = 'SELECT ' +
+    Addresses.chartCountKey + ', ' +
+    Addresses.chartDataKey +
+    ' FROM ' + Addresses.queryDetails +
+    ' AND ' + Dbase.tables.log.columns[4] +
+    ' LIKE \'%<searchTerm>%\'' +
+    ' GROUP BY ' + Addresses.chartDataKey;
 
   static readonly addressChart: ChartType = {
     name: Addresses.chartHeading,
     regex: Addresses.regex,
     query: Addresses.chartQuery,
     countQuery: Addresses.countQuery,
-    searchQuery: Addresses.searchQuery,
+    searchQuery: Addresses.chartSearchQuery,
     searchCountQuery: Addresses.searchCountQuery,
     countColumn: Addresses.chartCountKey,
     dataColumn: Addresses.chartDataKey,
@@ -456,9 +471,19 @@ class Tokens {
     ' IN (\'' + Dbase.tables.txpow.name + '\')' +
     ' AND ' + Dbase.tables.log.columns[3] +
     ' IN (\'' + Dbase.defaultActions.insert + '\')' +
-    ' And ' + Dbase.tables.log.columns[4] +
-    ' REGEXP \'' + Tokens.regex +
-    '\'';
+    ' AND ' + Dbase.tables.log.columns[4] +
+    ' REGEXP \'' + Tokens.regex + '\'' +
+    ' AND (DATE BETWEEN <firstTime> AND <secondTime>)';
+
+  static readonly query = 'SELECT * FROM ' + Tokens.queryDetails;
+  static readonly countQuery = 'SELECT COUNT(*) FROM ' + Tokens.queryDetails;
+  static readonly searchQuery = Tokens.query +
+    ' AND ' + Dbase.tables.log.columns[4] +
+    ' LIKE \'%<searchTerm>%\'';
+
+  static readonly searchCountQuery = Tokens.countQuery +
+  ' AND ' + Dbase.tables.log.columns[4] +
+  ' LIKE \'%<searchTerm>%\'';
 
   // eslint-disable-next-line max-len
   // SELECT COUNT(DATA), SUBSTRING(DATA,1,5) FROM LOGGING WHERE LOGGINGTYPE IN('TXPOW') AND ACTION IN('insert') AND DATA REGEXP '^0x00' GROUP BY SUBSTRING(DATA,1,5);
@@ -472,23 +497,20 @@ class Tokens {
     ' FROM ' + Tokens.queryDetails +
     ' GROUP BY ' + Tokens.chartDataKey;
 
-  static readonly query = 'SELECT * FROM ' + Tokens.queryDetails;
-  static readonly countQuery = 'SELECT COUNT(*) FROM ' + Tokens.queryDetails;
-
-  static readonly searchQuery = Tokens.query +
-    ' And ' + Dbase.tables.log.columns[4] +
-    ' LIKE \'%<searchTerm>%\'';
-
-  static readonly searchCountQuery = Tokens.countQuery +
-  ' And ' + Dbase.tables.log.columns[4] +
-  ' LIKE \'%<searchTerm>%\'';
+  static readonly chartSearchQuery = 'SELECT ' +
+    Tokens.chartCountKey + ', ' +
+    Tokens.chartDataKey +
+    ' FROM ' + Tokens.queryDetails +
+    ' AND ' + Dbase.tables.log.columns[4] +
+    ' LIKE \'%<searchTerm>%\'' +
+    ' GROUP BY ' + Tokens.chartDataKey;
 
   static readonly tokenChart: ChartType = {
     name: Tokens.chartHeading,
     regex: Tokens.regex,
     query: Tokens.chartQuery,
     countQuery: Tokens.countQuery,
-    searchQuery: Tokens.searchQuery,
+    searchQuery: Tokens.chartSearchQuery,
     searchCountQuery: Tokens.searchCountQuery,
     countColumn: Tokens.chartCountKey,
     dataColumn: Tokens.chartDataKey,
@@ -544,12 +566,21 @@ class Tokens {
     ' GROUP BY DAY(FROM_UNIXTIME(' + Dbase.tables.log.columns[1] + '/1000)), ' +
     Tokens.dailyDataKey;
 
+  static readonly searchDailyQuery = 'SELECT ' +
+    Tokens.dailyCountKey + ', ' +
+    Tokens.dailyDataKey +
+    ' FROM ' + Tokens.queryDetails +
+    ' AND ' + Dbase.tables.log.columns[4] +
+    ' LIKE \'%<searchTerm>%\'' +
+    ' GROUP BY DAY(FROM_UNIXTIME(' + Dbase.tables.log.columns[1] + '/1000)), ' +
+    Tokens.dailyDataKey;
+
   static readonly tokenDailyChart: ChartType = {
     name: Tokens.tokenDailyChartHeading,
     regex: Tokens.regex,
     query: Tokens.tokenDailyQuery,
     countQuery: Tokens.countQuery,
-    searchQuery: Tokens.searchQuery,
+    searchQuery: Tokens.searchDailyQuery,
     searchCountQuery: Tokens.searchCountQuery,
     countColumn: Tokens.dailyCountKey,
     dataColumn: Tokens.dailyDataKey,
@@ -562,7 +593,7 @@ class Tokens {
       },
       responsive: true,
       maintainAspectRatio: false,
-      indexAxis: 'y',
+      indexAxis: 'x',
       barThickness: Misc.barThickness,
       maxBarThickness: Misc.barThickness + 2,
       scales: {
@@ -572,13 +603,9 @@ class Tokens {
           },
           ticks: {
             color: '#000000',
-            mirror: true,
-            labelOffset: Misc.labelOffset,
-            z: 1,
           },
         },
         x: {
-          position: 'top',
           grid: {
             display: false,
           },
@@ -653,14 +680,22 @@ class API {
     ' IN (\'' + Dbase.tables.trigger.name + '\')' +
     ' AND ' + Dbase.tables.log.columns[3] +
     ' IN (\'' + Dbase.defaultActions.run + '\')' +
-    ' And ' + Dbase.tables.log.columns[4] +
-    ' REGEXP \'' + API.regex +
-    '\'';
+    ' AND ' + Dbase.tables.log.columns[4] +
+    ' REGEXP \'' + API.regex + '\'' +
+    ' AND (DATE BETWEEN <firstTime> AND <secondTime>)';
 
   // eslint-disable-next-line max-len
-  // SELECT COUNT(DATA), DATA FROM LOGGING WHERE LOGGINGTYPE IN('API') AND ACTION IN('run') AND DATA REGEXP '^[a-zA-Z0-9]* ' GROUP BY DATA;
+  // SELECT COUNT(DATA), DATA FROM LOGGING WHERE LOGGINGTYPE IN('API') AND ACTION IN('run') AND DATA REGEXP '^[a-zA-Z0-9]+' GROUP BY DATA;
   static readonly query = 'SELECT * FROM ' + API.queryDetails;
   static readonly countQuery = 'SELECT COUNT(*) FROM ' + API.queryDetails;
+
+  static readonly searchQuery = API.query +
+    ' AND ' + Dbase.tables.log.columns[4] +
+    ' LIKE \'%<searchTerm>%\'';
+
+  static readonly searchCountQuery = API.countQuery +
+  ' AND ' + Dbase.tables.log.columns[4] +
+  ' LIKE \'%<searchTerm>%\'';
 
   static readonly chartCountKey = 'COUNT(' + Dbase.tables.log.columns[4] + ')';
   static readonly chartDataKey = Dbase.tables.log.columns[4];
@@ -670,20 +705,20 @@ class API {
     ' FROM ' + API.queryDetails +
     ' GROUP BY ' + API.chartDataKey;
 
-  static readonly searchQuery = API.query +
-    ' And ' + Dbase.tables.log.columns[4] +
-    ' LIKE \'%<searchTerm>%\'';
-
-  static readonly searchCountQuery = API.countQuery +
-  ' And ' + Dbase.tables.log.columns[4] +
-  ' LIKE \'%<searchTerm>%\'';
+  static readonly chartSearchQuery = 'SELECT ' +
+    API.chartCountKey + ', ' +
+    API.chartDataKey +
+    ' FROM ' + API.queryDetails +
+    ' AND ' + Dbase.tables.log.columns[4] +
+    ' LIKE \'%<searchTerm>%\'' +
+    ' GROUP BY ' + API.chartDataKey;
 
   static readonly apiChart: ChartType = {
     name: API.chartHeading,
     regex: API.regex,
     query: API.chartQuery,
     countQuery: API.countQuery,
-    searchQuery: API.searchQuery,
+    searchQuery: API.chartSearchQuery,
     searchCountQuery: API.searchCountQuery,
     countColumn: API.chartCountKey,
     dataColumn: API.chartDataKey,

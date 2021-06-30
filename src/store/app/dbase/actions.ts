@@ -279,6 +279,7 @@ export const countTableEntries =
      // console.log(query);
 
      Minima.sql(query, function(result: any) {
+       // console.log('got result', query, result);
        if ( !result.status ) {
          txData = {
            code: '503',
@@ -289,7 +290,7 @@ export const countTableEntries =
          dispatch(write({data: txData})(txFailAction));
        } else {
          const count = result.response.rows[0]['COUNT(*)'];
-         // console.log('Got count!', count);
+         console.log('Got count!', count);
          const updateData: CountUpdateData = {
            count: count,
            key: query,
@@ -339,7 +340,7 @@ export const getChartEntries =
             dispatch(write({data: []})(failAction));
             dispatch(write({data: txData})(txFailAction));
           } else {
-            console.log(query, result);
+            // console.log(query, result);
             const data: Array<object> = result.response.rows.slice();
             const updateData: ChartUpdateData = {
               data: {},

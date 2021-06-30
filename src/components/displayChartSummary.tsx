@@ -62,6 +62,7 @@ const summary = (props: Props) => {
   const [searchTerm, setSearchTerm] = useState('');
   // eslint-disable-next-line no-unused-vars
   const [searchQuery, setSearchQuery] = useState('');
+  const [countQuery, setCountQuery] = useState('');
   const [searchCountQuery, setSearchCountQuery] = useState('');
   const [totalRecords, setTotalRecords] = useState(0);
 
@@ -70,13 +71,24 @@ const summary = (props: Props) => {
   useEffect(() => {
     if ( isFirstRun.current ) {
       isFirstRun.current = false;
-      props.countTableEntries(props.chartType.countQuery);
+
+      const timeNow = Date.now().toString();
+      let countQuery = props.chartType.countQuery.replace(/<firstTime>/g, '0');
+      countQuery = countQuery.replace(/<secondTime>/g, timeNow);
+      let query = props.chartType.query.replace(/<firstTime>/g, '0');
+      query = query.replace(/<secondTime>/g, timeNow);
+
+      setCountQuery(countQuery);
+      setSearchQuery(query);
+
+      props.countTableEntries(countQuery);
       props.getChartEntries(
-          props.chartType.query,
+          query,
           props.chartType.name,
           props.chartType.countColumn,
           props.chartType.dataColumn);
     } else {
+      // console.log(props.countData.data);
       if ( searchCountQuery ) {
         if (props.countData.data[searchCountQuery]) {
           // eslint-disable-next-line max-len
@@ -86,12 +98,12 @@ const summary = (props: Props) => {
             setTotalRecords(props.countData.data[searchCountQuery]);
           }
         }
-      } else if (props.countData.data[props.chartType.countQuery]) {
+      } else if (props.countData.data[countQuery]) {
         // eslint-disable-next-line max-len
         // console.log('got count data: ', props.countData.data[props.chartType.countQuery]);
-        const thisCount = props.countData.data[props.chartType.countQuery];
+        const thisCount = props.countData.data[countQuery];
         if ( thisCount != totalRecords ) {
-          setTotalRecords(props.countData.data[props.chartType.countQuery]);
+          setTotalRecords(props.countData.data[countQuery]);
         }
       }
     }
@@ -105,28 +117,38 @@ const summary = (props: Props) => {
       };
 
   const doSearch = () => {
-    let countQuery = props.chartType.countQuery;
-    let query = props.chartType.query;
+    const timeNow = Date.now().toString();
+    let countQuery = props.chartType.countQuery.replace(/<firstTime>/g, '0');
+    countQuery = countQuery.replace(/<secondTime>/g, timeNow);
+    props.countTableEntries(countQuery);
+    let query = props.chartType.query.replace(/<firstTime>/g, '0');
+    query = query.replace(/<secondTime>/g, timeNow);
 
     if ( searchTerm ) {
-      query = props.chartType.searchQuery.replace(/<[^>]*>/g, searchTerm);
+      // query = props.chartType.searchQuery.replace(/<[^>]*>/g, searchTerm);
+      query = props.chartType.searchQuery.replace(/<searchTerm>/g, searchTerm);
+      query = query.replace(/<firstTime>/g, '0');
+      query = query.replace(/<secondTime>/g, timeNow);
+
       countQuery =
-        props.chartType.searchCountQuery.replace(/<[^>]*>/g, searchTerm);
+        props.chartType.searchCountQuery.replace(/<searchTerm>/g, searchTerm);
+      countQuery = countQuery.replace(/<firstTime>/g, '0');
+      countQuery = countQuery.replace(/<secondTime>/g, timeNow);
 
       /*
       console.log('count query:', countQuery, props.chartType.searchCountQuery);
       console.log('query: ', query, props.chartType.searchQuery);
       */
-
       setSearchCountQuery(countQuery);
-      setSearchQuery(query);
     } else {
       setSearchCountQuery('');
-      setSearchQuery('');
     }
 
     /* console.log('count query: ', countQuery);
     console.log('query: ', query);*/
+
+    setSearchQuery(query);
+    setCountQuery(countQuery);
 
     props.countTableEntries(countQuery);
     props.getChartEntries(

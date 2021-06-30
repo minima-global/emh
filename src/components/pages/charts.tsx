@@ -18,7 +18,6 @@ import {
 } from '../../config';
 
 import {themeStyles} from '../../styles';
-// import {getChartData} from '../../utils/getChartData';
 import {DisplayChart} from '../displayChart';
 import {DisplayChartSummary} from '../displayChartSummary';
 

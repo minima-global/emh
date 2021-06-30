@@ -36,23 +36,6 @@ export const chart = (props: Props) => {
 
   const chartIndex = ChartVars.chartInfo.indexOf(props.chartType.name);
 
-  /*
-  useEffect(() => {
-
-    const chartIndex = ChartVars.chartInfo.indexOf(props.chartType.name);
-    if ( chartIndex != -1 ) {
-      if ( props.chartsData.data[chartIndex] ) {
-        setData(props.chartsData.data[chartIndex]);
-      } else {
-        // SELECT * FROM LOGGING ORDER BY DATE DESC LIMIT 0, 2147483647
-        // console.log('runnig charts query', query);
-        props.getChartEntries(
-            props.chartType.query, props.chartType.name, props.chartType.regex);
-      }
-    }
-  }, [props.chartsData]);
-  */
-
   useEffect(() => {
     let chart: any;
     if ( chartIndex != -1 ) {
