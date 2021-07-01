@@ -11,10 +11,12 @@ import Button from '@material-ui/core/Button';
 import logIcon from '../images/log.svg';
 import expandIcon from '../images/expand.svg';
 import closeIcon from '../images/closeDelete.svg';
-import zoomInIcon from '../images/zoomIn.svg';
+// import zoomInIcon from '../images/zoomIn.svg';
 import zoomOutIcon from '../images/zoomOut.svg';
 
-import Chart from 'chart.js/auto';
+// import Chart from 'chart.js/auto';
+import {Chart, registerables, ChartType as ChartJSType} from 'chart.js';
+import zoomPlugin from 'chartjs-plugin-zoom';
 
 import {theme, themeStyles} from '../styles';
 
@@ -64,6 +66,7 @@ type Props = ChartProps & StateProps & DispatchProps;
 
 export const chart = (props: Props) => {
   const isFirstRun = useRef(true);
+  const [chart, setChart] = useState({} as any);
   const [searchTerm, setSearchTerm] = useState('');
   const [totalRecords, setTotalRecords] = useState(0);
   // eslint-disable-next-line no-unused-vars
@@ -78,6 +81,7 @@ export const chart = (props: Props) => {
   }
 
   const classes = themeStyles();
+  Chart.register(zoomPlugin, ...registerables);
 
   useEffect(() => {
     let chart: any;
@@ -117,7 +121,7 @@ export const chart = (props: Props) => {
         const ctx: HTMLCanvasElement | null = dataCtx.current;
         if ( ctx ) {
           chart = new Chart(ctx, {
-            type: props.chartType.type,
+            type: props.chartType.type as ChartJSType,
             data: {
               labels: keys.map((key: string) => key),
               datasets: [{
@@ -127,6 +131,7 @@ export const chart = (props: Props) => {
             },
             options: props.chartType.options,
           });
+          setChart(chart);
         }
       }
     }
@@ -163,6 +168,20 @@ export const chart = (props: Props) => {
         props.chartType.key,
         props.chartType.countColumn,
         props.chartType.dataColumn);
+  };
+
+  /*
+  const doZoomIn = () => {
+    chart.zoom(1.1);
+  };
+
+  const doZoomOut = () => {
+    chart.zoom(0.9);
+  };
+  */
+
+  const resetZoom = () => {
+    chart.resetZoom();
   };
 
   const doTime = (span: string) => {
@@ -224,11 +243,6 @@ export const chart = (props: Props) => {
     query = query.replace(/<secondTime>/g, timeNow.toString());
     countQuery = countQuery.replace(/<secondTime>/g, timeNow.toString());
 
-    /*
-    console.log('query', query);
-    console.log('count query', countQuery);
-    */
-
     props.countTableEntries(countQuery, props.chartType.key);
     props.getChartEntries(
         query,
@@ -282,21 +296,16 @@ export const chart = (props: Props) => {
           />
         </Grid>
         <Grid item container justify='flex-end' alignItems="center" xs={4}>
-          <Grid item container justify='flex-end' xs={3}>
-            <IconButton
-              aria-label="Zoom In"
-            >
-              <img className={classes.footerIcon} src={zoomInIcon}/>
-            </IconButton>
+          <Grid item container justify='flex-end' xs={4}>
+            <div onClick={()=>resetZoom()}>
+              <IconButton
+                aria-label="Reset Zoom"
+              >
+                <img className={classes.footerIcon} src={zoomOutIcon}/>
+              </IconButton>
+            </div>
           </Grid>
-          <Grid item container justify='flex-end' xs={3}>
-            <IconButton
-              aria-label="Zoom Out"
-            >
-              <img className={classes.footerIcon} src={zoomOutIcon}/>
-            </IconButton>
-          </Grid>
-          <Grid item container justify='flex-end' xs={3}>
+          <Grid item container justify='flex-end' xs={4}>
             <NavLink to={props.logNavLink}>
               <IconButton
                 aria-label="Logs"
@@ -305,7 +314,7 @@ export const chart = (props: Props) => {
               </IconButton>
             </NavLink>
           </Grid>
-          <Grid item container justify='flex-end' xs={3}>
+          <Grid item container justify='flex-end' xs={4}>
             <NavLink to={props.navLink}>
               <IconButton
                 aria-label="chartOrHome"

@@ -77,6 +77,15 @@ export const Content = () => {
             logNavLink={Local.logTokens} /> }
       />
       <Route
+        exact path={Local.chartDailyTokens}
+        render= {() =>
+          <Chart
+            chartType={TokensVars.tokenDailyChart}
+            isFullScreen={true}
+            navLink={Local.home}
+            logNavLink={Local.logTokens} /> }
+      />
+      <Route
         exact path={Local.chartAddresses}
         render= {() =>
           <Chart

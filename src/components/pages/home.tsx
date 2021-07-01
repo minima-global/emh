@@ -167,7 +167,7 @@ export const Home = () => {
               <Chart
                 chartType={TokensVars.tokenDailyChart}
                 isFullScreen={false}
-                navLink={Local.chartTokens}
+                navLink={Local.chartDailyTokens}
                 logNavLink={Local.logTokens} /> }
           </Paper>
         </Grid>

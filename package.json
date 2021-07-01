@@ -26,7 +26,7 @@
     "@material-ui/pickers": "^3.2.10",
     "@material-ui/styles": "^4.11.2",
     "chart.js": "^3.2.1",
-    "chartjs-react": "^3.3.2",
+    "chartjs-plugin-zoom": "^1.1.0",
     "decimal.js": "^10.2.1",
     "flat": "^5.0.2",
     "formik": "^2.2.6",

@@ -219,7 +219,7 @@ class Paths {
   static readonly urls = 'Minima to URL'
   static readonly addresses = 'Addresses'
   static readonly tokens = 'Tokens'
-  static readonly triggers = 'API'
+  static readonly triggers = 'URL to Minima'
   static readonly cmd = 'Run API'
 }
 
@@ -348,16 +348,28 @@ class Cmd {
     dataColumn: Cmd.chartDataKey,
     type: 'bar',
     options: {
-      plugins: {
-        legend: {
-          display: false,
-        },
-      },
       responsive: true,
       maintainAspectRatio: false,
       indexAxis: 'y',
       barThickness: Misc.barThickness,
       maxBarThickness: Misc.barThickness + 2,
+      plugins: {
+        legend: {
+          display: false,
+        },
+        zoom: {
+          zoom: {
+            wheel: {
+              enabled: true,
+              speed: 1,
+            },
+            pinch: {
+              enabled: true,
+            },
+            mode: 'y',
+          },
+        },
+      },
       scales: {
         y: {
           grid: {
@@ -485,16 +497,28 @@ class Addresses {
     dataColumn: Addresses.chartDataKey,
     type: 'bar',
     options: {
-      plugins: {
-        legend: {
-          display: false,
-        },
-      },
       responsive: true,
       maintainAspectRatio: false,
       indexAxis: 'y',
       barThickness: Misc.barThickness,
       maxBarThickness: Misc.barThickness + 2,
+      plugins: {
+        legend: {
+          display: false,
+        },
+        zoom: {
+          zoom: {
+            wheel: {
+              enabled: true,
+              speed: 1,
+            },
+            pinch: {
+              enabled: true,
+            },
+            mode: 'y',
+          },
+        },
+      },
       scales: {
         y: {
           grid: {
@@ -543,6 +567,21 @@ class Addresses {
     searchCountQuery: Addresses.logSearchCountQuery,
   }
 }
+
+/*
+zoom: {
+  zoom: {
+    wheel: {
+      enabled: true,
+      speed: 1,
+    },
+    pinch: {
+      enabled: true,
+    },
+    mode: 'y',
+  },
+},
+*/
 
 /** @class Tokens */
 class Tokens {
@@ -623,16 +662,28 @@ class Tokens {
     dataColumn: Tokens.chartDataKey,
     type: 'bar',
     options: {
-      plugins: {
-        legend: {
-          display: false,
-        },
-      },
       responsive: true,
       maintainAspectRatio: false,
       indexAxis: 'y',
       barThickness: Misc.barThickness,
       maxBarThickness: Misc.barThickness + 2,
+      plugins: {
+        legend: {
+          display: false,
+        },
+        zoom: {
+          zoom: {
+            wheel: {
+              enabled: true,
+              speed: 1,
+            },
+            pinch: {
+              enabled: true,
+            },
+            mode: 'y',
+          },
+        },
+      },
       scales: {
         y: {
           grid: {
@@ -696,16 +747,28 @@ class Tokens {
     dataColumn: Tokens.dailyDataKey,
     type: 'bar',
     options: {
-      plugins: {
-        legend: {
-          display: false,
-        },
-      },
       responsive: true,
       maintainAspectRatio: false,
       indexAxis: 'x',
       barThickness: Misc.barThickness,
       maxBarThickness: Misc.barThickness + 2,
+      plugins: {
+        legend: {
+          display: false,
+        },
+        zoom: {
+          zoom: {
+            wheel: {
+              enabled: true,
+              speed: 1,
+            },
+            pinch: {
+              enabled: true,
+            },
+            mode: 'x',
+          },
+        },
+      },
       scales: {
         y: {
           grid: {
@@ -843,16 +906,28 @@ class API {
     dataColumn: API.chartDataKey,
     type: 'bar',
     options: {
-      plugins: {
-        legend: {
-          display: false,
-        },
-      },
       responsive: true,
       maintainAspectRatio: false,
       indexAxis: 'y',
       barThickness: Misc.barThickness,
       maxBarThickness: Misc.barThickness + 2,
+      plugins: {
+        legend: {
+          display: false,
+        },
+        zoom: {
+          zoom: {
+            wheel: {
+              enabled: true,
+              speed: 1,
+            },
+            pinch: {
+              enabled: true,
+            },
+            mode: 'y',
+          },
+        },
+      },
       scales: {
         y: {
           grid: {

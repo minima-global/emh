@@ -10,6 +10,7 @@ class Local {
   static readonly addresses = '/addresses'
   static readonly tokens = '/tokens'
   static readonly chartTokens = '/chartTokens'
+  static readonly chartDailyTokens = '/chartDailyTokens'
   static readonly chartAddresses = '/chartAddresses'
   static readonly chartAPI = '/chartAPI'
   static readonly chartCmds = '/chartCommands'
