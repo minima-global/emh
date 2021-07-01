@@ -276,7 +276,7 @@ export const countTableEntries =
        time: dateText,
      };
 
-     // console.log(query);
+     console.log('got count query', query);
 
      Minima.sql(query, function(result: any) {
        // console.log('got result', query, result);

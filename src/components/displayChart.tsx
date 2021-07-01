@@ -209,7 +209,6 @@ export const chart = (props: Props) => {
 
     let countQuery =
       props.chartType.countQuery.replace(/<firstTime>/g, timeFrom.toString());
-    props.countTableEntries(countQuery, props.chartType.key);
     let query =
       props.chartType.query.replace(/<firstTime>/g, timeFrom.toString());
 
@@ -224,6 +223,11 @@ export const chart = (props: Props) => {
 
     query = query.replace(/<secondTime>/g, timeNow.toString());
     countQuery = countQuery.replace(/<secondTime>/g, timeNow.toString());
+
+    /*
+    console.log('query', query);
+    console.log('count query', countQuery);
+    */
 
     props.countTableEntries(countQuery, props.chartType.key);
     props.getChartEntries(
