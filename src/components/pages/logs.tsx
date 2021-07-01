@@ -59,7 +59,6 @@ export const list = (props: Props) => {
   const isFirstRun = useRef(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
-  const [searchCountQuery, setSearchCountQuery] = useState('');
   // eslint-disable-next-line no-unused-vars
   const [low, setLimitLow] = useState(0);
   // eslint-disable-next-line no-unused-vars
@@ -84,21 +83,12 @@ export const list = (props: Props) => {
       props.countTableEntries(props.logType.countQuery, props.logType.key);
       props.getTableEntries(query, actionType);
     } else {
-      if ( searchCountQuery ) {
-        if (props.countData.data[searchCountQuery]) {
-          // eslint-disable-next-line max-len
-          // console.log('got count data: ', props.countData.data[searchCountQuery]);
-          const thisCount = props.countData.data[searchCountQuery];
-          if ( thisCount != totalRecords ) {
-            setTotalRecords(props.countData.data[searchCountQuery]);
-          }
-        }
-      } else if (props.countData.data[props.logType.countQuery]) {
-        // eslint-disable-next-line max-len
-        // console.log('got count data: ', props.countData.data[props.logType.countQuery]);
-        const thisCount = props.countData.data[props.logType.countQuery];
+      if (props.countData.data[props.logType.key]) {
+      // eslint-disable-next-line max-len
+      // console.log('got count data: ', props.countData.data[props.logType.countQuery]);
+        const thisCount = props.countData.data[props.logType.key];
         if ( thisCount != totalRecords ) {
-          setTotalRecords(props.countData.data[props.logType.countQuery]);
+          setTotalRecords(props.countData.data[props.logType.key]);
         }
       }
 
@@ -134,13 +124,6 @@ export const list = (props: Props) => {
       console.log('count query: ', countQuery, props.logType.searchCountQuery);
       console.log('query: ', query, props.logType.searchQuery);
       */
-
-      setSearchCountQuery(countQuery);
-      setSearchQuery(query);
-
-      query += ' LIMIT ' + 0 + ', ' + Dbase.pageLimit;
-    } else {
-      setSearchCountQuery('');
       setSearchQuery('');
     }
 
