@@ -8,7 +8,7 @@ import {
   TxActionTypes,
   ChartsActionTypes,
   ChartUpdateData,
-  ChartData,
+  AChart,
   CountActionTypes,
   CountUpdateData,
 } from '../../types';
@@ -17,7 +17,6 @@ import {
   App,
   Dbase,
   SQL,
-  Chart,
 } from '../../../config';
 
 // Tokens as TokensVars,
@@ -259,10 +258,11 @@ export const getTableEntries =
 /**
  * Counts rows in the database
  * @param {string} query - SELECT COUNT(*) FROM LOGGING etc...
+ * @param {string} key - the key of the data structure to update
  * @return {function}
  */
 export const countTableEntries =
- (query: string) => {
+ (query: string, key: string) => {
    return async (dispatch: AppDispatch) => {
      const successAction = CountActionTypes.COUNT_SUCCESS;
      const failAction = CountActionTypes.COUNT_FAILURE;
@@ -292,7 +292,7 @@ export const countTableEntries =
          const count = result.response.rows[0]['COUNT(*)'];
          const updateData: CountUpdateData = {
            count: count,
-           key: query,
+           key: key,
          };
          dispatch(write({data: updateData})(successAction));
          dispatch(write({data: txData})(txSuccessAction));
@@ -304,13 +304,13 @@ export const countTableEntries =
 /**
  * Queries the database and dispatches chart data
  * @param {string} query - SELECT * FROM LOGGING etc...
- * @param {string} chartName - the chart for which we're getting data *
+ * @param {string} key - the key of the chart for which we're getting data
  * @param {string} countKey - the object key of the count returned in the SELECT
  * @param {string} dataKey - the object key of the data returned in the SELECT
  * @return {function}
  */
 export const getChartEntries =
-  (query: string, chartName: string, countKey: string, dataKey: string) => {
+  (query: string, key: string, countKey: string, dataKey: string) => {
     return async (dispatch: AppDispatch) => {
       // , getState: Function
       // const state = getState();
@@ -325,47 +325,36 @@ export const getChartEntries =
         summary: SQL.selectSuccess,
         time: dateText,
       };
-      const chartIndex = Chart.chartInfo.indexOf(chartName);
 
-      if ( chartIndex != -1 ) {
-        // console.log('got query', query);
-        Minima.sql(query, function(result: any) {
-          if ( !result.status ) {
-            txData = {
-              code: '503',
-              summary: SQL.selectFailure,
-              time: dateText,
-            };
-            dispatch(write({data: []})(failAction));
-            dispatch(write({data: txData})(txFailAction));
-          } else {
-            // console.log(query, result);
-            const data: Array<object> = result.response.rows.slice();
-            const updateData: ChartUpdateData = {
-              data: {},
-              index: chartIndex,
-            };
-            const chartData: ChartData = {};
-            data.map( ( row: any ) => {
-              // eslint-disable-next-line max-len
-              // console.log('row', row, dataKey, countKey, row[dataKey], row[countKey], chartIndex);
-              const thisData = row[dataKey];
-              const thisCount = row[countKey];
-              chartData[thisData] = thisCount;
-            });
-            updateData.data = chartData;
-            dispatch(write({data: updateData})(successAction));
-            dispatch(write({data: txData})(txSuccessAction));
-          }
-        });
-      } else {
-        txData = {
-          code: '503',
-          summary: SQL.selectFailure,
-          time: dateText,
-        };
-        dispatch(write({data: []})(failAction));
-        dispatch(write({data: txData})(txFailAction));
-      }
+      // console.log('got query', query);
+      Minima.sql(query, function(result: any) {
+        if ( !result.status ) {
+          txData = {
+            code: '503',
+            summary: SQL.selectFailure,
+            time: dateText,
+          };
+          dispatch(write({data: []})(failAction));
+          dispatch(write({data: txData})(txFailAction));
+        } else {
+          // console.log(query, result);
+          const data: Array<object> = result.response.rows.slice();
+          const updateData: ChartUpdateData = {
+            data: {},
+            key: key,
+          };
+          const chartData: AChart = {};
+          data.map( ( row: any ) => {
+            // eslint-disable-next-line max-len
+            // console.log('row', row, dataKey, countKey, row[dataKey], row[countKey], chartIndex);
+            const thisData = row[dataKey];
+            const thisCount = row[countKey];
+            chartData[thisData] = thisCount;
+          });
+          updateData.data = chartData;
+          dispatch(write({data: updateData})(successAction));
+          dispatch(write({data: txData})(txSuccessAction));
+        }
+      });
     };
   };

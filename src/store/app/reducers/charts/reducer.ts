@@ -5,12 +5,8 @@ import {
   ChartUpdateData,
 } from '../../../types';
 
-import {
-  Chart,
-} from '../../../../config';
-
 const initialState: ChartProps = {
-  data: new Array(Chart.chartInfo.length),
+  data: {},
 };
 
 export const reducer =
@@ -26,14 +22,11 @@ export const reducer =
       // console.log("here with: ", action.payload.data)
       const myChartData: ChartUpdateData =
         action.payload.data as ChartUpdateData;
-      const thisData = myChartData.data;
-      const index = myChartData.index;
-      const newData = [...state.data];
-      newData[index] = thisData;
-      return {
-        ...state,
-        data: newData,
-      };
+
+      const newState = {...state};
+      const newData = newState.data;
+      newData[myChartData.key] = myChartData.data;
+      return newState;
     }
     default:
       return state;

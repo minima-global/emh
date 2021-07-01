@@ -31,31 +31,6 @@ export interface ActionProps extends Action {
 
 export type AppDispatch = ThunkDispatch<ApplicationState, any, ActionProps>
 
-export type ChartData = {
-  [key: string]: number
-}
-
-export interface ChartProps extends PayloadProps {
-  data: Array<ChartData>
-}
-
-export type ChartUpdateData = {
-  data: ChartData
-  index: number
-}
-
-export type ChartType = {
-  name: string
-  query: string
-  countQuery: string
-  searchQuery: string
-  searchCountQuery: string
-  countColumn: string
-  dataColumn: string
-  type: string
-  options: object
-}
-
 /**
  * Static info props
  */
@@ -98,7 +73,51 @@ export interface TxProps extends PayloadProps {
   data: TxData
 }
 
-// Database definitions
+// Charts
+export type AChart = {
+  [key: string]: number
+}
+
+export type ChartData = {
+  [key: string]: AChart
+}
+
+export interface ChartProps extends PayloadProps {
+  data: ChartData
+}
+
+export type ChartUpdateData = {
+  data: AChart
+  key: string
+}
+
+export type ChartType = {
+  name: string
+  key: string
+  query: string
+  countQuery: string
+  searchQuery: string
+  searchCountQuery: string
+  countColumn: string
+  dataColumn: string
+  type: string
+  options: object
+}
+
+// Keep a count of rows returned by a query
+export type CountData = {
+  [key: string]: number
+}
+
+export interface CountProps extends PayloadProps {
+  data: CountData
+}
+
+export type CountUpdateData = {
+  count: number
+  key: string
+}
+
 
 /**
  * Logs database table
@@ -118,6 +137,7 @@ export interface LogsProps extends PayloadProps {
 
 export type LogType = {
   name: string
+  key: string
   query: string
   countQuery: string
   searchQuery: string
@@ -179,20 +199,6 @@ export const enum PageTypes {
 export type SelectOptionType = {
   value: string
   label: string
-}
-
-// Keep a count of rows returned by a query
-export type CountData = {
-  [key: string]: number
-}
-
-export interface CountProps extends PayloadProps {
-  data: CountData
-}
-
-export type CountUpdateData = {
-  count: number
-  key: string
 }
 
 /**

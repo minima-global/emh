@@ -49,11 +49,12 @@ interface StateProps {
 
 interface DispatchProps {
   countTableEntries: (
-    query: string
+    query: string,
+    key: string
   ) => void
   getChartEntries: (
     query: string,
-    chartName: string,
+    key: string,
     countKey: string,
     dataKey: string
   ) => void
@@ -66,14 +67,11 @@ export const chart = (props: Props) => {
   const [searchTerm, setSearchTerm] = useState('');
   // eslint-disable-next-line no-unused-vars
   const [searchQuery, setSearchQuery] = useState('');
-  const [countQuery, setCountQuery] = useState('');
-  const [searchCountQuery, setSearchCountQuery] = useState('');
+  // eslint-disable-next-line no-unused-vars
   const [totalRecords, setTotalRecords] = useState(0);
   // eslint-disable-next-line no-unused-vars
   const [chartHeight, setChartHeight] = useState(0);
   const dataCtx = useRef<HTMLCanvasElement>(null);
-
-  const chartIndex = ChartVars.chartInfo.indexOf(props.chartType.name);
 
   let navLinkIcon = expandIcon;
   let viewport = '280px';
@@ -83,47 +81,6 @@ export const chart = (props: Props) => {
   }
 
   const classes = themeStyles();
-
-  useEffect(() => {
-    if ( isFirstRun.current ) {
-      isFirstRun.current = false;
-
-      const timeNow = Date.now().toString();
-      let countQuery = props.chartType.countQuery.replace(/<firstTime>/g, '0');
-      countQuery = countQuery.replace(/<secondTime>/g, timeNow);
-      let query = props.chartType.query.replace(/<firstTime>/g, '0');
-      query = query.replace(/<secondTime>/g, timeNow);
-
-      setCountQuery(countQuery);
-      setSearchQuery(query);
-
-      props.countTableEntries(countQuery);
-      props.getChartEntries(
-          query,
-          props.chartType.name,
-          props.chartType.countColumn,
-          props.chartType.dataColumn);
-    } else {
-      // console.log(props.countData.data);
-      if ( searchCountQuery ) {
-        if (props.countData.data[searchCountQuery]) {
-          // eslint-disable-next-line max-len
-          // console.log('got count data: ', props.countData.data[searchCountQuery]);
-          const thisCount = props.countData.data[searchCountQuery];
-          if ( thisCount != totalRecords ) {
-            setTotalRecords(props.countData.data[searchCountQuery]);
-          }
-        }
-      } else if (props.countData.data[countQuery]) {
-        // eslint-disable-next-line max-len
-        // console.log('got count data: ', props.countData.data[props.chartType.countQuery]);
-        const thisCount = props.countData.data[countQuery];
-        if ( thisCount != totalRecords ) {
-          setTotalRecords(props.countData.data[countQuery]);
-        }
-      }
-    }
-  }, [props.countData]);
 
   useEffect(() => {
     let chart: any;
@@ -136,62 +93,52 @@ export const chart = (props: Props) => {
       let query = props.chartType.query.replace(/<firstTime>/g, '0');
       query = query.replace(/<secondTime>/g, timeNow);
 
-      setCountQuery(countQuery);
       setSearchQuery(query);
 
-      props.countTableEntries(countQuery);
+      props.countTableEntries(countQuery, props.chartType.key);
       props.getChartEntries(
           query,
-          props.chartType.name,
+          props.chartType.key,
           props.chartType.countColumn,
           props.chartType.dataColumn);
     } else {
-      // console.log(props.countData.data);
-      if ( searchCountQuery ) {
-        if (props.countData.data[searchCountQuery]) {
-          // eslint-disable-next-line max-len
-          // console.log('got count data: ', props.countData.data[searchCountQuery]);
-          const thisCount = props.countData.data[searchCountQuery];
-          if ( thisCount != totalRecords ) {
-            setTotalRecords(props.countData.data[searchCountQuery]);
-          }
-        }
-      } else if (props.countData.data[countQuery]) {
+      const key = props.chartType.key;
+      // console.log('count', props.countData.data);
+      // console.log('data', props.chartData);
+      if (props.countData.data[key]) {
         // eslint-disable-next-line max-len
         // console.log('got count data: ', props.countData.data[props.chartType.countQuery]);
-        const thisCount = props.countData.data[countQuery];
+        const thisCount = props.countData.data[key];
         if ( thisCount != totalRecords ) {
-          setTotalRecords(props.countData.data[countQuery]);
+          setTotalRecords(props.countData.data[key]);
         }
       }
 
-      if ( chartIndex != -1 ) {
-        if ( props.chartData.data[chartIndex] ) {
-          const keys = Object.keys(props.chartData.data[chartIndex]);
-          const values = Object.values(props.chartData.data[chartIndex]);
-          setChartHeight(
-              ChartVars.axisOffset + keys.length * ChartVars.gridHeight);
-          const ctx: HTMLCanvasElement | null = dataCtx.current;
-          if ( ctx ) {
-            chart = new Chart(ctx, {
-              type: props.chartType.type,
-              data: {
-                labels: keys.map((key: string) => key),
-                datasets: [{
-                  data: values.map((value: number) => value),
-                  backgroundColor: colours,
-                }],
-              },
-              options: props.chartType.options,
-            });
-          }
+      if ( props.chartData.data[key] ) {
+        const keys = Object.keys(props.chartData.data[key]);
+        const values = Object.values(props.chartData.data[key]);
+        setChartHeight(
+            ChartVars.axisOffset + keys.length * ChartVars.gridHeight);
+        const ctx: HTMLCanvasElement | null = dataCtx.current;
+        if ( ctx ) {
+          chart = new Chart(ctx, {
+            type: props.chartType.type,
+            data: {
+              labels: keys.map((key: string) => key),
+              datasets: [{
+                data: values.map((value: number) => value),
+                backgroundColor: colours,
+              }],
+            },
+            options: props.chartType.options,
+          });
         }
       }
     }
     return () => {
       chart ? chart.destroy() : null;
     };
-  }, [props.chartData, props.countData]);
+  }, [props.chartData]);
 
   const doSetSearchTerm =
       (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -201,41 +148,26 @@ export const chart = (props: Props) => {
   const doSearch = () => {
     const timeNow = Date.now().toString();
     let countQuery = props.chartType.countQuery.replace(/<firstTime>/g, '0');
-    countQuery = countQuery.replace(/<secondTime>/g, timeNow);
-    props.countTableEntries(countQuery);
     let query = props.chartType.query.replace(/<firstTime>/g, '0');
-    query = query.replace(/<secondTime>/g, timeNow);
 
     if ( searchTerm ) {
       // query = props.chartType.searchQuery.replace(/<[^>]*>/g, searchTerm);
       query = props.chartType.searchQuery.replace(/<searchTerm>/g, searchTerm);
       query = query.replace(/<firstTime>/g, '0');
-      query = query.replace(/<secondTime>/g, timeNow);
 
       countQuery =
         props.chartType.searchCountQuery.replace(/<searchTerm>/g, searchTerm);
       countQuery = countQuery.replace(/<firstTime>/g, '0');
-      countQuery = countQuery.replace(/<secondTime>/g, timeNow);
-
-      /*
-      console.log('count query:', countQuery, props.chartType.searchCountQuery);
-      console.log('query: ', query, props.chartType.searchQuery);
-      */
-      setSearchCountQuery(countQuery);
-    } else {
-      setSearchCountQuery('');
     }
 
-    /* console.log('count query: ', countQuery);
-    console.log('query: ', query);*/
+    query = query.replace(/<secondTime>/g, timeNow);
+    countQuery = countQuery.replace(/<secondTime>/g, timeNow);
 
     setSearchQuery(query);
-    setCountQuery(countQuery);
-
-    props.countTableEntries(countQuery);
+    props.countTableEntries(countQuery, props.chartType.key);
     props.getChartEntries(
         query,
-        props.chartType.name,
+        props.chartType.key,
         props.chartType.countColumn,
         props.chartType.dataColumn);
   };
@@ -285,7 +217,7 @@ export const chart = (props: Props) => {
     let countQuery =
       props.chartType.countQuery.replace(/<firstTime>/g, timeFrom.toString());
     countQuery = countQuery.replace(/<secondTime>/g, timeNow.toString());
-    props.countTableEntries(countQuery);
+    props.countTableEntries(countQuery, props.chartType.key);
     let query =
       props.chartType.query.replace(/<firstTime>/g, timeFrom.toString());
     query = query.replace(/<secondTime>/g, timeNow.toString());
@@ -295,10 +227,10 @@ export const chart = (props: Props) => {
     console.log('time', query);
     */
 
-    props.countTableEntries(countQuery);
+    props.countTableEntries(countQuery, props.chartType.key);
     props.getChartEntries(
         query,
-        props.chartType.name,
+        props.chartType.key,
         props.chartType.countColumn,
         props.chartType.dataColumn);
   };
@@ -658,16 +590,18 @@ const mapDispatchToProps = (dispatch: AppDispatch): DispatchProps => {
   return {
     countTableEntries: (
         query: string,
+        key: string,
     ) => dispatch(countTableEntries(
         query,
+        key,
     )),
     getChartEntries: (
         query: string,
-        chartName: string,
+        key: string,
         countKey: string,
         dataKey: string,
     ) =>
-      dispatch(getChartEntries(query, chartName, countKey, dataKey)),
+      dispatch(getChartEntries(query, key, countKey, dataKey)),
   };
 };
 

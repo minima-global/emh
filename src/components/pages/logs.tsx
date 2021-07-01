@@ -44,7 +44,8 @@ interface StateProps {
 
 interface DispatchProps {
   countTableEntries: (
-    query: string
+    query: string,
+    key: string
   ) => void
   getTableEntries: (
     query: string,
@@ -80,7 +81,7 @@ export const list = (props: Props) => {
     if ( isFirstRun.current ) {
       isFirstRun.current = false;
       const query = props.logType.query + ' LIMIT ' + low + ', ' + offset;
-      props.countTableEntries(props.logType.countQuery);
+      props.countTableEntries(props.logType.countQuery, props.logType.key);
       props.getTableEntries(query, actionType);
     } else {
       if ( searchCountQuery ) {
@@ -146,7 +147,7 @@ export const list = (props: Props) => {
     /* console.log('count query: ', countQuery);
     console.log('query: ', query);*/
 
-    props.countTableEntries(countQuery);
+    props.countTableEntries(countQuery, props.logType.key);
     props.getTableEntries(query, actionType);
   };
 
@@ -435,8 +436,10 @@ const mapDispatchToProps = (dispatch: AppDispatch): DispatchProps => {
   return {
     countTableEntries: (
         query: string,
+        key: string,
     ) => dispatch(countTableEntries(
         query,
+        key,
     )),
     getTableEntries: (
         query: string,

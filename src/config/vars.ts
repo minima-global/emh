@@ -1,3 +1,5 @@
+import shortid from 'shortid';
+
 import {
   ChartType,
   LogType,
@@ -113,7 +115,7 @@ class Dbase {
         name: ['ID'],
         isAuto: true,
       },
-      columns: ['ID', 'DATE', 'LOGGINGTYPE', 'ACTION', 'DATA'],
+      columns: ['ID', 'DATE', 'LOGGINGTYPE', 'ACTION', 'DATA', 'EXTRA'],
     },
     trigger: {
       name: 'API',
@@ -294,7 +296,7 @@ class Cmd {
   // Stuff to make the charts and logs work
   static readonly regex = '^[a-zA-Z0-9]+';
 
-  // 'ID', 'DATE', 'LOGGINGTYPE', 'ACTION', 'DATA'
+  static readonly chartKey = shortid.generate();
 
   static readonly queryDetails = Dbase.tables.log.name +
     ' WHERE ' + Dbase.tables.log.columns[2] +
@@ -337,6 +339,7 @@ class Cmd {
 
   static readonly cmdChart: ChartType = {
     name: Cmd.chartHeading,
+    key: Cmd.chartKey,
     query: Cmd.chartQuery,
     countQuery: Cmd.countQuery,
     searchQuery: Cmd.chartSearchQuery,
@@ -377,6 +380,8 @@ class Cmd {
     },
   }
 
+  static readonly logKey = shortid.generate();
+
   static readonly logQuery = 'SELECT * FROM ' +
     Cmd.queryDetails +
     ' ORDER BY DATE DESC';
@@ -395,6 +400,7 @@ class Cmd {
 
   static readonly cmdLog: LogType = {
     name: Cmd.logHeading,
+    key: Cmd.logKey,
     query: Cmd.logQuery,
     countQuery: Cmd.logCountQuery,
     searchQuery: Cmd.logSearchQuery,
@@ -424,6 +430,8 @@ class Addresses {
 
   // Stuff to make the charts and logs work
   static readonly regex = '^Mx[A-Z0-9]+'
+
+  static readonly chartKey = shortid.generate();
 
   static readonly queryDetails = Dbase.tables.log.name +
     ' WHERE ' + Dbase.tables.log.columns[2] +
@@ -468,6 +476,7 @@ class Addresses {
 
   static readonly addressChart: ChartType = {
     name: Addresses.chartHeading,
+    key: Addresses.chartKey,
     query: Addresses.chartQuery,
     countQuery: Addresses.countQuery,
     searchQuery: Addresses.chartSearchQuery,
@@ -508,6 +517,8 @@ class Addresses {
     },
   }
 
+  static readonly logKey = shortid.generate();
+
   static readonly logQuery = 'SELECT * FROM ' +
     Addresses.queryDetails +
     ' ORDER BY DATE DESC';
@@ -525,6 +536,7 @@ class Addresses {
 
   static readonly addressLog: LogType = {
     name: Addresses.logHeading,
+    key: Addresses.logKey,
     query: Addresses.logQuery,
     countQuery: Addresses.logCountQuery,
     searchQuery: Addresses.logSearchQuery,
@@ -556,6 +568,8 @@ class Tokens {
 
   // stuff to make the charts and logs work
   static readonly regex = '^0x[A-Z0-9]+'
+
+  static readonly chartKey = shortid.generate();
 
   static readonly queryDetails = Dbase.tables.log.name +
     ' WHERE ' + Dbase.tables.log.columns[2] +
@@ -600,6 +614,7 @@ class Tokens {
 
   static readonly tokenChart: ChartType = {
     name: Tokens.chartHeading,
+    key: Tokens.chartKey,
     query: Tokens.chartQuery,
     countQuery: Tokens.countQuery,
     searchQuery: Tokens.chartSearchQuery,
@@ -647,6 +662,9 @@ class Tokens {
   // SELECT COUNT(FROM_UNIXTIME(DATE/1000)), SUBSTRING(DATA,1,5) FROM LOGGING WHERE LOGGINGTYPE IN('TXPOW') AND ACTION IN('insert') AND DATA REGEXP '^0x00' GROUP BY DAY(FROM_UNIXTIME(DATE/1000)), SUBSTRING(DATA,1,5);
   // eslint-disable-next-line max-len
   // SELECT COUNT(FROM_UNIXTIME(DATE/1000)), DATE(FROM_UNIXTIME(DATE/1000)) FROM LOGGING WHERE LOGGINGTYPE IN('TXPOW') AND ACTION IN('insert') AND DATA REGEXP '^0x00' GROUP BY DAY(FROM_UNIXTIME(DATE/1000)), DATE(FROM_UNIXTIME(DATE/1000));
+
+  static readonly dailyCountChartKey = shortid.generate();
+
   static readonly dailyCountKey =
     'COUNT(FROM_UNIXTIME(' + Dbase.tables.log.columns[1] + '/1000))';
   static readonly dailyDataKey =
@@ -669,6 +687,7 @@ class Tokens {
 
   static readonly tokenDailyChart: ChartType = {
     name: Tokens.tokenDailyChartHeading,
+    key: Tokens.dailyCountChartKey,
     query: Tokens.tokenDailyQuery,
     countQuery: Tokens.countQuery,
     searchQuery: Tokens.searchDailyQuery,
@@ -705,6 +724,8 @@ class Tokens {
     },
   }
 
+  static readonly logKey = shortid.generate();
+
   static readonly logQuery = 'SELECT * FROM ' +
     Tokens.queryDetails +
     ' ORDER BY DATE DESC';
@@ -721,6 +742,7 @@ class Tokens {
 
   static readonly tokenLog: LogType = {
     name: Tokens.logHeading,
+    key: Tokens.logKey,
     query: Tokens.logQuery,
     countQuery: Tokens.logCountQuery,
     searchQuery: Tokens.logSearchQuery,
@@ -768,6 +790,8 @@ class API {
   // Stuff to make the charts and logs work
   static readonly regex = '^[a-zA-Z0-9]+'
 
+  static readonly chartKey = shortid.generate();
+
   static readonly queryDetails = Dbase.tables.log.name +
     ' WHERE ' + Dbase.tables.log.columns[2] +
     ' IN (\'' + Dbase.tables.trigger.name + '\')' +
@@ -810,6 +834,7 @@ class API {
 
   static readonly apiChart: ChartType = {
     name: API.chartHeading,
+    key: API.chartKey,
     query: API.chartQuery,
     countQuery: API.countQuery,
     searchQuery: API.chartSearchQuery,
@@ -850,6 +875,8 @@ class API {
     },
   }
 
+  static readonly logKey = shortid.generate();
+
   static readonly logQuery = 'SELECT * FROM ' +
     API.queryDetails +
     ' ORDER BY DATE DESC';
@@ -866,6 +893,7 @@ class API {
 
   static readonly apiLog: LogType = {
     name: API.logHeading,
+    key: API.logKey,
     query: API.logQuery,
     countQuery: API.logCountQuery,
     searchQuery: API.logSearchQuery,
@@ -899,6 +927,8 @@ class Log {
   static readonly nextButton = 'Next'
   static readonly backButton = 'Back'
 
+  static readonly logKey = shortid.generate();
+
   static readonly query = 'SELECT * FROM ' +
     Dbase.tables.log.name +
     ' ORDER BY DATE DESC';
@@ -922,6 +952,7 @@ class Log {
 
   static readonly log: LogType = {
     name: Log.heading,
+    key: Log.logKey,
     query: Log.query,
     countQuery: Log.countQuery,
     searchQuery: Log.searchQuery,
@@ -962,12 +993,6 @@ class Chart {
     Chart.labelOffset +
     Chart.labelFontsize;
   static readonly totals = 'Total';
-  static readonly chartInfo = [
-    Tokens.chartHeading,
-    Addresses.chartHeading,
-    API.chartHeading,
-    Cmd.chartHeading,
-    Tokens.tokenDailyChartHeading];
 }
 
 /** @class Search */
