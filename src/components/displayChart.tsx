@@ -65,9 +65,6 @@ type Props = ChartProps & StateProps & DispatchProps;
 export const chart = (props: Props) => {
   const isFirstRun = useRef(true);
   const [searchTerm, setSearchTerm] = useState('');
-  // eslint-disable-next-line no-unused-vars
-  const [searchQuery, setSearchQuery] = useState('');
-  // eslint-disable-next-line no-unused-vars
   const [totalRecords, setTotalRecords] = useState(0);
   // eslint-disable-next-line no-unused-vars
   const [chartHeight, setChartHeight] = useState(0);
@@ -92,8 +89,6 @@ export const chart = (props: Props) => {
       countQuery = countQuery.replace(/<secondTime>/g, timeNow);
       let query = props.chartType.query.replace(/<firstTime>/g, '0');
       query = query.replace(/<secondTime>/g, timeNow);
-
-      setSearchQuery(query);
 
       props.countTableEntries(countQuery, props.chartType.key);
       props.getChartEntries(
@@ -151,7 +146,6 @@ export const chart = (props: Props) => {
     let query = props.chartType.query.replace(/<firstTime>/g, '0');
 
     if ( searchTerm ) {
-      // query = props.chartType.searchQuery.replace(/<[^>]*>/g, searchTerm);
       query = props.chartType.searchQuery.replace(/<searchTerm>/g, searchTerm);
       query = query.replace(/<firstTime>/g, '0');
 
@@ -163,7 +157,6 @@ export const chart = (props: Props) => {
     query = query.replace(/<secondTime>/g, timeNow);
     countQuery = countQuery.replace(/<secondTime>/g, timeNow);
 
-    setSearchQuery(query);
     props.countTableEntries(countQuery, props.chartType.key);
     props.getChartEntries(
         query,
@@ -172,7 +165,7 @@ export const chart = (props: Props) => {
         props.chartType.dataColumn);
   };
 
-  const doQuery = (span: string) => {
+  const doTime = (span: string) => {
     let timeFrom = 0;
     const timeNow = Date.now();
     switch (span) {
@@ -216,16 +209,21 @@ export const chart = (props: Props) => {
 
     let countQuery =
       props.chartType.countQuery.replace(/<firstTime>/g, timeFrom.toString());
-    countQuery = countQuery.replace(/<secondTime>/g, timeNow.toString());
     props.countTableEntries(countQuery, props.chartType.key);
     let query =
       props.chartType.query.replace(/<firstTime>/g, timeFrom.toString());
-    query = query.replace(/<secondTime>/g, timeNow.toString());
 
-    /*
-    console.log('time count', countQuery);
-    console.log('time', query);
-    */
+    if ( searchTerm ) {
+      query = props.chartType.searchQuery.replace(/<searchTerm>/g, searchTerm);
+      query = query.replace(/<firstTime>/g, timeFrom.toString());
+
+      countQuery =
+        props.chartType.searchCountQuery.replace(/<searchTerm>/g, searchTerm);
+      countQuery = countQuery.replace(/<firstTime>/g, timeFrom.toString());
+    }
+
+    query = query.replace(/<secondTime>/g, timeNow.toString());
+    countQuery = countQuery.replace(/<secondTime>/g, timeNow.toString());
 
     props.countTableEntries(countQuery, props.chartType.key);
     props.getChartEntries(
@@ -414,7 +412,7 @@ export const chart = (props: Props) => {
         <Grid item container xs={1}>
 
           <Button
-            onClick={() => doQuery(Misc.time.anHour.timeString)}
+            onClick={() => doTime(Misc.time.anHour.timeString)}
             size='medium'
             variant='outlined'
             color='primary'
@@ -432,7 +430,7 @@ export const chart = (props: Props) => {
         <Grid item container xs={1}>
 
           <Button
-            onClick={() => doQuery(Misc.time.sixHours.timeString)}
+            onClick={() => doTime(Misc.time.sixHours.timeString)}
             size='medium'
             variant='outlined'
             color='primary'
@@ -450,7 +448,7 @@ export const chart = (props: Props) => {
         <Grid item container xs={1}>
 
           <Button
-            onClick={() => doQuery(Misc.time.twelveHours.timeString)}
+            onClick={() => doTime(Misc.time.twelveHours.timeString)}
             size='medium'
             variant='outlined'
             color='primary'
@@ -468,7 +466,7 @@ export const chart = (props: Props) => {
         <Grid item container xs={1}>
 
           <Button
-            onClick={() => doQuery(Misc.time.aDay.timeString)}
+            onClick={() => doTime(Misc.time.aDay.timeString)}
             size='medium'
             variant='outlined'
             color='primary'
@@ -486,7 +484,7 @@ export const chart = (props: Props) => {
         <Grid item container xs={1}>
 
           <Button
-            onClick={() => doQuery(Misc.time.aWeek.timeString)}
+            onClick={() => doTime(Misc.time.aWeek.timeString)}
             size='medium'
             variant='outlined'
             color='primary'
@@ -504,7 +502,7 @@ export const chart = (props: Props) => {
         <Grid item container xs={1}>
 
           <Button
-            onClick={() => doQuery(Misc.time.aMonth.timeString)}
+            onClick={() => doTime(Misc.time.aMonth.timeString)}
             size='medium'
             variant='outlined'
             color='primary'
@@ -522,7 +520,7 @@ export const chart = (props: Props) => {
         <Grid item container xs={1}>
 
           <Button
-            onClick={() => doQuery(Misc.time.threeMonths.timeString)}
+            onClick={() => doTime(Misc.time.threeMonths.timeString)}
             size='medium'
             variant='outlined'
             color='primary'
@@ -540,7 +538,7 @@ export const chart = (props: Props) => {
         <Grid item container xs={1}>
 
           <Button
-            onClick={() => doQuery(Misc.time.sixMonths.timeString)}
+            onClick={() => doTime(Misc.time.sixMonths.timeString)}
             size='medium'
             variant='outlined'
             color='primary'
@@ -558,7 +556,7 @@ export const chart = (props: Props) => {
         <Grid item container xs={1}>
 
           <Button
-            onClick={() => doQuery(Misc.time.aYear.timeString)}
+            onClick={() => doTime(Misc.time.aYear.timeString)}
             size='medium'
             variant='outlined'
             color='primary'
