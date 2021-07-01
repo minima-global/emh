@@ -358,12 +358,12 @@ const themeStyles = makeStyles({
       fill: '#317AFF',
     },
     [breakpoints.up('xs')]: {
-      height: '35px',
       width: '35px',
+      maxHeight: '50px',
     },
     [breakpoints.up('lg')]: {
-      height: '45px',
-      width: '45px',
+      width: '90%',
+      maxHeight: '70px',
     },
   },
   footerIcon: {

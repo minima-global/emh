@@ -67,7 +67,7 @@ const display = (props: Props) => {
                         container
                         alignItems="flex-start"
                         justify="flex-start"
-                        xs={2}
+                        xs={1}
                       >
                         {balance.icon?
                             <img
@@ -82,9 +82,9 @@ const display = (props: Props) => {
                         item
                         container
                         justify="flex-start"
-                        xs={10}
+                        xs={11}
                       >
-                        <Grid item container justify="flex-start" xs={3}>
+                        <Grid item container justify="flex-start" xs={12}>
                           <Typography
                             variant="h6"
                             noWrap={true}
@@ -98,7 +98,7 @@ const display = (props: Props) => {
                           container
                           alignItems='center'
                           justify="flex-start"
-                          xs={9}
+                          xs={12}
                         >
                           <Typography
                             variant="body1"
