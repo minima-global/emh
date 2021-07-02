@@ -11,6 +11,7 @@ import {Local} from '../../config/paths';
 import {
   Cmd as CmdChart,
   Addresses as AddressesChart,
+  DailyAddresses as DailyAddressesChart,
   Tokens as TokensChart,
   Minima as MinimaChart,
   DailyTokens as DailyTokensChart,
@@ -181,11 +182,31 @@ export const Home = () => {
           item
           container
           justify="flex-start"
+          alignItems='flex-start'
           xs={6}>
 
           <Paper
             elevation={5}
             className={classes.dashboardChartRight}
+          >
+            {
+              <Chart
+                chartType={DailyAddressesChart.chart}
+                isFullScreen={false}
+                navLink={Local.chartDailyAddresses}
+                logNavLink={Local.logDailyAddresses}/> }
+          </Paper>
+        </Grid>
+
+        <Grid
+          item
+          container
+          justify="flex-start"
+          xs={6}>
+
+          <Paper
+            elevation={5}
+            className={classes.dashboardChartLeft}
           >
             {
               <Chart
@@ -204,7 +225,7 @@ export const Home = () => {
 
           <Paper
             elevation={5}
-            className={classes.dashboardChartLeft}
+            className={classes.dashboardChartRight}
           >
             {
               <Chart

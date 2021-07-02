@@ -19,23 +19,29 @@ import {Local} from '../config/paths';
 
 import {
   Cmd as CmdChart,
+  DailyCmd as DailyCmdChart,
   Addresses as AddressesChart,
+  DailyAddresses as DailyAddressesChart,
   Tokens as TokensChart,
-  Minima as MinimaChart,
   DailyTokens as DailyTokensChart,
+  Minima as MinimaChart,
   DailyMinima as DailyMinimaChart,
   API as APIChart,
+  DailyAPI as DailyAPIChart,
 } from '../config/charts';
 
 
 import {
   Cmd as CmdLog,
+  DailyCmd as DailyCmdLog,
   Addresses as AddressesLog,
+  DailyAddresses as DailyAddressesLog,
   Tokens as TokensLog,
-  Minima as MinimaLog,
   DailyTokens as DailyTokensLog,
+  Minima as MinimaLog,
   DailyMinima as DailyMinimaLog,
   API as APILog,
+  DailyAPI as DailyAPILog,
   Log as AllLog,
 } from '../config/logs';
 
@@ -129,6 +135,15 @@ export const Content = () => {
             logNavLink={Local.logAddresses} /> }
       />
       <Route
+        exact path={Local.chartDailyAddresses}
+        render= {() =>
+          <Chart
+            chartType={DailyAddressesChart.chart}
+            isFullScreen={true}
+            navLink={Local.home}
+            logNavLink={Local.logDailyAddresses} /> }
+      />
+      <Route
         exact path={Local.chartAPI}
         render= {() =>
           <Chart
@@ -153,14 +168,14 @@ export const Content = () => {
           <Logs logType={TokensLog.log} /> }
       />
       <Route
-        path={Local.logMinima}
-        render= {() =>
-          <Logs logType={MinimaLog.log} /> }
-      />
-      <Route
         path={Local.logDailyTokens}
         render= {() =>
           <Logs logType={DailyTokensLog.log} /> }
+      />
+      <Route
+        path={Local.logMinima}
+        render= {() =>
+          <Logs logType={MinimaLog.log} /> }
       />
       <Route
         path={Local.logDailyMinima}
@@ -173,6 +188,11 @@ export const Content = () => {
           <Logs logType={AddressesLog.log} /> }
       />
       <Route
+        path={Local.logDailyAddresses}
+        render= {() =>
+          <Logs logType={DailyAddressesLog.log} /> }
+      />
+      <Route
         path={Local.logAPI}
         render= {() =>
           <Logs logType={APILog.log} /> }
@@ -182,6 +202,7 @@ export const Content = () => {
         render= {() =>
           <Logs logType={CmdLog.log} /> }
       />
+
       <Route
         path={Local.home}
         render= {() => <Home />}

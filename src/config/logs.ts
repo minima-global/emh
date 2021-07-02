@@ -10,8 +10,6 @@ import {
   Addresses as AddressesChart,
   Tokens as TokensChart,
   Minima as MinimaChart,
-  DailyTokens as DailyTokensChart,
-  DailyMinima as DailyMinimaChart,
   API as APIChart,
 } from './charts';
 
@@ -33,7 +31,7 @@ class Cmd {
     ' AND ' + Dbase.tables.log.columns[4] +
     ' LIKE \'%<searchTerm>%\'';
 
-  static readonly logSearchCountQuery = CmdChart.logCountQuery +
+  static readonly logSearchCountQuery = Cmd.logCountQuery +
     ' AND ' + Dbase.tables.log.columns[4] +
     ' LIKE \'%<searchTerm>%\'';
 
@@ -47,6 +45,8 @@ class Cmd {
     searchCountQuery: Cmd.logSearchCountQuery,
   }
 }
+
+const DailyCmd = Cmd;
 
 /** @class Addresses */
 class Addresses {
@@ -79,6 +79,8 @@ class Addresses {
   }
 }
 
+const DailyAddresses = Addresses;
+
 /** @class Tokens */
 class Tokens {
   static readonly logHeading = 'Token Transactions'
@@ -109,6 +111,8 @@ class Tokens {
     searchCountQuery: Tokens.logSearchCountQuery,
   }
 }
+
+const DailyTokens = Tokens;
 
 /** @class Minima */
 class Minima {
@@ -141,69 +145,7 @@ class Minima {
   }
 }
 
-/** @class DailyTokens */
-class DailyTokens {
-  static readonly logHeading = 'Daily Token Transactions'
-
-  static readonly logKey = shortid.generate();
-
-  static readonly logQuery = 'SELECT * FROM ' +
-    DailyTokensChart.queryDetails +
-    ' ORDER BY DATE DESC';
-
-  static readonly logCountQuery = 'SELECT COUNT(*) FROM ' +
-    DailyTokensChart.queryDetails;
-
-  static readonly logSearchQuery = DailyTokensChart.queryDetails +
-    ' AND ' + Dbase.tables.log.columns[4] +
-    ' LIKE \'%<searchTerm>%\'';
-
-  static readonly logSearchCountQuery = DailyTokens.logCountQuery +
-  ' AND ' + Dbase.tables.log.columns[4] +
-  ' LIKE \'%<searchTerm>%\'';
-
-  static readonly log: LogType = {
-    name: DailyTokens.logHeading,
-    key: DailyTokens.logKey,
-    query: DailyTokens.logQuery,
-    countQuery: DailyTokens.logCountQuery,
-    searchQuery: DailyTokens.logSearchQuery,
-    searchCountQuery: DailyTokens.logSearchCountQuery,
-  }
-}
-
-
-/** @class DailyMinima */
-class DailyMinima {
-  static readonly logHeading = 'Minima Daily Transactions'
-
-  static readonly logKey = shortid.generate();
-
-  static readonly logQuery = 'SELECT * FROM ' +
-    DailyMinimaChart.queryDetails +
-    ' ORDER BY DATE DESC';
-
-  static readonly logCountQuery =
-    'SELECT COUNT(*) FROM ' + DailyMinimaChart.queryDetails;
-
-  static readonly logSearchQuery = DailyMinimaChart.queryDetails +
-    ' AND ' + Dbase.tables.log.columns[4] +
-    ' LIKE \'%<searchTerm>%\'';
-
-  static readonly logSearchCountQuery = DailyMinima.logCountQuery +
-  ' AND ' + Dbase.tables.log.columns[4] +
-  ' LIKE \'%<searchTerm>%\'';
-
-  static readonly log: LogType = {
-    name: DailyMinima.logHeading,
-    key: DailyMinima.logKey,
-    query: DailyMinima.logQuery,
-    countQuery: DailyMinima.logCountQuery,
-    searchQuery: DailyMinima.logSearchQuery,
-    searchCountQuery: DailyMinima.logSearchCountQuery,
-  }
-}
-
+const DailyMinima = Minima;
 
 /** @class API */
 class API {
@@ -235,6 +177,8 @@ class API {
     searchCountQuery: API.logSearchCountQuery,
   }
 }
+
+const DailyAPI = API;
 
 /** @class Log */
 class Log {
@@ -275,11 +219,14 @@ class Log {
 
 export {
   Cmd,
+  DailyCmd,
   Addresses,
+  DailyAddresses,
   Tokens,
-  Minima,
   DailyTokens,
+  Minima,
   DailyMinima,
   API,
+  DailyAPI,
   Log,
 };

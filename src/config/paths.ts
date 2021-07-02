@@ -14,6 +14,7 @@ class Local {
   static readonly chartDailyMinima = '/chartDailyMinima'
   static readonly chartDailyTokens = '/chartDailyTokens'
   static readonly chartAddresses = '/chartAddresses'
+  static readonly chartDailyAddresses = '/chartDailyAddresses'
   static readonly chartAPI = '/chartAPI'
   static readonly chartCmds = '/chartCommands'
 
@@ -22,6 +23,7 @@ class Local {
   static readonly logDailyTokens = '/logDailyTokens'
   static readonly logDailyMinima = '/logDailyMinima'
   static readonly logAddresses = '/logAddresses'
+  static readonly logDailyAddresses = '/logDailyAddresses'
   static readonly logAPI = '/logAPI'
   static readonly logCmds = '/logCommands'
 

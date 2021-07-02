@@ -111,33 +111,6 @@ class Cmd {
       },
     },
   }
-
-  static readonly logKey = shortid.generate();
-
-  static readonly logQuery = 'SELECT * FROM ' +
-    Cmd.queryDetails +
-    ' ORDER BY DATE DESC';
-
-  static readonly logCountQuery = 'SELECT COUNT(*) FROM ' +
-    Cmd.queryDetails;
-
-  static readonly logSearchQuery = Cmd.queryDetails +
-    ' AND ' + Dbase.tables.log.columns[4] +
-    ' LIKE \'%<searchTerm>%\'';
-
-  static readonly logSearchCountQuery = Cmd.logCountQuery +
-    ' AND ' + Dbase.tables.log.columns[4] +
-    ' LIKE \'%<searchTerm>%\'';
-
-
-  static readonly log: LogType = {
-    name: Cmd.logHeading,
-    key: Cmd.logKey,
-    query: Cmd.logQuery,
-    countQuery: Cmd.logCountQuery,
-    searchQuery: Cmd.logSearchQuery,
-    searchCountQuery: Cmd.logSearchCountQuery,
-  }
 }
 
 /** @class Addresses */
@@ -245,31 +218,83 @@ class Addresses {
       },
     },
   }
+}
 
-  static readonly logKey = shortid.generate();
+/** @class DailyAddresses */
+class DailyAddresses {
+  static readonly chartHeading = 'Daily Addresses'
 
-  static readonly logQuery = 'SELECT * FROM ' +
-    Addresses.queryDetails +
-    ' ORDER BY DATE DESC';
+  static readonly chartKey = shortid.generate();
 
-  static readonly logCountQuery = 'SELECT COUNT(*) FROM ' +
-    Addresses.queryDetails;
+  static readonly chartCountKey =
+    'COUNT(FROM_UNIXTIME(' + Dbase.tables.log.columns[1] + '/1000))';
+  static readonly chartDataKey =
+    'DATE(FROM_UNIXTIME(' + Dbase.tables.log.columns[1] + '/1000))';
+  static readonly chartQuery = 'SELECT ' +
+    DailyAddresses.chartCountKey + ', ' +
+    DailyAddresses.chartDataKey +
+    ' FROM ' + Addresses.queryWithDate +
+    ' GROUP BY DAY(FROM_UNIXTIME(' + Dbase.tables.log.columns[1] + '/1000)), ' +
+    DailyAddresses.chartDataKey;
 
-  static readonly logSearchQuery = Addresses.queryDetails +
+  static readonly chartSearchQuery = 'SELECT ' +
+    DailyAddresses.chartCountKey + ', ' +
+    DailyAddresses.chartDataKey +
+    ' FROM ' + Addresses.queryWithDate +
     ' AND ' + Dbase.tables.log.columns[4] +
-    ' LIKE \'%<searchTerm>%\'';
+    ' LIKE \'%<searchTerm>%\'' +
+    ' GROUP BY DAY(FROM_UNIXTIME(' + Dbase.tables.log.columns[1] + '/1000)), ' +
+    DailyAddresses.chartDataKey;
 
-  static readonly logSearchCountQuery = Addresses.logCountQuery +
-    ' AND ' + Dbase.tables.log.columns[4] +
-    ' LIKE \'%<searchTerm>%\'';
-
-  static readonly log: LogType = {
-    name: Addresses.logHeading,
-    key: Addresses.logKey,
-    query: Addresses.logQuery,
-    countQuery: Addresses.logCountQuery,
-    searchQuery: Addresses.logSearchQuery,
-    searchCountQuery: Addresses.logSearchCountQuery,
+  static readonly chart: ChartType = {
+    name: DailyAddresses.chartHeading,
+    key: DailyAddresses.chartKey,
+    query: DailyAddresses.chartQuery,
+    countQuery: Addresses.countQuery,
+    searchQuery: DailyAddresses.chartSearchQuery,
+    searchCountQuery: Addresses.searchCountQuery,
+    countColumn: DailyAddresses.chartCountKey,
+    dataColumn: DailyAddresses.chartDataKey,
+    type: 'bar',
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      indexAxis: 'x',
+      barThickness: Misc.barThickness,
+      maxBarThickness: Misc.barThickness + 2,
+      plugins: {
+        legend: {
+          display: false,
+        },
+        zoom: {
+          zoom: {
+            wheel: {
+              enabled: true,
+              speed: 1,
+            },
+            pinch: {
+              enabled: true,
+            },
+            mode: 'x',
+          },
+        },
+      },
+      scales: {
+        y: {
+          grid: {
+            display: false,
+          },
+          ticks: {
+            color: '#000000',
+          },
+        },
+        x: {
+          grid: {
+            display: false,
+          },
+        },
+      },
+    },
   }
 }
 
@@ -371,6 +396,84 @@ class Tokens {
         },
         x: {
           position: 'top',
+          grid: {
+            display: false,
+          },
+        },
+      },
+    },
+  }
+}
+
+/** @class DailyTokens */
+class DailyTokens {
+  static readonly chartHeading = 'Daily Token Txs'
+
+  static readonly chartKey = shortid.generate();
+
+  static readonly chartCountKey =
+    'COUNT(FROM_UNIXTIME(' + Dbase.tables.log.columns[1] + '/1000))';
+  static readonly chartDataKey =
+    'DATE(FROM_UNIXTIME(' + Dbase.tables.log.columns[1] + '/1000))';
+  static readonly chartQuery = 'SELECT ' +
+    DailyTokens.chartCountKey + ', ' +
+    DailyTokens.chartDataKey +
+    ' FROM ' + Tokens.queryWithDate +
+    ' GROUP BY DAY(FROM_UNIXTIME(' + Dbase.tables.log.columns[1] + '/1000)), ' +
+    DailyTokens.chartDataKey;
+
+  static readonly chartSearchQuery = 'SELECT ' +
+    DailyTokens.chartCountKey + ', ' +
+    DailyTokens.chartDataKey +
+    ' FROM ' + Tokens.queryWithDate +
+    ' AND ' + Dbase.tables.log.columns[4] +
+    ' LIKE \'%<searchTerm>%\'' +
+    ' GROUP BY DAY(FROM_UNIXTIME(' + Dbase.tables.log.columns[1] + '/1000)), ' +
+    DailyTokens.chartDataKey;
+
+  static readonly chart: ChartType = {
+    name: DailyTokens.chartHeading,
+    key: DailyTokens.chartKey,
+    query: DailyTokens.chartQuery,
+    countQuery: Tokens.countQuery,
+    searchQuery: DailyTokens.chartSearchQuery,
+    searchCountQuery: Tokens.searchCountQuery,
+    countColumn: DailyTokens.chartCountKey,
+    dataColumn: DailyTokens.chartDataKey,
+    type: 'bar',
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      indexAxis: 'x',
+      barThickness: Misc.barThickness,
+      maxBarThickness: Misc.barThickness + 2,
+      plugins: {
+        legend: {
+          display: false,
+        },
+        zoom: {
+          zoom: {
+            wheel: {
+              enabled: true,
+              speed: 1,
+            },
+            pinch: {
+              enabled: true,
+            },
+            mode: 'x',
+          },
+        },
+      },
+      scales: {
+        y: {
+          grid: {
+            display: false,
+          },
+          ticks: {
+            color: '#000000',
+          },
+        },
+        x: {
           grid: {
             display: false,
           },
@@ -484,137 +587,11 @@ class Minima {
   }
 }
 
-/** @class DailyTokens */
-class DailyTokens {
-  static readonly chartHeading = 'Daily Token Txs'
-
-  static readonly regex = '^0x[A-Z0-9][A-Z0-9][A-Z0-9]+'
-
-  static readonly chartKey = shortid.generate();
-
-  static readonly queryDetails = Dbase.tables.log.name +
-    ' WHERE ' + Dbase.tables.log.columns[2] +
-    ' IN (\'' + Dbase.tables.txpow.name + '\')' +
-    ' AND ' + Dbase.tables.log.columns[3] +
-    ' IN (\'' + Dbase.defaultActions.insert + '\')' +
-    ' AND ' + Dbase.tables.log.columns[4] +
-    ' REGEXP \'' + DailyTokens.regex + '\'';
-
-  static readonly queryWithDate = DailyTokens.queryDetails +
-    ' AND (DATE BETWEEN <firstTime> AND <secondTime>)';
-
-  static readonly query = 'SELECT * FROM ' + DailyTokens.queryWithDate;
-  static readonly countQuery = 'SELECT COUNT(*) FROM ' +
-    DailyTokens.queryWithDate;
-  static readonly searchQuery = DailyTokens.query +
-    ' AND ' + Dbase.tables.log.columns[4] +
-    ' LIKE \'%<searchTerm>%\'';
-
-  static readonly searchCountQuery = DailyTokens.countQuery +
-  ' AND ' + Dbase.tables.log.columns[4] +
-  ' LIKE \'%<searchTerm>%\'';
-
-  static readonly chartCountKey =
-    'COUNT(FROM_UNIXTIME(' + Dbase.tables.log.columns[1] + '/1000))';
-  static readonly chartDataKey =
-    'DATE(FROM_UNIXTIME(' + Dbase.tables.log.columns[1] + '/1000))';
-  static readonly chartQuery = 'SELECT ' +
-    DailyTokens.chartCountKey + ', ' +
-    DailyTokens.chartDataKey +
-    ' FROM ' + DailyTokens.queryWithDate +
-    ' GROUP BY DAY(FROM_UNIXTIME(' + Dbase.tables.log.columns[1] + '/1000)), ' +
-    DailyTokens.chartDataKey;
-
-  static readonly chartSearchQuery = 'SELECT ' +
-    DailyTokens.chartCountKey + ', ' +
-    DailyTokens.chartDataKey +
-    ' FROM ' + DailyTokens.queryWithDate +
-    ' AND ' + Dbase.tables.log.columns[4] +
-    ' LIKE \'%<searchTerm>%\'' +
-    ' GROUP BY DAY(FROM_UNIXTIME(' + Dbase.tables.log.columns[1] + '/1000)), ' +
-    DailyTokens.chartDataKey;
-
-  static readonly chart: ChartType = {
-    name: DailyTokens.chartHeading,
-    key: DailyTokens.chartKey,
-    query: DailyTokens.chartQuery,
-    countQuery: DailyTokens.countQuery,
-    searchQuery: DailyTokens.chartSearchQuery,
-    searchCountQuery: DailyTokens.searchCountQuery,
-    countColumn: DailyTokens.chartCountKey,
-    dataColumn: DailyTokens.chartDataKey,
-    type: 'bar',
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      indexAxis: 'x',
-      barThickness: Misc.barThickness,
-      maxBarThickness: Misc.barThickness + 2,
-      plugins: {
-        legend: {
-          display: false,
-        },
-        zoom: {
-          zoom: {
-            wheel: {
-              enabled: true,
-              speed: 1,
-            },
-            pinch: {
-              enabled: true,
-            },
-            mode: 'x',
-          },
-        },
-      },
-      scales: {
-        y: {
-          grid: {
-            display: false,
-          },
-          ticks: {
-            color: '#000000',
-          },
-        },
-        x: {
-          grid: {
-            display: false,
-          },
-        },
-      },
-    },
-  }
-}
-
 /** @class DailyMinima */
 class DailyMinima {
   static readonly chartHeading = 'Minima Daily Txs'
 
-  static readonly regex = '^0x00'
-
   static readonly chartKey = shortid.generate();
-
-  static readonly queryDetails = Dbase.tables.log.name +
-    ' WHERE ' + Dbase.tables.log.columns[2] +
-    ' IN (\'' + Dbase.tables.txpow.name + '\')' +
-    ' AND ' + Dbase.tables.log.columns[3] +
-    ' IN (\'' + Dbase.defaultActions.insert + '\')' +
-    ' AND ' + Dbase.tables.log.columns[4] +
-    ' REGEXP \'' + DailyMinima.regex + '\'';
-
-  static readonly queryWithDate = DailyMinima.queryDetails +
-    ' AND (DATE BETWEEN <firstTime> AND <secondTime>)';
-
-  static readonly query = 'SELECT * FROM ' + DailyMinima.queryWithDate;
-  static readonly countQuery = 'SELECT COUNT(*) FROM ' +
-    DailyMinima.queryWithDate;
-  static readonly searchQuery = DailyMinima.query +
-    ' AND ' + Dbase.tables.log.columns[4] +
-    ' LIKE \'%<searchTerm>%\'';
-
-  static readonly searchCountQuery = DailyMinima.countQuery +
-  ' AND ' + Dbase.tables.log.columns[4] +
-  ' LIKE \'%<searchTerm>%\'';
 
   static readonly chartCountKey =
     'COUNT(FROM_UNIXTIME(' + Dbase.tables.log.columns[1] + '/1000))';
@@ -623,14 +600,14 @@ class DailyMinima {
   static readonly chartQuery = 'SELECT ' +
     DailyMinima.chartCountKey + ', ' +
     DailyMinima.chartDataKey +
-    ' FROM ' + DailyMinima.queryWithDate +
+    ' FROM ' + Minima.queryWithDate +
     ' GROUP BY DAY(FROM_UNIXTIME(' + Dbase.tables.log.columns[1] + '/1000)), ' +
     DailyMinima.chartDataKey;
 
   static readonly chartSearchQuery = 'SELECT ' +
     DailyMinima.chartCountKey + ', ' +
     DailyMinima.chartDataKey +
-    ' FROM ' + DailyMinima.queryWithDate +
+    ' FROM ' + Minima.queryWithDate +
     ' AND ' + Dbase.tables.log.columns[4] +
     ' LIKE \'%<searchTerm>%\'' +
     ' GROUP BY DAY(FROM_UNIXTIME(' + Dbase.tables.log.columns[1] + '/1000)), ' +
@@ -640,9 +617,9 @@ class DailyMinima {
     name: DailyMinima.chartHeading,
     key: DailyMinima.chartKey,
     query: DailyMinima.chartQuery,
-    countQuery: DailyMinima.countQuery,
+    countQuery: Minima.countQuery,
     searchQuery: DailyMinima.chartSearchQuery,
-    searchCountQuery: DailyMinima.searchCountQuery,
+    searchCountQuery: Minima.searchCountQuery,
     countColumn: DailyMinima.chartCountKey,
     dataColumn: DailyMinima.chartDataKey,
     type: 'bar',
@@ -822,6 +799,7 @@ class API {
 export {
   Cmd,
   Addresses,
+  DailyAddresses,
   Tokens,
   Minima,
   DailyTokens,
