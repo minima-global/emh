@@ -16,7 +16,7 @@ import {
   Dbase,
   GeneralError,
   Tokens as TokenVars,
-} from '../../config';
+} from '../../config/vars';
 
 import {addRow} from '../../store/app/dbase/actions';
 

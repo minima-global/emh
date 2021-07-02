@@ -15,14 +15,25 @@ import {
   Chart,
 } from '../components/pages';
 
+import {Local} from '../config/paths';
+
 import {
-  Local,
-  Log as LogVars,
-  Cmd as CmdVars,
-  Tokens as TokensVars,
-  Addresses as AddressVars,
-  API as APIVars,
-} from '../config';
+  Cmd as CmdChart,
+  Addresses as AddressesChart,
+  Tokens as TokensChart,
+  DailyTokens as DailyTokensChart,
+  API as APIChart,
+} from '../config/charts';
+
+
+import {
+  Cmd as CmdLog,
+  Addresses as AddressesLog,
+  Tokens as TokensLog,
+  DailyTokens as DailyTokensLog,
+  API as APILog,
+  Log as AllLog,
+} from '../config/logs';
 
 export const Content = () => {
   return (
@@ -45,7 +56,7 @@ export const Content = () => {
       <Route
         path={Local.logs}
         render= {() =>
-          <Logs logType={LogVars.log} /> }
+          <Logs logType={AllLog.log} /> }
       />
       <Route
         exact path={Local.urls}
@@ -67,11 +78,12 @@ export const Content = () => {
         exact path={Local.cmd}
         render= {() => <Cmd />}
       />
+
       <Route
         exact path={Local.chartTokens}
         render= {() =>
           <Chart
-            chartType={TokensVars.tokenChart}
+            chartType={TokensChart.chart}
             isFullScreen={true}
             navLink={Local.home}
             logNavLink={Local.logTokens} /> }
@@ -80,7 +92,7 @@ export const Content = () => {
         exact path={Local.chartDailyTokens}
         render= {() =>
           <Chart
-            chartType={TokensVars.tokenDailyChart}
+            chartType={DailyTokensChart.chart}
             isFullScreen={true}
             navLink={Local.home}
             logNavLink={Local.logTokens} /> }
@@ -89,7 +101,7 @@ export const Content = () => {
         exact path={Local.chartAddresses}
         render= {() =>
           <Chart
-            chartType={AddressVars.addressChart}
+            chartType={AddressesChart.chart}
             isFullScreen={true}
             navLink={Local.home}
             logNavLink={Local.logAddresses} /> }
@@ -98,7 +110,7 @@ export const Content = () => {
         exact path={Local.chartAPI}
         render= {() =>
           <Chart
-            chartType={APIVars.apiChart}
+            chartType={APIChart.chart}
             isFullScreen={true}
             navLink={Local.home}
             logNavLink={Local.logAPI} /> }
@@ -107,7 +119,7 @@ export const Content = () => {
         exact path={Local.chartCmds}
         render= {() =>
           <Chart
-            chartType={CmdVars.cmdChart}
+            chartType={CmdChart.chart}
             isFullScreen={true}
             navLink={Local.home}
             logNavLink={Local.logCmds} /> }
@@ -116,25 +128,31 @@ export const Content = () => {
       <Route
         path={Local.logTokens}
         render= {() =>
-          <Logs logType={TokensVars.tokenLog} /> }
+          <Logs logType={TokensLog.log} /> }
+      />
+
+      <Route
+        path={Local.logDailyTokens}
+        render= {() =>
+          <Logs logType={DailyTokensLog.log} /> }
       />
 
       <Route
         path={Local.logAddresses}
         render= {() =>
-          <Logs logType={AddressVars.addressLog} /> }
+          <Logs logType={AddressesLog.log} /> }
       />
 
       <Route
         path={Local.logAPI}
         render= {() =>
-          <Logs logType={APIVars.apiLog} /> }
+          <Logs logType={APILog.log} /> }
       />
 
       <Route
         path={Local.logCmds}
         render= {() =>
-          <Logs logType={CmdVars.cmdLog} /> }
+          <Logs logType={CmdLog.log} /> }
       />
 
       <Route

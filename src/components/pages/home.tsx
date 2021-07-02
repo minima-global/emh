@@ -4,14 +4,17 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 
+import {Home as HomeVars} from '../../config/vars';
+
+import {Local} from '../../config/paths';
+
 import {
-  Local,
-  Home as HomeVars,
-  Cmd as CmdVars,
-  Tokens as TokensVars,
-  Addresses as AddressVars,
-  API as APIVars,
-} from '../../config';
+  Cmd as CmdChart,
+  Addresses as AddressesChart,
+  Tokens as TokensChart,
+  DailyTokens as DailyTokensChart,
+  API as APIChart,
+} from '../../config/charts';
 
 import {theme, themeStyles} from '../../styles';
 
@@ -87,7 +90,7 @@ export const Home = () => {
           >
             {
               <Chart
-                chartType={TokensVars.tokenChart}
+                chartType={TokensChart.chart}
                 isFullScreen={false}
                 navLink={Local.chartTokens}
                 logNavLink={Local.logTokens} /> }
@@ -108,7 +111,7 @@ export const Home = () => {
           >
             {
               <Chart
-                chartType={AddressVars.addressChart}
+                chartType={AddressesChart.chart}
                 isFullScreen={false}
                 navLink={Local.chartAddresses}
                 logNavLink={Local.logAddresses}/> }
@@ -127,7 +130,7 @@ export const Home = () => {
           >
             {
               <Chart
-                chartType={APIVars.apiChart}
+                chartType={APIChart.chart}
                 isFullScreen={false}
                 navLink={Local.chartAPI}
                 logNavLink={Local.logAPI} /> }
@@ -146,7 +149,7 @@ export const Home = () => {
           >
             {
               <Chart
-                chartType={CmdVars.cmdChart}
+                chartType={CmdChart.chart}
                 isFullScreen={false}
                 navLink={Local.chartCmds}
                 logNavLink={Local.logCmds} /> }
@@ -165,7 +168,7 @@ export const Home = () => {
           >
             {
               <Chart
-                chartType={TokensVars.tokenDailyChart}
+                chartType={DailyTokensChart.chart}
                 isFullScreen={false}
                 navLink={Local.chartDailyTokens}
                 logNavLink={Local.logTokens} /> }

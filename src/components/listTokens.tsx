@@ -26,7 +26,7 @@ import {
   Dbase,
   SQL,
   Tokens as TokenVars,
-} from '../config';
+} from '../config/vars';
 
 import closeDelete from '../images/closeDelete.png';
 

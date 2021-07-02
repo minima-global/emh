@@ -10,7 +10,7 @@ import {ChartType} from '../../store/types';
 
 import {
   Home,
-} from '../../config';
+} from '../../config/vars';
 
 import {themeStyles} from '../../styles';
 import {DisplayChart} from '../displayChart';

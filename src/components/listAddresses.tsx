@@ -28,7 +28,7 @@ import {
   Dbase,
   SQL,
   Addresses as AddressVars,
-} from '../config';
+} from '../config/vars';
 
 interface StateProps {
   tx: TxData

@@ -17,7 +17,7 @@ import {
   App,
   Dbase,
   SQL,
-} from '../../../config';
+} from '../../../config/vars';
 
 // Tokens as TokensVars,
 

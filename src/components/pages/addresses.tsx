@@ -16,7 +16,7 @@ import {
   GeneralError,
   Addresses as AddressVars,
   Dbase,
-} from '../../config';
+} from '../../config/vars';
 
 import {addRow} from '../../store/app/dbase/actions';
 

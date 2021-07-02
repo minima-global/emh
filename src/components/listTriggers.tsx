@@ -27,11 +27,12 @@ import {initTx} from '../store/app/blockchain/actions';
 import {deleteRow, getTableEntries} from '../store/app/dbase/actions';
 
 import {
-  Local,
   Dbase,
   SQL,
   Triggers as TriggerVars,
-} from '../config';
+} from '../config/vars';
+
+import {Local} from '../config/paths';
 
 import closeDelete from '../images/closeDelete.png';
 

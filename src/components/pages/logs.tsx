@@ -28,7 +28,7 @@ import {
   Dbase,
   Log as LogVars,
   Search,
-} from '../../config';
+} from '../../config/vars';
 
 import pageBack from '../../images/pageBack.svg';
 import pageForward from '../../images/pageNext.svg';

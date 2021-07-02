@@ -6,7 +6,7 @@ import {NetworkStatus as Status} from 'minima';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
-import {Status as StatusVars} from '../config';
+import {Status as StatusVars} from '../config/vars';
 
 import {theme, themeStyles} from '../styles';
 

@@ -32,10 +32,10 @@ import {countTableEntries, getChartEntries} from '../store/app/dbase/actions';
 
 import {
   Misc,
-  Chart as ChartVars,
-  colours,
   Search,
-} from '../config';
+} from '../config/vars';
+
+import {colours} from '../config/colours';
 
 interface ChartProps {
   chartType: ChartType
@@ -117,7 +117,7 @@ export const chart = (props: Props) => {
         const keys = Object.keys(props.chartData.data[key]);
         const values = Object.values(props.chartData.data[key]);
         setChartHeight(
-            ChartVars.axisOffset + keys.length * ChartVars.gridHeight);
+            Misc.axisOffset + keys.length * Misc.gridHeight);
         const ctx: HTMLCanvasElement | null = dataCtx.current;
         if ( ctx ) {
           chart = new Chart(ctx, {
@@ -349,7 +349,7 @@ export const chart = (props: Props) => {
                 xs={12}
               >
                 <Typography variant="h3">
-                  {ChartVars.totals} {props.chartType.name} = {totalRecords}
+                  Total {props.chartType.name} = {totalRecords}
                 </Typography>
               </Grid>
 

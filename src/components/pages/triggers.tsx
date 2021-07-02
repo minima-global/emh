@@ -17,7 +17,7 @@ import {
   Dbase,
   GeneralError,
   Triggers as TriggerVars,
-} from '../../config';
+} from '../../config/vars';
 
 import {addRow} from '../../store/app/dbase/actions';
 

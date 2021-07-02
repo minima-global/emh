@@ -35,7 +35,7 @@ import {
   Dbase,
   GeneralError,
   Cmd as CmdVars,
-} from '../../config';
+} from '../../config/vars';
 
 const cmdSchema = Yup.object().shape({
   trigger: Yup.object()

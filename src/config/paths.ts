@@ -16,6 +16,7 @@ class Local {
   static readonly chartCmds = '/chartCommands'
 
   static readonly logTokens = '/logTokens'
+  static readonly logDailyTokens = '/logDailyTokens'
   static readonly logAddresses = '/logAddresses'
   static readonly logAPI = '/logAPI'
   static readonly logCmds = '/logCommands'
@@ -25,4 +26,19 @@ class Local {
   static readonly apiBase = 'api/EMH/?command='
 }
 
-export {Local};
+/** @class Paths */
+class Paths {
+  static readonly home = 'Dashboard'
+  static readonly about = 'About'
+  static readonly help = 'Help'
+  static readonly contact = 'Contact'
+
+  static readonly logs = 'Logs'
+  static readonly urls = 'Minima to URL'
+  static readonly addresses = 'Addresses'
+  static readonly tokens = 'Tokens'
+  static readonly triggers = 'URL to Minima'
+  static readonly cmd = 'Run API'
+}
+
+export {Local, Paths};

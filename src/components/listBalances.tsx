@@ -8,7 +8,7 @@ import {Token as Balance} from 'minima';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
-import {Misc, Balances as BalanceVars} from '../config';
+import {Misc, Balances as BalanceVars} from '../config/vars';
 
 import {theme, themeStyles} from '../styles';
 

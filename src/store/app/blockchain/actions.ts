@@ -12,7 +12,7 @@ import {
   TxData,
 } from '../../types';
 
-import {Dbase} from '../../../config';
+import {Dbase} from '../../../config/vars';
 
 import {doLog} from '../dbase/actions';
 import {write} from '../../actions';

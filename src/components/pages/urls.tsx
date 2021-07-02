@@ -12,7 +12,7 @@ import {Tokens} from './tokens';
 
 import {
   URL,
-} from '../../config';
+} from '../../config/vars';
 
 export const URLs = () => {
   const [isAddress, setIsAddress] = useState(true);
