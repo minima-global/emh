@@ -10,13 +10,15 @@ import {Local} from '../../config/paths';
 
 import {
   Cmd as CmdChart,
+  DailyCmd as DailyCmdChart,
   Addresses as AddressesChart,
   DailyAddresses as DailyAddressesChart,
   Tokens as TokensChart,
-  Minima as MinimaChart,
   DailyTokens as DailyTokensChart,
+  Minima as MinimaChart,
   DailyMinima as DailyMinimaChart,
   API as APIChart,
+  DailyAPI as DailyAPIChart,
 } from '../../config/charts';
 
 import {theme, themeStyles} from '../../styles';
@@ -103,7 +105,6 @@ export const Home = () => {
           item
           container
           justify="flex-start"
-          alignItems='flex-start'
           xs={6}>
 
           <Paper
@@ -112,10 +113,10 @@ export const Home = () => {
           >
             {
               <Chart
-                chartType={MinimaChart.chart}
+                chartType={DailyTokensChart.chart}
                 isFullScreen={false}
-                navLink={Local.chartMinima}
-                logNavLink={Local.logMinima} /> }
+                navLink={Local.chartDailyTokens}
+                logNavLink={Local.logTokens} /> }
           </Paper>
         </Grid>
 
@@ -123,6 +124,7 @@ export const Home = () => {
           item
           container
           justify="flex-start"
+          alignItems='flex-start'
           xs={6}>
 
           <Paper
@@ -131,10 +133,10 @@ export const Home = () => {
           >
             {
               <Chart
-                chartType={DailyTokensChart.chart}
+                chartType={MinimaChart.chart}
                 isFullScreen={false}
-                navLink={Local.chartDailyTokens}
-                logNavLink={Local.logTokens} /> }
+                navLink={Local.chartMinima}
+                logNavLink={Local.logMinima} /> }
           </Paper>
         </Grid>
 
@@ -210,10 +212,30 @@ export const Home = () => {
           >
             {
               <Chart
-                chartType={APIChart.chart}
+                chartType={CmdChart.chart}
                 isFullScreen={false}
-                navLink={Local.chartAPI}
-                logNavLink={Local.logAPI} /> }
+                navLink={Local.chartCmds}
+                logNavLink={Local.logCmds} /> }
+          </Paper>
+        </Grid>
+
+        <Grid
+          item
+          container
+          justify="flex-start"
+          alignItems='flex-start'
+          xs={6}>
+
+          <Paper
+            elevation={5}
+            className={classes.dashboardChartRight}
+          >
+            {
+              <Chart
+                chartType={DailyCmdChart.chart}
+                isFullScreen={false}
+                navLink={Local.chartDailyCmds}
+                logNavLink={Local.logDailyCmds}/> }
           </Paper>
         </Grid>
 
@@ -225,14 +247,34 @@ export const Home = () => {
 
           <Paper
             elevation={5}
+            className={classes.dashboardChartLeft}
+          >
+            {
+              <Chart
+                chartType={APIChart.chart}
+                isFullScreen={false}
+                navLink={Local.chartAPI}
+                logNavLink={Local.logAPI} /> }
+          </Paper>
+        </Grid>
+
+        <Grid
+          item
+          container
+          justify="flex-start"
+          alignItems='flex-start'
+          xs={6}>
+
+          <Paper
+            elevation={5}
             className={classes.dashboardChartRight}
           >
             {
               <Chart
-                chartType={CmdChart.chart}
+                chartType={DailyAPIChart.chart}
                 isFullScreen={false}
-                navLink={Local.chartCmds}
-                logNavLink={Local.logCmds} /> }
+                navLink={Local.chartDailyAPI}
+                logNavLink={Local.logDailyAPI}/> }
           </Paper>
         </Grid>
 

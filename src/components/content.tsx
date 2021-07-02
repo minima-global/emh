@@ -99,15 +99,6 @@ export const Content = () => {
             logNavLink={Local.logTokens} /> }
       />
       <Route
-        exact path={Local.chartMinima}
-        render= {() =>
-          <Chart
-            chartType={MinimaChart.chart}
-            isFullScreen={true}
-            navLink={Local.home}
-            logNavLink={Local.logMinima} /> }
-      />
-      <Route
         exact path={Local.chartDailyTokens}
         render= {() =>
           <Chart
@@ -115,6 +106,15 @@ export const Content = () => {
             isFullScreen={true}
             navLink={Local.home}
             logNavLink={Local.logTokens} /> }
+      />
+      <Route
+        exact path={Local.chartMinima}
+        render= {() =>
+          <Chart
+            chartType={MinimaChart.chart}
+            isFullScreen={true}
+            navLink={Local.home}
+            logNavLink={Local.logMinima} /> }
       />
       <Route
         exact path={Local.chartDailyMinima}
@@ -153,6 +153,15 @@ export const Content = () => {
             logNavLink={Local.logAPI} /> }
       />
       <Route
+        exact path={Local.chartDailyAPI}
+        render= {() =>
+          <Chart
+            chartType={DailyAPIChart.chart}
+            isFullScreen={true}
+            navLink={Local.home}
+            logNavLink={Local.logDailyAPI} /> }
+      />
+      <Route
         exact path={Local.chartCmds}
         render= {() =>
           <Chart
@@ -160,6 +169,15 @@ export const Content = () => {
             isFullScreen={true}
             navLink={Local.home}
             logNavLink={Local.logCmds} /> }
+      />
+      <Route
+        exact path={Local.chartDailyCmds}
+        render= {() =>
+          <Chart
+            chartType={DailyCmdChart.chart}
+            isFullScreen={true}
+            navLink={Local.home}
+            logNavLink={Local.logDailyCmds} /> }
       />
 
       <Route
@@ -198,9 +216,19 @@ export const Content = () => {
           <Logs logType={APILog.log} /> }
       />
       <Route
+        path={Local.logDailyAPI}
+        render= {() =>
+          <Logs logType={DailyAPILog.log} /> }
+      />
+      <Route
         path={Local.logCmds}
         render= {() =>
           <Logs logType={CmdLog.log} /> }
+      />
+      <Route
+        path={Local.logDailyCmds}
+        render= {() =>
+          <Logs logType={DailyCmdLog.log} /> }
       />
 
       <Route

@@ -164,7 +164,7 @@ class API {
     ' AND ' + Dbase.tables.log.columns[4] +
     ' LIKE \'%<searchTerm>%\'';
 
-  static readonly logSearchCountQuery = APIChart.logCountQuery +
+  static readonly logSearchCountQuery = API.logCountQuery +
   ' AND ' + Dbase.tables.log.columns[4] +
   ' LIKE \'%<searchTerm>%\'';
 
