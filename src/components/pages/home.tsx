@@ -12,7 +12,9 @@ import {
   Cmd as CmdChart,
   Addresses as AddressesChart,
   Tokens as TokensChart,
+  Minima as MinimaChart,
   DailyTokens as DailyTokensChart,
+  DailyMinima as DailyMinimaChart,
   API as APIChart,
 } from '../../config/charts';
 
@@ -76,7 +78,6 @@ export const Home = () => {
 
         </Grid>
 
-
         <Grid
           item
           container
@@ -97,7 +98,6 @@ export const Home = () => {
           </Paper>
         </Grid>
 
-
         <Grid
           item
           container
@@ -111,48 +111,10 @@ export const Home = () => {
           >
             {
               <Chart
-                chartType={AddressesChart.chart}
+                chartType={MinimaChart.chart}
                 isFullScreen={false}
-                navLink={Local.chartAddresses}
-                logNavLink={Local.logAddresses}/> }
-          </Paper>
-        </Grid>
-
-        <Grid
-          item
-          container
-          justify="flex-start"
-          xs={6}>
-
-          <Paper
-            elevation={5}
-            className={classes.dashboardChartLeft}
-          >
-            {
-              <Chart
-                chartType={APIChart.chart}
-                isFullScreen={false}
-                navLink={Local.chartAPI}
-                logNavLink={Local.logAPI} /> }
-          </Paper>
-        </Grid>
-
-        <Grid
-          item
-          container
-          justify="flex-start"
-          xs={6}>
-
-          <Paper
-            elevation={5}
-            className={classes.dashboardChartRight}
-          >
-            {
-              <Chart
-                chartType={CmdChart.chart}
-                isFullScreen={false}
-                navLink={Local.chartCmds}
-                logNavLink={Local.logCmds} /> }
+                navLink={Local.chartMinima}
+                logNavLink={Local.logMinima} /> }
           </Paper>
         </Grid>
 
@@ -175,6 +137,83 @@ export const Home = () => {
           </Paper>
         </Grid>
 
+        <Grid
+          item
+          container
+          justify="flex-start"
+          xs={6}>
+
+          <Paper
+            elevation={5}
+            className={classes.dashboardChartRight}
+          >
+            {
+              <Chart
+                chartType={DailyMinimaChart.chart}
+                isFullScreen={false}
+                navLink={Local.chartDailyMinima}
+                logNavLink={Local.logDailyMinima} /> }
+          </Paper>
+        </Grid>
+
+
+        <Grid
+          item
+          container
+          justify="flex-start"
+          alignItems='flex-start'
+          xs={6}>
+
+          <Paper
+            elevation={5}
+            className={classes.dashboardChartLeft}
+          >
+            {
+              <Chart
+                chartType={AddressesChart.chart}
+                isFullScreen={false}
+                navLink={Local.chartAddresses}
+                logNavLink={Local.logAddresses}/> }
+          </Paper>
+        </Grid>
+
+        <Grid
+          item
+          container
+          justify="flex-start"
+          xs={6}>
+
+          <Paper
+            elevation={5}
+            className={classes.dashboardChartRight}
+          >
+            {
+              <Chart
+                chartType={APIChart.chart}
+                isFullScreen={false}
+                navLink={Local.chartAPI}
+                logNavLink={Local.logAPI} /> }
+          </Paper>
+        </Grid>
+
+        <Grid
+          item
+          container
+          justify="flex-start"
+          xs={6}>
+
+          <Paper
+            elevation={5}
+            className={classes.dashboardChartLeft}
+          >
+            {
+              <Chart
+                chartType={CmdChart.chart}
+                isFullScreen={false}
+                navLink={Local.chartCmds}
+                logNavLink={Local.logCmds} /> }
+          </Paper>
+        </Grid>
 
         <Grid item container justify="flex-start" xs={6}>
           &nbsp;

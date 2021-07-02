@@ -32,7 +32,7 @@ class Misc {
 
   static readonly gridHeight =
     Misc.barThickness +
-    Misc.labelOffset +
+    (-1 * Misc.labelOffset) +
     Misc.labelFontsize;
 
   static readonly time = {

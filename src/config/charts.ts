@@ -31,6 +31,7 @@ class Cmd {
   // eslint-disable-next-line max-len
   // SELECT COUNT(DATA), DATA FROM LOGGING WHERE LOGGINGTYPE IN('COMMAND') AND ACTION IN('run') AND DATA REGEXP '^[a-zA-Z0-9]+' GROUP BY DATA;
   static readonly query = 'SELECT * FROM ' + Cmd.queryWithDate;
+
   static readonly countQuery = 'SELECT COUNT(*) FROM ' + Cmd.queryWithDate;
   static readonly searchQuery = Cmd.query +
   ' AND ' + Dbase.tables.log.columns[4] +
@@ -274,11 +275,11 @@ class Addresses {
 
 /** @class Tokens */
 class Tokens {
-  static readonly chartHeading = 'Token Transactions'
-  static readonly logHeading = 'Token Transactions'
+  static readonly chartHeading = 'Token Txs'
+  static readonly logHeading = 'Token Txs'
 
   // stuff to make the charts and logs work
-  static readonly regex = '^0x[A-Z0-9][A-Z0-9]+'
+  static readonly regex = '^0x[A-Z0-9][A-Z0-9][A-Z0-9]+'
 
   static readonly chartKey = shortid.generate();
 
@@ -377,39 +378,117 @@ class Tokens {
       },
     },
   }
+}
 
-  static readonly logKey = shortid.generate();
+/** @class Minima */
+class Minima {
+  static readonly chartHeading = 'Minima Txs'
+  static readonly logHeading = 'Minima Txs'
 
-  static readonly logQuery = 'SELECT * FROM ' +
-    Tokens.queryDetails +
-    ' ORDER BY DATE DESC';
+  // stuff to make the charts and logs work
+  static readonly regex = '^0x00'
 
-  static readonly logCountQuery = 'SELECT COUNT(*) FROM ' + Tokens.queryDetails;
+  static readonly chartKey = shortid.generate();
 
-  static readonly logSearchQuery = Tokens.queryDetails +
+  static readonly queryDetails = Dbase.tables.log.name +
+    ' WHERE ' + Dbase.tables.log.columns[2] +
+    ' IN (\'' + Dbase.tables.txpow.name + '\')' +
+    ' AND ' + Dbase.tables.log.columns[3] +
+    ' IN (\'' + Dbase.defaultActions.insert + '\')' +
+    ' AND ' + Dbase.tables.log.columns[4] +
+    ' REGEXP \'' + Minima.regex + '\'';
+
+  static readonly queryWithDate = Minima.queryDetails +
+    ' AND (DATE BETWEEN <firstTime> AND <secondTime>)';
+
+  static readonly query = 'SELECT * FROM ' + Minima.queryWithDate;
+  static readonly countQuery = 'SELECT COUNT(*) FROM ' +
+    Minima.queryWithDate;
+  static readonly searchQuery = Minima.query +
     ' AND ' + Dbase.tables.log.columns[4] +
     ' LIKE \'%<searchTerm>%\'';
 
-  static readonly logSearchCountQuery = Tokens.logCountQuery +
+  static readonly searchCountQuery = Minima.countQuery +
   ' AND ' + Dbase.tables.log.columns[4] +
   ' LIKE \'%<searchTerm>%\'';
 
-  static readonly log: LogType = {
-    name: Tokens.logHeading,
-    key: Tokens.logKey,
-    query: Tokens.logQuery,
-    countQuery: Tokens.logCountQuery,
-    searchQuery: Tokens.logSearchQuery,
-    searchCountQuery: Tokens.logSearchCountQuery,
+  static readonly chartCountKey = 'COUNT(' + Dbase.tables.log.columns[4] + ')';
+  static readonly chartDataKey = Dbase.tables.log.columns[4];
+  static readonly chartQuery = 'SELECT ' +
+    Minima.chartCountKey + ', ' +
+    Minima.chartDataKey +
+    ' FROM ' + Minima.queryWithDate +
+    ' GROUP BY ' + Minima.chartDataKey;
+
+  static readonly chartSearchQuery = 'SELECT ' +
+    Minima.chartCountKey + ', ' +
+    Minima.chartDataKey +
+    ' FROM ' + Minima.queryWithDate +
+    ' AND ' + Dbase.tables.log.columns[4] +
+    ' LIKE \'%<searchTerm>%\'' +
+    ' GROUP BY ' + Minima.chartDataKey;
+
+  static readonly chart: ChartType = {
+    name: Minima.chartHeading,
+    key: Minima.chartKey,
+    query: Minima.chartQuery,
+    countQuery: Minima.countQuery,
+    searchQuery: Minima.chartSearchQuery,
+    searchCountQuery: Minima.searchCountQuery,
+    countColumn: Minima.chartCountKey,
+    dataColumn: Minima.chartDataKey,
+    type: 'bar',
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      indexAxis: 'y',
+      barThickness: Misc.barThickness,
+      maxBarThickness: Misc.barThickness + 2,
+      plugins: {
+        legend: {
+          display: false,
+        },
+        zoom: {
+          zoom: {
+            wheel: {
+              enabled: true,
+              speed: 1,
+            },
+            pinch: {
+              enabled: true,
+            },
+            mode: 'y',
+          },
+        },
+      },
+      scales: {
+        y: {
+          grid: {
+            display: false,
+          },
+          ticks: {
+            color: '#000000',
+            mirror: true,
+            labelOffset: Misc.labelOffset,
+            z: 1,
+          },
+        },
+        x: {
+          position: 'top',
+          grid: {
+            display: false,
+          },
+        },
+      },
+    },
   }
 }
 
 /** @class DailyTokens */
 class DailyTokens {
-  static readonly chartHeading = 'Daily Token Transactions'
-  static readonly logHeading = 'Daily Token Transactions'
+  static readonly chartHeading = 'Daily Token Txs'
 
-  static readonly regex = '^0x[A-Z0-9][A-Z0-9]+'
+  static readonly regex = '^0x[A-Z0-9][A-Z0-9][A-Z0-9]+'
 
   static readonly chartKey = shortid.generate();
 
@@ -505,31 +584,107 @@ class DailyTokens {
       },
     },
   }
+}
 
-  static readonly logKey = shortid.generate();
+/** @class DailyMinima */
+class DailyMinima {
+  static readonly chartHeading = 'Minima Daily Txs'
 
-  static readonly logQuery = 'SELECT * FROM ' +
-    DailyTokens.queryDetails +
-    ' ORDER BY DATE DESC';
+  static readonly regex = '^0x00'
 
-  static readonly logCountQuery =
-    'SELECT COUNT(*) FROM ' + DailyTokens.queryDetails;
+  static readonly chartKey = shortid.generate();
 
-  static readonly logSearchQuery = DailyTokens.queryDetails +
+  static readonly queryDetails = Dbase.tables.log.name +
+    ' WHERE ' + Dbase.tables.log.columns[2] +
+    ' IN (\'' + Dbase.tables.txpow.name + '\')' +
+    ' AND ' + Dbase.tables.log.columns[3] +
+    ' IN (\'' + Dbase.defaultActions.insert + '\')' +
+    ' AND ' + Dbase.tables.log.columns[4] +
+    ' REGEXP \'' + DailyMinima.regex + '\'';
+
+  static readonly queryWithDate = DailyMinima.queryDetails +
+    ' AND (DATE BETWEEN <firstTime> AND <secondTime>)';
+
+  static readonly query = 'SELECT * FROM ' + DailyMinima.queryWithDate;
+  static readonly countQuery = 'SELECT COUNT(*) FROM ' +
+    DailyMinima.queryWithDate;
+  static readonly searchQuery = DailyMinima.query +
     ' AND ' + Dbase.tables.log.columns[4] +
     ' LIKE \'%<searchTerm>%\'';
 
-  static readonly logSearchCountQuery = DailyTokens.logCountQuery +
+  static readonly searchCountQuery = DailyMinima.countQuery +
   ' AND ' + Dbase.tables.log.columns[4] +
   ' LIKE \'%<searchTerm>%\'';
 
-  static readonly log: LogType = {
-    name: DailyTokens.logHeading,
-    key: DailyTokens.logKey,
-    query: DailyTokens.logQuery,
-    countQuery: DailyTokens.logCountQuery,
-    searchQuery: DailyTokens.logSearchQuery,
-    searchCountQuery: DailyTokens.logSearchCountQuery,
+  static readonly chartCountKey =
+    'COUNT(FROM_UNIXTIME(' + Dbase.tables.log.columns[1] + '/1000))';
+  static readonly chartDataKey =
+    'DATE(FROM_UNIXTIME(' + Dbase.tables.log.columns[1] + '/1000))';
+  static readonly chartQuery = 'SELECT ' +
+    DailyMinima.chartCountKey + ', ' +
+    DailyMinima.chartDataKey +
+    ' FROM ' + DailyMinima.queryWithDate +
+    ' GROUP BY DAY(FROM_UNIXTIME(' + Dbase.tables.log.columns[1] + '/1000)), ' +
+    DailyMinima.chartDataKey;
+
+  static readonly chartSearchQuery = 'SELECT ' +
+    DailyMinima.chartCountKey + ', ' +
+    DailyMinima.chartDataKey +
+    ' FROM ' + DailyMinima.queryWithDate +
+    ' AND ' + Dbase.tables.log.columns[4] +
+    ' LIKE \'%<searchTerm>%\'' +
+    ' GROUP BY DAY(FROM_UNIXTIME(' + Dbase.tables.log.columns[1] + '/1000)), ' +
+    DailyMinima.chartDataKey;
+
+  static readonly chart: ChartType = {
+    name: DailyMinima.chartHeading,
+    key: DailyMinima.chartKey,
+    query: DailyMinima.chartQuery,
+    countQuery: DailyMinima.countQuery,
+    searchQuery: DailyMinima.chartSearchQuery,
+    searchCountQuery: DailyMinima.searchCountQuery,
+    countColumn: DailyMinima.chartCountKey,
+    dataColumn: DailyMinima.chartDataKey,
+    type: 'bar',
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      indexAxis: 'x',
+      barThickness: Misc.barThickness,
+      maxBarThickness: Misc.barThickness + 2,
+      plugins: {
+        legend: {
+          display: false,
+        },
+        zoom: {
+          zoom: {
+            wheel: {
+              enabled: true,
+              speed: 1,
+            },
+            pinch: {
+              enabled: true,
+            },
+            mode: 'x',
+          },
+        },
+      },
+      scales: {
+        y: {
+          grid: {
+            display: false,
+          },
+          ticks: {
+            color: '#000000',
+          },
+        },
+        x: {
+          grid: {
+            display: false,
+          },
+        },
+      },
+    },
   }
 }
 
@@ -668,6 +823,8 @@ export {
   Cmd,
   Addresses,
   Tokens,
+  Minima,
   DailyTokens,
+  DailyMinima,
   API,
 };
