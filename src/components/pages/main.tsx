@@ -21,7 +21,7 @@ import {App} from '../../config/vars';
 
 import {theme, themeStyles} from '../../styles';
 
-import {Local, Paths} from '../../config';
+import {Local, Paths} from '../../config/paths';
 import {AppInit} from '../appInit';
 
 export const Main = () => {
