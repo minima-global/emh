@@ -12,11 +12,11 @@ import logIcon from '../images/log.svg';
 import expandIcon from '../images/expand.svg';
 import closeIcon from '../images/closeDelete.svg';
 // import zoomInIcon from '../images/zoomIn.svg';
-import zoomOutIcon from '../images/zoomOut.svg';
+// import zoomOutIcon from '../images/zoomOut.svg';
 
 // import Chart from 'chart.js/auto';
 import {Chart, registerables, ChartType as ChartJSType} from 'chart.js';
-import zoomPlugin from 'chartjs-plugin-zoom';
+// import zoomPlugin from 'chartjs-plugin-zoom';
 
 import {theme, themeStyles} from '../styles';
 
@@ -36,6 +36,7 @@ import {
 } from '../config/vars';
 
 import {colours} from '../config/colours';
+import { AnyObject } from 'yup/lib/object';
 
 interface ChartProps {
   chartType: ChartType
@@ -66,27 +67,32 @@ type Props = ChartProps & StateProps & DispatchProps;
 
 export const chart = (props: Props) => {
   const isFirstRun = useRef(true);
-  const [chart, setChart] = useState({} as any);
   const [searchTerm, setSearchTerm] = useState('');
   const [totalRecords, setTotalRecords] = useState(0);
   // eslint-disable-next-line no-unused-vars
-  const [chartHeight, setChartHeight] = useState(0);
-  const dataCtx = useRef<HTMLCanvasElement>(null);
+  const [charts, setCharts] = useState([] as any[]);
+  let [data, setData] = useState([] as any[]);
+  const dataCtx = useRef([] as any);
+
+  // const updateInterval = 3000;
 
   let navLinkIcon = expandIcon;
-  let viewport = '280px';
+  let viewport = '240px';
   if ( props.isFullScreen ) {
     navLinkIcon = closeIcon;
-    viewport = '550px';
+    viewport = '510px';
   }
 
+  const chartnodes = 2;
+
   const classes = themeStyles();
-  Chart.register(zoomPlugin, ...registerables);
+  // Chart.register(zoomPlugin, ...registerables);
 
   useEffect(() => {
-    let chart: any;
     if ( isFirstRun.current ) {
       isFirstRun.current = false;
+
+      Chart.register(...registerables);
 
       const timeNow = Date.now().toString();
       let countQuery = props.chartType.countQuery.replace(/<firstTime>/g, '0');
@@ -101,12 +107,11 @@ export const chart = (props: Props) => {
           props.chartType.countColumn,
           props.chartType.dataColumn);
     } else {
+      // const thisTime = Date.now();
       const key = props.chartType.key;
-      // console.log('count', props.countData.data);
-      // console.log('data', props.chartData);
       if (props.countData.data[key]) {
-        // eslint-disable-next-line max-len
-        // console.log('got count data: ', props.countData.data[props.chartType.countQuery]);
+      // eslint-disable-next-line max-len
+      // console.log('got count data: ', props.countData.data[props.chartType.countQuery]);
         const thisCount = props.countData.data[key];
         if ( thisCount != totalRecords ) {
           setTotalRecords(props.countData.data[key]);
@@ -116,27 +121,43 @@ export const chart = (props: Props) => {
       if ( props.chartData.data[key] ) {
         const keys = Object.keys(props.chartData.data[key]);
         const values = Object.values(props.chartData.data[key]);
-        setChartHeight(
-            Misc.axisOffset + keys.length * Misc.gridHeight);
-        const ctx: HTMLCanvasElement | null = dataCtx.current;
-        if ( ctx ) {
-          chart = new Chart(ctx, {
-            type: props.chartType.type as ChartJSType,
-            data: {
-              labels: keys.map((key: string) => key),
-              datasets: [{
-                data: values.map((value: number) => value),
-                backgroundColor: colours,
-              }],
-            },
-            options: props.chartType.options,
-          });
-          setChart(chart);
+        // const thisNumCharts = Math.ceil(keys.length / chartnodes);
+        const thisArray = [];
+        const entries = Object.entries(props.chartData.data[key]);
+        for (let i=0; i< keys.length; i += chartnodes) {
+          thisArray.push(entries.slice(i, i+ chartnodes));
         }
+        data = thisArray;
+        console.log('data', data);
+
+        data.forEach((element, index) => {
+          console.log('creating chart for', element, dataCtx);
+          // eslint-disable-next-line max-len
+          const canvas: HTMLCanvasElement = document.getElementById(props.chartType.name+index) as HTMLCanvasElement;
+          const ctx = canvas?.getContext('2d');
+          console.log('ctx', ctx);
+          if ( ctx ) {
+            console.log('ever in here?');
+            /* const thisChart = new Chart(ctx, {
+              type: props.chartType.type as ChartJSType,
+              data: {
+                labels: keys.map((key: string) => key),
+                datasets: [{
+                  data: values.map((value: number) => value),
+                  backgroundColor: colours,
+                }],
+              },
+              options: props.chartType.options,
+            });
+            charts.push(thisChart);*/
+          }
+        });
       }
     }
     return () => {
-      chart ? chart.destroy() : null;
+      charts.forEach((chart: any) => {
+        chart.destroy();
+      });
     };
   }, [props.chartData]);
 
@@ -180,9 +201,11 @@ export const chart = (props: Props) => {
   };
   */
 
+  /*
   const resetZoom = () => {
     chart.resetZoom();
   };
+  */
 
   const doTime = (span: string) => {
     let timeFrom = 0;
@@ -271,12 +294,34 @@ export const chart = (props: Props) => {
             {props.chartType.name}
           </Typography>
         </Grid>
+        <Grid item container justify='flex-end' alignItems="center" xs={8}>
+          <Grid item container justify='flex-end' xs={6}>
+            <NavLink to={props.logNavLink}>
+              <IconButton
+                aria-label="Logs"
+              >
+                <img className={classes.footerIcon} src={logIcon}/>
+              </IconButton>
+            </NavLink>
+          </Grid>
+          <Grid item container justify='flex-end' xs={6}>
+            <NavLink to={props.navLink}>
+              <IconButton
+                aria-label="chartOrHome"
+              >
+                <img className={classes.footerIcon} src={navLinkIcon}/>
+              </IconButton>
+            </NavLink>
+          </Grid>
+        </Grid>
+
+
         <Grid
           item
           container
           alignItems="flex-start"
           justify="flex-start"
-          xs={4}
+          xs={12}
         >
           <TextField
             fullWidth
@@ -294,35 +339,6 @@ export const chart = (props: Props) => {
             }}
             InputProps={{disableUnderline: true}}
           />
-        </Grid>
-        <Grid item container justify='flex-end' alignItems="center" xs={4}>
-          <Grid item container justify='flex-end' xs={4}>
-            <div onClick={()=>resetZoom()}>
-              <IconButton
-                aria-label="Reset Zoom"
-              >
-                <img className={classes.footerIcon} src={zoomOutIcon}/>
-              </IconButton>
-            </div>
-          </Grid>
-          <Grid item container justify='flex-end' xs={4}>
-            <NavLink to={props.logNavLink}>
-              <IconButton
-                aria-label="Logs"
-              >
-                <img className={classes.footerIcon} src={logIcon}/>
-              </IconButton>
-            </NavLink>
-          </Grid>
-          <Grid item container justify='flex-end' xs={4}>
-            <NavLink to={props.navLink}>
-              <IconButton
-                aria-label="chartOrHome"
-              >
-                <img className={classes.footerIcon} src={navLinkIcon}/>
-              </IconButton>
-            </NavLink>
-          </Grid>
         </Grid>
 
         { props.isFullScreen ?
@@ -378,21 +394,24 @@ export const chart = (props: Props) => {
             marginTop: theme.spacing(1),
             width: '100%',
             height: viewport,
-            overflow: 'auto',
           }}
           xs={12}
         >
           <div
             style={{
-              height: chartHeight,
+              height: viewport,
               width: '100%',
               paddingRight: theme.spacing(1),
             }}
           >
-            <canvas
-              id={props.chartType.name}
-              ref={dataCtx}
-            />
+            {
+              data.map( (chart: any, index: number) => {
+                console.log('creating canvas ref', index);
+                <canvas
+                  id={props.chartType.name + index}
+                />;
+              })
+            }
           </div>
         </Grid>
       </Grid>

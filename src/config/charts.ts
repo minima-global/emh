@@ -5,6 +5,34 @@ import {ChartType} from '../store/types';
 
 import {colours} from './colours';
 
+/*
+zoom: {
+  zoom: {
+    wheel: {
+      enabled: true,
+      speed: 1,
+    },
+    pinch: {
+      enabled: true,
+    },
+    mode: 'x',
+  },
+},
+
+zoom: {
+  zoom: {
+    wheel: {
+      enabled: true,
+      speed: 1,
+    },
+    pinch: {
+      enabled: true,
+    },
+    mode: 'y',
+  },
+},
+*/
+
 /** @class Cmd */
 class Cmd {
   static readonly chartHeading = 'Commands'
@@ -74,18 +102,6 @@ class Cmd {
         legend: {
           display: false,
         },
-        zoom: {
-          zoom: {
-            wheel: {
-              enabled: true,
-              speed: 1,
-            },
-            pinch: {
-              enabled: true,
-            },
-            mode: 'y',
-          },
-        },
       },
       scales: {
         y: {
@@ -100,7 +116,7 @@ class Cmd {
           },
         },
         x: {
-          position: 'top',
+          position: 'bottom',
           grid: {
             display: false,
           },
@@ -155,18 +171,6 @@ class DailyCmd {
       plugins: {
         legend: {
           display: false,
-        },
-        zoom: {
-          zoom: {
-            wheel: {
-              enabled: true,
-              speed: 1,
-            },
-            pinch: {
-              enabled: true,
-            },
-            mode: 'x',
-          },
         },
       },
       scales: {
@@ -259,18 +263,6 @@ class Addresses {
         legend: {
           display: false,
         },
-        zoom: {
-          zoom: {
-            wheel: {
-              enabled: true,
-              speed: 1,
-            },
-            pinch: {
-              enabled: true,
-            },
-            mode: 'y',
-          },
-        },
       },
       scales: {
         y: {
@@ -285,7 +277,7 @@ class Addresses {
           },
         },
         x: {
-          position: 'top',
+          position: 'bottom',
           grid: {
             display: false,
           },
@@ -340,18 +332,6 @@ class DailyAddresses {
       plugins: {
         legend: {
           display: false,
-        },
-        zoom: {
-          zoom: {
-            wheel: {
-              enabled: true,
-              speed: 1,
-            },
-            pinch: {
-              enabled: true,
-            },
-            mode: 'x',
-          },
         },
       },
       scales: {
@@ -444,18 +424,6 @@ class Tokens {
         legend: {
           display: false,
         },
-        zoom: {
-          zoom: {
-            wheel: {
-              enabled: true,
-              speed: 1,
-            },
-            pinch: {
-              enabled: true,
-            },
-            mode: 'y',
-          },
-        },
       },
       scales: {
         y: {
@@ -470,7 +438,7 @@ class Tokens {
           },
         },
         x: {
-          position: 'top',
+          position: 'bottom',
           grid: {
             display: false,
           },
@@ -525,18 +493,6 @@ class DailyTokens {
       plugins: {
         legend: {
           display: false,
-        },
-        zoom: {
-          zoom: {
-            wheel: {
-              enabled: true,
-              speed: 1,
-            },
-            pinch: {
-              enabled: true,
-            },
-            mode: 'x',
-          },
         },
       },
       scales: {
@@ -626,18 +582,6 @@ class Minima {
         legend: {
           display: false,
         },
-        zoom: {
-          zoom: {
-            wheel: {
-              enabled: true,
-              speed: 1,
-            },
-            pinch: {
-              enabled: true,
-            },
-            mode: 'y',
-          },
-        },
       },
       scales: {
         y: {
@@ -652,7 +596,7 @@ class Minima {
           },
         },
         x: {
-          position: 'top',
+          position: 'bottom',
           grid: {
             display: false,
           },
@@ -707,18 +651,6 @@ class DailyMinima {
       plugins: {
         legend: {
           display: false,
-        },
-        zoom: {
-          zoom: {
-            wheel: {
-              enabled: true,
-              speed: 1,
-            },
-            pinch: {
-              enabled: true,
-            },
-            mode: 'x',
-          },
         },
       },
       scales: {
@@ -810,18 +742,6 @@ class API {
         legend: {
           display: false,
         },
-        zoom: {
-          zoom: {
-            wheel: {
-              enabled: true,
-              speed: 1,
-            },
-            pinch: {
-              enabled: true,
-            },
-            mode: 'y',
-          },
-        },
       },
       scales: {
         y: {
@@ -836,7 +756,7 @@ class API {
           },
         },
         x: {
-          position: 'top',
+          position: 'bottom',
           grid: {
             display: false,
           },
@@ -845,7 +765,6 @@ class API {
     },
   }
 }
-
 
 /** @class DailyAPI */
 class DailyAPI {
@@ -892,18 +811,6 @@ class DailyAPI {
       plugins: {
         legend: {
           display: false,
-        },
-        zoom: {
-          zoom: {
-            wheel: {
-              enabled: true,
-              speed: 1,
-            },
-            pinch: {
-              enabled: true,
-            },
-            mode: 'x',
-          },
         },
       },
       scales: {
