@@ -11,6 +11,10 @@ import Button from '@material-ui/core/Button';
 import logIcon from '../images/log.svg';
 import expandIcon from '../images/expand.svg';
 import closeIcon from '../images/closeDelete.svg';
+
+import pageBack from '../images/pageBack.svg';
+import pageForward from '../images/pageForward.svg';
+
 // import zoomInIcon from '../images/zoomIn.svg';
 // import zoomOutIcon from '../images/zoomOut.svg';
 
@@ -36,7 +40,6 @@ import {
 } from '../config/vars';
 
 import {colours} from '../config/colours';
-import { AnyObject } from 'yup/lib/object';
 
 interface ChartProps {
   chartType: ChartType
@@ -66,13 +69,17 @@ interface DispatchProps {
 type Props = ChartProps & StateProps & DispatchProps;
 
 export const chart = (props: Props) => {
-  const isFirstRun = useRef(true);
   const [searchTerm, setSearchTerm] = useState('');
+
   const [totalRecords, setTotalRecords] = useState(0);
+  const [page, setPage] = useState(0);
+  const [nextDisabled, setNextDisabled] = useState(false);
+  const [backDisabled, setBackDisabled] = useState(true);
+
   // eslint-disable-next-line no-unused-vars
   const [charts, setCharts] = useState([] as any[]);
-  let [data, setData] = useState([] as any[]);
-  const dataCtx = useRef([] as any);
+  const [data, setData] = useState([] as any[]);
+  const dataCtx = useRef<HTMLCanvasElement>(null);
 
   // const updateInterval = 3000;
 
@@ -89,69 +96,75 @@ export const chart = (props: Props) => {
   // Chart.register(zoomPlugin, ...registerables);
 
   useEffect(() => {
-    if ( isFirstRun.current ) {
-      isFirstRun.current = false;
+    Chart.register(...registerables);
 
-      Chart.register(...registerables);
+    const timeNow = Date.now().toString();
+    let countQuery = props.chartType.countQuery.replace(/<firstTime>/g, '0');
+    countQuery = countQuery.replace(/<secondTime>/g, timeNow);
+    let query = props.chartType.query.replace(/<firstTime>/g, '0');
+    query = query.replace(/<secondTime>/g, timeNow);
 
-      const timeNow = Date.now().toString();
-      let countQuery = props.chartType.countQuery.replace(/<firstTime>/g, '0');
-      countQuery = countQuery.replace(/<secondTime>/g, timeNow);
-      let query = props.chartType.query.replace(/<firstTime>/g, '0');
-      query = query.replace(/<secondTime>/g, timeNow);
+    props.countTableEntries(countQuery, props.chartType.key);
+    props.getChartEntries(
+        query,
+        props.chartType.key,
+        props.chartType.countColumn,
+        props.chartType.dataColumn);
+  }, []);
 
-      props.countTableEntries(countQuery, props.chartType.key);
-      props.getChartEntries(
-          query,
-          props.chartType.key,
-          props.chartType.countColumn,
-          props.chartType.dataColumn);
-    } else {
-      // const thisTime = Date.now();
-      const key = props.chartType.key;
-      if (props.countData.data[key]) {
+  useEffect(() => {
+    // const thisTime = Date.now();
+    const key = props.chartType.key;
+    if (props.countData.data[key]) {
       // eslint-disable-next-line max-len
       // console.log('got count data: ', props.countData.data[props.chartType.countQuery]);
-        const thisCount = props.countData.data[key];
-        if ( thisCount != totalRecords ) {
-          setTotalRecords(props.countData.data[key]);
-        }
+      const thisCount = props.countData.data[key];
+      if ( thisCount != totalRecords ) {
+        setTotalRecords(props.countData.data[key]);
       }
+    }
+  }, [props.countData]);
 
-      if ( props.chartData.data[key] ) {
-        const keys = Object.keys(props.chartData.data[key]);
-        const values = Object.values(props.chartData.data[key]);
-        // const thisNumCharts = Math.ceil(keys.length / chartnodes);
-        const thisArray = [];
-        const entries = Object.entries(props.chartData.data[key]);
-        for (let i=0; i< keys.length; i += chartnodes) {
-          thisArray.push(entries.slice(i, i+ chartnodes));
-        }
-        data = thisArray;
-        console.log('data', data);
+  useEffect(() => {
+    // const thisTime = Date.now();
+    const key = props.chartType.key;
+    if ( props.chartData.data[key] ) {
+      // console.log('got data', props.chartData.data[key]);
+      const keys = Object.keys(props.chartData.data[key]);
+      const values = Object.values(props.chartData.data[key]);
+      // const thisNumCharts = Math.ceil(keys.length / chartnodes);
+      let thisArray: any[] = [];
+      const thisData = [];
+      // const entries = Object.entries(props.chartData.data[key]);
+      for (let i=0; i< keys.length; i += chartnodes) {
+        thisArray.push(keys.slice(i, i+ chartnodes));
+        thisArray.push(values.slice(i, i+ chartnodes));
+        thisData.push(thisArray);
+        thisArray = [];
+      }
+      setData(thisData);
+      setPage(1);
+    }
+  }, [props.chartData]);
 
-        data.forEach((element, index) => {
-          console.log('creating chart for', element, dataCtx);
-          // eslint-disable-next-line max-len
-          const canvas: HTMLCanvasElement = document.getElementById(props.chartType.name+index) as HTMLCanvasElement;
-          const ctx = canvas?.getContext('2d');
-          console.log('ctx', ctx);
-          if ( ctx ) {
-            console.log('ever in here?');
-            /* const thisChart = new Chart(ctx, {
-              type: props.chartType.type as ChartJSType,
-              data: {
-                labels: keys.map((key: string) => key),
-                datasets: [{
-                  data: values.map((value: number) => value),
-                  backgroundColor: colours,
-                }],
-              },
-              options: props.chartType.options,
-            });
-            charts.push(thisChart);*/
-          }
+  useEffect(() => {
+    // const thisTime = Date.now();
+    console.log('ever here?', page, data);
+    if ( page && data.length ) {
+      const ctx: HTMLCanvasElement | null = dataCtx.current;
+      if ( ctx ) {
+        const thisChart = new Chart(ctx, {
+          type: props.chartType.type as ChartJSType,
+          data: {
+            labels: data[page - 1][0],
+            datasets: [{
+              data: data[page - 1][1],
+              backgroundColor: colours,
+            }],
+          },
+          options: props.chartType.options,
         });
+        charts.push(thisChart);
       }
     }
     return () => {
@@ -159,7 +172,7 @@ export const chart = (props: Props) => {
         chart.destroy();
       });
     };
-  }, [props.chartData]);
+  }, [data, page]);
 
   const doSetSearchTerm =
       (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -274,6 +287,14 @@ export const chart = (props: Props) => {
         props.chartType.dataColumn);
   };
 
+  const setPageNumber = (page: number) => {
+    console.log('setting page', page);
+    if ( page >= 0 && page <= (data.length)) {
+      console.log('yup setting page', page);
+      setPage(page);
+    }
+  };
+
   return (
     <>
       <Grid
@@ -295,7 +316,35 @@ export const chart = (props: Props) => {
           </Typography>
         </Grid>
         <Grid item container justify='flex-end' alignItems="center" xs={8}>
-          <Grid item container justify='flex-end' xs={6}>
+          <Grid item container justify='flex-end' xs={3}>
+            <Button
+              aria-label="Page back"
+              onClick={() => setPageNumber(page - 1)}
+              disabled={backDisabled}
+              style={{
+                margin: 0,
+                padding: 0,
+                background: '#F0F0FA',
+              }}
+            >
+              <img className={classes.pageIcon} src={pageBack} />
+            </Button>
+          </Grid>
+          <Grid item container justify='flex-end' xs={3}>
+            <Button
+              aria-label="Page forward"
+              onClick={() => setPageNumber(page + 1)}
+              disabled={nextDisabled}
+              style={{
+                margin: 0,
+                padding: 0,
+                background: '#F0F0FA',
+              }}
+            >
+              <img className={classes.pageIcon} src={pageForward}/>
+            </Button>
+          </Grid>
+          <Grid item container justify='flex-end' xs={3}>
             <NavLink to={props.logNavLink}>
               <IconButton
                 aria-label="Logs"
@@ -304,7 +353,7 @@ export const chart = (props: Props) => {
               </IconButton>
             </NavLink>
           </Grid>
-          <Grid item container justify='flex-end' xs={6}>
+          <Grid item container justify='flex-end' xs={3}>
             <NavLink to={props.navLink}>
               <IconButton
                 aria-label="chartOrHome"
@@ -404,14 +453,10 @@ export const chart = (props: Props) => {
               paddingRight: theme.spacing(1),
             }}
           >
-            {
-              data.map( (chart: any, index: number) => {
-                console.log('creating canvas ref', index);
-                <canvas
-                  id={props.chartType.name + index}
-                />;
-              })
-            }
+            <canvas
+              id={props.chartType.key}
+              ref={dataCtx}
+            />
           </div>
         </Grid>
       </Grid>
