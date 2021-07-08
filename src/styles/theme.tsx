@@ -301,9 +301,8 @@ const themeStyles = makeStyles({
     margin: 0,
     paddingTop: 0,
     paddingBottom: 0,
-    paddingLeft: theme.spacing(1),
-    paddingRight: theme.spacing(1),
-    borderRadius: '1px',
+    paddingLeft: theme.spacing(0.5),
+    paddingRight: theme.spacing(0.5),
   },
   modalSub: {
     [breakpoints.up('xs')]: {

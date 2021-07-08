@@ -73,6 +73,7 @@ export const chart = (props: Props) => {
 
   const [totalRecords, setTotalRecords] = useState(0);
   const [page, setPage] = useState(0);
+  const [searchPage, setSearchPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [nextDisabled, setNextDisabled] = useState(false);
   const [backDisabled, setBackDisabled] = useState(true);
@@ -81,6 +82,7 @@ export const chart = (props: Props) => {
   const [charts, setCharts] = useState([] as any[]);
   const [data, setData] = useState([] as any[]);
   const dataCtx = useRef<HTMLCanvasElement>(null);
+  const setPageRef = useRef<HTMLInputElement>(null);
 
   // const updateInterval = 3000;
 
@@ -222,16 +224,6 @@ export const chart = (props: Props) => {
   };
 
   /*
-  const doZoomIn = () => {
-    chart.zoom(1.1);
-  };
-
-  const doZoomOut = () => {
-    chart.zoom(0.9);
-  };
-  */
-
-  /*
   const resetZoom = () => {
     chart.resetZoom();
   };
@@ -304,11 +296,28 @@ export const chart = (props: Props) => {
         props.chartType.dataColumn);
   };
 
+  const setSearchPageNumber =
+  (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setSearchPage(parseInt(e.target.value));
+  };
+
+  const doSetSearchPage = () => {
+    setPageNumber(searchPage);
+  };
+
   const setPageNumber = (page: number) => {
     // console.log('setting page', page);
     if ( page >= 1 && page <= (data.length)) {
       // console.log('yup setting page', page);
       setPage(page);
+      (setPageRef.current as HTMLInputElement).value = page.toString();
+    } else if ( page < 1 ) {
+      setPage(1);
+      (setPageRef.current as HTMLInputElement).value = '1';
+    } else {
+      setPage(data.length);
+      (setPageRef.current as HTMLInputElement).value =
+        data.length.toString();
     }
   };
 
@@ -326,13 +335,13 @@ export const chart = (props: Props) => {
           item
           container
           alignItems="flex-start"
-          xs={6}
+          xs={7}
         >
           <Typography variant="h3">
             {props.chartType.name}
           </Typography>
         </Grid>
-        <Grid item container justify='flex-end' alignItems="center" xs={6}>
+        <Grid item container justify='flex-end' alignItems="center" xs={5}>
 
           <Grid
             item
@@ -355,6 +364,7 @@ export const chart = (props: Props) => {
                 style={{
                   margin: 0,
                   padding: 0,
+                  paddingLeft: theme.spacing(0.5),
                   background: '#F0F0FA',
                 }}
               >
@@ -364,11 +374,17 @@ export const chart = (props: Props) => {
             <Grid item container alignItems='flex-end' xs={3}>
               <TextField
                 placeholder={page.toString()}
+                inputRef={setPageRef}
                 size="small"
-                name="search"
+                name="page"
                 type="text"
                 onChange={(e) => {
-                  setPageNumber(parseInt(e.target.value));
+                  setSearchPageNumber(e);
+                }}
+                onKeyPress= {(e) => {
+                  if (e.key === 'Enter') {
+                    doSetSearchPage();
+                  }
                 }}
                 inputProps={{
                   style: {
@@ -391,6 +407,7 @@ export const chart = (props: Props) => {
                 style={{
                   margin: 0,
                   padding: 0,
+                  paddingRight: theme.spacing(0.5),
                   background: '#F0F0FA',
                 }}
               >
