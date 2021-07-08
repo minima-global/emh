@@ -297,6 +297,14 @@ const themeStyles = makeStyles({
       fontSize: '1em',
     },
   },
+  pageSet: {
+    margin: 0,
+    paddingTop: 0,
+    paddingBottom: 0,
+    paddingLeft: theme.spacing(1),
+    paddingRight: theme.spacing(1),
+    borderRadius: '1px',
+  },
   modalSub: {
     [breakpoints.up('xs')]: {
       backgroundColor: theme.palette.background.default,

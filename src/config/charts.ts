@@ -92,6 +92,8 @@ class Cmd {
     countColumn: Cmd.chartCountKey,
     dataColumn: Cmd.chartDataKey,
     type: 'bar',
+    nodes: 4,
+    nodesFullScreen: 8,
     options: {
       responsive: true,
       maintainAspectRatio: false,
@@ -102,6 +104,18 @@ class Cmd {
         legend: {
           display: false,
         },
+        zoom: {
+          zoom: {
+            wheel: {
+              enabled: true,
+              speed: 1,
+            },
+            pinch: {
+              enabled: true,
+            },
+            mode: 'y',
+          },
+        },
       },
       scales: {
         y: {
@@ -111,6 +125,7 @@ class Cmd {
           ticks: {
             color: colours,
             mirror: true,
+            padding: Misc.axisOffset,
             labelOffset: Misc.labelOffset,
             z: 1,
           },
@@ -162,6 +177,8 @@ class DailyCmd {
     countColumn: DailyCmd.chartCountKey,
     dataColumn: DailyCmd.chartDataKey,
     type: 'bar',
+    nodes: 8,
+    nodesFullScreen: 16,
     options: {
       responsive: true,
       maintainAspectRatio: false,
@@ -171,6 +188,18 @@ class DailyCmd {
       plugins: {
         legend: {
           display: false,
+        },
+        zoom: {
+          zoom: {
+            wheel: {
+              enabled: true,
+              speed: 1,
+            },
+            pinch: {
+              enabled: true,
+            },
+            mode: 'x',
+          },
         },
       },
       scales: {
@@ -253,6 +282,8 @@ class Addresses {
     countColumn: Addresses.chartCountKey,
     dataColumn: Addresses.chartDataKey,
     type: 'bar',
+    nodes: 4,
+    nodesFullScreen: 8,
     options: {
       responsive: true,
       maintainAspectRatio: false,
@@ -263,6 +294,18 @@ class Addresses {
         legend: {
           display: false,
         },
+        zoom: {
+          zoom: {
+            wheel: {
+              enabled: true,
+              speed: 1,
+            },
+            pinch: {
+              enabled: true,
+            },
+            mode: 'y',
+          },
+        },
       },
       scales: {
         y: {
@@ -272,6 +315,7 @@ class Addresses {
           ticks: {
             color: '#000000',
             mirror: true,
+            padding: Misc.axisOffset,
             labelOffset: Misc.labelOffset,
             z: 1,
           },
@@ -323,6 +367,8 @@ class DailyAddresses {
     countColumn: DailyAddresses.chartCountKey,
     dataColumn: DailyAddresses.chartDataKey,
     type: 'bar',
+    nodes: 8,
+    nodesFullScreen: 16,
     options: {
       responsive: true,
       maintainAspectRatio: false,
@@ -332,6 +378,18 @@ class DailyAddresses {
       plugins: {
         legend: {
           display: false,
+        },
+        zoom: {
+          zoom: {
+            wheel: {
+              enabled: true,
+              speed: 1,
+            },
+            pinch: {
+              enabled: true,
+            },
+            mode: 'x',
+          },
         },
       },
       scales: {
@@ -414,6 +472,8 @@ class Tokens {
     countColumn: Tokens.chartCountKey,
     dataColumn: Tokens.chartDataKey,
     type: 'bar',
+    nodes: 4,
+    nodesFullScreen: 8,
     options: {
       responsive: true,
       maintainAspectRatio: false,
@@ -424,6 +484,18 @@ class Tokens {
         legend: {
           display: false,
         },
+        zoom: {
+          zoom: {
+            wheel: {
+              enabled: true,
+              speed: 1,
+            },
+            pinch: {
+              enabled: true,
+            },
+            mode: 'y',
+          },
+        },
       },
       scales: {
         y: {
@@ -433,6 +505,7 @@ class Tokens {
           ticks: {
             color: '#000000',
             mirror: true,
+            padding: Misc.axisOffset,
             labelOffset: Misc.labelOffset,
             z: 1,
           },
@@ -484,6 +557,8 @@ class DailyTokens {
     countColumn: DailyTokens.chartCountKey,
     dataColumn: DailyTokens.chartDataKey,
     type: 'bar',
+    nodes: 8,
+    nodesFullScreen: 16,
     options: {
       responsive: true,
       maintainAspectRatio: false,
@@ -493,6 +568,18 @@ class DailyTokens {
       plugins: {
         legend: {
           display: false,
+        },
+        zoom: {
+          zoom: {
+            wheel: {
+              enabled: true,
+              speed: 1,
+            },
+            pinch: {
+              enabled: true,
+            },
+            mode: 'x',
+          },
         },
       },
       scales: {
@@ -572,6 +659,8 @@ class Minima {
     countColumn: Minima.chartCountKey,
     dataColumn: Minima.chartDataKey,
     type: 'bar',
+    nodes: 4,
+    nodesFullScreen: 8,
     options: {
       responsive: true,
       maintainAspectRatio: false,
@@ -582,6 +671,18 @@ class Minima {
         legend: {
           display: false,
         },
+        zoom: {
+          zoom: {
+            wheel: {
+              enabled: true,
+              speed: 1,
+            },
+            pinch: {
+              enabled: true,
+            },
+            mode: 'y',
+          },
+        },
       },
       scales: {
         y: {
@@ -591,6 +692,7 @@ class Minima {
           ticks: {
             color: '#000000',
             mirror: true,
+            padding: Misc.axisOffset,
             labelOffset: Misc.labelOffset,
             z: 1,
           },
@@ -642,6 +744,8 @@ class DailyMinima {
     countColumn: DailyMinima.chartCountKey,
     dataColumn: DailyMinima.chartDataKey,
     type: 'bar',
+    nodes: 8,
+    nodesFullScreen: 16,
     options: {
       responsive: true,
       maintainAspectRatio: false,
@@ -651,6 +755,18 @@ class DailyMinima {
       plugins: {
         legend: {
           display: false,
+        },
+        zoom: {
+          zoom: {
+            wheel: {
+              enabled: true,
+              speed: 1,
+            },
+            pinch: {
+              enabled: true,
+            },
+            mode: 'x',
+          },
         },
       },
       scales: {
@@ -732,6 +848,8 @@ class API {
     countColumn: API.chartCountKey,
     dataColumn: API.chartDataKey,
     type: 'bar',
+    nodes: 4,
+    nodesFullScreen: 8,
     options: {
       responsive: true,
       maintainAspectRatio: false,
@@ -742,6 +860,18 @@ class API {
         legend: {
           display: false,
         },
+        zoom: {
+          zoom: {
+            wheel: {
+              enabled: true,
+              speed: 1,
+            },
+            pinch: {
+              enabled: true,
+            },
+            mode: 'y',
+          },
+        },
       },
       scales: {
         y: {
@@ -751,6 +881,7 @@ class API {
           ticks: {
             color: '#000000',
             mirror: true,
+            padding: Misc.axisOffset,
             labelOffset: Misc.labelOffset,
             z: 1,
           },
@@ -802,6 +933,8 @@ class DailyAPI {
     countColumn: DailyAPI.chartCountKey,
     dataColumn: DailyAPI.chartDataKey,
     type: 'bar',
+    nodes: 8,
+    nodesFullScreen: 16,
     options: {
       responsive: true,
       maintainAspectRatio: false,
@@ -811,6 +944,18 @@ class DailyAPI {
       plugins: {
         legend: {
           display: false,
+        },
+        zoom: {
+          zoom: {
+            wheel: {
+              enabled: true,
+              speed: 1,
+            },
+            pinch: {
+              enabled: true,
+            },
+            mode: 'x',
+          },
         },
       },
       scales: {

@@ -20,7 +20,7 @@ import pageForward from '../images/pageForward.svg';
 
 // import Chart from 'chart.js/auto';
 import {Chart, registerables, ChartType as ChartJSType} from 'chart.js';
-// import zoomPlugin from 'chartjs-plugin-zoom';
+import zoomPlugin from 'chartjs-plugin-zoom';
 
 import {theme, themeStyles} from '../styles';
 
@@ -73,6 +73,7 @@ export const chart = (props: Props) => {
 
   const [totalRecords, setTotalRecords] = useState(0);
   const [page, setPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
   const [nextDisabled, setNextDisabled] = useState(false);
   const [backDisabled, setBackDisabled] = useState(true);
 
@@ -85,18 +86,18 @@ export const chart = (props: Props) => {
 
   let navLinkIcon = expandIcon;
   let viewport = '240px';
+  let chartNodes = props.chartType.nodes;
   if ( props.isFullScreen ) {
     navLinkIcon = closeIcon;
+    chartNodes = props.chartType.nodesFullScreen;
     viewport = '510px';
   }
 
-  const chartnodes = 2;
-
   const classes = themeStyles();
-  // Chart.register(zoomPlugin, ...registerables);
 
   useEffect(() => {
-    Chart.register(...registerables);
+    // Chart.register(...registerables);
+    Chart.register(zoomPlugin, ...registerables);
 
     const timeNow = Date.now().toString();
     let countQuery = props.chartType.countQuery.replace(/<firstTime>/g, '0');
@@ -132,24 +133,24 @@ export const chart = (props: Props) => {
       // console.log('got data', props.chartData.data[key]);
       const keys = Object.keys(props.chartData.data[key]);
       const values = Object.values(props.chartData.data[key]);
-      // const thisNumCharts = Math.ceil(keys.length / chartnodes);
+      // const thisNumCharts = Math.ceil(keys.length / chartNodes);
       let thisArray: any[] = [];
       const thisData = [];
       // const entries = Object.entries(props.chartData.data[key]);
-      for (let i=0; i< keys.length; i += chartnodes) {
-        thisArray.push(keys.slice(i, i+ chartnodes));
-        thisArray.push(values.slice(i, i+ chartnodes));
+      for (let i=0; i< keys.length; i += chartNodes) {
+        thisArray.push(keys.slice(i, i+ chartNodes));
+        thisArray.push(values.slice(i, i+ chartNodes));
         thisData.push(thisArray);
         thisArray = [];
       }
       setData(thisData);
+      setTotalPages(thisData.length);
       setPage(1);
     }
   }, [props.chartData]);
 
   useEffect(() => {
     // const thisTime = Date.now();
-    console.log('ever here?', page, data);
     if ( page && data.length ) {
       const ctx: HTMLCanvasElement | null = dataCtx.current;
       if ( ctx ) {
@@ -166,6 +167,22 @@ export const chart = (props: Props) => {
         });
         charts.push(thisChart);
       }
+
+      if ( page === 1 && data.length === 1) {
+        setBackDisabled(true);
+        setNextDisabled(true);
+      } else if ( page === 1 && page < data.length) {
+        setBackDisabled(true);
+        setNextDisabled(false);
+      } else if ( page >= data.length ) {
+        setNextDisabled(true);
+        setBackDisabled(false);
+      } else {
+        setNextDisabled(false);
+        setBackDisabled(false);
+      }
+
+      console.log(props.chartType.name, page, totalPages, data.length);
     }
     return () => {
       charts.forEach((chart: any) => {
@@ -288,9 +305,9 @@ export const chart = (props: Props) => {
   };
 
   const setPageNumber = (page: number) => {
-    console.log('setting page', page);
-    if ( page >= 0 && page <= (data.length)) {
-      console.log('yup setting page', page);
+    // console.log('setting page', page);
+    if ( page >= 1 && page <= (data.length)) {
+      // console.log('yup setting page', page);
       setPage(page);
     }
   };
@@ -309,58 +326,102 @@ export const chart = (props: Props) => {
           item
           container
           alignItems="flex-start"
-          xs={4}
+          xs={6}
         >
           <Typography variant="h3">
             {props.chartType.name}
           </Typography>
         </Grid>
-        <Grid item container justify='flex-end' alignItems="center" xs={8}>
-          <Grid item container justify='flex-end' xs={3}>
-            <Button
-              aria-label="Page back"
-              onClick={() => setPageNumber(page - 1)}
-              disabled={backDisabled}
-              style={{
-                margin: 0,
-                padding: 0,
-                background: '#F0F0FA',
-              }}
-            >
-              <img className={classes.pageIcon} src={pageBack} />
-            </Button>
-          </Grid>
-          <Grid item container justify='flex-end' xs={3}>
-            <Button
-              aria-label="Page forward"
-              onClick={() => setPageNumber(page + 1)}
-              disabled={nextDisabled}
-              style={{
-                margin: 0,
-                padding: 0,
-                background: '#F0F0FA',
-              }}
-            >
-              <img className={classes.pageIcon} src={pageForward}/>
-            </Button>
-          </Grid>
-          <Grid item container justify='flex-end' xs={3}>
-            <NavLink to={props.logNavLink}>
-              <IconButton
-                aria-label="Logs"
+        <Grid item container justify='flex-end' alignItems="center" xs={6}>
+
+          <Grid
+            item
+            container
+            justify='flex-start'
+            alignItems="center"
+            xs={8}
+          >
+
+            <Grid item>
+              <Typography variant="body1">
+                Page
+              </Typography>
+            </Grid>
+            <Grid item>
+              <Button
+                aria-label="Page back"
+                onClick={() => setPageNumber(page - 1)}
+                disabled={backDisabled}
+                style={{
+                  margin: 0,
+                  padding: 0,
+                  background: '#F0F0FA',
+                }}
               >
-                <img className={classes.footerIcon} src={logIcon}/>
-              </IconButton>
-            </NavLink>
-          </Grid>
-          <Grid item container justify='flex-end' xs={3}>
-            <NavLink to={props.navLink}>
-              <IconButton
-                aria-label="chartOrHome"
+                <img className={classes.footerIcon} src={pageBack} />
+              </Button>
+            </Grid>
+            <Grid item container alignItems='flex-end' xs={3}>
+              <TextField
+                placeholder={page.toString()}
+                size="small"
+                name="search"
+                type="text"
+                onChange={(e) => {
+                  setPageNumber(parseInt(e.target.value));
+                }}
+                inputProps={{
+                  style: {
+                    margin: 0,
+                    padding: theme.spacing(0.6),
+                    borderRadius: '1px',
+                  },
+                }}
+                InputProps={{
+                  className: classes.pageSet,
+                  disableUnderline: true,
+                }}
+              />
+            </Grid>
+            <Grid item>
+              <Button
+                aria-label="Page forward"
+                onClick={() => setPageNumber(page + 1)}
+                disabled={nextDisabled}
+                style={{
+                  margin: 0,
+                  padding: 0,
+                  background: '#F0F0FA',
+                }}
               >
-                <img className={classes.footerIcon} src={navLinkIcon}/>
-              </IconButton>
-            </NavLink>
+                <img className={classes.footerIcon} src={pageForward}/>
+              </Button>
+            </Grid>
+            <Grid item>
+              <Typography variant="body1">
+                of {totalPages}
+              </Typography>
+            </Grid>
+          </Grid>
+          <Grid item container justify='flex-end' xs={4}>
+            <Grid item>
+              <NavLink to={props.logNavLink}>
+                <IconButton
+                  aria-label="Logs"
+                >
+                  <img className={classes.footerIcon} src={logIcon}/>
+                </IconButton>
+              </NavLink>
+            </Grid>
+            <Grid item>
+              <NavLink to={props.navLink}>
+                <IconButton
+                  aria-label="chartOrHome"
+                >
+                  <img className={classes.footerIcon} src={navLinkIcon}/>
+                </IconButton>
+              </NavLink>
+            </Grid>
           </Grid>
         </Grid>
 

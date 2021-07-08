@@ -101,6 +101,8 @@ export type ChartType = {
   countColumn: string
   dataColumn: string
   type: string
+  nodes: number
+  nodesFullScreen: number
   options: object
 }
 

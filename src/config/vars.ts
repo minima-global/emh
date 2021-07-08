@@ -25,9 +25,9 @@ class Misc {
   static readonly confirmedDecimals = 4
   static readonly sendableDecimals = 4
 
-  static readonly barThickness = 30;
+  static readonly barThickness = 20;
   static readonly labelOffset = -20;
-  static readonly axisOffset = 50;
+  static readonly axisOffset = 5;
   static readonly labelFontsize = 16;
 
   static readonly gridHeight =
