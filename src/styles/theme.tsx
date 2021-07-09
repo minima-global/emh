@@ -393,6 +393,9 @@ const themeStyles = makeStyles({
       width: '40px',
     },
   },
+  chartTitle: {
+    marginBottom: theme.spacing(2),
+  },
   chartIcon: {
     [breakpoints.up('xs')]: {
       height: '30px',

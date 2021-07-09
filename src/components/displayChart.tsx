@@ -77,6 +77,7 @@ export const chart = (props: Props) => {
   const [totalPages, setTotalPages] = useState(0);
   const [nextDisabled, setNextDisabled] = useState(false);
   const [backDisabled, setBackDisabled] = useState(true);
+  const [activeTime, setActiveTime] = useState(Misc.time.all.timeString);
 
   // eslint-disable-next-line no-unused-vars
   const [charts, setCharts] = useState([] as any[]);
@@ -235,38 +236,52 @@ export const chart = (props: Props) => {
     switch (span) {
       case Misc.time.anHour.timeString: {
         timeFrom = timeNow - Misc.time.anHour.timeAmount;
+        setActiveTime(Misc.time.anHour.timeString);
         break;
       }
       case Misc.time.sixHours.timeString: {
         timeFrom = timeNow - Misc.time.sixHours.timeAmount;
+        setActiveTime(Misc.time.sixHours.timeString);
         break;
       }
       case Misc.time.twelveHours.timeString: {
         timeFrom = timeNow - Misc.time.twelveHours.timeAmount;
+        setActiveTime(Misc.time.twelveHours.timeString);
         break;
       }
       case Misc.time.aDay.timeString: {
         timeFrom = timeNow - Misc.time.aDay.timeAmount;
+        setActiveTime(Misc.time.aDay.timeString);
         break;
       }
       case Misc.time.aWeek.timeString: {
         timeFrom = timeNow - Misc.time.aWeek.timeAmount;
+        setActiveTime(Misc.time.aWeek.timeString);
         break;
       }
       case Misc.time.aMonth.timeString: {
         timeFrom = timeNow - Misc.time.aMonth.timeAmount;
+        setActiveTime(Misc.time.aMonth.timeString);
         break;
       }
       case Misc.time.threeMonths.timeString: {
         timeFrom = timeNow - Misc.time.threeMonths.timeAmount;
+        setActiveTime(Misc.time.threeMonths.timeString);
         break;
       }
       case Misc.time.sixMonths.timeString: {
         timeFrom = timeNow - Misc.time.sixMonths.timeAmount;
+        setActiveTime(Misc.time.sixMonths.timeString);
         break;
       }
       case Misc.time.aYear.timeString: {
         timeFrom = timeNow - Misc.time.aYear.timeAmount;
+        setActiveTime(Misc.time.aYear.timeString);
+        break;
+      }
+      case Misc.time.all.timeString: {
+        timeFrom = timeNow - Misc.time.all.timeAmount;
+        setActiveTime(Misc.time.all.timeString);
         break;
       }
     }
@@ -322,131 +337,131 @@ export const chart = (props: Props) => {
   };
 
   return (
-    <>
+    <Grid container>
       <Grid
-        item
         container
         alignItems="flex-start"
         style={{
           padding: theme.spacing(2),
         }}
       >
-        <Grid
-          item
-          container
-          alignItems="flex-start"
-          xs={7}
-        >
-          <Typography variant="h3">
-            {props.chartType.name}
-          </Typography>
-        </Grid>
-        <Grid item container justify='flex-end' alignItems="center" xs={5}>
-
+        <Grid container className={classes.chartTitle}>
           <Grid
             item
             container
-            justify='flex-start'
-            alignItems="center"
-            xs={8}
+            alignItems="flex-start"
+            xs={7}
           >
-
-            <Grid item>
-              <Typography variant="body1">
-                Page
-              </Typography>
-            </Grid>
-            <Grid item>
-              <Button
-                aria-label="Page back"
-                onClick={() => setPageNumber(page - 1)}
-                disabled={backDisabled}
-                classes={{
-                  disabled: classes.buttonDisabled,
-                }}
-                style={{
-                  margin: 0,
-                  padding: 0,
-                  paddingLeft: theme.spacing(0.5),
-                  background: '#FFFFFF',
-                  opacity: `${backDisabled ? 0.3:1}`,
-                }}
-              >
-                <img className={classes.chartIcon} src={pageBack} />
-              </Button>
-            </Grid>
-            <Grid item container alignItems='flex-end' xs={3}>
-              <TextField
-                placeholder={page.toString()}
-                inputRef={setPageRef}
-                size="small"
-                name="page"
-                type="text"
-                onChange={(e) => {
-                  setSearchPageNumber(e);
-                }}
-                onKeyPress= {(e) => {
-                  if (e.key === 'Enter') {
-                    doSetSearchPage();
-                  }
-                }}
-                inputProps={{
-                  style: {
-                    margin: 0,
-                    padding: theme.spacing(0.6),
-                    borderRadius: '1px',
-                  },
-                }}
-                InputProps={{
-                  className: classes.pageSet,
-                  disableUnderline: true,
-                }}
-              />
-            </Grid>
-            <Grid item>
-              <Button
-                aria-label="Page forward"
-                onClick={() => setPageNumber(page + 1)}
-                disabled={nextDisabled}
-                style={{
-                  margin: 0,
-                  padding: 0,
-                  paddingRight: theme.spacing(0.5),
-                  background: '#FFFFFF',
-                  opacity: `${nextDisabled ? 0.3:1}`,
-                }}
-              >
-                <img className={classes.chartIcon} src={pageForward}/>
-              </Button>
-            </Grid>
-            <Grid item>
-              <Typography variant="body1">
-                of {totalPages}
-              </Typography>
-            </Grid>
+            <Typography variant="h3">
+              {props.chartType.name}
+            </Typography>
           </Grid>
-          <Grid item container justify='flex-end' xs={4}>
-            <Grid item>
-              <NavLink to={props.logNavLink}>
-                <IconButton
-                  aria-label="Logs"
+
+          <Grid item container xs={5}>
+
+            <Grid
+              item
+              container
+              alignItems='center'
+              xs={8}
+            >
+
+              <Grid item>
+                <Typography variant="body1">
+                  Page
+                </Typography>
+              </Grid>
+              <Grid item>
+                <Button
+                  aria-label="Page back"
+                  onClick={() => setPageNumber(page - 1)}
+                  disabled={backDisabled}
+                  classes={{
+                    disabled: classes.buttonDisabled,
+                  }}
+                  style={{
+                    margin: 0,
+                    padding: 0,
+                    paddingLeft: theme.spacing(0.5),
+                    background: '#FFFFFF',
+                    opacity: `${backDisabled ? 0.3:1}`,
+                  }}
                 >
-                  <img className={classes.chartIcon} src={logIcon}/>
-                </IconButton>
-              </NavLink>
+                  <img className={classes.chartIcon} src={pageBack} />
+                </Button>
+              </Grid>
+              <Grid item container alignItems='flex-end' xs={3}>
+                <TextField
+                  placeholder={page.toString()}
+                  inputRef={setPageRef}
+                  size="small"
+                  name="page"
+                  type="text"
+                  onChange={(e) => {
+                    setSearchPageNumber(e);
+                  }}
+                  onKeyPress= {(e) => {
+                    if (e.key === 'Enter') {
+                      doSetSearchPage();
+                    }
+                  }}
+                  inputProps={{
+                    style: {
+                      margin: 0,
+                      padding: theme.spacing(0.6),
+                      borderRadius: '1px',
+                    },
+                  }}
+                  InputProps={{
+                    className: classes.pageSet,
+                    disableUnderline: true,
+                  }}
+                />
+              </Grid>
+              <Grid item>
+                <Button
+                  aria-label="Page forward"
+                  onClick={() => setPageNumber(page + 1)}
+                  disabled={nextDisabled}
+                  style={{
+                    margin: 0,
+                    padding: 0,
+                    paddingRight: theme.spacing(0.5),
+                    background: '#FFFFFF',
+                    opacity: `${nextDisabled ? 0.3:1}`,
+                  }}
+                >
+                  <img className={classes.chartIcon} src={pageForward}/>
+                </Button>
+              </Grid>
+              <Grid item>
+                <Typography variant="body1">
+                  of {totalPages}
+                </Typography>
+              </Grid>
             </Grid>
-            <Grid item>
-              <NavLink to={props.navLink}>
-                <IconButton
-                  aria-label="chartOrHome"
-                >
-                  <img className={classes.chartIcon} src={navLinkIcon}/>
-                </IconButton>
-              </NavLink>
+            <Grid item container justify='flex-end' xs={4}>
+              <Grid item xs={6}>
+                <NavLink to={props.logNavLink}>
+                  <IconButton
+                    aria-label="Logs"
+                  >
+                    <img className={classes.chartIcon} src={logIcon}/>
+                  </IconButton>
+                </NavLink>
+              </Grid>
+              <Grid item container justify='flex-end' xs>
+                <NavLink to={props.navLink}>
+                  <IconButton
+                    aria-label="chartOrHome"
+                  >
+                    <img className={classes.chartIcon} src={navLinkIcon}/>
+                  </IconButton>
+                </NavLink>
+              </Grid>
             </Grid>
           </Grid>
         </Grid>
-
 
         <Grid
           item
@@ -475,21 +490,6 @@ export const chart = (props: Props) => {
 
         { props.isFullScreen ?
             <>
-              <Grid item container justify="flex-start" xs={12}>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 4000 20"
-                >
-
-                  <line
-                    x2="4000"
-                    stroke="#001C32"
-                    width="100%"
-                    height="100%" />
-
-                </svg>
-              </Grid>
-
               <Grid
                 item
                 container
@@ -560,11 +560,14 @@ export const chart = (props: Props) => {
           item
           container
           alignItems="center"
-          justify="center"
-          xs={3}>
+          justify="flex-start"
+          xs={2}
+          style={{
+            paddingLeft: theme.spacing(2),
+          }}>
 
           <Typography variant="body2">
-          Time
+            Time
           </Typography>
 
         </Grid>
@@ -577,12 +580,13 @@ export const chart = (props: Props) => {
             variant='outlined'
             color='primary'
             style={{
-              background: '#001C32',
-              backgroundColor: '#001C32',
+              background:
+                `${activeTime == Misc.time.anHour.timeString ?
+                  '#003B69' : '#001C32'}`,
             }}
           >
             <Typography variant="body2">
-            1H
+              {Misc.time.anHour.timeString}
             </Typography>
           </Button>
         </Grid>
@@ -595,12 +599,13 @@ export const chart = (props: Props) => {
             variant='outlined'
             color='primary'
             style={{
-              background: '#001C32',
-              backgroundColor: '#001C32',
+              background:
+                `${activeTime == Misc.time.sixHours.timeString ?
+                  '#003B69' : '#001C32'}`,
             }}
           >
             <Typography variant="body2">
-            6H
+              {Misc.time.sixHours.timeString}
             </Typography>
           </Button>
         </Grid>
@@ -613,12 +618,13 @@ export const chart = (props: Props) => {
             variant='outlined'
             color='primary'
             style={{
-              background: '#001C32',
-              backgroundColor: '#001C32',
+              background:
+                `${activeTime == Misc.time.twelveHours.timeString ?
+                  '#003B69' : '#001C32'}`,
             }}
           >
             <Typography variant="body2">
-            12H
+              {Misc.time.twelveHours.timeString}
             </Typography>
           </Button>
         </Grid>
@@ -631,12 +637,13 @@ export const chart = (props: Props) => {
             variant='outlined'
             color='primary'
             style={{
-              background: '#001C32',
-              backgroundColor: '#001C32',
+              background:
+                `${activeTime == Misc.time.aDay.timeString ?
+                  '#003B69' : '#001C32'}`,
             }}
           >
             <Typography variant="body2">
-            1D
+              {Misc.time.aDay.timeString}
             </Typography>
           </Button>
         </Grid>
@@ -649,12 +656,13 @@ export const chart = (props: Props) => {
             variant='outlined'
             color='primary'
             style={{
-              background: '#001C32',
-              backgroundColor: '#001C32',
+              background:
+                `${activeTime == Misc.time.aWeek.timeString ?
+                  '#003B69' : '#001C32'}`,
             }}
           >
             <Typography variant="body2">
-            7D
+              {Misc.time.aWeek.timeString}
             </Typography>
           </Button>
         </Grid>
@@ -667,12 +675,13 @@ export const chart = (props: Props) => {
             variant='outlined'
             color='primary'
             style={{
-              background: '#001C32',
-              backgroundColor: '#001C32',
+              background:
+                `${activeTime == Misc.time.aMonth.timeString ?
+                  '#003B69' : '#001C32'}`,
             }}
           >
             <Typography variant="body2">
-            1M
+              {Misc.time.aMonth.timeString}
             </Typography>
           </Button>
         </Grid>
@@ -685,12 +694,13 @@ export const chart = (props: Props) => {
             variant='outlined'
             color='primary'
             style={{
-              background: '#001C32',
-              backgroundColor: '#001C32',
+              background:
+                `${activeTime == Misc.time.threeMonths.timeString ?
+                  '#003B69' : '#001C32'}`,
             }}
           >
             <Typography variant="body2">
-            3M
+              {Misc.time.threeMonths.timeString}
             </Typography>
           </Button>
         </Grid>
@@ -703,12 +713,13 @@ export const chart = (props: Props) => {
             variant='outlined'
             color='primary'
             style={{
-              background: '#001C32',
-              backgroundColor: '#001C32',
+              background:
+                `${activeTime == Misc.time.sixMonths.timeString ?
+                  '#003B69' : '#001C32'}`,
             }}
           >
             <Typography variant="body2">
-            6M
+              {Misc.time.sixMonths.timeString}
             </Typography>
           </Button>
         </Grid>
@@ -721,19 +732,38 @@ export const chart = (props: Props) => {
             variant='outlined'
             color='primary'
             style={{
-              background: '#001C32',
-              backgroundColor: '#001C32',
-              borderRadius: '20px',
+              background:
+                `${activeTime == Misc.time.aYear.timeString ?
+                  '#003B69' : '#001C32'}`,
             }}
           >
             <Typography variant="body2">
-            1Y
+              {Misc.time.aYear.timeString}
+            </Typography>
+          </Button>
+        </Grid>
+
+        <Grid item container xs={1}>
+
+          <Button
+            onClick={() => doTime(Misc.time.all.timeString)}
+            size='medium'
+            variant='outlined'
+            color='primary'
+            style={{
+              background:
+                `${activeTime == Misc.time.all.timeString ?
+                  '#003B69' : '#001C32'}`,
+            }}
+          >
+            <Typography variant="body2">
+              {Misc.time.all.timeString}
             </Typography>
           </Button>
         </Grid>
 
       </Grid>
-    </>
+    </Grid>
   );
 };
 

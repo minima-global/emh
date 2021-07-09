@@ -37,40 +37,44 @@ class Misc {
 
   static readonly time = {
     anHour: {
-      timeString: 'AN HOUR',
+      timeString: '1H',
       timeAmount: 3600000,
     },
     sixHours: {
-      timeString: 'SIX HOURS',
+      timeString: '6H',
       timeAmount: 21600000,
     },
     twelveHours: {
-      timeString: 'TWELVE HOURS',
+      timeString: '12H',
       timeAmount: 43200000,
     },
     aDay: {
-      timeString: 'ONE DAY',
+      timeString: '1D',
       timeAmount: 86400000,
     },
     aWeek: {
-      timeString: 'ONE WEEK',
+      timeString: '7D',
       timeAmount: 604800000,
     },
     aMonth: {
-      timeString: 'ONE MONTH',
+      timeString: '1M',
       timeAmount: 2629800000,
     },
     threeMonths: {
-      timeString: 'THREE MONTHS',
+      timeString: '3M',
       timeAmount: 7889400000,
     },
     sixMonths: {
-      timeString: 'SIX MONTHS',
+      timeString: '6M',
       timeAmount: 15778800000,
     },
     aYear: {
-      timeString: 'ONE YEAR',
+      timeString: '1Y',
       timeAmount: 31557600000, // 365.25 * aWeek,
+    },
+    all: {
+      timeString: 'All',
+      timeAmount: 3155695200000, // 100 years - should scale :),
     },
   };
 }
