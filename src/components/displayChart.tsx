@@ -184,7 +184,7 @@ export const chart = (props: Props) => {
         setBackDisabled(false);
       }
 
-      console.log(props.chartType.name, page, totalPages, data.length);
+      // console.log(props.chartType.name, page, totalPages, data.length);
     }
     return () => {
       charts.forEach((chart: any) => {
@@ -361,14 +361,18 @@ export const chart = (props: Props) => {
                 aria-label="Page back"
                 onClick={() => setPageNumber(page - 1)}
                 disabled={backDisabled}
+                classes={{
+                  disabled: classes.buttonDisabled,
+                }}
                 style={{
                   margin: 0,
                   padding: 0,
                   paddingLeft: theme.spacing(0.5),
-                  background: '#F0F0FA',
+                  background: '#FFFFFF',
+                  opacity: `${backDisabled ? 0.3:1}`,
                 }}
               >
-                <img className={classes.footerIcon} src={pageBack} />
+                <img className={classes.chartIcon} src={pageBack} />
               </Button>
             </Grid>
             <Grid item container alignItems='flex-end' xs={3}>
@@ -408,10 +412,11 @@ export const chart = (props: Props) => {
                   margin: 0,
                   padding: 0,
                   paddingRight: theme.spacing(0.5),
-                  background: '#F0F0FA',
+                  background: '#FFFFFF',
+                  opacity: `${nextDisabled ? 0.3:1}`,
                 }}
               >
-                <img className={classes.footerIcon} src={pageForward}/>
+                <img className={classes.chartIcon} src={pageForward}/>
               </Button>
             </Grid>
             <Grid item>
@@ -426,7 +431,7 @@ export const chart = (props: Props) => {
                 <IconButton
                   aria-label="Logs"
                 >
-                  <img className={classes.footerIcon} src={logIcon}/>
+                  <img className={classes.chartIcon} src={logIcon}/>
                 </IconButton>
               </NavLink>
             </Grid>
@@ -435,7 +440,7 @@ export const chart = (props: Props) => {
                 <IconButton
                   aria-label="chartOrHome"
                 >
-                  <img className={classes.footerIcon} src={navLinkIcon}/>
+                  <img className={classes.chartIcon} src={navLinkIcon}/>
                 </IconButton>
               </NavLink>
             </Grid>

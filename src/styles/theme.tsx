@@ -157,16 +157,16 @@ const themeStyles = makeStyles({
     'width': '100%',
     'position': 'relative',
     '& .MuiInputBase-input': {
-      border: '2px solid #C8C8D4',
-      borderRadius: '10px',
+      border: '1px solid #C8C8D4',
+      borderRadius: '20px',
       background: 'linear-gradient(#FFFFFF, #FFFFFF)',
       color: '#001C32',
       padding: theme.spacing(1),
       marginBottom: theme.spacing(1),
     },
     '& .MuiInputBase-input:focus': {
-      border: '2px solid #317AFF',
-      borderRadius: '10px',
+      border: '1px solid #317AFF',
+      borderRadius: '20px',
     },
     '& .MuiButton-root': {
       minWidth: '100%',
@@ -330,6 +330,9 @@ const themeStyles = makeStyles({
   active: {
     color: 'red',
   },
+  buttonDisabled: {
+    backgroundColor: '#EEEEEE',
+  },
   helpIcon: {
     [breakpoints.up('xs')]: {
       display: 'flex',
@@ -374,8 +377,8 @@ const themeStyles = makeStyles({
     },
   },
   footerIcon: {
-    'color': '#FFFFFF',
-    'fill': '#FFFFFF',
+    'color': 'white',
+    'fill': 'white',
     '&:active': {
       color: '#317AFF',
       fill: '#317AFF',
@@ -386,6 +389,12 @@ const themeStyles = makeStyles({
     },
     [breakpoints.up('lg')]: {
       margin: 'auto',
+      height: '40px',
+      width: '40px',
+    },
+  },
+  chartIcon: {
+    [breakpoints.up('xs')]: {
       height: '30px',
       width: '30px',
     },
@@ -398,8 +407,8 @@ const themeStyles = makeStyles({
   },
   megIcon: {
     [breakpoints.up('xs')]: {
-      height: '60px',
-      width: '60px',
+      height: '100px',
+      width: '100px',
     },
   },
   pageIcon: {

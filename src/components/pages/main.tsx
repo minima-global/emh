@@ -11,7 +11,8 @@ import megIcon from '../../images/megLogoLockupWhite.svg';
 import minimaIcon from '../../images/minimaIcon.svg';
 import homeIcon from '../../images/megNavDashboardGrey.svg';
 import terminal from '../../images/megNavRunApiGrey.svg';
-import trigger from '../../images/megNavApiGrey.svg';
+// import trigger from '../../images/megNavApiGrey.svg';
+import trigger from '../../images/megNavIconsURLtoMinGrey.svg';
 import url from '../../images/megNavMinimaGrey.svg';
 import info from '../../images/megNavLogGrey.svg';
 
