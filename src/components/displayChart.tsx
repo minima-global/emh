@@ -360,7 +360,7 @@ export const chart = (props: Props) => {
             </Typography>
           </Grid>
 
-          <Grid item container alignItems='flex-start' xs={5}>
+          <Grid item container alignItems='center' xs={5}>
 
             <Grid
               item

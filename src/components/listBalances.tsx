@@ -11,7 +11,7 @@ import Avatar from '@material-ui/core/Avatar';
 
 import {Misc, Balances as BalanceVars} from '../config/vars';
 
-import {theme, themeStyles} from '../styles';
+import {theme} from '../styles';
 
 import {
   ApplicationState,

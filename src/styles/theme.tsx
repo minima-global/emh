@@ -1,4 +1,3 @@
-
 import {
   createMuiTheme,
   responsiveFontSizes,
@@ -10,7 +9,6 @@ import red from '@material-ui/core/colors/red';
 import green from '@material-ui/core/colors/blue';
 import orange from '@material-ui/core/colors/orange';
 import yellow from '@material-ui/core/colors/yellow';
-import { autofill } from 'redux-form';
 
 /*
 xs, extra-small: 0px
