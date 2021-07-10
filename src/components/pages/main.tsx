@@ -58,10 +58,8 @@ export const Main = () => {
             />
 
             <Grid
-              item
               container
               className={classes.header}
-              xs={12}
             >
               <Grid
                 item

@@ -199,7 +199,7 @@ const themeStyles = makeStyles({
     background: 'linear-gradient(#001C32, #001C32)',
     width: '100%',
     position: 'relative',
-    height: '60px',
+    height: '100px',
     [breakpoints.up('xs')]: {
       paddingLeft: theme.spacing(1),
       paddingRight: theme.spacing(1),
@@ -215,7 +215,7 @@ const themeStyles = makeStyles({
     'overflow': 'auto',
     'width': '100%',
     'bottom': '100px',
-    'top': '60px',
+    'top': '100px',
     [breakpoints.up('xs')]: {
       paddingLeft: theme.spacing(1),
       paddingRight: theme.spacing(1),
@@ -409,8 +409,7 @@ const themeStyles = makeStyles({
   },
   megIcon: {
     [breakpoints.up('xs')]: {
-      height: '100px',
-      width: '100px',
+      height: '60px',
     },
   },
   pageIcon: {
