@@ -73,6 +73,7 @@ type Props = ChartProps & StateProps & DispatchProps;
 
 export const chart = (props: Props) => {
   const [searchTerm, setSearchTerm] = useState('');
+  const [lastUpdateHash, setLastUpdateHash] = useState('');
 
   const [totalRecords, setTotalRecords] = useState(0);
   const [page, setPage] = useState(0);
@@ -135,10 +136,11 @@ export const chart = (props: Props) => {
   useEffect(() => {
     // const thisTime = Date.now();
     const key = props.chartType.key;
-    if ( props.chartData.data[key] ) {
+    if ( ( props.chartData.data[key] ) &&
+         ( props.chartData.data[key].hash != lastUpdateHash) ) {
       // console.log('got data', props.chartData.data[key]);
-      const keys = Object.keys(props.chartData.data[key]);
-      const values = Object.values(props.chartData.data[key]);
+      const keys = Object.keys(props.chartData.data[key].data);
+      const values = Object.values(props.chartData.data[key].data);
       // const thisNumCharts = Math.ceil(keys.length / chartNodes);
       let thisArray: any[] = [];
       const thisData = [];
@@ -152,6 +154,7 @@ export const chart = (props: Props) => {
       setData(thisData);
       setTotalPages(thisData.length);
       setPage(1);
+      setLastUpdateHash(props.chartData.data[key].hash );
     }
   }, [props.chartData]);
 

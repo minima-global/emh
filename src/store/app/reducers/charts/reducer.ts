@@ -2,6 +2,7 @@ import {
   ActionProps,
   ChartsActionTypes,
   ChartProps,
+  ChartInfo,
   ChartUpdateData,
 } from '../../../types';
 
@@ -25,7 +26,11 @@ export const reducer =
 
       const newState = {...state};
       const newData = newState.data;
-      newData[myChartData.key] = myChartData.data;
+      const chartInfo: ChartInfo = {
+        data: myChartData.data,
+        hash: myChartData.hash,
+      };
+      newData[myChartData.key] = chartInfo;
       return newState;
     }
     default:

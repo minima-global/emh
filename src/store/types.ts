@@ -78,8 +78,13 @@ export type AChart = {
   [key: string]: number
 }
 
+export type ChartInfo = {
+  hash: string
+  data: AChart
+}
+
 export type ChartData = {
-  [key: string]: AChart
+  [key: string]: ChartInfo
 }
 
 export interface ChartProps extends PayloadProps {
@@ -89,6 +94,7 @@ export interface ChartProps extends PayloadProps {
 export type ChartUpdateData = {
   data: AChart
   key: string
+  hash: string
 }
 
 export type ChartType = {

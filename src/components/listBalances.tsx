@@ -57,7 +57,9 @@ const display = (props: Props) => {
                 ( balance: Balance, index: number ) => {
                   const sendable = +balance.sendable;
                   const thisSendable = sendable.toFixed(Misc.sendableDecimals);
-                  const tokenId = balance.tokenid.substring(0, 20) + '...';
+                  const tokenId =
+                    balance.tokenid === '0x00' ?
+                      '0x00' : balance.tokenid.substring(0, 20) + '...';
 
                   return (
                     <React.Fragment key={index}>

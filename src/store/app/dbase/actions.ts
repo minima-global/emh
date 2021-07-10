@@ -1,6 +1,8 @@
 // import {Minima, Token as Balance} from 'minima';
 import {Minima} from 'minima';
 
+import hash from 'object-hash';
+
 import {
   AppDispatch,
   ActionTypes,
@@ -342,6 +344,7 @@ export const getChartEntries =
           const updateData: ChartUpdateData = {
             data: {},
             key: key,
+            hash: hash(data),
           };
           const chartData: AChart = {};
           data.map( ( row: any ) => {
