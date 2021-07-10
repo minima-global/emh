@@ -73,6 +73,7 @@
     "@babel/preset-env": "^7.14.1",
     "@babel/preset-react": "^7.12.10",
     "@babel/preset-typescript": "^7.13.0",
+    "@svgr/webpack": "^5.5.0",
     "@types/flat": "5.0.1",
     "@types/history": "^4.7.8",
     "@types/material-ui": "0.21.8",

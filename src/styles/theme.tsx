@@ -376,11 +376,24 @@ const themeStyles = makeStyles({
     },
   },
   footerIcon: {
-    'color': 'white',
-    'fill': 'white',
+    'fill': '#C8C8D4',
     '&:active': {
-      color: '#317AFF',
       fill: '#317AFF',
+    },
+    [breakpoints.up('xs')]: {
+      height: '35px',
+      width: '35px',
+    },
+    [breakpoints.up('lg')]: {
+      margin: 'auto',
+      height: '40px',
+      width: '40px',
+    },
+  },
+  activeFooterIcon: {
+    'fill': '#317AFF',
+    '&:active': {
+      fill: '#C8C8D4',
     },
     [breakpoints.up('xs')]: {
       height: '35px',

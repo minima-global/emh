@@ -7,14 +7,15 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 
-import megIcon from '../../images/megLogoLockupWhite.svg';
-import minimaIcon from '../../images/minimaIcon.svg';
-import homeIcon from '../../images/megNavDashboardGrey.svg';
-import terminal from '../../images/megNavRunApiGrey.svg';
+import MegIcon from '../../images/megLogoLockupWhite.svg';
+import MinimaIcon from '../../images/minimaIcon.svg';
+import HomeIcon from '../../images/megNavDashboardGrey.svg';
+import TerminalIcon from '../../images/megNavRunApiGrey.svg';
 // import trigger from '../../images/megNavApiGrey.svg';
-import trigger from '../../images/megNavIconsURLtoMinGrey.svg';
-import url from '../../images/megNavMinimaGrey.svg';
-import info from '../../images/megNavLogGrey.svg';
+import TriggerIcon from '../../images/megNavIconsURLtoMinGrey.svg';
+import UrlIcon from '../../images/megNavMinimaGrey.svg';
+// import info from '../../images/megNavLogGrey.svg';
+import InfoIcon from '../../images/megNavLogGrey.svg';
 
 import {Content} from '../content';
 
@@ -27,6 +28,7 @@ import {AppInit} from '../appInit';
 
 export const Main = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const [activePage, setActivePage] = useState(Local.home);
   const classes = themeStyles();
 
   useEffect(() => {
@@ -77,7 +79,7 @@ export const Main = () => {
                   justify="flex-start"
                   xs={6}
                 >
-                  <img className={classes.megIcon} src={megIcon} />
+                  <MegIcon className={classes.megIcon} />
                   <Typography variant="body2">
                     &nbsp;&nbsp; {App.appName}
                   </Typography>
@@ -93,7 +95,7 @@ export const Main = () => {
                   <Typography variant="body2">
                     {App.catchLine} &nbsp;&nbsp;
                   </Typography>
-                  <img className={classes.minimaIcon} src={minimaIcon} />
+                  <MinimaIcon className={classes.minimaIcon} />
                 </Grid>
               </Grid>
             </Grid>
@@ -132,11 +134,19 @@ export const Main = () => {
                     justify="center"
                     xs={12}
                   >
-                    <NavLink to={Local.home} className={classes.iconLink}>
+                    <NavLink
+                      to={Local.home}
+                      className={classes.iconLink}
+                      onClick={() => setActivePage(Local.home)}
+                    >
                       <IconButton
                         aria-label="Home"
                       >
-                        <img className={classes.footerIcon} src={homeIcon}/>
+                        <HomeIcon
+                          className=
+                            {activePage == Local.home?
+                              classes.activeFooterIcon : classes.footerIcon}
+                        />
                       </IconButton>
                     </NavLink>
                   </Grid>
@@ -147,7 +157,13 @@ export const Main = () => {
                     justify="center"
                     xs={12}
                   >
-                    <Typography variant="body2">
+                    <Typography
+                      variant="body2"
+                      style={{
+                        color: `${activePage == Local.home?
+                          '#317AFF': '#C8C8D4'}`,
+                      }}
+                    >
                       {Paths.home}
                     </Typography>
                   </Grid>
@@ -171,7 +187,7 @@ export const Main = () => {
                       <IconButton
                         aria-label="Logs"
                       >
-                        <img className={classes.footerIcon} src={info}/>
+                        <InfoIcon className={classes.footerIcon} />
                       </IconButton>
                     </NavLink>
                   </Grid>
@@ -206,7 +222,7 @@ export const Main = () => {
                       <IconButton
                         aria-label="Address"
                       >
-                        <img className={classes.footerIcon} src={url}/>
+                        <UrlIcon className={classes.footerIcon} />
                       </IconButton>
                     </NavLink>
                   </Grid>
@@ -241,7 +257,7 @@ export const Main = () => {
                       <IconButton
                         aria-label="Triggers"
                       >
-                        <img className={classes.footerIcon} src={trigger}/>
+                        <TriggerIcon className={classes.footerIcon} />
                       </IconButton>
                     </NavLink>
                   </Grid>
@@ -276,7 +292,7 @@ export const Main = () => {
                       <IconButton
                         aria-label="Cmd"
                       >
-                        <img className={classes.footerIcon} src={terminal}/>
+                        <TerminalIcon className={classes.footerIcon} />
                       </IconButton>
                     </NavLink>
                   </Grid>

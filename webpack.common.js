@@ -44,7 +44,7 @@ const config = {
         loader: 'babel-loader',
       },
       {
-        test: /\.(png|jpg|svg|gif)$/i,
+        test: /\.(png|jpg|gif)$/i,
         exclude: /node_modules/,
         use: [
           {
@@ -54,6 +54,10 @@ const config = {
             },
           },
         ],
+      },
+      {
+        test: /\.svg$/,
+        use: ['@svgr/webpack'],
       },
     ],
   },
