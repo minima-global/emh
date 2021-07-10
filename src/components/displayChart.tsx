@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import InputAdornment from '@material-ui/core/InputAdornment';
 
 import logIcon from '../images/log.svg';
 import expandIcon from '../images/expand.svg';
@@ -14,6 +15,8 @@ import closeIcon from '../images/closeDelete.svg';
 
 import pageBack from '../images/pageBack.svg';
 import pageForward from '../images/pageForward.svg';
+
+import searchIcon from '../images/search.svg';
 
 // import zoomInIcon from '../images/zoomIn.svg';
 // import zoomOutIcon from '../images/zoomOut.svg';
@@ -88,12 +91,12 @@ export const chart = (props: Props) => {
   // const updateInterval = 3000;
 
   let navLinkIcon = expandIcon;
-  let viewport = '240px';
+  let viewport = '230px';
   let chartNodes = props.chartType.nodes;
   if ( props.isFullScreen ) {
     navLinkIcon = closeIcon;
     chartNodes = props.chartType.nodesFullScreen;
-    viewport = '510px';
+    viewport = '515px';
   }
 
   const classes = themeStyles();
@@ -337,7 +340,7 @@ export const chart = (props: Props) => {
   };
 
   return (
-    <Grid container>
+    <>
       <Grid
         container
         alignItems="flex-start"
@@ -349,7 +352,7 @@ export const chart = (props: Props) => {
           <Grid
             item
             container
-            alignItems="flex-start"
+            alignItems="flex-end"
             xs={7}
           >
             <Typography variant="h3">
@@ -357,7 +360,7 @@ export const chart = (props: Props) => {
             </Typography>
           </Grid>
 
-          <Grid item container xs={5}>
+          <Grid item container alignItems='flex-start' xs={5}>
 
             <Grid
               item
@@ -368,7 +371,7 @@ export const chart = (props: Props) => {
 
               <Grid item>
                 <Typography variant="body1">
-                  Page
+                    Page
                 </Typography>
               </Grid>
               <Grid item>
@@ -436,7 +439,7 @@ export const chart = (props: Props) => {
               </Grid>
               <Grid item>
                 <Typography variant="body1">
-                  of {totalPages}
+                    of {totalPages}
                 </Typography>
               </Grid>
             </Grid>
@@ -465,9 +468,6 @@ export const chart = (props: Props) => {
 
         <Grid
           item
-          container
-          alignItems="flex-start"
-          justify="flex-start"
           xs={12}
         >
           <TextField
@@ -476,6 +476,7 @@ export const chart = (props: Props) => {
             size="small"
             name="search"
             type="text"
+            variant='standard'
             onChange={(e) => {
               doSetSearchTerm(e);
             }}
@@ -484,7 +485,13 @@ export const chart = (props: Props) => {
                 doSearch();
               }
             }}
-            InputProps={{disableUnderline: true}}
+            InputProps={{
+              disableUnderline: true,
+              endAdornment: (
+                <InputAdornment position="end">
+                  <img className={classes.searchIcon} src={searchIcon}/>
+                </InputAdornment>),
+            }}
           />
         </Grid>
 
@@ -754,6 +761,7 @@ export const chart = (props: Props) => {
               background:
                 `${activeTime == Misc.time.all.timeString ?
                   '#003B69' : '#001C32'}`,
+              borderBottomRightRadius: '20px',
             }}
           >
             <Typography variant="body2">
@@ -763,7 +771,7 @@ export const chart = (props: Props) => {
         </Grid>
 
       </Grid>
-    </Grid>
+    </>
   );
 };
 

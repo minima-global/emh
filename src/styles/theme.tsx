@@ -279,14 +279,14 @@ const themeStyles = makeStyles({
     width: '100%',
   },
   select: {
-    'border': '2px solid #C8C8D4',
-    'borderRadius': '5px',
+    'border': '1px solid #C8C8D4',
+    'borderRadius': '20px',
     'background': 'linear-gradient(#FFFFFF, #FFFFFF)',
     'color': '#001C32',
     'fontWeight': 400,
     'fontFamily': '"Manrope", "Roboto", "Arial", "sans-serif"',
     '&:hover': {
-      border: '2px solid #001C32',
+      border: '1px solid #001C32',
     },
     [breakpoints.up('xs')]: {
       lineHeight: '1.5',
@@ -332,6 +332,12 @@ const themeStyles = makeStyles({
   },
   buttonDisabled: {
     backgroundColor: '#EEEEEE',
+  },
+  searchIcon: {
+    [breakpoints.up('xs')]: {
+      height: '20px',
+      width: '20px',
+    },
   },
   helpIcon: {
     [breakpoints.up('xs')]: {

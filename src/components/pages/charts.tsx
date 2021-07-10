@@ -42,23 +42,12 @@ export const Chart = (props: Props) => {
         >
           <Grid
             item
-            container
-            justify="flex-start"
             xs={12}>
 
             <Typography variant="h2">
               {Home.heading}
             </Typography>
 
-          </Grid>
-
-          <Grid
-            item
-            container
-            justify="flex-start"
-            alignItems='flex-start'
-            xs={12}
-          >
             <Paper
               elevation={5}
               className={classes.fullscreenChart}
