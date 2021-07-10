@@ -7,6 +7,7 @@ import {Token as Balance} from 'minima';
 
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import Avatar from '@material-ui/core/Avatar';
 
 import {Misc, Balances as BalanceVars} from '../config/vars';
 
@@ -24,8 +25,6 @@ interface StateProps {
 type Props = StateProps
 
 const display = (props: Props) => {
-  const classes = themeStyles();
-
   return (
     <>
       <Grid
@@ -58,6 +57,7 @@ const display = (props: Props) => {
                 ( balance: Balance, index: number ) => {
                   const sendable = +balance.sendable;
                   const thisSendable = sendable.toFixed(Misc.sendableDecimals);
+                  const tokenId = balance.tokenid.substring(0, 20) + '...';
 
                   return (
                     <React.Fragment key={index}>
@@ -65,17 +65,16 @@ const display = (props: Props) => {
                       <Grid
                         item
                         container
-                        alignItems="flex-start"
-                        justify="flex-start"
+                        alignItems='center'
                         xs={1}
                       >
                         {balance.icon?
-                            <img
-                              className={classes.balanceIcon}
-                              src={balance.icon} /> :
-                            <img
-                              className={classes.balanceIcon}
-                              src={'https://www.gravatar.com/avatar/' + SparkMD5.hash(balance.tokenid) + '?d=identicon'} />
+                          <Avatar
+                            alt='Token Icon'
+                            src={balance.icon} /> :
+                          <Avatar
+                            alt='Token Icon'
+                            src={'https://www.gravatar.com/avatar/' + SparkMD5.hash(balance.tokenid) + '?d=identicon'} />
                         }
                       </Grid>
                       <Grid
@@ -84,7 +83,7 @@ const display = (props: Props) => {
                         justify="flex-start"
                         xs={11}
                       >
-                        <Grid item container justify="flex-start" xs={12}>
+                        <Grid item xs={12}>
                           <Typography
                             variant="h6"
                             noWrap={true}
@@ -95,23 +94,18 @@ const display = (props: Props) => {
 
                         <Grid
                           item
-                          container
-                          alignItems='center'
-                          justify="flex-start"
                           xs={12}
                         >
                           <Typography
                             variant="body1"
                             noWrap={true}
                           >
-                            {balance.tokenid}
+                            {tokenId}
                           </Typography>
                         </Grid>
 
                         <Grid
                           item
-                          container
-                          justify="flex-start"
                           style={{
                             marginBottom: theme.spacing(3),
                           }}

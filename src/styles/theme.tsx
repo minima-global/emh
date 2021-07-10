@@ -10,6 +10,7 @@ import red from '@material-ui/core/colors/red';
 import green from '@material-ui/core/colors/blue';
 import orange from '@material-ui/core/colors/orange';
 import yellow from '@material-ui/core/colors/yellow';
+import { autofill } from 'redux-form';
 
 /*
 xs, extra-small: 0px
@@ -183,6 +184,17 @@ const themeStyles = makeStyles({
     '& .MuiPaper-rounded': {
       borderRadius: '20px',
       backgroundColor: 'white',
+    },
+    '& .MuiAvatar-root': {
+      marginTop: theme.spacing(1),
+      [breakpoints.up('xs')]: {
+        height: '35px',
+        width: '35px',
+      },
+      [breakpoints.up('lg')]: {
+        height: '60px',
+        width: '60px',
+      },
     },
   },
   header: {
@@ -363,23 +375,6 @@ const themeStyles = makeStyles({
       justifyContent: 'flex-end',
       height: '40px',
       width: '40px',
-    },
-  },
-  balanceIcon: {
-    'paddingTop': theme.spacing(1),
-    'color': '#FFFFFF',
-    'fill': '#FFFFFF',
-    '&:active': {
-      color: '#317AFF',
-      fill: '#317AFF',
-    },
-    [breakpoints.up('xs')]: {
-      width: '35px',
-      maxHeight: '50px',
-    },
-    [breakpoints.up('lg')]: {
-      width: '90%',
-      maxHeight: '70px',
     },
   },
   footerIcon: {
