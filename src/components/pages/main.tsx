@@ -183,11 +183,19 @@ export const Main = () => {
                     justify="center"
                     xs={12}
                   >
-                    <NavLink to={Local.logs} className={classes.iconLink}>
+                    <NavLink
+                      to={Local.logs}
+                      className={classes.iconLink}
+                      onClick={() => setActivePage(Local.logs)}
+                    >
                       <IconButton
                         aria-label="Logs"
                       >
-                        <InfoIcon className={classes.footerIcon} />
+                        <InfoIcon
+                          className=
+                            {activePage == Local.logs?
+                              classes.activeFooterIcon : classes.footerIcon}
+                        />
                       </IconButton>
                     </NavLink>
                   </Grid>
@@ -198,7 +206,13 @@ export const Main = () => {
                     justify="center"
                     xs={12}
                   >
-                    <Typography variant="body2">
+                    <Typography
+                      variant="body2"
+                      style={{
+                        color: `${activePage == Local.logs?
+                          '#317AFF': '#C8C8D4'}`,
+                      }}
+                    >
                       {Paths.logs}
                     </Typography>
                   </Grid>
@@ -218,11 +232,19 @@ export const Main = () => {
                     justify="center"
                     xs={12}
                   >
-                    <NavLink to={Local.urls} className={classes.iconLink}>
+                    <NavLink
+                      to={Local.urls}
+                      className={classes.iconLink}
+                      onClick={() => setActivePage(Local.urls)}
+                    >
                       <IconButton
                         aria-label="Address"
                       >
-                        <UrlIcon className={classes.footerIcon} />
+                        <UrlIcon
+                          className=
+                            {activePage == Local.urls?
+                              classes.activeFooterIcon : classes.footerIcon}
+                        />
                       </IconButton>
                     </NavLink>
                   </Grid>
@@ -233,7 +255,13 @@ export const Main = () => {
                     justify="center"
                     xs={12}
                   >
-                    <Typography variant="body2">
+                    <Typography
+                      variant="body2"
+                      style={{
+                        color: `${activePage == Local.urls?
+                          '#317AFF': '#C8C8D4'}`,
+                      }}
+                    >
                       {Paths.urls}
                     </Typography>
                   </Grid>
@@ -253,11 +281,19 @@ export const Main = () => {
                     justify="center"
                     xs={12}
                   >
-                    <NavLink to={Local.triggers} className={classes.iconLink}>
+                    <NavLink
+                      to={Local.triggers}
+                      className={classes.iconLink}
+                      onClick={() => setActivePage(Local.triggers)}
+                    >
                       <IconButton
                         aria-label="Triggers"
                       >
-                        <TriggerIcon className={classes.footerIcon} />
+                        <TriggerIcon
+                          className=
+                            {activePage == Local.triggers?
+                              classes.activeFooterIcon : classes.footerIcon}
+                        />
                       </IconButton>
                     </NavLink>
                   </Grid>
@@ -268,7 +304,13 @@ export const Main = () => {
                     justify="center"
                     xs={12}
                   >
-                    <Typography variant="body2">
+                    <Typography
+                      variant="body2"
+                      style={{
+                        color: `${activePage == Local.triggers?
+                          '#317AFF': '#C8C8D4'}`,
+                      }}
+                    >
                       {Paths.triggers}
                     </Typography>
                   </Grid>
@@ -288,11 +330,19 @@ export const Main = () => {
                     justify="center"
                     xs={12}
                   >
-                    <NavLink to={Local.cmd} className={classes.iconLink}>
+                    <NavLink
+                      to={Local.cmd}
+                      className={classes.iconLink}
+                      onClick={() => setActivePage(Local.cmd)}
+                    >
                       <IconButton
                         aria-label="Cmd"
                       >
-                        <TerminalIcon className={classes.footerIcon} />
+                        <TerminalIcon
+                          className=
+                            {activePage == Local.cmd?
+                              classes.activeFooterIcon : classes.footerIcon}
+                        />
                       </IconButton>
                     </NavLink>
                   </Grid>
@@ -303,7 +353,13 @@ export const Main = () => {
                     justify="center"
                     xs={12}
                   >
-                    <Typography variant="body2">
+                    <Typography
+                      variant="body2"
+                      style={{
+                        color: `${activePage == Local.cmd?
+                          '#317AFF': '#C8C8D4'}`,
+                      }}
+                    >
                       {Paths.cmd}
                     </Typography>
                   </Grid>
