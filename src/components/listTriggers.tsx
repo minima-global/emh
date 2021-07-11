@@ -34,7 +34,7 @@ import {
 
 import {Local} from '../config/paths';
 
-import closeDelete from '../images/closeDelete.png';
+import CloseDelete from '../images/closeDelete.png';
 
 interface StateProps {
   tx: TxData
@@ -264,10 +264,7 @@ const list = (props: Props) => {
                             justifyContent: 'flex-end',
                           }}
                         >
-                          <img
-                            className={classes.deleteIcon}
-                            src={closeDelete}
-                          />
+                          <CloseDelete className={classes.deleteIcon} />
                         </Button>
                       </Grid>
 

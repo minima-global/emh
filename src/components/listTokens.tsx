@@ -28,7 +28,7 @@ import {
   Tokens as TokenVars,
 } from '../config/vars';
 
-import closeDelete from '../images/closeDelete.png';
+import CloseIcon from '../images/closeDelete.svg';
 
 interface StateProps {
   tx: TxData
@@ -183,10 +183,7 @@ const list = (props: Props) => {
                             justifyContent: 'flex-end',
                           }}
                         >
-                          <img
-                            className={classes.deleteIcon}
-                            src={closeDelete}
-                          />
+                          <CloseIcon className={classes.deleteIcon} />
                         </Button>
                       </Grid>
                     </Grid>

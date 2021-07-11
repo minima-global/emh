@@ -9,14 +9,14 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import InputAdornment from '@material-ui/core/InputAdornment';
 
-import logIcon from '../images/log.svg';
-import expandIcon from '../images/expand.svg';
-import closeIcon from '../images/closeDelete.svg';
+import LogIcon from '../images/log.svg';
+import ExpandIcon from '../images/expand.svg';
+import CloseIcon from '../images/closeDelete.svg';
 
-import pageBack from '../images/pageBack.svg';
-import pageForward from '../images/pageForward.svg';
+import PageBack from '../images/pageBack.svg';
+import PageForward from '../images/pageForward.svg';
 
-import searchIcon from '../images/search.svg';
+import SearchIcon from '../images/search.svg';
 
 // import zoomInIcon from '../images/zoomIn.svg';
 // import zoomOutIcon from '../images/zoomOut.svg';
@@ -91,16 +91,17 @@ export const chart = (props: Props) => {
 
   // const updateInterval = 3000;
 
-  let navLinkIcon = expandIcon;
+  const classes = themeStyles();
+
+  let NavLinkIcon = ExpandIcon;
   let viewport = '230px';
   let chartNodes = props.chartType.nodes;
   if ( props.isFullScreen ) {
-    navLinkIcon = closeIcon;
+    NavLinkIcon = CloseIcon;
     chartNodes = props.chartType.nodesFullScreen;
     viewport = '515px';
   }
 
-  const classes = themeStyles();
 
   useEffect(() => {
     // Chart.register(...registerables);
@@ -393,7 +394,7 @@ export const chart = (props: Props) => {
                     opacity: `${backDisabled ? 0.3:1}`,
                   }}
                 >
-                  <img className={classes.chartIcon} src={pageBack} />
+                  <PageBack className={classes.chartIcon} />
                 </Button>
               </Grid>
               <Grid item container alignItems='flex-end' xs={3}>
@@ -437,7 +438,7 @@ export const chart = (props: Props) => {
                     opacity: `${nextDisabled ? 0.3:1}`,
                   }}
                 >
-                  <img className={classes.chartIcon} src={pageForward}/>
+                  <PageForward className={classes.chartIcon} />
                 </Button>
               </Grid>
               <Grid item>
@@ -452,7 +453,7 @@ export const chart = (props: Props) => {
                   <IconButton
                     aria-label="Logs"
                   >
-                    <img className={classes.chartIcon} src={logIcon}/>
+                    <LogIcon className={classes.chartIcon} />
                   </IconButton>
                 </NavLink>
               </Grid>
@@ -461,7 +462,7 @@ export const chart = (props: Props) => {
                   <IconButton
                     aria-label="chartOrHome"
                   >
-                    <img className={classes.chartIcon} src={navLinkIcon}/>
+                    <NavLinkIcon className={classes.chartIcon} />
                   </IconButton>
                 </NavLink>
               </Grid>
@@ -492,7 +493,7 @@ export const chart = (props: Props) => {
               disableUnderline: true,
               endAdornment: (
                 <InputAdornment position="end">
-                  <img className={classes.searchIcon} src={searchIcon}/>
+                  <SearchIcon className={classes.searchIcon} />
                 </InputAdornment>),
             }}
           />

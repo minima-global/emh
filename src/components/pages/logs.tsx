@@ -30,8 +30,8 @@ import {
   Search,
 } from '../../config/vars';
 
-import pageBack from '../../images/pageBack.svg';
-import pageForward from '../../images/pageNext.svg';
+import PageBack from '../../images/pageBack.svg';
+import PageForward from '../../images/pageForward.svg';
 
 interface ThisProps {
   logType: LogType
@@ -218,7 +218,7 @@ export const list = (props: Props) => {
                   background: '#F0F0FA',
                 }}
               >
-                <img className={classes.pageIcon} src={pageBack} />
+                <PageBack className={classes.pageIcon} />
               </Button>
             </Grid>
             <Grid item container justify='flex-end' xs={6}>
@@ -232,7 +232,7 @@ export const list = (props: Props) => {
                   background: '#F0F0FA',
                 }}
               >
-                <img className={classes.pageIcon} src={pageForward}/>
+                <PageForward className={classes.pageIcon} />
               </Button>
             </Grid>
           </Grid>

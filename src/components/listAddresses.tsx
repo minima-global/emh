@@ -22,7 +22,7 @@ import {
 import {initTx} from '../store/app/blockchain/actions';
 import {deleteRow, getTableEntries} from '../store/app/dbase/actions';
 
-import closeDelete from '../images/closeDelete.png';
+import CloseIcon from '../images/closeDelete.svg';
 
 import {
   Dbase,
@@ -181,10 +181,7 @@ const list = (props: Props) => {
                             justifyContent: 'flex-end',
                           }}
                         >
-                          <img
-                            className={classes.deleteIcon}
-                            src={closeDelete}
-                          />
+                          <CloseIcon className={classes.deleteIcon} />
                         </Button>
                       </Grid>
 
