@@ -33,12 +33,36 @@ export const Main = () => {
 
   useEffect(() => {
     setIsLoading(false);
+    const href = window.location.href.match(/[^/]*$/);
+    const thisRef = href ? href : '';
+    const endpoint = '/' + thisRef;
+    switch (endpoint) {
+      case Local.home: {
+        setActivePage(Local.home);
+        break;
+      }
+      case Local.logs: {
+        setActivePage(Local.logs);
+        break;
+      }
+      case Local.urls: {
+        setActivePage(Local.urls);
+        break;
+      }
+      case Local.triggers: {
+        setActivePage(Local.triggers);
+        break;
+      }
+      case Local.cmd: {
+        setActivePage(Local.cmd);
+        break;
+      };
+    }
   }, []);
 
   return (
 
     <>
-
       { isLoading?
 
         <AppInit/> :

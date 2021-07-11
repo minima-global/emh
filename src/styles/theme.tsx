@@ -1,5 +1,5 @@
 import {
-  createMuiTheme,
+  createTheme,
   responsiveFontSizes,
   makeStyles,
 } from '@material-ui/core/styles';
@@ -20,7 +20,7 @@ xl, extra-large: 1920px
 
 const breakpoints = createBreakpoints({});
 
-let theme = createMuiTheme({
+let theme = createTheme({
   spacing: 8,
   typography: {
     fontFamily: [

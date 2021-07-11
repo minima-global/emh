@@ -34,7 +34,7 @@ import {
 
 import {Local} from '../config/paths';
 
-import CloseDelete from '../images/closeDelete.png';
+import CloseDelete from '../images/closeDelete.svg';
 
 interface StateProps {
   tx: TxData
