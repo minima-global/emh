@@ -61,7 +61,7 @@ export const Home = () => {
             elevation={5}
             className={classes.dashboardToken}
           >
-            { <ListBalances /> }
+            <ListBalances />
           </Paper>
         </Grid>
 
@@ -76,7 +76,7 @@ export const Home = () => {
             elevation={5}
             className={classes.dashboardStatus}
           >
-            { <ListStatus /> }
+            <ListStatus />
           </Paper>
 
         </Grid>
@@ -92,12 +92,11 @@ export const Home = () => {
             elevation={5}
             className={classes.dashboardChartLeft}
           >
-            {
-              <Chart
-                chartType={TokensChart.chart}
-                isFullScreen={false}
-                navLink={Local.chartTokens}
-                logNavLink={Local.logTokens} /> }
+            <Chart
+              chartType={TokensChart.chart}
+              isFullScreen={false}
+              navLink={Local.chartTokens}
+              logNavLink={Local.logTokens} />
           </Paper>
         </Grid>
 
@@ -111,12 +110,11 @@ export const Home = () => {
             elevation={5}
             className={classes.dashboardChartRight}
           >
-            {
-              <Chart
-                chartType={DailyTokensChart.chart}
-                isFullScreen={false}
-                navLink={Local.chartDailyTokens}
-                logNavLink={Local.logTokens} /> }
+            <Chart
+              chartType={DailyTokensChart.chart}
+              isFullScreen={false}
+              navLink={Local.chartDailyTokens}
+              logNavLink={Local.logTokens} />
           </Paper>
         </Grid>
 
@@ -131,12 +129,11 @@ export const Home = () => {
             elevation={5}
             className={classes.dashboardChartLeft}
           >
-            {
-              <Chart
-                chartType={MinimaChart.chart}
-                isFullScreen={false}
-                navLink={Local.chartMinima}
-                logNavLink={Local.logMinima} /> }
+            <Chart
+              chartType={MinimaChart.chart}
+              isFullScreen={false}
+              navLink={Local.chartMinima}
+              logNavLink={Local.logMinima} />
           </Paper>
         </Grid>
 
@@ -150,12 +147,11 @@ export const Home = () => {
             elevation={5}
             className={classes.dashboardChartRight}
           >
-            {
-              <Chart
-                chartType={DailyMinimaChart.chart}
-                isFullScreen={false}
-                navLink={Local.chartDailyMinima}
-                logNavLink={Local.logDailyMinima} /> }
+            <Chart
+              chartType={DailyMinimaChart.chart}
+              isFullScreen={false}
+              navLink={Local.chartDailyMinima}
+              logNavLink={Local.logDailyMinima} />
           </Paper>
         </Grid>
 
@@ -171,12 +167,11 @@ export const Home = () => {
             elevation={5}
             className={classes.dashboardChartLeft}
           >
-            {
-              <Chart
-                chartType={AddressesChart.chart}
-                isFullScreen={false}
-                navLink={Local.chartAddresses}
-                logNavLink={Local.logAddresses}/> }
+            <Chart
+              chartType={AddressesChart.chart}
+              isFullScreen={false}
+              navLink={Local.chartAddresses}
+              logNavLink={Local.logAddresses}/>
           </Paper>
         </Grid>
 
@@ -191,12 +186,11 @@ export const Home = () => {
             elevation={5}
             className={classes.dashboardChartRight}
           >
-            {
-              <Chart
-                chartType={DailyAddressesChart.chart}
-                isFullScreen={false}
-                navLink={Local.chartDailyAddresses}
-                logNavLink={Local.logDailyAddresses}/> }
+            <Chart
+              chartType={DailyAddressesChart.chart}
+              isFullScreen={false}
+              navLink={Local.chartDailyAddresses}
+              logNavLink={Local.logDailyAddresses}/>
           </Paper>
         </Grid>
 
@@ -210,12 +204,11 @@ export const Home = () => {
             elevation={5}
             className={classes.dashboardChartLeft}
           >
-            {
-              <Chart
-                chartType={CmdChart.chart}
-                isFullScreen={false}
-                navLink={Local.chartCmds}
-                logNavLink={Local.logCmds} /> }
+            <Chart
+              chartType={CmdChart.chart}
+              isFullScreen={false}
+              navLink={Local.chartCmds}
+              logNavLink={Local.logCmds} />
           </Paper>
         </Grid>
 
@@ -230,12 +223,11 @@ export const Home = () => {
             elevation={5}
             className={classes.dashboardChartRight}
           >
-            {
-              <Chart
-                chartType={DailyCmdChart.chart}
-                isFullScreen={false}
-                navLink={Local.chartDailyCmds}
-                logNavLink={Local.logDailyCmds}/> }
+            <Chart
+              chartType={DailyCmdChart.chart}
+              isFullScreen={false}
+              navLink={Local.chartDailyCmds}
+              logNavLink={Local.logDailyCmds}/>
           </Paper>
         </Grid>
 
@@ -249,12 +241,11 @@ export const Home = () => {
             elevation={5}
             className={classes.dashboardChartLeft}
           >
-            {
-              <Chart
-                chartType={APIChart.chart}
-                isFullScreen={false}
-                navLink={Local.chartAPI}
-                logNavLink={Local.logAPI} /> }
+            <Chart
+              chartType={APIChart.chart}
+              isFullScreen={false}
+              navLink={Local.chartAPI}
+              logNavLink={Local.logAPI} />
           </Paper>
         </Grid>
 
@@ -269,12 +260,11 @@ export const Home = () => {
             elevation={5}
             className={classes.dashboardChartRight}
           >
-            {
-              <Chart
-                chartType={DailyAPIChart.chart}
-                isFullScreen={false}
-                navLink={Local.chartDailyAPI}
-                logNavLink={Local.logDailyAPI}/> }
+            <Chart
+              chartType={DailyAPIChart.chart}
+              isFullScreen={false}
+              navLink={Local.chartDailyAPI}
+              logNavLink={Local.logDailyAPI}/>
           </Paper>
         </Grid>
 
