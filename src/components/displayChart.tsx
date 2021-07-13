@@ -416,11 +416,13 @@ export const chart = (props: Props) => {
                     style: {
                       margin: 0,
                       padding: theme.spacing(0.6),
-                      borderRadius: '1px',
+                      paddingTop: 0,
+                      paddingBottom: 0,
+                      paddingLeft: theme.spacing(0.5),
+                      paddingRight: theme.spacing(0.5),
                     },
                   }}
                   InputProps={{
-                    className: classes.pageSet,
                     disableUnderline: true,
                   }}
                 />

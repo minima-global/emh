@@ -161,14 +161,14 @@ const themeStyles = makeStyles({
       background: 'linear-gradient(#FFFFFF, #FFFFFF)',
       color: '#001C32',
       padding: theme.spacing(1),
-      marginBottom: theme.spacing(1),
+      marginBottom: theme.spacing(0.2),
     },
     '& .MuiOutlinedInput-root': {
       border: '1px solid #C8C8D4',
       borderRadius: '20px',
       background: 'linear-gradient(#FFFFFF, #FFFFFF)',
       color: '#001C32',
-      marginBottom: theme.spacing(1),
+      marginBottom: theme.spacing(0.2),
     },
     '& .MuiButton-root': {
       minWidth: '100%',
@@ -202,7 +202,7 @@ const themeStyles = makeStyles({
     background: 'linear-gradient(#001C32, #001C32)',
     width: '100%',
     position: 'relative',
-    height: '100px',
+    height: '70px',
     [breakpoints.up('xs')]: {
       paddingLeft: theme.spacing(1),
       paddingRight: theme.spacing(1),
@@ -217,8 +217,8 @@ const themeStyles = makeStyles({
     'position': 'absolute',
     'overflow': 'auto',
     'width': '100%',
-    'bottom': '100px',
-    'top': '100px',
+    'bottom': '90px',
+    'top': '80px',
     [breakpoints.up('xs')]: {
       paddingLeft: theme.spacing(1),
       paddingRight: theme.spacing(1),
@@ -234,7 +234,7 @@ const themeStyles = makeStyles({
     justifyContent: 'center',
     background: 'linear-gradient(#001C32, #001C32)',
     margin: '0',
-    height: '100px',
+    height: '90px',
     width: '100%',
     position: 'absolute',
     bottom: '0',
@@ -291,12 +291,14 @@ const themeStyles = makeStyles({
     padding: theme.spacing(2),
     width: '100%',
   },
-  pageSet: {
-    margin: 0,
-    paddingTop: 0,
-    paddingBottom: 0,
-    paddingLeft: theme.spacing(0.5),
-    paddingRight: theme.spacing(0.5),
+  select: {
+    'borderRadius': '10px',
+    'background': 'linear-gradient(#FFFFFF, #FFFFFF)',
+    'color': '#001C32',
+    'fontWeight': 400,
+    'fontFamily': '"Manrope", "Roboto", "Arial", "sans-serif"',
+    'lineHeight': '1.5',
+    'fontSize': '1em',
   },
   modalSub: {
     [breakpoints.up('xs')]: {
@@ -406,7 +408,7 @@ const themeStyles = makeStyles({
   },
   megIcon: {
     [breakpoints.up('xs')]: {
-      height: '60px',
+      height: '50px',
     },
   },
   pageIcon: {

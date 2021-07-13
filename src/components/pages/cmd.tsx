@@ -260,6 +260,7 @@ const display = (props: Props) => {
                     }}
                   >
                     <Select
+                      className={classes.select}
                       size="small"
                       value={thisTrigger}
                       onChange={(selectedOption) => {
