@@ -346,6 +346,12 @@ class Balances {
   static readonly amount = 'Confirmed'
   static readonly unconfirmed = 'Transient'
   static readonly mempool = 'Mempool'
+
+  static readonly sortHeading = 'Sort By'
+  static readonly sortByName = 'Name'
+  static readonly sortByID = 'Token iD'
+  static readonly sortByBalanceAsc = 'Balance Ascending'
+  static readonly sortByBalanceDesc = 'Balance Descending'
 }
 
 /** @class API */

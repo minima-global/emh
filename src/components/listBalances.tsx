@@ -8,10 +8,16 @@ import {Token as Balance} from 'minima';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
+import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Avatar from '@material-ui/core/Avatar';
 
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import {withStyles} from '@material-ui/core/styles';
+
 import SearchDelete from '../images/searchDelete.svg';
+import SortIcon from '../images/menuIcon.svg';
 
 import {
   Misc,
@@ -24,6 +30,7 @@ import {theme, themeStyles} from '../styles';
 import {
   ApplicationState,
   BalanceProps,
+  BalanceSortTypes,
 } from '../store';
 
 import SearchIcon from '../images/search.svg';
@@ -34,10 +41,45 @@ interface StateProps {
 
 type Props = StateProps
 
+const SortMenu = withStyles({
+  paper: {
+    background: 'linear-gradient(#FFFFFF, #FFFFFF)',
+  },
+})((props: any) => (
+  <Menu
+    elevation={0}
+    getContentAnchorEl={null}
+    anchorOrigin={{
+      vertical: 'top',
+      horizontal: 'center',
+    }}
+    transformOrigin={{
+      vertical: 'top',
+      horizontal: 'center',
+    }}
+    {...props}
+  />
+));
+
+const SortMenuItem = withStyles((theme) => ({
+  root: {
+    '&:focus': {
+      backgroundColor: '#edefef',
+      color: 'red',
+    },
+    '&:active': {
+      backgroundColor: '#edefef',
+      color: 'red',
+    },
+  },
+}))(MenuItem);
+
 const display = (props: Props) => {
   const [data, setData] = useState([] as Balance[]);
   const [searchTerm, setSearchTerm] = useState('');
   const searchRef = useRef<HTMLInputElement>(null);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const menuOpen = Boolean(anchorEl);
 
   const classes = themeStyles();
 
@@ -73,6 +115,61 @@ const display = (props: Props) => {
     (searchRef.current as HTMLInputElement).value = '';
   };
 
+  const menuClick = (event: any) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const menuClose = () => {
+    setAnchorEl(null);
+  };
+
+
+  const compareByName = (a: Balance, b: Balance) => {
+    return a.token.localeCompare(b.token);
+  };
+
+  const compareByID = (a: Balance, b: Balance) => {
+    return a.tokenid.localeCompare(b.tokenid);
+  };
+
+  const compareByBalanceAsc = (a: Balance, b: Balance) => {
+    const aFloat = parseFloat(a.sendable);
+    const bFloat = parseFloat(b.sendable);
+    if (aFloat < bFloat) {
+      return -1;
+    }
+    if (aFloat > bFloat) {
+      return 1;
+    }
+    // a must be equal to b
+    return 0;
+  };
+
+  const compareByBalanceDesc = (a: Balance, b: Balance) => {
+    const aFloat = parseFloat(a.sendable);
+    const bFloat = parseFloat(b.sendable);
+    if (aFloat > bFloat) {
+      return -1;
+    }
+    if (aFloat < bFloat) {
+      return 1;
+    }
+    return 0;
+  };
+
+  const doSort = ( sortType: BalanceSortTypes ) => {
+    if ( sortType === BalanceSortTypes.NAME ) {
+      data.sort(compareByName);
+    } else if ( sortType === BalanceSortTypes.ID ) {
+      data.sort(compareByID);
+    } else if ( sortType === BalanceSortTypes.BALANCEASC ) {
+      data.sort(compareByBalanceAsc);
+    } else if ( sortType === BalanceSortTypes.BALANCEDESC ) {
+      data.sort(compareByBalanceDesc);
+    }
+    setAnchorEl(null);
+  };
+
   return (
     <>
       <Grid
@@ -96,7 +193,7 @@ const display = (props: Props) => {
 
         <Grid
           item
-          xs={9}
+          xs={8}
         >
 
           <TextField
@@ -135,6 +232,53 @@ const display = (props: Props) => {
           />
         </Grid>
 
+        <Grid item container justify="flex-end" xs={1}>
+          <IconButton
+            onClick={menuClick}
+            color="primary"
+            aria-label={BalanceVars.sortHeading}
+            component="span"
+            size="small"
+          >
+            <SortIcon />
+          </IconButton>
+          <SortMenu
+            id="sortMenu"
+            anchorEl={anchorEl}
+            keepMounted
+            open={menuOpen}
+            onClose={menuClose}
+          >
+            <SortMenuItem disabled={true}>
+              {BalanceVars.sortHeading}
+            </SortMenuItem>
+            <SortMenuItem
+              onClick={
+                () => doSort(BalanceSortTypes.NAME)}
+            >
+              {BalanceVars.sortByName}
+            </SortMenuItem>
+            <SortMenuItem
+              onClick={
+                () => doSort(BalanceSortTypes.ID)}
+            >
+              {BalanceVars.sortByID}
+            </SortMenuItem>
+            <SortMenuItem
+              onClick={
+                () => doSort(BalanceSortTypes.BALANCEASC)}
+            >
+              {BalanceVars.sortByBalanceAsc}
+            </SortMenuItem>
+            <SortMenuItem
+              onClick={
+                () => doSort(BalanceSortTypes.BALANCEDESC)}
+            >
+              {BalanceVars.sortByBalanceDesc}
+            </SortMenuItem>
+          </SortMenu>
+        </Grid>
+
         <Grid
           item
           container
@@ -154,6 +298,8 @@ const display = (props: Props) => {
               const tokenId =
                   balance.tokenid === '0x00' ?
                     '0x00' : balance.tokenid.substring(0, 20) + '...';
+
+              // console.log('balance: ', balance);
 
               return (
                 <React.Fragment key={index}>

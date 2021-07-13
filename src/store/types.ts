@@ -53,6 +53,14 @@ export interface BalanceProps extends PayloadProps {
   data: Array<Balance>
 }
 
+// Sort Types
+export const enum BalanceSortTypes {
+  NAME = 'name',
+  ID = 'id',
+  BALANCEASC = 'balance ascending',
+  BALANCEDESC = 'balance descending'
+}
+
 /**
  * Minima status
  */

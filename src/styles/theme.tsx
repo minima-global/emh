@@ -291,6 +291,16 @@ const themeStyles = makeStyles({
     padding: theme.spacing(2),
     width: '100%',
   },
+  sortIcon: {
+    [breakpoints.up('xs')]: {
+      height: '20px',
+      width: '20px',
+    },
+    [breakpoints.up('md')]: {
+      height: '25px',
+      width: '25px',
+    },
+  },
   select: {
     'borderRadius': '10px',
     'background': 'linear-gradient(#FFFFFF, #FFFFFF)',
