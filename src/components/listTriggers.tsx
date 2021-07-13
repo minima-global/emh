@@ -126,7 +126,7 @@ const list = (props: Props) => {
           <Grid
             item
             container
-            justify="flex-start"
+            justifyContent="flex-start"
             xs={3}
           >
             <Typography variant="h5" noWrap={true}>
@@ -136,7 +136,7 @@ const list = (props: Props) => {
           <Grid
             item
             container
-            justify="flex-start"
+            justifyContent="flex-start"
             xs={1}
           >
             <Typography variant="h5" noWrap={true}>
@@ -146,7 +146,7 @@ const list = (props: Props) => {
           <Grid
             item
             container
-            justify="flex-start"
+            justifyContent="flex-start"
             xs={7}
           >
             <Typography variant="h5" noWrap={true}>
@@ -156,7 +156,7 @@ const list = (props: Props) => {
           <Grid
             item
             container
-            justify="flex-start"
+            justifyContent="flex-start"
             xs={1}
           >
             <Typography variant="h5" noWrap={true}>
@@ -170,7 +170,7 @@ const list = (props: Props) => {
           className={classes.formSummary}
           item
           container
-          justify="flex-start"
+          justifyContent="flex-start"
           xs={12}
         >
           <svg
@@ -199,7 +199,7 @@ const list = (props: Props) => {
                         item
                         container
                         alignItems='center'
-                        justify="flex-start"
+                        justifyContent="flex-start"
                         xs={3}
                       >
                         <Button
@@ -225,7 +225,7 @@ const list = (props: Props) => {
                         item
                         container
                         alignItems='center'
-                        justify="flex-start"
+                        justifyContent="flex-start"
                         xs={1}
                       >
                         <Typography
@@ -239,7 +239,7 @@ const list = (props: Props) => {
                         item
                         container
                         alignItems='center'
-                        justify="flex-start"
+                        justifyContent="flex-start"
                         xs={7}
                       >
                         <Typography
@@ -252,7 +252,7 @@ const list = (props: Props) => {
                       <Grid
                         item
                         container
-                        justify="flex-end"
+                        justifyContent="flex-end"
                         xs={1}
                       >
                         <Button

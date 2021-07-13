@@ -173,7 +173,7 @@ export const list = (props: Props) => {
         </Grid>
 
         <Grid item container alignItems="center" xs={12}>
-          <Grid item container justify="flex-start" xs={1}>
+          <Grid item container justifyContent="flex-start" xs={1}>
             <Typography variant="h5">
               {LogVars.records} &nbsp;
               {(low + Dbase.pageLimit) / Dbase.pageLimit}
@@ -183,7 +183,7 @@ export const list = (props: Props) => {
             item
             container
             alignItems="flex-start"
-            justify="center"
+            justifyContent="center"
             xs={10}
           >
             <Grid item container alignItems="center" xs={12}>
@@ -206,8 +206,15 @@ export const list = (props: Props) => {
               />
             </Grid>
           </Grid>
-          <Grid item container alignItems='center' justify='flex-end' xs={1}>
-            <Grid item container justify='flex-end' xs={6}>
+
+          <Grid
+            item
+            container
+            alignItems='center'
+            justifyContent='flex-end'
+            xs={1}>
+
+            <Grid item container justifyContent='flex-end' xs={6}>
               <Button
                 aria-label="Page back"
                 onClick={() => getRecords(low - Dbase.pageLimit)}
@@ -221,7 +228,7 @@ export const list = (props: Props) => {
                 <PageBack className={classes.pageIcon} />
               </Button>
             </Grid>
-            <Grid item container justify='flex-end' xs={6}>
+            <Grid item container justifyContent='flex-end' xs={6}>
               <Button
                 aria-label="Page forward"
                 onClick={() => getRecords(low + Dbase.pageLimit)}
@@ -245,7 +252,7 @@ export const list = (props: Props) => {
             <Grid
               item
               container
-              justify="flex-start"
+              justifyContent="flex-start"
               xs={2}
             >
               <Typography variant="h6">
@@ -256,7 +263,7 @@ export const list = (props: Props) => {
             <Grid
               item
               container
-              justify="flex-start"
+              justifyContent="flex-start"
               xs={1}
             >
               <Typography variant="h6">
@@ -267,7 +274,7 @@ export const list = (props: Props) => {
             <Grid
               item
               container
-              justify="flex-start"
+              justifyContent="flex-start"
               xs={1}
             >
               <Typography
@@ -280,7 +287,7 @@ export const list = (props: Props) => {
             <Grid
               item
               container
-              justify="flex-start"
+              justifyContent="flex-start"
               xs={3}
             >
               <Typography variant="h6">
@@ -291,7 +298,7 @@ export const list = (props: Props) => {
             <Grid
               item
               container
-              justify="flex-start"
+              justifyContent="flex-start"
               xs={5}
             >
               <Typography variant="h6">
@@ -305,7 +312,7 @@ export const list = (props: Props) => {
             className={classes.formSummary}
             item
             container
-            justify="flex-start"
+            justifyContent="flex-start"
             xs={12}
           >
             <svg
@@ -334,7 +341,7 @@ export const list = (props: Props) => {
                     <Grid
                       item
                       container
-                      justify="flex-start"
+                      justifyContent="flex-start"
                       xs={2}
                     >
                       <Typography variant="body1">
@@ -345,7 +352,7 @@ export const list = (props: Props) => {
                     <Grid
                       item
                       container
-                      justify="flex-start"
+                      justifyContent="flex-start"
                       xs={1}
                     >
                       <Typography
@@ -359,7 +366,7 @@ export const list = (props: Props) => {
                     <Grid
                       item
                       container
-                      justify="flex-start"
+                      justifyContent="flex-start"
                       xs={1}
                     >
                       <Typography variant="body1">
@@ -370,7 +377,7 @@ export const list = (props: Props) => {
                     <Grid
                       item
                       container
-                      justify="flex-start"
+                      justifyContent="flex-start"
                       xs={3}
                     >
                       <Typography
@@ -384,7 +391,7 @@ export const list = (props: Props) => {
                     <Grid
                       item
                       container
-                      justify="flex-start"
+                      justifyContent="flex-start"
                       xs={5}
                     >
                       <Typography

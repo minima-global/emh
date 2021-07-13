@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, ChangeEvent} from 'react';
 import {connect} from 'react-redux';
 
 import SparkMD5 from 'spark-md5';
@@ -7,16 +7,24 @@ import {Token as Balance} from 'minima';
 
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import TextField from '@material-ui/core/TextField';
+import InputAdornment from '@material-ui/core/InputAdornment';
 import Avatar from '@material-ui/core/Avatar';
 
-import {Misc, Balances as BalanceVars} from '../config/vars';
+import {
+  Misc,
+  Search,
+  Balances as BalanceVars,
+} from '../config/vars';
 
-import {theme} from '../styles';
+import {theme, themeStyles} from '../styles';
 
 import {
   ApplicationState,
   BalanceProps,
 } from '../store';
+
+import SearchIcon from '../images/search.svg';
 
 interface StateProps {
   balanceData: BalanceProps
@@ -25,6 +33,21 @@ interface StateProps {
 type Props = StateProps
 
 const display = (props: Props) => {
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const classes = themeStyles();
+
+  const doSetSearchTerm =
+      (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        setSearchTerm(e.target.value);
+      };
+
+  const doSearch = () => {
+    if ( searchTerm ) {
+      // do something
+    }
+  };
+
   return (
     <>
       <Grid
@@ -36,9 +59,44 @@ const display = (props: Props) => {
         }}
         xs={12}
       >
-        <Typography variant="h3">
-          {BalanceVars.heading}
-        </Typography>
+
+        <Grid
+          item
+          xs={3}
+        >
+          <Typography variant="h3">
+            {BalanceVars.heading}
+          </Typography>
+        </Grid>
+
+        <Grid
+          item
+          xs={9}
+        >
+
+          <TextField
+            fullWidth
+            placeholder={Search.placeHolder}
+            size="small"
+            name="search"
+            type="text"
+            variant='outlined'
+            onChange={(e) => {
+              doSetSearchTerm(e);
+            }}
+            onKeyPress= {(e) => {
+              if (e.key === 'Enter') {
+                doSearch();
+              }
+            }}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <SearchIcon className={classes.searchIcon} />
+                </InputAdornment>),
+            }}
+          />
+        </Grid>
 
         <Grid
           item
@@ -82,7 +140,7 @@ const display = (props: Props) => {
                       <Grid
                         item
                         container
-                        justify="flex-start"
+                        justifyContent="flex-start"
                         xs={11}
                       >
                         <Grid item xs={12}>

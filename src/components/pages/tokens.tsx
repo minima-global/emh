@@ -82,7 +82,7 @@ const display = (props: Props) => {
                 item
                 container
                 className={classes.formLabel}
-                justify="flex-start"
+                justifyContent="flex-start"
                 alignItems="center"
                 xs={4}
                 lg={2}
@@ -126,7 +126,7 @@ const display = (props: Props) => {
                 item
                 container
                 className={classes.formLabel}
-                justify="flex-start"
+                justifyContent="flex-start"
                 alignItems="center"
                 xs={4}
                 lg={2}

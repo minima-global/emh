@@ -96,17 +96,17 @@ const list = (props: Props) => {
 
         <Grid item container xs={12}>
 
-          <Grid item container justify="flex-start" xs={7}>
+          <Grid item container justifyContent="flex-start" xs={7}>
             <Typography variant="h5">
               {AddressVars.address}
             </Typography>
           </Grid>
-          <Grid item container justify="flex-start" xs={4}>
+          <Grid item container justifyContent="flex-start" xs={4}>
             <Typography variant="h5">
               {AddressVars.url}
             </Typography>
           </Grid>
-          <Grid item container justify="flex-end" xs={1}>
+          <Grid item container justifyContent="flex-end" xs={1}>
             <Typography variant="h5">
               &nbsp;
             </Typography>
@@ -118,7 +118,7 @@ const list = (props: Props) => {
           className={classes.formSummary}
           item
           container
-          justify="flex-start"
+          justifyContent="flex-start"
           xs={12}
         >
           <svg
@@ -147,7 +147,7 @@ const list = (props: Props) => {
                         item
                         container
                         alignItems='center'
-                        justify="flex-start"
+                        justifyContent="flex-start"
                         xs={7}
                       >
                         <Typography
@@ -161,7 +161,7 @@ const list = (props: Props) => {
                         item
                         container
                         alignItems='center'
-                        justify="flex-start"
+                        justifyContent="flex-start"
                         xs={4}
                       >
                         <Typography
@@ -171,7 +171,7 @@ const list = (props: Props) => {
                           {url}
                         </Typography>
                       </Grid>
-                      <Grid item container justify="flex-end" xs={1}>
+                      <Grid item container justifyContent="flex-end" xs={1}>
                         <Button
                           onClick={() => deleteAddress(call, index)}
                           style={{

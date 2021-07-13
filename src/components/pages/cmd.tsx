@@ -228,7 +228,7 @@ const display = (props: Props) => {
 
         <Grid item container xs={12}>
 
-          <Grid item container justify="flex-start" xs={12}>
+          <Grid item container justifyContent="flex-start" xs={12}>
 
             <Typography variant="h2">
               {CmdVars.heading}
@@ -245,7 +245,7 @@ const display = (props: Props) => {
                   item
                   container
                   className={classes.formLabel}
-                  justify="flex-start"
+                  justifyContent="flex-start"
                   alignItems="center"
                   xs={4}
                   lg={2}
@@ -260,7 +260,6 @@ const display = (props: Props) => {
                     }}
                   >
                     <Select
-                      className={classes.select}
                       size="small"
                       value={thisTrigger}
                       onChange={(selectedOption) => {
@@ -298,7 +297,7 @@ const display = (props: Props) => {
                   item
                   container
                   className={classes.formLabel}
-                  justify="flex-start"
+                  justifyContent="flex-start"
                   alignItems="center"
                   xs={4}
                   lg={2}
@@ -348,7 +347,7 @@ const display = (props: Props) => {
                   className={classes.formButton}
                   item
                   container
-                  justify='flex-end'
+                  justifyContent='flex-end'
                   xs={1}
                 >
                   <Button
@@ -373,7 +372,7 @@ const display = (props: Props) => {
                   className={classes.formButton}
                   item
                   container
-                  justify='flex-end'
+                  justifyContent='flex-end'
                   xs={1}
                 >
                   <Button
@@ -411,7 +410,7 @@ const display = (props: Props) => {
 
         { running ?
 
-          <Grid item container justify="center">
+          <Grid item container justifyContent="center">
             <Spinner
               radius={40}
               color={'#001C32'}
@@ -424,7 +423,7 @@ const display = (props: Props) => {
               item
               container
               alignItems='flex-start'
-              justify='flex-start'
+              justifyContent='flex-start'
               xs={12}
               style={{
                 width: '800px',

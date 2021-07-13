@@ -51,7 +51,7 @@ export const URLs = () => {
 
       <Grid item container xs={12}>
 
-        <Grid item container justify="flex-start" xs={12}>
+        <Grid item container justifyContent="flex-start" xs={12}>
 
           <Typography variant="h2">
             {URL.heading}

@@ -42,7 +42,7 @@ export const Home = () => {
 
       <Grid item container xs={12}>
 
-        <Grid item container justify="flex-start" xs={12}>
+        <Grid item container justifyContent="flex-start" xs={12}>
 
           <Typography variant="h2">
             {HomeVars.heading}
@@ -53,7 +53,7 @@ export const Home = () => {
         <Grid
           item
           container
-          justify="flex-start"
+          justifyContent="flex-start"
           alignItems='flex-start'
           xs={8}
         >
@@ -68,7 +68,7 @@ export const Home = () => {
         <Grid
           item
           container
-          justify="flex-start"
+          justifyContent="flex-start"
           alignItems='flex-start'
           xs={4}
         >
@@ -84,7 +84,7 @@ export const Home = () => {
         <Grid
           item
           container
-          justify="flex-start"
+          justifyContent="flex-start"
           alignItems='flex-start'
           xs={6}>
 
@@ -103,7 +103,7 @@ export const Home = () => {
         <Grid
           item
           container
-          justify="flex-start"
+          justifyContent="flex-start"
           xs={6}>
 
           <Paper
@@ -121,7 +121,7 @@ export const Home = () => {
         <Grid
           item
           container
-          justify="flex-start"
+          justifyContent="flex-start"
           alignItems='flex-start'
           xs={6}>
 
@@ -140,7 +140,7 @@ export const Home = () => {
         <Grid
           item
           container
-          justify="flex-start"
+          justifyContent="flex-start"
           xs={6}>
 
           <Paper
@@ -159,7 +159,7 @@ export const Home = () => {
         <Grid
           item
           container
-          justify="flex-start"
+          justifyContent="flex-start"
           alignItems='flex-start'
           xs={6}>
 
@@ -178,7 +178,7 @@ export const Home = () => {
         <Grid
           item
           container
-          justify="flex-start"
+          justifyContent="flex-start"
           alignItems='flex-start'
           xs={6}>
 
@@ -197,7 +197,7 @@ export const Home = () => {
         <Grid
           item
           container
-          justify="flex-start"
+          justifyContent="flex-start"
           xs={6}>
 
           <Paper
@@ -215,7 +215,7 @@ export const Home = () => {
         <Grid
           item
           container
-          justify="flex-start"
+          justifyContent="flex-start"
           alignItems='flex-start'
           xs={6}>
 
@@ -234,7 +234,7 @@ export const Home = () => {
         <Grid
           item
           container
-          justify="flex-start"
+          justifyContent="flex-start"
           xs={6}>
 
           <Paper
@@ -252,7 +252,7 @@ export const Home = () => {
         <Grid
           item
           container
-          justify="flex-start"
+          justifyContent="flex-start"
           alignItems='flex-start'
           xs={6}>
 
@@ -268,7 +268,7 @@ export const Home = () => {
           </Paper>
         </Grid>
 
-        <Grid item container justify="flex-start" xs={6}>
+        <Grid item container justifyContent="flex-start" xs={6}>
           &nbsp;
         </Grid>
 

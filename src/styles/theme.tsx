@@ -155,24 +155,27 @@ const themeStyles = makeStyles({
     'height': '100vh',
     'width': '100%',
     'position': 'relative',
-    '& .MuiInputBase-input': {
+    '& .MuiInput-root': {
       border: '1px solid #C8C8D4',
-      borderRadius: '20px',
+      borderRadius: '10px',
       background: 'linear-gradient(#FFFFFF, #FFFFFF)',
       color: '#001C32',
       padding: theme.spacing(1),
       marginBottom: theme.spacing(1),
     },
-    '& .MuiInputBase-input:focus': {
-      border: '1px solid #317AFF',
+    '& .MuiOutlinedInput-root': {
+      border: '1px solid #C8C8D4',
       borderRadius: '20px',
+      background: 'linear-gradient(#FFFFFF, #FFFFFF)',
+      color: '#001C32',
+      marginBottom: theme.spacing(1),
     },
     '& .MuiButton-root': {
       minWidth: '100%',
       background: 'linear-gradient(#317AFF, #317AFF)',
     },
     '& .MuiIconButton-root': {
-      padding: '4px',
+      padding: theme.spacing(0.5),
     },
     '& .MuiButton-label': {
       lineHeight: '1',
@@ -287,25 +290,6 @@ const themeStyles = makeStyles({
     marginBottom: theme.spacing(2),
     padding: theme.spacing(2),
     width: '100%',
-  },
-  select: {
-    'border': '1px solid #C8C8D4',
-    'borderRadius': '20px',
-    'background': 'linear-gradient(#FFFFFF, #FFFFFF)',
-    'color': '#001C32',
-    'fontWeight': 400,
-    'fontFamily': '"Manrope", "Roboto", "Arial", "sans-serif"',
-    '&:hover': {
-      border: '1px solid #001C32',
-    },
-    [breakpoints.up('xs')]: {
-      lineHeight: '1.5',
-      fontSize: '1em',
-    },
-    [breakpoints.up('lg')]: {
-      lineHeight: '1.5',
-      fontSize: '1em',
-    },
   },
   pageSet: {
     margin: 0,

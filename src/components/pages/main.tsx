@@ -100,7 +100,7 @@ export const Main = () => {
                   item
                   container
                   alignItems="center"
-                  justify="flex-start"
+                  justifyContent="flex-start"
                   xs={6}
                 >
                   <MegIcon className={classes.megIcon} />
@@ -113,7 +113,7 @@ export const Main = () => {
                   item
                   container
                   alignItems="center"
-                  justify="flex-end"
+                  justifyContent="flex-end"
                   xs={6}
                 >
                   <Typography variant="body2">
@@ -136,7 +136,7 @@ export const Main = () => {
                   item
                   container
                   alignItems="center"
-                  justify="flex-end"
+                  justifyContent="flex-end"
                   xs={1}
                 >
                   <Typography variant="body2">
@@ -148,14 +148,14 @@ export const Main = () => {
                   item
                   container
                   alignItems="center"
-                  justify="center"
+                  justifyContent="center"
                   xs={2}
                 >
                   <Grid
                     item
                     container
                     alignItems="center"
-                    justify="center"
+                    justifyContent="center"
                     xs={12}
                   >
                     <NavLink
@@ -178,7 +178,7 @@ export const Main = () => {
                     item
                     container
                     alignItems="center"
-                    justify="center"
+                    justifyContent="center"
                     xs={12}
                   >
                     <Typography
@@ -197,14 +197,14 @@ export const Main = () => {
                   item
                   container
                   alignItems="center"
-                  justify="center"
+                  justifyContent="center"
                   xs={2}
                 >
                   <Grid
                     item
                     container
                     alignItems="center"
-                    justify="center"
+                    justifyContent="center"
                     xs={12}
                   >
                     <NavLink
@@ -227,7 +227,7 @@ export const Main = () => {
                     item
                     container
                     alignItems="center"
-                    justify="center"
+                    justifyContent="center"
                     xs={12}
                   >
                     <Typography
@@ -246,14 +246,14 @@ export const Main = () => {
                   item
                   container
                   alignItems="center"
-                  justify="center"
+                  justifyContent="center"
                   xs={2}
                 >
                   <Grid
                     item
                     container
                     alignItems="center"
-                    justify="center"
+                    justifyContent="center"
                     xs={12}
                   >
                     <NavLink
@@ -276,7 +276,7 @@ export const Main = () => {
                     item
                     container
                     alignItems="center"
-                    justify="center"
+                    justifyContent="center"
                     xs={12}
                   >
                     <Typography
@@ -295,14 +295,14 @@ export const Main = () => {
                   item
                   container
                   alignItems="center"
-                  justify="center"
+                  justifyContent="center"
                   xs={2}
                 >
                   <Grid
                     item
                     container
                     alignItems="center"
-                    justify="center"
+                    justifyContent="center"
                     xs={12}
                   >
                     <NavLink
@@ -325,7 +325,7 @@ export const Main = () => {
                     item
                     container
                     alignItems="center"
-                    justify="center"
+                    justifyContent="center"
                     xs={12}
                   >
                     <Typography
@@ -344,14 +344,14 @@ export const Main = () => {
                   item
                   container
                   alignItems="center"
-                  justify="center"
+                  justifyContent="center"
                   xs={2}
                 >
                   <Grid
                     item
                     container
                     alignItems="center"
-                    justify="center"
+                    justifyContent="center"
                     xs={12}
                   >
                     <NavLink
@@ -374,7 +374,7 @@ export const Main = () => {
                     item
                     container
                     alignItems="center"
-                    justify="center"
+                    justifyContent="center"
                     xs={12}
                   >
                     <Typography
@@ -393,7 +393,7 @@ export const Main = () => {
                   item
                   container
                   alignItems="center"
-                  justify="flex-end"
+                  justifyContent="flex-end"
                   xs={1}
                 >
                   <Typography variant="body2">

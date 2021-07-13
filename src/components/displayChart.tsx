@@ -77,7 +77,7 @@ export const chart = (props: Props) => {
 
   const [totalRecords, setTotalRecords] = useState(0);
   const [page, setPage] = useState(0);
-  const [searchPage, setSearchPage] = useState(0);
+  const [thisPage, setThisPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [nextDisabled, setNextDisabled] = useState(false);
   const [backDisabled, setBackDisabled] = useState(true);
@@ -318,13 +318,13 @@ export const chart = (props: Props) => {
         props.chartType.dataColumn);
   };
 
-  const setSearchPageNumber =
+  const setThisPageNumber =
   (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setSearchPage(parseInt(e.target.value));
+    setThisPage(parseInt(e.target.value));
   };
 
-  const doSetSearchPage = () => {
-    setPageNumber(searchPage);
+  const doSetPage = () => {
+    setPageNumber(thisPage);
   };
 
   const setPageNumber = (page: number) => {
@@ -405,11 +405,11 @@ export const chart = (props: Props) => {
                   name="page"
                   type="text"
                   onChange={(e) => {
-                    setSearchPageNumber(e);
+                    setThisPageNumber(e);
                   }}
                   onKeyPress= {(e) => {
                     if (e.key === 'Enter') {
-                      doSetSearchPage();
+                      doSetPage();
                     }
                   }}
                   inputProps={{
@@ -447,7 +447,7 @@ export const chart = (props: Props) => {
                 </Typography>
               </Grid>
             </Grid>
-            <Grid item container justify='flex-end' xs={4}>
+            <Grid item container justifyContent='flex-end' xs={4}>
               <Grid item xs={6}>
                 <NavLink to={props.logNavLink}>
                   <IconButton
@@ -457,7 +457,7 @@ export const chart = (props: Props) => {
                   </IconButton>
                 </NavLink>
               </Grid>
-              <Grid item container justify='flex-end' xs>
+              <Grid item container justifyContent='flex-end' xs>
                 <NavLink to={props.navLink}>
                   <IconButton
                     aria-label="chartOrHome"
@@ -480,7 +480,7 @@ export const chart = (props: Props) => {
             size="small"
             name="search"
             type="text"
-            variant='standard'
+            variant='outlined'
             onChange={(e) => {
               doSetSearchTerm(e);
             }}
@@ -490,7 +490,6 @@ export const chart = (props: Props) => {
               }
             }}
             InputProps={{
-              disableUnderline: true,
               endAdornment: (
                 <InputAdornment position="end">
                   <SearchIcon className={classes.searchIcon} />
@@ -512,7 +511,7 @@ export const chart = (props: Props) => {
                 </Typography>
               </Grid>
 
-              <Grid item container justify="flex-start" xs={12}>
+              <Grid item container justifyContent="flex-start" xs={12}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 4000 20"
@@ -558,7 +557,7 @@ export const chart = (props: Props) => {
         item
         container
         alignItems="center"
-        justify='flex-start'
+        justifyContent='flex-start'
         xs={12}
         style={{
           background: '#001C32',
@@ -571,7 +570,7 @@ export const chart = (props: Props) => {
           item
           container
           alignItems="center"
-          justify="flex-start"
+          justifyContent="flex-start"
           xs={2}
           style={{
             paddingLeft: theme.spacing(2),

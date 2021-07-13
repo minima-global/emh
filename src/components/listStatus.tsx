@@ -104,7 +104,7 @@ const display = (props: Props) => {
                     container
                     xs={12}
                   >
-                    <Grid item container justify="flex-start" xs={12}>
+                    <Grid item container justifyContent="flex-start" xs={12}>
                       <Typography
                         variant="h6"
                         noWrap={true}
@@ -116,7 +116,7 @@ const display = (props: Props) => {
                     <Grid
                       item
                       container
-                      justify="flex-start"
+                      justifyContent="flex-start"
                       style={{
                         marginBottom: theme.spacing(3),
                       }}
@@ -129,7 +129,7 @@ const display = (props: Props) => {
                         {upTime}
                       </Typography>
                     </Grid>
-                    <Grid item container justify="flex-start" xs={12}>
+                    <Grid item container justifyContent="flex-start" xs={12}>
                       <Typography
                         variant="h6"
                         noWrap={true}
@@ -141,7 +141,7 @@ const display = (props: Props) => {
                     <Grid
                       item
                       container
-                      justify="flex-start"
+                      justifyContent="flex-start"
                       style={{
                         marginBottom: theme.spacing(3),
                       }}
@@ -155,7 +155,7 @@ const display = (props: Props) => {
                         {ram}
                       </Typography>
                     </Grid>
-                    <Grid item container justify="flex-start" xs={12}>
+                    <Grid item container justifyContent="flex-start" xs={12}>
                       <Typography
                         variant="h6"
                         noWrap={true}
@@ -166,7 +166,7 @@ const display = (props: Props) => {
                     <Grid
                       item
                       container
-                      justify="flex-start"
+                      justifyContent="flex-start"
                       style={{
                         marginBottom: theme.spacing(2),
                       }}

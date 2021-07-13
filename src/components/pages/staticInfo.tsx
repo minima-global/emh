@@ -63,13 +63,13 @@ export const Info = (props: Props) => {
 
       <Grid item container xs={12}>
 
-        <Grid item container justify="flex-start" xs={12}>
+        <Grid item container justifyContent="flex-start" xs={12}>
           <Typography variant="h2">
             {pageData.title}
           </Typography>
         </Grid>
 
-        <Grid item container justify="flex-start" xs={12}>
+        <Grid item container justifyContent="flex-start" xs={12}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 4000 20"
