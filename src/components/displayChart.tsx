@@ -94,12 +94,12 @@ export const chart = (props: Props) => {
   const classes = themeStyles();
 
   let NavLinkIcon = ExpandIcon;
-  let viewport = '230px';
+  let viewport = '225px';
   let chartNodes = props.chartType.nodes;
   if ( props.isFullScreen ) {
     NavLinkIcon = CloseIcon;
     chartNodes = props.chartType.nodesFullScreen;
-    viewport = '515px';
+    viewport = '510px';
   }
 
 

@@ -161,14 +161,14 @@ const themeStyles = makeStyles({
       background: 'linear-gradient(#FFFFFF, #FFFFFF)',
       color: '#001C32',
       padding: theme.spacing(1),
-      marginBottom: theme.spacing(0.2),
+      marginBottom: theme.spacing(0.3),
     },
     '& .MuiOutlinedInput-root': {
       border: '1px solid #C8C8D4',
       borderRadius: '20px',
       background: 'linear-gradient(#FFFFFF, #FFFFFF)',
       color: '#001C32',
-      marginBottom: theme.spacing(0.2),
+      marginBottom: theme.spacing(0.3),
     },
     '& .MuiButton-root': {
       minWidth: '100%',

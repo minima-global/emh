@@ -1,4 +1,4 @@
-import React, {useState, ChangeEvent} from 'react';
+import React, {useState, useEffect, useRef, ChangeEvent} from 'react';
 import {connect} from 'react-redux';
 
 import SparkMD5 from 'spark-md5';
@@ -10,6 +10,8 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Avatar from '@material-ui/core/Avatar';
+
+import SearchDelete from '../images/searchDelete.svg';
 
 import {
   Misc,
@@ -33,9 +35,17 @@ interface StateProps {
 type Props = StateProps
 
 const display = (props: Props) => {
+  const [data, setData] = useState([] as Balance[]);
   const [searchTerm, setSearchTerm] = useState('');
+  const searchRef = useRef<HTMLInputElement>(null);
 
   const classes = themeStyles();
+
+  useEffect(() => {
+    if ( props.balanceData?.data ) {
+      setData(props.balanceData.data);
+    }
+  }, [props.balanceData]);
 
   const doSetSearchTerm =
       (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -44,8 +54,23 @@ const display = (props: Props) => {
 
   const doSearch = () => {
     if ( searchTerm ) {
-      // do something
+      const thisData = [] as Balance[];
+      props.balanceData?.data.map( ( balance: Balance ) => {
+        if ( (balance.token.includes(searchTerm)) ||
+             (balance.tokenid.includes(searchTerm)) ) {
+          thisData.push(balance);
+        }
+        setData(thisData);
+      });
+    } else {
+      setData(props.balanceData.data);
     }
+  };
+
+  const clearSearch = () => {
+    setSearchTerm('');
+    setData(props.balanceData.data);
+    (searchRef.current as HTMLInputElement).value = '';
   };
 
   return (
@@ -77,6 +102,7 @@ const display = (props: Props) => {
           <TextField
             fullWidth
             placeholder={Search.placeHolder}
+            inputRef={searchRef}
             size="small"
             name="search"
             type="text"
@@ -91,9 +117,20 @@ const display = (props: Props) => {
             }}
             InputProps={{
               endAdornment: (
-                <InputAdornment position="end">
-                  <SearchIcon className={classes.searchIcon} />
-                </InputAdornment>),
+                <>
+                  <InputAdornment
+                    position="start"
+                    onClick={() => clearSearch()}>
+                    <SearchDelete className={classes.searchIcon} />
+                  </InputAdornment>
+                  <InputAdornment position="start">
+                    |
+                  </InputAdornment>
+                  <InputAdornment position="end">
+                    <SearchIcon className={classes.searchIcon} />
+                  </InputAdornment>
+                </>
+              ),
             }}
           />
         </Grid>
@@ -111,78 +148,77 @@ const display = (props: Props) => {
           xs={12}
         >
           {
-            props.balanceData?.data.map(
-                ( balance: Balance, index: number ) => {
-                  const sendable = +balance.sendable;
-                  const thisSendable = sendable.toFixed(Misc.sendableDecimals);
-                  const tokenId =
-                    balance.tokenid === '0x00' ?
-                      '0x00' : balance.tokenid.substring(0, 20) + '...';
+            data.map( ( balance: Balance, index: number ) => {
+              const sendable = +balance.sendable;
+              const thisSendable = sendable.toFixed(Misc.sendableDecimals);
+              const tokenId =
+                  balance.tokenid === '0x00' ?
+                    '0x00' : balance.tokenid.substring(0, 20) + '...';
 
-                  return (
-                    <React.Fragment key={index}>
+              return (
+                <React.Fragment key={index}>
 
-                      <Grid
-                        item
-                        container
-                        alignItems='center'
-                        xs={1}
+                  <Grid
+                    item
+                    container
+                    alignItems='center'
+                    xs={1}
+                  >
+                    {balance.icon?
+                        <Avatar
+                          alt='Token Icon'
+                          src={balance.icon} /> :
+                        <Avatar
+                          alt='Token Icon'
+                          src={'https://www.gravatar.com/avatar/' + SparkMD5.hash(balance.tokenid) + '?d=identicon'} />
+                    }
+                  </Grid>
+                  <Grid
+                    item
+                    container
+                    justifyContent="flex-start"
+                    xs={11}
+                  >
+                    <Grid item xs={12}>
+                      <Typography
+                        variant="h6"
+                        noWrap={true}
                       >
-                        {balance.icon?
-                          <Avatar
-                            alt='Token Icon'
-                            src={balance.icon} /> :
-                          <Avatar
-                            alt='Token Icon'
-                            src={'https://www.gravatar.com/avatar/' + SparkMD5.hash(balance.tokenid) + '?d=identicon'} />
-                        }
-                      </Grid>
-                      <Grid
-                        item
-                        container
-                        justifyContent="flex-start"
-                        xs={11}
+                        {balance.token}
+                      </Typography>
+                    </Grid>
+
+                    <Grid
+                      item
+                      xs={12}
+                    >
+                      <Typography
+                        variant="body1"
+                        noWrap={true}
                       >
-                        <Grid item xs={12}>
-                          <Typography
-                            variant="h6"
-                            noWrap={true}
-                          >
-                            {balance.token}
-                          </Typography>
-                        </Grid>
+                        {tokenId}
+                      </Typography>
+                    </Grid>
 
-                        <Grid
-                          item
-                          xs={12}
-                        >
-                          <Typography
-                            variant="body1"
-                            noWrap={true}
-                          >
-                            {tokenId}
-                          </Typography>
-                        </Grid>
+                    <Grid
+                      item
+                      style={{
+                        marginBottom: theme.spacing(3),
+                      }}
+                      xs={12}>
 
-                        <Grid
-                          item
-                          style={{
-                            marginBottom: theme.spacing(3),
-                          }}
-                          xs={12}>
+                      <Typography
+                        variant="body2"
+                        noWrap={true}
+                      >
+                        {thisSendable}
+                      </Typography>
+                    </Grid>
+                  </Grid>
 
-                          <Typography
-                            variant="body2"
-                            noWrap={true}
-                          >
-                            {thisSendable}
-                          </Typography>
-                        </Grid>
-                      </Grid>
-
-                    </React.Fragment>
-                  );
-                })}
+                </React.Fragment>
+              );
+            })}
         </Grid>
       </Grid>
     </>
