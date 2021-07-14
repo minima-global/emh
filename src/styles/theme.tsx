@@ -197,6 +197,9 @@ const themeStyles = makeStyles({
         width: '60px',
       },
     },
+    '& .MuiPaper-elevation5': {
+      boxShadow: '0 3px 10px rgb(0, 0, 0, 0.084)',
+    },
   },
   header: {
     background: 'linear-gradient(#001C32, #001C32)',
@@ -340,10 +343,8 @@ const themeStyles = makeStyles({
     backgroundColor: '#EEEEEE',
   },
   searchIcon: {
-    [breakpoints.up('xs')]: {
-      height: '20px',
-      width: '20px',
-    },
+    height: '20px',
+    marginLeft: theme.spacing(1),
   },
   helpIcon: {
     [breakpoints.up('xs')]: {
@@ -407,7 +408,6 @@ const themeStyles = makeStyles({
   chartIcon: {
     [breakpoints.up('xs')]: {
       height: '30px',
-      width: '30px',
     },
   },
   minimaIcon: {
@@ -418,7 +418,7 @@ const themeStyles = makeStyles({
   },
   megIcon: {
     [breakpoints.up('xs')]: {
-      height: '50px',
+      height: '40px',
     },
   },
   pageIcon: {

@@ -1,1 +1,5 @@
-<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30"><defs><style>.cls-1{fill:#001c32;}</style></defs><g id="Group_1215" data-name="Group 1215"><polygon class="cls-1" points="0.98 11.37 -0.02 11.37 -0.02 -0.02 11.37 -0.02 11.37 0.98 0.98 0.98 0.98 11.37"/><polygon class="cls-1" points="30.02 11.37 29.02 11.37 29.02 0.98 18.63 0.98 18.63 -0.02 30.02 -0.02 30.02 11.37"/><polygon class="cls-1" points="30.02 30.02 18.63 30.02 18.63 29.02 29.02 29.02 29.02 18.63 30.02 18.63 30.02 30.02"/><polygon class="cls-1" points="11.37 30.02 -0.02 30.02 -0.02 18.63 0.98 18.63 0.98 29.02 11.37 29.02 11.37 30.02"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30">
+	<path
+		d="M1 18.6H0V30h11.4v-1H1V18.6zM18.6 0v1h9.7L14.6 14.6l.7.7L29 1.7v9.7h1V0H18.6zM0 11.4h1V1h10.4V0H0v11.4zM29 29H18.6v1H30V18.6h-1V29z"
+		fill="#001c32" />
+</svg>

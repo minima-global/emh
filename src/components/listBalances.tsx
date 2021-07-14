@@ -16,7 +16,8 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import {withStyles} from '@material-ui/core/styles';
 
-import SearchDelete from '../images/searchDelete.svg';
+import SearchIcon from '../images/magnifying.svg';
+import SearchDelete from '../images/crossSearchBar.svg';
 import SortIcon from '../images/menuIcon.svg';
 
 import {
@@ -33,7 +34,6 @@ import {
   BalanceSortTypes,
 } from '../store';
 
-import SearchIcon from '../images/search.svg';
 
 interface StateProps {
   balanceData: BalanceProps
@@ -175,7 +175,7 @@ const display = (props: Props) => {
       <Grid
         item
         container
-        alignItems="flex-start"
+        alignItems="center"
         style={{
           padding: theme.spacing(2),
         }}
@@ -218,10 +218,21 @@ const display = (props: Props) => {
                   <InputAdornment
                     position="start"
                     onClick={() => clearSearch()}>
-                    <SearchDelete className={classes.searchIcon} />
+                    <SearchDelete />
                   </InputAdornment>
-                  <InputAdornment position="start">
-                    |
+                  <InputAdornment position="end">
+                    <svg id="chart" width="1" height="30">
+
+                      <line
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2="30"
+                        stroke="#aaaabe"
+                        strokeWidth='1'
+                      />
+
+                    </svg>
                   </InputAdornment>
                   <InputAdornment position="end">
                     <SearchIcon className={classes.searchIcon} />
@@ -232,7 +243,13 @@ const display = (props: Props) => {
           />
         </Grid>
 
-        <Grid item container justify="flex-end" xs={1}>
+
+        <Grid
+          item
+          container
+          justifyContent="flex-end"
+          xs={1}>
+
           <IconButton
             onClick={menuClick}
             color="primary"

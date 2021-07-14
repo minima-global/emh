@@ -9,14 +9,14 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import InputAdornment from '@material-ui/core/InputAdornment';
 
-import LogIcon from '../images/log.svg';
+import LogIcon from '../images/logButton.svg';
 import ExpandIcon from '../images/expand.svg';
 import CloseIcon from '../images/closeDelete.svg';
 
 import PageBack from '../images/pageBack.svg';
 import PageForward from '../images/pageForward.svg';
 
-import SearchIcon from '../images/search.svg';
+import SearchIcon from '../images/magnifying.svg';
 
 // import zoomInIcon from '../images/zoomIn.svg';
 // import zoomOutIcon from '../images/zoomOut.svg';
@@ -94,7 +94,7 @@ export const chart = (props: Props) => {
   const classes = themeStyles();
 
   let NavLinkIcon = ExpandIcon;
-  let viewport = '225px';
+  let viewport = '224px';
   let chartNodes = props.chartType.nodes;
   if ( props.isFullScreen ) {
     NavLinkIcon = CloseIcon;
