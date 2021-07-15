@@ -416,7 +416,6 @@ const themeStyles = makeStyles({
   minimaIcon: {
     [breakpoints.up('xs')]: {
       height: '40px',
-      width: '40px',
     },
   },
   megIcon: {
