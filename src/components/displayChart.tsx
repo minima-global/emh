@@ -17,6 +17,7 @@ import PageBack from '../images/pageBack.svg';
 import PageForward from '../images/pageForward.svg';
 
 import SearchIcon from '../images/magnifying.svg';
+import SearchDelete from '../images/crossSearchBar.svg';
 
 // import zoomInIcon from '../images/zoomIn.svg';
 // import zoomOutIcon from '../images/zoomOut.svg';
@@ -72,7 +73,7 @@ interface DispatchProps {
 type Props = ChartProps & StateProps & DispatchProps;
 
 export const chart = (props: Props) => {
-  const [searchTerm, setSearchTerm] = useState('');
+  let [searchTerm, setSearchTerm] = useState('');
   const [lastUpdateHash, setLastUpdateHash] = useState('');
 
   const [totalRecords, setTotalRecords] = useState(0);
@@ -82,11 +83,13 @@ export const chart = (props: Props) => {
   const [nextDisabled, setNextDisabled] = useState(false);
   const [backDisabled, setBackDisabled] = useState(true);
   const [activeTime, setActiveTime] = useState(Misc.time.all.timeString);
+  const [timeFrom, setTimeFrom] = useState('0');
 
   // eslint-disable-next-line no-unused-vars
   const [charts, setCharts] = useState([] as any[]);
   const [data, setData] = useState([] as any[]);
   const dataCtx = useRef<HTMLCanvasElement>(null);
+  const searchRef = useRef<HTMLInputElement>(null);
   const setPageRef = useRef<HTMLInputElement>(null);
 
   // const updateInterval = 3000;
@@ -102,23 +105,10 @@ export const chart = (props: Props) => {
     viewport = '494px';
   }
 
-
+  // initialise
   useEffect(() => {
     // Chart.register(...registerables);
     Chart.register(zoomPlugin, ...registerables);
-
-    const timeNow = Date.now().toString();
-    let countQuery = props.chartType.countQuery.replace(/<firstTime>/g, '0');
-    countQuery = countQuery.replace(/<secondTime>/g, timeNow);
-    let query = props.chartType.query.replace(/<firstTime>/g, '0');
-    query = query.replace(/<secondTime>/g, timeNow);
-
-    props.countTableEntries(countQuery, props.chartType.key);
-    props.getChartEntries(
-        query,
-        props.chartType.key,
-        props.chartType.countColumn,
-        props.chartType.dataColumn);
   }, []);
 
   useEffect(() => {
@@ -201,19 +191,20 @@ export const chart = (props: Props) => {
     };
   }, [data, page]);
 
-  const doSetSearchTerm =
-      (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        setSearchTerm(e.target.value);
-      };
+  useEffect(() => {
+    // console.log('setting time', timeFrom);
+    doQuery();
+  }, [timeFrom]);
 
-  const doSearch = () => {
+  const doQuery = () => {
     const timeNow = Date.now().toString();
-    let countQuery = props.chartType.countQuery.replace(/<firstTime>/g, '0');
-    let query = props.chartType.query.replace(/<firstTime>/g, '0');
+    let countQuery =
+      props.chartType.countQuery.replace(/<firstTime>/g, timeFrom);
+    let query = props.chartType.query.replace(/<firstTime>/g, timeFrom);
 
     if ( searchTerm ) {
       query = props.chartType.searchQuery.replace(/<searchTerm>/g, searchTerm);
-      query = query.replace(/<firstTime>/g, '0');
+      query = query.replace(/<firstTime>/g, timeFrom);
 
       countQuery =
         props.chartType.searchCountQuery.replace(/<searchTerm>/g, searchTerm);
@@ -223,12 +214,25 @@ export const chart = (props: Props) => {
     query = query.replace(/<secondTime>/g, timeNow);
     countQuery = countQuery.replace(/<secondTime>/g, timeNow);
 
+    console.log('got query', query, countQuery);
+
     props.countTableEntries(countQuery, props.chartType.key);
     props.getChartEntries(
         query,
         props.chartType.key,
         props.chartType.countColumn,
         props.chartType.dataColumn);
+  };
+
+  const doSetSearchTerm =
+      (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        setSearchTerm(e.target.value);
+      };
+
+  const clearSearch = () => {
+    searchTerm = '';
+    (searchRef.current as HTMLInputElement).value = '';
+    doQuery();
   };
 
   /*
@@ -293,29 +297,7 @@ export const chart = (props: Props) => {
       }
     }
 
-    let countQuery =
-      props.chartType.countQuery.replace(/<firstTime>/g, timeFrom.toString());
-    let query =
-      props.chartType.query.replace(/<firstTime>/g, timeFrom.toString());
-
-    if ( searchTerm ) {
-      query = props.chartType.searchQuery.replace(/<searchTerm>/g, searchTerm);
-      query = query.replace(/<firstTime>/g, timeFrom.toString());
-
-      countQuery =
-        props.chartType.searchCountQuery.replace(/<searchTerm>/g, searchTerm);
-      countQuery = countQuery.replace(/<firstTime>/g, timeFrom.toString());
-    }
-
-    query = query.replace(/<secondTime>/g, timeNow.toString());
-    countQuery = countQuery.replace(/<secondTime>/g, timeNow.toString());
-
-    props.countTableEntries(countQuery, props.chartType.key);
-    props.getChartEntries(
-        query,
-        props.chartType.key,
-        props.chartType.countColumn,
-        props.chartType.dataColumn);
+    setTimeFrom(timeFrom.toString());
   };
 
   const setThisPageNumber =
@@ -479,6 +461,7 @@ export const chart = (props: Props) => {
           <TextField
             fullWidth
             placeholder={Search.placeHolder}
+            inputRef={searchRef}
             size="small"
             name="search"
             type="text"
@@ -488,14 +471,36 @@ export const chart = (props: Props) => {
             }}
             onKeyPress= {(e) => {
               if (e.key === 'Enter') {
-                doSearch();
+                doQuery();
               }
             }}
             InputProps={{
               endAdornment: (
-                <InputAdornment position="end">
-                  <SearchIcon className={classes.searchIcon} />
-                </InputAdornment>),
+                <>
+                  <InputAdornment
+                    position="start"
+                    onClick={() => clearSearch()}>
+                    <SearchDelete className={classes.searchClearIcon}/>
+                  </InputAdornment>
+                  <InputAdornment position="end">
+                    <svg id="chart" width="1" height="30">
+
+                      <line
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2="30"
+                        stroke="#aaaabe"
+                        strokeWidth='1'
+                      />
+
+                    </svg>
+                  </InputAdornment>
+                  <InputAdornment position="end">
+                    <SearchIcon className={classes.searchIcon} />
+                  </InputAdornment>
+                </>
+              ),
             }}
           />
         </Grid>
