@@ -94,12 +94,12 @@ export const chart = (props: Props) => {
   const classes = themeStyles();
 
   let NavLinkIcon = ExpandIcon;
-  let viewport = '224px';
+  let viewport = '208px';
   let chartNodes = props.chartType.nodes;
   if ( props.isFullScreen ) {
     NavLinkIcon = CloseIcon;
     chartNodes = props.chartType.nodesFullScreen;
-    viewport = '510px';
+    viewport = '494px';
   }
 
 
@@ -349,7 +349,7 @@ export const chart = (props: Props) => {
         container
         alignItems="flex-start"
         style={{
-          padding: theme.spacing(2),
+          padding: theme.spacing(3),
         }}
       >
         <Grid container className={classes.chartTitle}>

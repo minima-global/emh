@@ -177,7 +177,7 @@ const display = (props: Props) => {
         container
         alignItems="center"
         style={{
-          padding: theme.spacing(2),
+          padding: theme.spacing(3),
         }}
         xs={12}
       >
@@ -218,7 +218,7 @@ const display = (props: Props) => {
                   <InputAdornment
                     position="start"
                     onClick={() => clearSearch()}>
-                    <SearchDelete />
+                    <SearchDelete className={classes.searchClearIcon}/>
                   </InputAdornment>
                   <InputAdornment position="end">
                     <svg id="chart" width="1" height="30">
@@ -303,7 +303,7 @@ const display = (props: Props) => {
           style={{
             marginTop: theme.spacing(1),
             width: '100%',
-            maxHeight: '220px',
+            maxHeight: '200px',
             overflow: 'auto',
           }}
           xs={12}

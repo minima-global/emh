@@ -43,7 +43,7 @@ const display = (props: Props) => {
         container
         alignItems="flex-start"
         style={{
-          padding: theme.spacing(2),
+          padding: theme.spacing(3),
         }}
         xs={12}
       >

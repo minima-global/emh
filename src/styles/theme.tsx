@@ -198,7 +198,7 @@ const themeStyles = makeStyles({
       },
     },
     '& .MuiPaper-elevation5': {
-      boxShadow: '0 3px 10px rgb(0, 0, 0, 0.084)',
+      boxShadow: '0 3px 10px rgb(00, 1c, 32, 0.084)',
     },
   },
   header: {
@@ -341,6 +341,9 @@ const themeStyles = makeStyles({
   },
   buttonDisabled: {
     backgroundColor: '#EEEEEE',
+  },
+  searchClearIcon: {
+    height: '15px',
   },
   searchIcon: {
     height: '20px',
