@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef} from 'react';
+import React, {useEffect, useState, ChangeEvent} from 'react';
 import {connect} from 'react-redux';
 
 import Grid from '@material-ui/core/Grid';
@@ -9,7 +9,8 @@ import * as Yup from 'yup';
 import {useFormik} from 'formik';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import Select from 'react-select';
+// import Select from 'react-select';
+import MenuItem from '@material-ui/core/MenuItem';
 
 import Spinner from 'react-spinner-material';
 
@@ -24,6 +25,7 @@ import {
   AppDispatch,
   CmdProps,
   TriggersProps,
+  Triggers,
   TriggerActionTypes,
   SuccessAndFailType,
 } from '../../store/types';
@@ -38,7 +40,7 @@ import {
 } from '../../config/vars';
 
 const cmdSchema = Yup.object().shape({
-  trigger: Yup.object()
+  trigger: Yup.number()
       .required(GeneralError.required),
   params: Yup.string()
       .max(255, GeneralError.lengthError255),
@@ -60,16 +62,18 @@ interface DispatchProps {
 
 type Props = StateProps & DispatchProps
 
+/*
 type SelectOptionType = {
   value: number
   label: string
 }
+*/
 
 const display = (props: Props) => {
-  const isFirstRun = useRef(true);
   // eslint-disable-next-line no-unused-vars
-  const [triggers, setTriggers] = useState([] as SelectOptionType[]);
-  const [thisTrigger, setThisTrigger] = useState({} as SelectOptionType);
+  const [triggers, setTriggers] = useState([] as Triggers[]);
+  const [thisTrigger, setThisTrigger] = useState(0);
+  // eslint-disable-next-line no-unused-vars
   const [paramsDisabled, setParamsDisabled] = useState(false);
   const [params, setParams] = useState('');
 
@@ -93,13 +97,13 @@ const display = (props: Props) => {
     enableReinitialize: true,
     validationSchema: cmdSchema,
     onSubmit: (values: any) => {
-      const endpoint = props.triggersData.data[values.trigger.value].ENDPOINT;
-      let command = props.triggersData.data[values.trigger.value].CMD;
+      const endpoint = props.triggersData.data[values.trigger].ENDPOINT;
+      let command = props.triggersData.data[values.trigger].CMD;
 
       // get the format of the command
-      if ( props.triggersData.data[values.trigger.value].FORMAT ) {
+      if ( props.triggersData.data[values.trigger].FORMAT ) {
         const format = (
-          props.triggersData.data[values.trigger.value].FORMAT).split(' ');
+          props.triggersData.data[values.trigger].FORMAT).split(' ');
 
         /**
         * get the parameters for the command, and split into key value pairs
@@ -107,10 +111,10 @@ const display = (props: Props) => {
         let setParams: string[] | null = [];
         const setParamKeys: string[] = [];
         const setParamValues: string[] = [];
-        if ( props.triggersData.data[values.trigger.value].SETPARAMS ) {
+        if ( props.triggersData.data[values.trigger].SETPARAMS ) {
           // regex from https://stackoverflow.com/questions/16261635/javascript-split-string-by-space-but-ignore-space-in-quotes-notice-not-to-spli
           setParams = (
-            props.triggersData.data[values.trigger.value].SETPARAMS)
+            props.triggersData.data[values.trigger].SETPARAMS)
               .match(/(?:[^\s"]+|"[^"]*")+/g);
           if ( setParams ) {
             for ( let i = 0; i < setParams.length; i++ ) {
@@ -166,38 +170,40 @@ const display = (props: Props) => {
     },
   });
 
+  // initialise
   useEffect(() => {
-    if ( isFirstRun.current ) {
-      isFirstRun.current = false;
-      // SELECT * FROM API LIMIT 0, 2147483647
-      props.getTableEntries(query, actionType);
-    } else {
-      props.triggersData.data.forEach((trigger, index) => {
-        const thisTrigger: SelectOptionType = {
-          value: index,
-          label: trigger.ENDPOINT,
-        };
-        triggers.push(thisTrigger);
-      });
+    props.getTableEntries(query, actionType);
+  }, []);
 
-      if (props.cmd?.data ) {
-        setRunning(false);
-      }
-    }
-  }, [props.triggersData, props.cmd]);
+  useEffect(() => {
+    // console.log('setting triggers');
+    const theseTriggers: Triggers[] = [];
+    props.triggersData.data.forEach((trigger, index) => {
+      theseTriggers.push(trigger);
+    });
+    setTriggers(theseTriggers);
+  }, [props.triggersData]);
 
-  const doSetTrigger = (trigger: SelectOptionType | null | undefined) => {
-    if ( trigger ) {
-      setThisTrigger(trigger);
-      if ( props.triggersData.data[trigger.value].PARAMS ) {
-        setParams(props.triggersData.data[trigger.value].PARAMS);
-        setParamsDisabled(false);
-      } else {
-        setParams('');
-        setParamsDisabled(true);
-      }
+  useEffect(() => {
+    if (props.cmd?.data ) {
+      setRunning(false);
     }
-  };
+  }, [props.cmd]);
+
+  const doSetTrigger =
+    (trigger: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      if ( trigger ) {
+        const thisTrigger = parseInt(trigger.target.value);
+        setThisTrigger(thisTrigger);
+        if ( props.triggersData.data[thisTrigger].PARAMS ) {
+          setParams(props.triggersData.data[thisTrigger].PARAMS);
+          setParamsDisabled(false);
+        } else {
+          setParams('');
+          setParamsDisabled(true);
+        }
+      }
+    };
 
   const runCommand = () => {
     setRunDialogue(false);
@@ -211,7 +217,7 @@ const display = (props: Props) => {
 
   const clear = () => {
     // do something
-    setThisTrigger({} as SelectOptionType);
+    setThisTrigger(0);
     setParams('');
     props.initCmd();
   };
@@ -253,25 +259,26 @@ const display = (props: Props) => {
                   <label htmlFor="trigger">{CmdVars.trigger}</label>
                 </Grid>
                 <Grid item container xs={8} lg={10}>
-                  <div
-                    style={{
-                      width: '100%',
-                      marginBottom: theme.spacing(1),
+                  <TextField
+                    fullWidth
+                    select
+                    size="small"
+                    name="trigger"
+                    value={thisTrigger}
+                    onChange={(selectedOption) => {
+                      doSetTrigger(selectedOption);
                     }}
+                    InputProps={{disableUnderline: true}}
                   >
-                    <Select
-                      className={classes.select}
-                      size="small"
-                      value={thisTrigger}
-                      onChange={(selectedOption) => {
-                        doSetTrigger(selectedOption);
-                        const thisValue = selectedOption ? selectedOption : {};
-                        formik.setFieldValue('trigger', thisValue);
-                      }}
-                      options={triggers}
-                      name='trigger'
-                    />
-                  </div>
+                    {triggers.map((trigger, index) => (
+                      <MenuItem
+                        key={index}
+                        value={index}
+                      >
+                        {trigger.ENDPOINT}
+                      </MenuItem>
+                    ))}
+                  </TextField>
                 </Grid>
                 {formik.errors.trigger && formik.touched.trigger ? (
                   <>
