@@ -56,7 +56,6 @@ interface DispatchProps {
 type Props = ThisProps & StateProps & DispatchProps
 
 export const list = (props: Props) => {
-  const isFirstRun = useRef(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   // eslint-disable-next-line no-unused-vars
@@ -64,8 +63,12 @@ export const list = (props: Props) => {
   // eslint-disable-next-line no-unused-vars
   const [offset, setOffset] = useState(Dbase.pageLimit);
   const [totalRecords, setTotalRecords] = useState(0);
+  const [page, setPage] = useState(0);
+  const [thisPage, setThisPage] = useState(0);
   const [nextDisabled, setNextDisabled] = useState(false);
   const [backDisabled, setBackDisabled] = useState(true);
+
+  const setPageRef = useRef<HTMLInputElement>(null);
 
   const actionType: SuccessAndFailType = {
     success: LogsActionTypes.LOGS_SUCCESS,
@@ -76,34 +79,80 @@ export const list = (props: Props) => {
 
   const classes = themeStyles();
 
+  // initialise
   useEffect(() => {
-    if ( isFirstRun.current ) {
-      isFirstRun.current = false;
-      const query = props.logType.query + ' LIMIT ' + low + ', ' + offset;
-      props.countTableEntries(props.logType.countQuery, props.logType.key);
-      props.getTableEntries(query, actionType);
-    } else {
-      if (props.countData.data[props.logType.key]) {
-      // eslint-disable-next-line max-len
-      // console.log('got count data: ', props.countData.data[props.logType.countQuery]);
-        const thisCount = props.countData.data[props.logType.key];
-        if ( thisCount != totalRecords ) {
-          setTotalRecords(props.countData.data[props.logType.key]);
-        }
-      }
+    const query = props.logType.query + ' LIMIT ' + low + ', ' + offset;
+    props.countTableEntries(props.logType.countQuery, props.logType.key);
+    props.getTableEntries(query, actionType);
+  }, []);
 
-      if ( (low + offset) >= totalRecords ) {
-        setNextDisabled(true);
-        setBackDisabled(false);
-      } else if ( low === 0 ) {
-        setNextDisabled(false);
-        setBackDisabled(true);
-      } else {
-        setNextDisabled(false);
-        setBackDisabled(false);
+  useEffect(() => {
+    if (props.countData.data[props.logType.key]) {
+    // eslint-disable-next-line max-len
+      // console.log('got count data: ', props.countData.data[props.logType.key]);
+      const thisCount = props.countData.data[props.logType.key];
+      if ( thisCount != totalRecords ) {
+        setTotalRecords(props.countData.data[props.logType.key]);
       }
     }
-  }, [props.countData, props.logsData]);
+
+    if ( (low + offset) >= totalRecords ) {
+      setNextDisabled(true);
+      setBackDisabled(false);
+    } else if ( low === 0 ) {
+      setNextDisabled(false);
+      setBackDisabled(true);
+    } else {
+      setNextDisabled(false);
+      setBackDisabled(false);
+    }
+  }, [props.logsData, props.countData]);
+
+  /*
+    <Grid item container justifyContent="flex-start" xs={1}>
+      <Typography variant="h5">
+        {LogVars.records} &nbsp;
+        {(low + Dbase.pageLimit) / Dbase.pageLimit}
+      </Typography>
+    </Grid>
+
+    <Grid
+      item
+      container
+      alignItems='center'
+      justifyContent='flex-end'
+      xs={1}>
+
+      <Grid item container justifyContent='flex-end' xs={6}>
+        <Button
+          aria-label="Page back"
+          onClick={() => getRecords(low - Dbase.pageLimit)}
+          disabled={backDisabled}
+          style={{
+            margin: 0,
+            padding: 0,
+            background: '#F0F0FA',
+          }}
+        >
+          <PageBack className={classes.pageIcon} />
+        </Button>
+      </Grid>
+      <Grid item container justifyContent='flex-end' xs={6}>
+        <Button
+          aria-label="Page forward"
+          onClick={() => getRecords(low + Dbase.pageLimit)}
+          disabled={nextDisabled}
+          style={{
+            margin: 0,
+            padding: 0,
+            background: '#F0F0FA',
+          }}
+        >
+          <PageForward className={classes.pageIcon} />
+        </Button>
+      </Grid>
+    </Grid>
+  */
 
   const doSetSearchTerm =
       (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -137,6 +186,9 @@ export const list = (props: Props) => {
   const getRecords = (lowLimit: number) => {
     // console.log('getting records', lowLimit, offset, totalRecords);
     if ( lowLimit >= 0) {
+      const thisPage = Math.ceil(lowLimit / Dbase.pageLimit);
+      setPage(thisPage);
+      (setPageRef.current as HTMLInputElement).value = thisPage.toString();
       setLimitLow(lowLimit);
       let query = props.logType.query;
       if ( searchQuery ) {
@@ -146,6 +198,32 @@ export const list = (props: Props) => {
       // console.log('getting records', query, totalRecords);
       // console.log(query);
       props.getTableEntries(query, actionType);
+    }
+  };
+
+  const setThisPageNumber =
+  (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setThisPage(parseInt(e.target.value));
+  };
+
+  const doSetPage = () => {
+    setPageNumber(thisPage);
+  };
+
+  const setPageNumber = (page: number) => {
+    // console.log('setting page', page);
+    if ( page >= 1 && page <= (Math.ceil(totalRecords / Dbase.pageLimit))) {
+      // console.log('yup setting page', page);
+      setPage(page);
+      (setPageRef.current as HTMLInputElement).value = page.toString();
+      getRecords(page * Dbase.pageLimit);
+    } else if ( page < 1 ) {
+      setPage(1);
+      (setPageRef.current as HTMLInputElement).value = '1';
+    } else {
+      setPage(Math.ceil(totalRecords / Dbase.pageLimit));
+      (setPageRef.current as HTMLInputElement).value =
+        (Math.ceil(totalRecords / Dbase.pageLimit)).toString();
     }
   };
 
@@ -172,76 +250,107 @@ export const list = (props: Props) => {
           </Typography>
         </Grid>
 
-        <Grid item container alignItems="center" xs={12}>
-          <Grid item container justifyContent="flex-start" xs={1}>
-            <Typography variant="h5">
-              {LogVars.records} &nbsp;
-              {(low + Dbase.pageLimit) / Dbase.pageLimit}
+        <Grid item container alignItems="center" xs={10}>
+
+          <TextField
+            fullWidth
+            placeholder={Search.placeHolder}
+            size="small"
+            name="search"
+            type="text"
+            onChange={(e) => {
+              doSetSearchTerm(e);
+            }}
+            onKeyPress= {(e) => {
+              if (e.key === 'Enter') {
+                doSearch();
+              }
+            }}
+            InputProps={{disableUnderline: true}}
+          />
+        </Grid>
+
+        <Grid
+          item
+          container
+          alignItems='center'
+          xs={2}
+        >
+
+          <Grid item>
+            <Typography variant="body1">
+                    Page
             </Typography>
           </Grid>
-          <Grid
-            item
-            container
-            alignItems="flex-start"
-            justifyContent="center"
-            xs={10}
-          >
-            <Grid item container alignItems="center" xs={12}>
-
-              <TextField
-                fullWidth
-                placeholder={Search.placeHolder}
-                size="small"
-                name="search"
-                type="text"
-                onChange={(e) => {
-                  doSetSearchTerm(e);
-                }}
-                onKeyPress= {(e) => {
-                  if (e.key === 'Enter') {
-                    doSearch();
-                  }
-                }}
-                InputProps={{disableUnderline: true}}
-              />
-            </Grid>
+          <Grid item>
+            <Button
+              aria-label="Page back"
+              onClick={() => getRecords(low - Dbase.pageLimit)}
+              disabled={backDisabled}
+              classes={{
+                disabled: classes.buttonDisabled,
+              }}
+              style={{
+                margin: 0,
+                padding: 0,
+                paddingLeft: theme.spacing(0.5),
+                background: '#FFFFFF',
+                opacity: `${backDisabled ? 0.3:1}`,
+              }}
+            >
+              <PageBack className={classes.chartIcon} />
+            </Button>
           </Grid>
-
-          <Grid
-            item
-            container
-            alignItems='center'
-            justifyContent='flex-end'
-            xs={1}>
-
-            <Grid item container justifyContent='flex-end' xs={6}>
-              <Button
-                aria-label="Page back"
-                onClick={() => getRecords(low - Dbase.pageLimit)}
-                disabled={backDisabled}
-                style={{
+          <Grid item container alignItems='flex-end' xs={3}>
+            <TextField
+              placeholder={page.toString()}
+              inputRef={setPageRef}
+              size="small"
+              name="page"
+              type="text"
+              onChange={(e) => {
+                setThisPageNumber(e);
+              }}
+              onKeyPress= {(e) => {
+                if (e.key === 'Enter') {
+                  doSetPage();
+                }
+              }}
+              inputProps={{
+                style: {
                   margin: 0,
-                  padding: 0,
-                  background: '#F0F0FA',
-                }}
-              >
-                <PageBack className={classes.pageIcon} />
-              </Button>
-            </Grid>
-            <Grid item container justifyContent='flex-end' xs={6}>
-              <Button
-                aria-label="Page forward"
-                onClick={() => getRecords(low + Dbase.pageLimit)}
-                disabled={nextDisabled}
-                style={{
-                  margin: 0,
-                  padding: 0,
-                  background: '#F0F0FA',
-                }}
-              >
-                <PageForward className={classes.pageIcon} />
-              </Button>
-            </Grid>
+                  padding: theme.spacing(0.6),
+                  paddingTop: 0,
+                  paddingBottom: 0,
+                  paddingLeft: theme.spacing(0.5),
+                  paddingRight: theme.spacing(0.5),
+                },
+              }}
+              InputProps={{
+                disableUnderline: true,
+              }}
+            />
+          </Grid>
+          <Grid item>
+            <Button
+              aria-label="Page forward"
+              onClick={() => getRecords(low + Dbase.pageLimit)}
+              disabled={nextDisabled}
+              style={{
+                margin: 0,
+                padding: 0,
+                paddingRight: theme.spacing(0.5),
+                background: '#FFFFFF',
+                opacity: `${nextDisabled ? 0.3:1}`,
+              }}
+            >
+              <PageForward className={classes.chartIcon} />
+            </Button>
+          </Grid>
+          <Grid item>
+            <Typography variant="body1">
+                of {Math.ceil(totalRecords / Dbase.pageLimit)}
+            </Typography>
           </Grid>
         </Grid>
 
