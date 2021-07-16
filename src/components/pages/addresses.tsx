@@ -94,7 +94,7 @@ const display = (props: Props) => {
               >
                 <label htmlFor="address">{AddressVars.address}</label>
               </Grid>
-              <Grid item container xs={8} lg={10}>
+              <Grid item container className={classes.formEntry} xs={8} lg={10}>
                 <TextField
                   fullWidth
                   size="small"
@@ -138,7 +138,7 @@ const display = (props: Props) => {
               >
                 <label htmlFor="url">{AddressVars.url}</label>
               </Grid>
-              <Grid item container xs={8} lg={10}>
+              <Grid item className={classes.formEntry} container xs={8} lg={10}>
                 <TextField
                   fullWidth
                   size="small"

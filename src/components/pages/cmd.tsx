@@ -305,7 +305,15 @@ const display = (props: Props) => {
                 >
                   <label htmlFor="params">{CmdVars.params}</label>
                 </Grid>
-                <Grid item container xs={8} lg={10}>
+
+                <Grid
+                  item
+                  container
+                  className={classes.formEntry}
+                  xs={8}
+                  lg={10}
+                >
+
                   <TextField
                     fullWidth
                     disabled={paramsDisabled}

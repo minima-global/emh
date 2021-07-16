@@ -130,7 +130,7 @@ const display = (props: Props) => {
               >
                 <label htmlFor="endpoint">{TriggerVars.endpoint}</label>
               </Grid>
-              <Grid item container xs={8} lg={10}>
+              <Grid item container className={classes.formEntry} xs={8} lg={10}>
                 <TextField
                   fullWidth
                   size="small"
@@ -174,7 +174,7 @@ const display = (props: Props) => {
               >
                 <label htmlFor="command">{TriggerVars.command}</label>
               </Grid>
-              <Grid item container xs={8} lg={10}>
+              <Grid item container className={classes.formEntry} xs={8} lg={10}>
                 <TextField
                   fullWidth
                   size="small"
@@ -218,7 +218,7 @@ const display = (props: Props) => {
               >
                 <label htmlFor="format">{TriggerVars.format}</label>
               </Grid>
-              <Grid item container xs={8} lg={10}>
+              <Grid item container className={classes.formEntry} xs={8} lg={10}>
                 <TextField
                   fullWidth
                   size="small"
@@ -262,7 +262,7 @@ const display = (props: Props) => {
               >
                 <label htmlFor="setParams">{TriggerVars.setParams}</label>
               </Grid>
-              <Grid item container xs={8} lg={10}>
+              <Grid item container className={classes.formEntry} xs={8} lg={10}>
                 <TextField
                   fullWidth
                   size="small"
@@ -306,7 +306,7 @@ const display = (props: Props) => {
               >
                 <label htmlFor="params">{TriggerVars.params}</label>
               </Grid>
-              <Grid item container xs={8} lg={10}>
+              <Grid item container className={classes.formEntry} xs={8} lg={10}>
                 <TextField
                   fullWidth
                   size="small"
@@ -349,7 +349,7 @@ const display = (props: Props) => {
               >
                 <label htmlFor="public">{TriggerVars.public}</label>
               </Grid>
-              <Grid item container xs={7} lg={9}>
+              <Grid item container className={classes.formEntry} xs={7} lg={9}>
                 <Switch
                   size='medium'
                   color="primary"

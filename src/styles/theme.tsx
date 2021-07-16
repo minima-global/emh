@@ -464,6 +464,9 @@ const themeStyles = makeStyles({
     color: '#001C32',
     fontWeight: 400,
   },
+  formEntry: {
+    paddingTop: theme.spacing(1),
+  },
   formError: {
     color: 'red',
     margin: 0,
