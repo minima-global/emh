@@ -167,7 +167,7 @@ const list = (props: Props) => {
         </Grid>
 
         <Grid
-          className={classes.formSummary}
+          className={classes.pageSummary}
           item
           container
           justifyContent="flex-start"
@@ -181,7 +181,7 @@ const list = (props: Props) => {
           </svg>
         </Grid>
 
-        <Grid item container className={classes.formSummary} xs={12}>
+        <Grid item container className={classes.pageSummary} xs={12}>
           { props.triggersData?.data.map(
               ( trigger: TriggersType, index: number ) => {
                 const endpoint = trigger.ENDPOINT;

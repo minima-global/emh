@@ -52,7 +52,7 @@ const display = (props: Props) => {
           {StatusVars.heading}
         </Typography>
 
-        <Grid item container className={classes.formSummary} xs={12}>
+        <Grid item container className={classes.pageSummary} xs={12}>
           {
             props.statusData?.data.map( ( status: Status, index: number ) => {
               // 0 Years 0 Months 0 Weeks 0 Days 3 Hours 47 Minutes

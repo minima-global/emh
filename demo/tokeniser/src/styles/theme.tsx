@@ -325,7 +325,7 @@ const themeStyles = makeStyles({
     paddingTop: theme.spacing(1),
     paddingBottom: theme.spacing(1),
   },
-  formSummary: {
+  pageSummary: {
     paddingTop: theme.spacing(1),
   },
   activeLink: {

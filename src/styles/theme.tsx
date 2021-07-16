@@ -476,7 +476,7 @@ const themeStyles = makeStyles({
     fontSize: '1.4em',
     fontWeight: 700,
   },
-  formSummary: {
+  pageSummary: {
     paddingTop: theme.spacing(1),
   },
   activeLink: {

@@ -78,7 +78,7 @@ export const Info = (props: Props) => {
           </svg>
         </Grid>
 
-        <Grid item container className={classes.formSummary} xs={12}>
+        <Grid item container className={classes.pageSummary} xs={12}>
           { pageData.data.map( (data: string, i: number ) => {
             return (
 
