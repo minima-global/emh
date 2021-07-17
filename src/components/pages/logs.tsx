@@ -5,6 +5,10 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import InputAdornment from '@material-ui/core/InputAdornment';
+
+import SearchIcon from '../../images/magnifying.svg';
+import SearchDelete from '../../images/crossSearchBar.svg';
 
 import {
   ApplicationState,
@@ -56,7 +60,7 @@ interface DispatchProps {
 type Props = ThisProps & StateProps & DispatchProps
 
 export const list = (props: Props) => {
-  const [searchTerm, setSearchTerm] = useState('');
+  let [searchTerm, setSearchTerm] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   // eslint-disable-next-line no-unused-vars
   const [low, setLimitLow] = useState(0);
@@ -68,6 +72,7 @@ export const list = (props: Props) => {
   const [nextDisabled, setNextDisabled] = useState(false);
   const [backDisabled, setBackDisabled] = useState(true);
 
+  const searchRef = useRef<HTMLInputElement>(null);
   const setPageRef = useRef<HTMLInputElement>(null);
 
   const actionType: SuccessAndFailType = {
@@ -138,6 +143,12 @@ export const list = (props: Props) => {
     props.getTableEntries(query, actionType);
   };
 
+  const clearSearch = () => {
+    searchTerm = '';
+    (searchRef.current as HTMLInputElement).value = '';
+    doSearch();
+  };
+
   const getRecords = (lowLimit: number) => {
     // console.log('getting records', lowLimit, offset, totalRecords);
     if ( lowLimit >= 0) {
@@ -205,6 +216,7 @@ export const list = (props: Props) => {
           <TextField
             fullWidth
             placeholder={Search.placeHolder}
+            inputRef={searchRef}
             size="small"
             name="search"
             type="text"
@@ -216,7 +228,35 @@ export const list = (props: Props) => {
                 doSearch();
               }
             }}
-            InputProps={{disableUnderline: true}}
+            InputProps={{
+              disableUnderline: true,
+              endAdornment: (
+                <>
+                  <InputAdornment
+                    position="start"
+                    onClick={() => clearSearch()}>
+                    <SearchDelete className={classes.searchClearIcon}/>
+                  </InputAdornment>
+                  <InputAdornment position="end">
+                    <svg id="chart" width="1" height="30">
+
+                      <line
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2="30"
+                        stroke="#aaaabe"
+                        strokeWidth='1'
+                      />
+
+                    </svg>
+                  </InputAdornment>
+                  <InputAdornment position="end">
+                    <SearchIcon className={classes.searchIcon} />
+                  </InputAdornment>
+                </>
+              ),
+            }}
           />
         </Grid>
 
@@ -277,9 +317,7 @@ export const list = (props: Props) => {
                   paddingRight: theme.spacing(0.5),
                 },
               }}
-              InputProps={{
-                disableUnderline: true,
-              }}
+              InputProps={{disableUnderline: true}}
             />
           </Grid>
           <Grid item>
