@@ -84,6 +84,7 @@ export const list = (props: Props) => {
     const query = props.logType.query + ' LIMIT ' + low + ', ' + offset;
     props.countTableEntries(props.logType.countQuery, props.logType.key);
     props.getTableEntries(query, actionType);
+    setPage(1);
   }, []);
 
   useEffect(() => {
@@ -107,52 +108,6 @@ export const list = (props: Props) => {
       setBackDisabled(false);
     }
   }, [props.logsData, props.countData]);
-
-  /*
-    <Grid item container justifyContent="flex-start" xs={1}>
-      <Typography variant="h5">
-        {LogVars.records} &nbsp;
-        {(low + Dbase.pageLimit) / Dbase.pageLimit}
-      </Typography>
-    </Grid>
-
-    <Grid
-      item
-      container
-      alignItems='center'
-      justifyContent='flex-end'
-      xs={1}>
-
-      <Grid item container justifyContent='flex-end' xs={6}>
-        <Button
-          aria-label="Page back"
-          onClick={() => getRecords(low - Dbase.pageLimit)}
-          disabled={backDisabled}
-          style={{
-            margin: 0,
-            padding: 0,
-            background: '#F0F0FA',
-          }}
-        >
-          <PageBack className={classes.pageIcon} />
-        </Button>
-      </Grid>
-      <Grid item container justifyContent='flex-end' xs={6}>
-        <Button
-          aria-label="Page forward"
-          onClick={() => getRecords(low + Dbase.pageLimit)}
-          disabled={nextDisabled}
-          style={{
-            margin: 0,
-            padding: 0,
-            background: '#F0F0FA',
-          }}
-        >
-          <PageForward className={classes.pageIcon} />
-        </Button>
-      </Grid>
-    </Grid>
-  */
 
   const doSetSearchTerm =
       (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -186,7 +141,7 @@ export const list = (props: Props) => {
   const getRecords = (lowLimit: number) => {
     // console.log('getting records', lowLimit, offset, totalRecords);
     if ( lowLimit >= 0) {
-      const thisPage = Math.ceil(lowLimit / Dbase.pageLimit);
+      const thisPage = Math.ceil((lowLimit + Dbase.pageLimit)/ Dbase.pageLimit);
       setPage(thisPage);
       (setPageRef.current as HTMLInputElement).value = thisPage.toString();
       setLimitLow(lowLimit);
@@ -214,16 +169,11 @@ export const list = (props: Props) => {
     // console.log('setting page', page);
     if ( page >= 1 && page <= (Math.ceil(totalRecords / Dbase.pageLimit))) {
       // console.log('yup setting page', page);
-      setPage(page);
-      (setPageRef.current as HTMLInputElement).value = page.toString();
-      getRecords(page * Dbase.pageLimit);
+      getRecords((page * Dbase.pageLimit) - Dbase.pageLimit);
     } else if ( page < 1 ) {
-      setPage(1);
-      (setPageRef.current as HTMLInputElement).value = '1';
+      getRecords(0);
     } else {
-      setPage(Math.ceil(totalRecords / Dbase.pageLimit));
-      (setPageRef.current as HTMLInputElement).value =
-        (Math.ceil(totalRecords / Dbase.pageLimit)).toString();
+      getRecords(totalRecords - Dbase.pageLimit);
     }
   };
 
@@ -274,6 +224,7 @@ export const list = (props: Props) => {
           item
           container
           alignItems='center'
+          justifyContent='flex-end'
           xs={2}
         >
 
@@ -294,7 +245,7 @@ export const list = (props: Props) => {
                 margin: 0,
                 padding: 0,
                 paddingLeft: theme.spacing(0.5),
-                background: '#FFFFFF',
+                background: '#F0F0FA',
                 opacity: `${backDisabled ? 0.3:1}`,
               }}
             >
@@ -340,7 +291,7 @@ export const list = (props: Props) => {
                 margin: 0,
                 padding: 0,
                 paddingRight: theme.spacing(0.5),
-                background: '#FFFFFF',
+                background: '#F0F0FA',
                 opacity: `${nextDisabled ? 0.3:1}`,
               }}
             >
