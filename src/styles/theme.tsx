@@ -304,15 +304,6 @@ const themeStyles = makeStyles({
       width: '25px',
     },
   },
-  select: {
-    'borderRadius': '10px',
-    'background': 'linear-gradient(#FFFFFF, #FFFFFF)',
-    'color': '#001C32',
-    'fontWeight': 400,
-    'fontFamily': '"Manrope", "Roboto", "Arial", "sans-serif"',
-    'lineHeight': '1.5',
-    'fontSize': '1em',
-  },
   modalSub: {
     [breakpoints.up('xs')]: {
       backgroundColor: theme.palette.background.default,
