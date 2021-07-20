@@ -11,6 +11,7 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 // import Select from 'react-select';
 import MenuItem from '@material-ui/core/MenuItem';
+// import Select from '@material-ui/core/Select';
 
 import Spinner from 'react-spinner-material';
 
@@ -269,6 +270,11 @@ const display = (props: Props) => {
                       doSetTrigger(selectedOption);
                     }}
                     InputProps={{disableUnderline: true}}
+                    SelectProps={{
+                      MenuProps: {
+                        classes: {paper: classes.cmdSelect},
+                      },
+                    }}
                   >
                     {triggers.map((trigger, index) => (
                       <MenuItem

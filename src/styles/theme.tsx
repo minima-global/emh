@@ -324,6 +324,11 @@ const themeStyles = makeStyles({
       width: '30%',
     },
   },
+  cmdSelect: {
+    '& ul': {
+      backgroundColor: '#FFFFFF',
+    },
+  },
   modalSubIcons: {
     textAlign: 'center',
   },
