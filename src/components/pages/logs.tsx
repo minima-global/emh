@@ -67,7 +67,7 @@ export const list = (props: Props) => {
   // eslint-disable-next-line no-unused-vars
   const [offset, setOffset] = useState(Dbase.pageLimit);
   const [totalRecords, setTotalRecords] = useState(0);
-  const [page, setPage] = useState(0);
+  let [page, setPage] = useState(0);
   const [thisPage, setThisPage] = useState(0);
   const [nextDisabled, setNextDisabled] = useState(false);
   const [backDisabled, setBackDisabled] = useState(true);
@@ -122,23 +122,21 @@ export const list = (props: Props) => {
   const doSearch = () => {
     setLimitLow(0);
     let countQuery = props.logType.countQuery;
-    let query = props.logType.query + ' LIMIT ' + 0 + ', ' + offset;
+    let query = props.logType.query;
 
     if ( searchTerm ) {
-      query = props.logType.searchQuery.replace(/<[^>]*>/g, searchTerm);
       countQuery =
         props.logType.searchCountQuery.replace(/<[^>]*>/g, searchTerm);
-
-      /*
-      console.log('count query: ', countQuery, props.logType.searchCountQuery);
-      console.log('query: ', query, props.logType.searchQuery);
-      */
+      query = props.logType.searchQuery.replace(/<[^>]*>/g, searchTerm);
+      setSearchQuery(query);
+    } else {
       setSearchQuery('');
     }
 
-    /* console.log('count query: ', countQuery);
-    console.log('query: ', query);*/
-
+    page = 1;
+    (setPageRef.current as HTMLInputElement).value = page.toString();
+    query += ' LIMIT ' + 0 + ', ' + offset;
+    // console.log('query is', query, page);
     props.countTableEntries(countQuery, props.logType.key);
     props.getTableEntries(query, actionType);
   };
@@ -161,6 +159,7 @@ export const list = (props: Props) => {
         query = searchQuery;
       }
       query += ' LIMIT ' + lowLimit + ', ' + offset;
+      // console.log('search query', searchQuery, searchTerm);
       // console.log('getting records', query, totalRecords);
       // console.log(query);
       props.getTableEntries(query, actionType);
