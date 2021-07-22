@@ -338,6 +338,9 @@ const themeStyles = makeStyles({
   buttonDisabled: {
     backgroundColor: '#EEEEEE',
   },
+  statusIcon: {
+    height: '20px',
+  },
   searchClearIcon: {
     height: '15px',
   },

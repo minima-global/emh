@@ -24,6 +24,7 @@ import {write} from '../../actions';
 export const init = () => {
   return async (dispatch: AppDispatch) => {
     Minima.init( function(msg: any) {
+      // console.log(msg);
       if (msg.event == 'connected') {
         dispatch(getBalance());
         dispatch(getStatus());
@@ -34,10 +35,6 @@ export const init = () => {
       } else if ( msg.event == 'newbalance' ) {
         dispatch(getBalance());
       } else if (msg.event == 'newtxpow') {
-        // force the charts to reload as we may have new tx/address entries
-        // in the database
-        // console.log('newtxpow');
-        // dispatch(write({data: []})(ChartsActionTypes.CHARTS_INIT));
         dispatch(getStatus());
       }
     });
@@ -121,6 +118,8 @@ export const getStatus = () => {
         dispatch(write(
             {data: statusData.data})(StatusActionTypes.STATUS_SUCCESS));
       } else {
+        dispatch(write(
+            {data: []})(StatusActionTypes.STATUS_FAILURE));
         Minima.log('status failed');
       }
     });
