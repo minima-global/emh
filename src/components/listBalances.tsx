@@ -330,9 +330,15 @@ const display = (props: Props) => {
                     {balance.icon?
                         <Avatar
                           alt='Token Icon'
+                          style={{
+                            border: '0.1px solid lightgray',
+                          }}
                           src={balance.icon} /> :
                         <Avatar
                           alt='Token Icon'
+                          style={{
+                            border: '0.1px solid lightgray',
+                          }}
                           src={'https://www.gravatar.com/avatar/' + SparkMD5.hash(balance.tokenid) + '?d=identicon'} />
                     }
                   </Grid>
