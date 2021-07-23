@@ -148,7 +148,7 @@ class DailyCmd {
   static readonly chartKey = shortid.generate();
 
   static readonly chartCountKey =
-    'COUNT(FROM_UNIXTIME(' + Dbase.tables.log.columns[1] + '/1000))';
+  'COUNT(FROM_UNIXTIME(' + Dbase.tables.log.columns[1] + '/1000))';
   static readonly chartDataKey =
     'DATE(FROM_UNIXTIME(' + Dbase.tables.log.columns[1] + '/1000))';
   static readonly chartQuery = 'SELECT ' +
