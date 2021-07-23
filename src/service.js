@@ -276,19 +276,32 @@ function createTrigger() {
  * @function createURLAPI
  */
 function createURLAPI() {
-  const insertSQL = 'INSERT IGNORE INTO ' +
-      tables.trigger.name +
-      ' (ENDPOINT, CMD, FORMAT, SETPARAMS, PARAMS, ISPUBLIC) ' +
-      'VALUES (' +
-      '\'' + defaultAPI.url.endpoint + '\', ' +
-      '\'' + defaultAPI.url.command + '\', ' +
-      '\'' + defaultAPI.url.format + '\', ' +
-      '\'' + defaultAPI.url.setParams + '\', ' +
-      '\'' + defaultAPI.url.params + '\', ' +
-      '\'' + defaultAPI.url.isPublic + '\'' +
-    ')';
-  doSQL(insertSQL, tables.log.name);
-  doLog(tables.trigger.name, defaultActions.insert, defaultAPI.url.endpoint, '');
+  const apiSelectSQL = 'SELECT ENDPOINT FROM ' +
+    tables.trigger.name +
+    ' WHERE ENDPOINT = \'' +
+    defaultAPI.url.endpoint +
+    '\'';
+
+  Minima.sql(apiSelectSQL, function(selectResults) {
+    // Minima.log(app + ' API endpoint ' + defaultAPI.tokenCreate.endpoint + tokenResults.response.count);
+    if (selectResults.response && selectResults.response.count) {
+      Minima.log(app + ' API already has endpoint ' + defaultAPI.url.endpoint);
+    } else {
+      const insertSQL = 'INSERT INTO ' +
+          tables.trigger.name +
+          ' (ENDPOINT, CMD, FORMAT, SETPARAMS, PARAMS, ISPUBLIC) ' +
+          'VALUES (' +
+          '\'' + defaultAPI.url.endpoint + '\', ' +
+          '\'' + defaultAPI.url.command + '\', ' +
+          '\'' + defaultAPI.url.format + '\', ' +
+          '\'' + defaultAPI.url.setParams + '\', ' +
+          '\'' + defaultAPI.url.params + '\', ' +
+          '\'' + defaultAPI.url.isPublic + '\'' +
+        ')';
+      doSQL(insertSQL, tables.log.name);
+      doLog(tables.trigger.name, defaultActions.insert, defaultAPI.url.endpoint, '');
+    }
+  });
 }
 
 /**
@@ -296,19 +309,32 @@ function createURLAPI() {
  * @function createAddressListenAPI
  */
 function createAddressListenAPI() {
-  const insertSQL = 'INSERT IGNORE INTO ' +
-      tables.trigger.name +
-      ' (ENDPOINT, CMD, FORMAT, SETPARAMS, PARAMS, ISPUBLIC) ' +
-      'VALUES (' +
-      '\'' + defaultAPI.address.endpoint + '\', ' +
-      '\'' + defaultAPI.address.command + '\', ' +
-      '\'' + defaultAPI.address.format + '\', ' +
-      '\'' + defaultAPI.address.setParams + '\', ' +
-      '\'' + defaultAPI.address.params + '\', ' +
-      '\'' + defaultAPI.address.isPublic + '\'' +
-    ')';
-  doSQL(insertSQL, tables.log.name);
-  doLog(tables.trigger.name, defaultActions.insert, defaultAPI.address.endpoint, '');
+  const apiSelectSQL = 'SELECT ENDPOINT FROM ' +
+    tables.trigger.name +
+    ' WHERE ENDPOINT = \'' +
+    defaultAPI.address.endpoint +
+    '\'';
+
+  Minima.sql(apiSelectSQL, function(selectResults) {
+    // Minima.log(app + ' API endpoint ' + defaultAPI.tokenCreate.endpoint + tokenResults.response.count);
+    if (selectResults.response && selectResults.response.count) {
+      Minima.log(app + ' API already has endpoint ' + defaultAPI.address.endpoint);
+    } else {
+      const insertSQL = 'INSERT INTO ' +
+          tables.trigger.name +
+          ' (ENDPOINT, CMD, FORMAT, SETPARAMS, PARAMS, ISPUBLIC) ' +
+          'VALUES (' +
+          '\'' + defaultAPI.address.endpoint + '\', ' +
+          '\'' + defaultAPI.address.command + '\', ' +
+          '\'' + defaultAPI.address.format + '\', ' +
+          '\'' + defaultAPI.address.setParams + '\', ' +
+          '\'' + defaultAPI.address.params + '\', ' +
+          '\'' + defaultAPI.address.isPublic + '\'' +
+        ')';
+      doSQL(insertSQL, tables.log.name);
+      doLog(tables.trigger.name, defaultActions.insert, defaultAPI.address.endpoint, '');
+    }
+  });
 }
 
 /**
@@ -316,19 +342,32 @@ function createAddressListenAPI() {
  * @function createTokenListenAPI
  */
 function createTokenListenAPI() {
-  const insertSQL = 'INSERT IGNORE INTO ' +
-      tables.trigger.name +
-      ' (ENDPOINT, CMD, FORMAT, SETPARAMS, PARAMS, ISPUBLIC) ' +
-      'VALUES (' +
-      '\'' + defaultAPI.token.endpoint + '\', ' +
-      '\'' + defaultAPI.token.command + '\', ' +
-      '\'' + defaultAPI.token.format + '\', ' +
-      '\'' + defaultAPI.token.setParams + '\', ' +
-      '\'' + defaultAPI.token.params + '\', ' +
-      '\'' + defaultAPI.token.isPublic + '\'' +
-    ')';
-  doSQL(insertSQL, tables.log.name);
-  doLog(tables.trigger.name, defaultActions.insert, defaultAPI.token.endpoint, '');
+  const apiSelectSQL = 'SELECT ENDPOINT FROM ' +
+    tables.trigger.name +
+    ' WHERE ENDPOINT = \'' +
+    defaultAPI.token.endpoint +
+    '\'';
+
+  Minima.sql(apiSelectSQL, function(selectResults) {
+    // Minima.log(app + ' API endpoint ' + defaultAPI.tokenCreate.endpoint + tokenResults.response.count);
+    if (selectResults.response && selectResults.response.count) {
+      Minima.log(app + ' API already has endpoint ' + defaultAPI.token.endpoint);
+    } else {
+      const insertSQL = 'INSERT INTO ' +
+          tables.trigger.name +
+          ' (ENDPOINT, CMD, FORMAT, SETPARAMS, PARAMS, ISPUBLIC) ' +
+          'VALUES (' +
+          '\'' + defaultAPI.token.endpoint + '\', ' +
+          '\'' + defaultAPI.token.command + '\', ' +
+          '\'' + defaultAPI.token.format + '\', ' +
+          '\'' + defaultAPI.token.setParams + '\', ' +
+          '\'' + defaultAPI.token.params + '\', ' +
+          '\'' + defaultAPI.token.isPublic + '\'' +
+        ')';
+      doSQL(insertSQL, tables.log.name);
+      doLog(tables.trigger.name, defaultActions.insert, defaultAPI.token.endpoint, '');
+    }
+  });
 }
 
 /**
@@ -336,19 +375,32 @@ function createTokenListenAPI() {
  * @function createGetDbaseAPI
  */
 function createGetDbaseAPI() {
-  const insertSQL = 'INSERT IGNORE INTO ' +
-      tables.trigger.name +
-      ' (ENDPOINT, CMD, FORMAT, SETPARAMS, PARAMS, ISPUBLIC) ' +
-      'VALUES (' +
-      '\'' + defaultAPI.dbase.endpoint + '\', ' +
-      '\'' + defaultAPI.dbase.command + '\', ' +
-      '\'' + defaultAPI.dbase.format + '\', ' +
-      '\'' + defaultAPI.dbase.setParams + '\', ' +
-      '\'' + defaultAPI.dbase.params + '\', ' +
-      '\'' + defaultAPI.dbase.isPublic + '\'' +
-    ')';
-  doSQL(insertSQL, tables.log.name);
-  doLog(tables.trigger.name, defaultActions.insert, defaultAPI.dbase.endpoint, '');
+  const apiSelectSQL = 'SELECT ENDPOINT FROM ' +
+    tables.trigger.name +
+    ' WHERE ENDPOINT = \'' +
+    defaultAPI.dbase.endpoint +
+    '\'';
+
+  Minima.sql(apiSelectSQL, function(selectResults) {
+    // Minima.log(app + ' API endpoint ' + defaultAPI.tokenCreate.endpoint + tokenResults.response.count);
+    if (selectResults.response && selectResults.response.count) {
+      Minima.log(app + ' API already has endpoint ' + defaultAPI.dbase.endpoint);
+    } else {
+      const insertSQL = 'INSERT INTO ' +
+          tables.trigger.name +
+          ' (ENDPOINT, CMD, FORMAT, SETPARAMS, PARAMS, ISPUBLIC) ' +
+          'VALUES (' +
+          '\'' + defaultAPI.dbase.endpoint + '\', ' +
+          '\'' + defaultAPI.dbase.command + '\', ' +
+          '\'' + defaultAPI.dbase.format + '\', ' +
+          '\'' + defaultAPI.dbase.setParams + '\', ' +
+          '\'' + defaultAPI.dbase.params + '\', ' +
+          '\'' + defaultAPI.dbase.isPublic + '\'' +
+        ')';
+      doSQL(insertSQL, tables.log.name);
+      doLog(tables.trigger.name, defaultActions.insert, defaultAPI.dbase.endpoint, '');
+    }
+  });
 }
 
 /**
@@ -356,19 +408,32 @@ function createGetDbaseAPI() {
  * @function createGimme50API
  */
 function createGimme50API() {
-  const insertSQL = 'INSERT IGNORE INTO ' +
-      tables.trigger.name +
-      ' (ENDPOINT, CMD, FORMAT, SETPARAMS, PARAMS, ISPUBLIC) ' +
-      'VALUES (' +
-      '\'' + defaultAPI.gimme50.endpoint + '\', ' +
-      '\'' + defaultAPI.gimme50.command + '\', ' +
-      '\'' + defaultAPI.gimme50.format + '\', ' +
-      '\'' + defaultAPI.gimme50.setParams + '\', ' +
-      '\'' + defaultAPI.gimme50.params + '\', ' +
-      '\'' + defaultAPI.gimme50.isPublic + '\'' +
-    ')';
-  doSQL(insertSQL, tables.log.name);
-  doLog(tables.trigger.name, defaultActions.insert, defaultAPI.gimme50.endpoint, '');
+  const apiSelectSQL = 'SELECT ENDPOINT FROM ' +
+    tables.trigger.name +
+    ' WHERE ENDPOINT = \'' +
+    defaultAPI.gimme50.endpoint +
+    '\'';
+
+  Minima.sql(apiSelectSQL, function(selectResults) {
+    // Minima.log(app + ' API endpoint ' + defaultAPI.tokenCreate.endpoint + tokenResults.response.count);
+    if (selectResults.response && selectResults.response.count) {
+      Minima.log(app + ' API already has endpoint ' + defaultAPI.gimme50.endpoint);
+    } else {
+      const insertSQL = 'INSERT INTO ' +
+          tables.trigger.name +
+          ' (ENDPOINT, CMD, FORMAT, SETPARAMS, PARAMS, ISPUBLIC) ' +
+          'VALUES (' +
+          '\'' + defaultAPI.gimme50.endpoint + '\', ' +
+          '\'' + defaultAPI.gimme50.command + '\', ' +
+          '\'' + defaultAPI.gimme50.format + '\', ' +
+          '\'' + defaultAPI.gimme50.setParams + '\', ' +
+          '\'' + defaultAPI.gimme50.params + '\', ' +
+          '\'' + defaultAPI.gimme50.isPublic + '\'' +
+        ')';
+      doSQL(insertSQL, tables.log.name);
+      doLog(tables.trigger.name, defaultActions.insert, defaultAPI.gimme50.endpoint, '');
+    }
+  });
 }
 
 /**
@@ -376,19 +441,32 @@ function createGimme50API() {
  * @function createSendAPI
  */
 function createSendAPI() {
-  const insertSQL = 'INSERT IGNORE INTO ' +
-      tables.trigger.name +
-      ' (ENDPOINT, CMD, FORMAT, SETPARAMS, PARAMS, ISPUBLIC) ' +
-      'VALUES (' +
-      '\'' + defaultAPI.send.endpoint + '\', ' +
-      '\'' + defaultAPI.send.command + '\', ' +
-      '\'' + defaultAPI.send.format + '\', ' +
-      '\'' + defaultAPI.send.setParams + '\', ' +
-      '\'' + defaultAPI.send.params + '\', ' +
-      '\'' + defaultAPI.send.isPublic + '\'' +
-    ')';
-  doSQL(insertSQL, tables.log.name);
-  doLog(tables.trigger.name, defaultActions.insert, defaultAPI.send.endpoint, '');
+  const apiSelectSQL = 'SELECT ENDPOINT FROM ' +
+    tables.trigger.name +
+    ' WHERE ENDPOINT = \'' +
+    defaultAPI.send.endpoint +
+    '\'';
+
+  Minima.sql(apiSelectSQL, function(selectResults) {
+    // Minima.log(app + ' API endpoint ' + defaultAPI.tokenCreate.endpoint + tokenResults.response.count);
+    if (selectResults.response && selectResults.response.count) {
+      Minima.log(app + ' API already has endpoint ' + defaultAPI.send.endpoint);
+    } else {
+      const insertSQL = 'INSERT INTO ' +
+          tables.trigger.name +
+          ' (ENDPOINT, CMD, FORMAT, SETPARAMS, PARAMS, ISPUBLIC) ' +
+          'VALUES (' +
+          '\'' + defaultAPI.send.endpoint + '\', ' +
+          '\'' + defaultAPI.send.command + '\', ' +
+          '\'' + defaultAPI.send.format + '\', ' +
+          '\'' + defaultAPI.send.setParams + '\', ' +
+          '\'' + defaultAPI.send.params + '\', ' +
+          '\'' + defaultAPI.send.isPublic + '\'' +
+        ')';
+      doSQL(insertSQL, tables.log.name);
+      doLog(tables.trigger.name, defaultActions.insert, defaultAPI.send.endpoint, '');
+    }
+  });
 }
 
 /**
@@ -396,19 +474,32 @@ function createSendAPI() {
  * @function createAddressListenAPI
  */
 function createTokenAPI() {
-  const insertSQL = 'INSERT IGNORE INTO ' +
-      tables.trigger.name +
-      ' (ENDPOINT, CMD, FORMAT, SETPARAMS, PARAMS, ISPUBLIC) ' +
-      'VALUES (' +
-      '\'' + defaultAPI.tokenCreate.endpoint + '\', ' +
-      '\'' + defaultAPI.tokenCreate.command + '\', ' +
-      '\'' + defaultAPI.tokenCreate.format + '\', ' +
-      '\'' + defaultAPI.tokenCreate.setParams + '\', ' +
-      '\'' + defaultAPI.tokenCreate.params + '\', ' +
-      '\'' + defaultAPI.tokenCreate.isPublic + '\'' +
-    ')';
-  doSQL(insertSQL, tables.log.name);
-  doLog(tables.trigger.name, defaultActions.insert, defaultAPI.tokenCreate.endpoint, '');
+  const apiSelectSQL = 'SELECT ENDPOINT FROM ' +
+    tables.trigger.name +
+    ' WHERE ENDPOINT = \'' +
+    defaultAPI.tokenCreate.endpoint +
+    '\'';
+
+  Minima.sql(apiSelectSQL, function(selectResults) {
+    // Minima.log(app + ' API endpoint ' + defaultAPI.tokenCreate.endpoint + tokenResults.response.count);
+    if (selectResults.response && selectResults.response.count) {
+      Minima.log(app + ' API already has endpoint ' + defaultAPI.tokenCreate.endpoint);
+    } else {
+      const insertSQL = 'INSERT INTO ' +
+        tables.trigger.name +
+        ' (ENDPOINT, CMD, FORMAT, SETPARAMS, PARAMS, ISPUBLIC) ' +
+        'VALUES (' +
+        '\'' + defaultAPI.tokenCreate.endpoint + '\', ' +
+        '\'' + defaultAPI.tokenCreate.command + '\', ' +
+        '\'' + defaultAPI.tokenCreate.format + '\', ' +
+        '\'' + defaultAPI.tokenCreate.setParams + '\', ' +
+        '\'' + defaultAPI.tokenCreate.params + '\', ' +
+        '\'' + defaultAPI.tokenCreate.isPublic + '\'' +
+      ')';
+      doSQL(insertSQL, tables.log.name);
+      doLog(tables.trigger.name, defaultActions.insert, defaultAPI.tokenCreate.endpoint, '');
+    }
+  });
 }
 
 /**
@@ -416,19 +507,32 @@ function createTokenAPI() {
  * @function createBalanceAPI
  */
 function createBalanceAPI() {
-  const insertSQL = 'INSERT IGNORE INTO ' +
-      tables.trigger.name +
-      ' (ENDPOINT, CMD, FORMAT, SETPARAMS, PARAMS, ISPUBLIC) ' +
-      'VALUES (' +
-      '\'' + defaultAPI.balance.endpoint + '\', ' +
-      '\'' + defaultAPI.balance.command + '\', ' +
-      '\'' + defaultAPI.balance.format + '\', ' +
-      '\'' + defaultAPI.balance.setParams + '\', ' +
-      '\'' + defaultAPI.balance.params + '\', ' +
-      '\'' + defaultAPI.balance.isPublic + '\'' +
-    ')';
-  doSQL(insertSQL, tables.log.name);
-  doLog(tables.trigger.name, defaultActions.insert, defaultAPI.balance.endpoint, '');
+  const apiSelectSQL = 'SELECT ENDPOINT FROM ' +
+    tables.trigger.name +
+    ' WHERE ENDPOINT = \'' +
+    defaultAPI.balance.endpoint +
+    '\'';
+
+  Minima.sql(apiSelectSQL, function(selectResults) {
+    // Minima.log(app + ' API endpoint ' + defaultAPI.tokenCreate.endpoint + tokenResults.response.count);
+    if (selectResults.response && selectResults.response.count) {
+      Minima.log(app + ' API already has endpoint ' + defaultAPI.balance.endpoint);
+    } else {
+      const insertSQL = 'INSERT INTO ' +
+          tables.trigger.name +
+          ' (ENDPOINT, CMD, FORMAT, SETPARAMS, PARAMS, ISPUBLIC) ' +
+          'VALUES (' +
+          '\'' + defaultAPI.balance.endpoint + '\', ' +
+          '\'' + defaultAPI.balance.command + '\', ' +
+          '\'' + defaultAPI.balance.format + '\', ' +
+          '\'' + defaultAPI.balance.setParams + '\', ' +
+          '\'' + defaultAPI.balance.params + '\', ' +
+          '\'' + defaultAPI.balance.isPublic + '\'' +
+        ')';
+      doSQL(insertSQL, tables.log.name);
+      doLog(tables.trigger.name, defaultActions.insert, defaultAPI.balance.endpoint, '');
+    }
+  });
 }
 
 /**
@@ -436,19 +540,32 @@ function createBalanceAPI() {
  * @function createScriptsAPI
  */
 function createScriptsAPI() {
-  const insertSQL = 'INSERT IGNORE INTO ' +
-      tables.trigger.name +
-      ' (ENDPOINT, CMD, FORMAT, SETPARAMS, PARAMS, ISPUBLIC) ' +
-      'VALUES (' +
-      '\'' + defaultAPI.scripts.endpoint + '\', ' +
-      '\'' + defaultAPI.scripts.command + '\', ' +
-      '\'' + defaultAPI.scripts.format + '\', ' +
-      '\'' + defaultAPI.scripts.setParams + '\', ' +
-      '\'' + defaultAPI.scripts.params + '\', ' +
-      '\'' + defaultAPI.scripts.isPublic + '\'' +
-    ')';
-  doSQL(insertSQL, tables.log.name);
-  doLog(tables.trigger.name, defaultActions.insert, defaultAPI.scripts.endpoint, '');
+  const apiSelectSQL = 'SELECT ENDPOINT FROM ' +
+    tables.trigger.name +
+    ' WHERE ENDPOINT = \'' +
+    defaultAPI.scripts.endpoint +
+    '\'';
+
+  Minima.sql(apiSelectSQL, function(selectResults) {
+    // Minima.log(app + ' API endpoint ' + defaultAPI.tokenCreate.endpoint + tokenResults.response.count);
+    if (selectResults.response && selectResults.response.count) {
+      Minima.log(app + ' API already has endpoint ' + defaultAPI.scripts.endpoint);
+    } else {
+      const insertSQL = 'INSERT INTO ' +
+          tables.trigger.name +
+          ' (ENDPOINT, CMD, FORMAT, SETPARAMS, PARAMS, ISPUBLIC) ' +
+          'VALUES (' +
+          '\'' + defaultAPI.scripts.endpoint + '\', ' +
+          '\'' + defaultAPI.scripts.command + '\', ' +
+          '\'' + defaultAPI.scripts.format + '\', ' +
+          '\'' + defaultAPI.scripts.setParams + '\', ' +
+          '\'' + defaultAPI.scripts.params + '\', ' +
+          '\'' + defaultAPI.scripts.isPublic + '\'' +
+        ')';
+      doSQL(insertSQL, tables.log.name);
+      doLog(tables.trigger.name, defaultActions.insert, defaultAPI.scripts.endpoint, '');
+    }
+  });
 }
 
 /**
@@ -486,7 +603,7 @@ function insertAddress(qParamsJSON, replyId) {
     if ( qParamsJSON.url ) {
       url = qParamsJSON.url;
     }
-    const insertSQL = 'INSERT IGNORE INTO ' +
+    const insertSQL = 'INSERT INTO ' +
         tables.address.name +
         ' (ADDRESS, URL) ' +
         'VALUES (' +
@@ -515,7 +632,7 @@ function insertToken(qParamsJSON, replyId) {
     if ( qParamsJSON.url ) {
       url = qParamsJSON.url;
     }
-    const insertSQL = 'INSERT IGNORE INTO ' +
+    const insertSQL = 'INSERT INTO ' +
         tables.token.name +
         ' (TOKENID, URL) ' +
         'VALUES (' +
