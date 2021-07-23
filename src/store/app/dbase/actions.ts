@@ -249,7 +249,7 @@ export const getTableEntries =
           dispatch(write({data: txData})(txFailAction));
         } else {
           // console.log(query, result);
-          const data = result.response.rows.slice();
+          const data = result.response.rows ? result.response.rows.slice() : [];
           dispatch(write({data: data})(successAction));
           dispatch(write({data: txData})(txSuccessAction));
         }
@@ -291,7 +291,8 @@ export const countTableEntries =
          dispatch(write({data: []})(failAction));
          dispatch(write({data: txData})(txFailAction));
        } else {
-         const count = result.response.rows[0]['COUNT(*)'];
+         const count =
+          result.response.rows? result.response.rows[0]['COUNT(*)'] : 0;
          const updateData: CountUpdateData = {
            count: count,
            key: key,
@@ -340,7 +341,8 @@ export const getChartEntries =
           dispatch(write({data: txData})(txFailAction));
         } else {
           // console.log(query, result);
-          const data: Array<object> = result.response.rows.slice();
+          const data: Array<object> =
+            result.response.rows ? result.response.rows.slice() : [];
           const updateData: ChartUpdateData = {
             data: {},
             key: key,
