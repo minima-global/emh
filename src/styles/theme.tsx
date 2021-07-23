@@ -198,7 +198,7 @@ const themeStyles = makeStyles({
       },
     },
     '& .MuiPaper-elevation5': {
-      boxShadow: '0 3px 10px rgb(00, 1c, 32, 0.084)',
+      boxShadow: '0 3px 10px rgb(00, 00, 00, 0.084)',
     },
   },
   header: {
