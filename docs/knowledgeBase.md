@@ -30,7 +30,7 @@ None.
 
 The MEG relies on [service.js](/src/service.js), which runs continually (whenever Minima itself is running).
 
-## Key Processes
+### Key Backend Processes
 
 When [service.js](/src/service.js) first loads, it creates the database, establishes a default API and creates a listener that responds to API calls. That listener also posts to any defined external URL information about specified tokens and addresses.
 
