@@ -2,39 +2,39 @@
 
 Below describes the MEG application.
 
-## Architecture diagram of the system and a description of the key components
+## Architecture Diagram
 
 ![Architecture](./images/flow.png)
 
-## Process flow
+## Process Flow
 
 ![EMH Workflow](./images/flow.png)
 
-## Schema diagrams
+## Schema Diagram
 
 ![EMH Database Design](./images/dbase.png)
 
-## Any design decisions that were made during the build or after
+## Design Decisions
 
-The MEG was built using an Agile process involving weekly sprint reviews of working builds. The initial build was created using a [specification](./specification.md) created from the very first of those sprint meetings.
+The MEG was built using an Agile process involving weekly sprint reviews of working builds. The initial build was created using a [specification](./specification.md) created from the very first MEG meeting.
 
-## Any quirks/workarounds that have been made so we have them captured
+## Quirks/Workarounds
 
 None, currently.
 
-## Any outside dependencies/services that we may use - email api's etc
+## Outside Dependencies
 
 None.
 
-## Any processes/services that are running on the backend - like doing any repeating tasks, or clean ups, resets, etc
+## Backend Processes/Services
 
-The MEG relies on _service.js_, which continually runs in the background whenever Minima itself is running.
+The MEG relies on _service.js_, which is continually running in the background (whenever Minima itself is running).
 
-## A list of the key processes, that are trigged by the userflow or a event, what steps occur in what order etc
+## Key Processes
 
 When _service.js_ first loads, it creates the database, establishes a default API and creates a listener that responds to API calls and posts information about specified tokens and addresses to any defined external URL.
 
-Create the database:
+Functions that create the database:
 
 ```
 /**
@@ -68,7 +68,7 @@ function createToken()
 function createTrigger()
 ```
 
-Create the default API:
+Functions that create the default API:
 
 ```
 /**
@@ -158,7 +158,7 @@ function insertToken(qParamsJSON, replyId)
 function getDbase(qParamsJSON, replyId)
 ```
 
-Process API calls:
+Functions that process API calls:
 
 ```
 /**
@@ -170,7 +170,7 @@ Process API calls:
 function processApiCall(qParams, replyId)
 ```
 
-Call external URL:
+Functions that call any external URLs:
 
 ```
 /**
@@ -185,14 +185,14 @@ Call external URL:
 function processURL(txId, uRL, address, tokenId, state)
 ```
 
-## The different user roles we have, what permissions/actions do each of the roles have
+## User Roles
 
 None, currently.
 
-## any known limitations, constraints, issues, caveats
+## Known Limitations
 
 None, currently.
 
-## any do's, any don'ts (these would may map back to the design decisions, quirks/workarounds)
+## Do's and Don'ts
 
 None, currently.
