@@ -36,7 +36,7 @@ When _service.js_ first loads, it creates the database, establishes a default AP
 
 Functions that create the database:
 
-```
+```javascript
 /**
  * Creates log table
  * @function createLog
@@ -70,7 +70,7 @@ function createTrigger()
 
 Functions that create the default API:
 
-```
+```javascript
 /**
  * Creates an API for adding default URL for token and address listeners
  * @function createURLAPI
@@ -160,7 +160,7 @@ function getDbase(qParamsJSON, replyId)
 
 Functions that process API calls:
 
-```
+```javascript
 /**
  * Processes any API calls
  * @function processApiCall
@@ -172,7 +172,7 @@ function processApiCall(qParams, replyId)
 
 Functions that call any external URLs:
 
-```
+```javascript
 /**
  * Calls external URL
  * @function processURL
@@ -193,6 +193,6 @@ None, currently.
 
 None, currently.
 
-## Do's and Don'ts
+## Do's and Don'ts (these would may map back to the design decisions, quirks/workarounds)
 
 None, currently.
