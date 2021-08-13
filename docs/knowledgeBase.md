@@ -4,7 +4,7 @@ Below describes the MEG application.
 
 ## Architecture Diagram
 
-![Architecture](./images/flow.png)
+![Architecture](./images/architecture.png)
 
 ## Process Flow
 
