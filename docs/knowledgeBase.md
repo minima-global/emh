@@ -8,11 +8,11 @@ Below describes the MEG application.
 
 ## Process Flow
 
-![Figure 1: MEG Basic Workflow](images/basicWorkflow.png)
+![Basic Workflow](images/basicWorkflow.png)
 
 ## Database Schema Diagram
 
-![EMH Database Design](./images/dbase.png)
+![Database Design](./images/dbase.png)
 
 ## Design Decisions
 
