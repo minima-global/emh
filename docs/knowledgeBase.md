@@ -2,15 +2,15 @@
 
 Below describes the MEG application.
 
-## Architecture Diagram
+## Architecture Diagrams
 
 ![Architecture](./images/architecture.png)
 
 ## Process Flow
 
-![EMH Workflow](./images/flow.png)
+![Figure 1: MEG Basic Workflow](images/basicWorkflow.png)
 
-## Schema Diagram
+## Database Schema Diagram
 
 ![EMH Database Design](./images/dbase.png)
 
