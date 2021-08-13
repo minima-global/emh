@@ -32,7 +32,7 @@ The MEG relies on [service.js](/src/service.js), which runs continually (wheneve
 
 ## Key Processes
 
-When _service.js_ first loads, it creates the database, establishes a default API and creates a listener that responds to API calls and posts information about specified tokens and addresses to any defined external URL.
+When [service.js](/src/service.js) first loads, it creates the database, establishes a default API and creates a listener that responds to API calls. That listener also posts to any defined external URL information about specified tokens and addresses.
 
 Functions that create the database:
 
