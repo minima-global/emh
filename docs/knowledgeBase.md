@@ -2,7 +2,7 @@
 
 Below describes the MEG application.
 
-## Architecture Diagrams
+## Architecture Diagram
 
 ![Architecture](./images/architecture.png)
 
@@ -10,7 +10,7 @@ Below describes the MEG application.
 
 ![Basic Workflow](images/basicWorkflow.png)
 
-## Database Schema Diagram
+## Database Schema
 
 ![Database Design](./images/dbase.png)
 
@@ -28,7 +28,7 @@ None.
 
 ## Backend Processes/Services
 
-The MEG relies on _service.js_, which is continually running in the background (whenever Minima itself is running).
+The MEG relies on [service.js](/src/service.js), which runs continually (whenever Minima itself is running).
 
 ## Key Processes
 
