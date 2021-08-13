@@ -870,7 +870,7 @@ function processTx(txId, tokenId, mxAddress) {
 }
 
 /**
- * Processes any URL call call
+ * Processes any API calls
  * @function processApiCall
  * @param {string} qParams
  * @param {string} replyId
