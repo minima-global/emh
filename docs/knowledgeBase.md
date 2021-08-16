@@ -16,7 +16,7 @@ Below describes the MEG application.
 
 ## Design Decisions
 
-The MEG was built using an Agile process involving weekly sprint reviews of working builds. The initial build was created using a [specification](./specification.md) created from the very first MEG meeting.
+The MEG was built using an [agile](https://en.wikipedia.org/wiki/Agile_software_development) development process involving weekly sprint reviews of working builds. The initial build was created using a [specification](./specification.md) created from the very first MEG meeting.
 
 ## Quirks/Workarounds
 
