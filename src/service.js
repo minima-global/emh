@@ -197,7 +197,7 @@ function createLog() {
       'ID INT PRIMARY KEY AUTO_INCREMENT, ' +
       'ACTION VARCHAR(255) NOT NULL, ' +
       'LOGGINGTYPE VARCHAR(255) NOT NULL, ' +
-      'DATE VARCHAR(255) NOT NULL, ' +
+      'DATE BIGINT NOT NULL, ' +
       'DATA VARCHAR(255) NOT NULL, ' +
       'EXTRA VARCHAR(8191)' +
     ');';
